@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.jamieadkins.jgaw.Card;
+import com.jamieadkins.jgaw.Card.Card;
 import com.jamieadkins.jgaw.CardListResult;
 import com.jamieadkins.jgaw.GwentApiV0;
 
@@ -39,6 +39,7 @@ public class GwentApiTest {
         gwentApi.getCard("triss-mistress-of-magic")
                 .subscribe(testObserver);
         testObserver.assertNoErrors();
+        testObserver.assertValueCount(1);
     }
 
     @Test
