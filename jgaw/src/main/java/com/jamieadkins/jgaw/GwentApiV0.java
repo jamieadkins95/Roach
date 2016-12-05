@@ -1,5 +1,7 @@
 package com.jamieadkins.jgaw;
 
+import com.jamieadkins.jgaw.Card.Card;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

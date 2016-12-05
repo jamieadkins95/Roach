@@ -1,5 +1,7 @@
 package com.jamieadkins.jgaw;
 
+import com.jamieadkins.jgaw.Card.Card;
+
 /**
  * Created by jamiea on 05/12/16.
  */

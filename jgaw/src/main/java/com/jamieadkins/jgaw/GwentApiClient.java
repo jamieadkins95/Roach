@@ -1,6 +1,7 @@
 package com.jamieadkins.jgaw;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.jamieadkins.jgaw.Card.Card;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -61,5 +62,10 @@ public class GwentApiClient {
 
                     }
                 });
+    }
+
+    public static String getIdFromApiUrl(String apiUrl) {
+        final int lastSlash = apiUrl.lastIndexOf("/");
+        return apiUrl.substring(lastSlash);
     }
 }
