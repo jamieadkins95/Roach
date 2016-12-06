@@ -1,6 +1,6 @@
 package com.jamieadkins.jgaw;
 
-import com.jamieadkins.jgaw.Card.CardStubResult;
+import com.jamieadkins.jgaw.card.CardStubResult;
 
 import java.util.List;
 

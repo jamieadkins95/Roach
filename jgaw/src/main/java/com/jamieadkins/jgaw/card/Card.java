@@ -1,4 +1,4 @@
-package com.jamieadkins.jgaw.Card;
+package com.jamieadkins.jgaw.card;
 
 import java.util.List;
 

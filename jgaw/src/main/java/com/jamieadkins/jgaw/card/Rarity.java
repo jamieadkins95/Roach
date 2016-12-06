@@ -1,4 +1,4 @@
-package com.jamieadkins.jgaw.Card;
+package com.jamieadkins.jgaw.card;
 
 /**
  * The rarity of the card.

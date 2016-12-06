@@ -3,9 +3,6 @@ apply plugin: 'java'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // RxJava.
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.1'
-
     // Retrofit.
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'

@@ -1,4 +1,4 @@
-package com.jamieadkins.jgaw.Card;
+package com.jamieadkins.jgaw.card;
 
 /**
  * Primary type of the card.

@@ -1,4 +1,4 @@
-package com.jamieadkins.jgaw.Card;
+package com.jamieadkins.jgaw.card;
 
 /**
  * Subtype that a card has.
