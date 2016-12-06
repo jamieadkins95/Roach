@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent;
+package com.jamieadkins.jgaw;
 
 import com.jamieadkins.jgaw.card.Card;
 import com.jamieadkins.jgaw.CardListResult;
