@@ -1,11 +1,13 @@
 package com.jamieadkins.jgaw;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.jamieadkins.jgaw.Card.Card;
+import com.jamieadkins.jgaw.card.Card;
+import com.jamieadkins.jgaw.card.CardStubResult;
+import com.jamieadkins.jgaw.exception.GwentApiException;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -18,50 +20,54 @@ public class GwentApiClient {
 
     private final GwentApiV0 mGwentApi;
 
-    private CardResultListener mCardResultListener;
-
     public GwentApiClient() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         mGwentApi = retrofit.create(GwentApiV0.class);
     }
 
-    public void setCardListener(CardResultListener cardResultListener) {
-        mCardResultListener = cardResultListener;
+    public Card retrieveCard(String id) throws IOException, GwentApiException {
+        Response<Card> response = mGwentApi.getCard(id).execute();
+
+        if (!response.isSuccessful()) {
+            throw new GwentApiException(response.errorBody().string());
+        }
+
+        return response.body();
     }
 
-    public void retrieveCard(String id) {
-        mGwentApi.getCard(id)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Card>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+    public List<CardStubResult> getAllCards() throws IOException, GwentApiException {
+        Response<CardListResult> response = mGwentApi.getAllCards().execute();
 
-                    }
+        if (!response.isSuccessful()) {
+            throw new GwentApiException(response.errorBody().string());
+        }
 
-                    @Override
-                    public void onNext(Card value) {
-                        if (mCardResultListener != null) {
-                            mCardResultListener.onCardRetrieved(value);
-                        }
-                    }
+        return response.body().getResults();
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (mCardResultListener != null) {
-                            mCardResultListener.onError(e);
-                        }
-                    }
+    public List<CardStubResult> getAllLeaderCards() throws IOException, GwentApiException {
+        Response<CardListResult> response = mGwentApi.getLeaders().execute();
 
-                    @Override
-                    public void onComplete() {
+        if (!response.isSuccessful()) {
+            throw new GwentApiException(response.errorBody().string());
+        }
 
-                    }
-                });
+        return response.body().getResults();
+    }
+
+    public List<CardStubResult> getCardsFromFaction(String faction)
+            throws IOException, GwentApiException {
+        Response<CardListResult> response = mGwentApi.getCardsFromFaction(faction).execute();
+
+        if (!response.isSuccessful()) {
+            throw new GwentApiException(response.errorBody().string());
+        }
+
+        return response.body().getResults();
     }
 
     public static String getIdFromApiUrl(String apiUrl) {

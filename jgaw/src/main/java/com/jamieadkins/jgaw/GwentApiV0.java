@@ -1,8 +1,8 @@
 package com.jamieadkins.jgaw;
 
-import com.jamieadkins.jgaw.Card.Card;
+import com.jamieadkins.jgaw.card.Card;
 
-import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -12,17 +12,17 @@ import retrofit2.http.Path;
 
 public interface GwentApiV0 {
     @GET("cards")
-    Observable<CardListResult> listCards();
+    Call<CardListResult> getAllCards();
 
     @GET("cards/{cardId}")
-    Observable<Card> getCard(@Path("cardId") String cardId);
+    Call<Card> getCard(@Path("cardId") String cardId);
 
     @GET("cards/leaders")
-    Observable<CardListResult> getLeaders();
+    Call<CardListResult> getLeaders();
 
     @GET("cards/factions/{factionId}")
-    Observable<CardListResult> getCardsFromFaction(@Path("factionId") String faction);
+    Call<CardListResult> getCardsFromFaction(@Path("factionId") String faction);
 
     @GET("cards/rarities/{rarity}")
-    Observable<CardListResult> getCardsOfRarity(@Path("rarity") String rarity);
+    Call<CardListResult> getCardsOfRarity(@Path("rarity") String rarity);
 }
