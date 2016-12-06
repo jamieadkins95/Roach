@@ -29,7 +29,7 @@ public class GwentApiClient {
         mGwentApi = retrofit.create(GwentApiV0.class);
     }
 
-    public Card retrieveCard(String id) throws IOException, GwentApiException {
+    public Card getCard(String id) throws IOException, GwentApiException {
         Response<Card> response = mGwentApi.getCard(id).execute();
 
         if (!response.isSuccessful()) {
@@ -40,7 +40,7 @@ public class GwentApiClient {
     }
 
     public List<CardStubResult> getAllCards() throws IOException, GwentApiException {
-        Response<CardListResult> response = mGwentApi.getAllCards().execute();
+        Response<CardListResult> response = mGwentApi.getAllCards("200", "0").execute();
 
         if (!response.isSuccessful()) {
             throw new GwentApiException(response.errorBody().string());
@@ -50,7 +50,7 @@ public class GwentApiClient {
     }
 
     public List<CardStubResult> getAllLeaderCards() throws IOException, GwentApiException {
-        Response<CardListResult> response = mGwentApi.getLeaders().execute();
+        Response<CardListResult> response = mGwentApi.getLeaders("200", "0").execute();
 
         if (!response.isSuccessful()) {
             throw new GwentApiException(response.errorBody().string());
@@ -61,7 +61,20 @@ public class GwentApiClient {
 
     public List<CardStubResult> getCardsFromFaction(String faction)
             throws IOException, GwentApiException {
-        Response<CardListResult> response = mGwentApi.getCardsFromFaction(faction).execute();
+        Response<CardListResult> response =
+                mGwentApi.getCardsFromFaction(faction, "200", "0").execute();
+
+        if (!response.isSuccessful()) {
+            throw new GwentApiException(response.errorBody().string());
+        }
+
+        return response.body().getResults();
+    }
+
+    public List<CardStubResult> getCardsOfRarity(String rarity)
+            throws IOException, GwentApiException {
+        Response<CardListResult> response =
+                mGwentApi.getCardsOfRarity(rarity, "200", "0").execute();
 
         if (!response.isSuccessful()) {
             throw new GwentApiException(response.errorBody().string());

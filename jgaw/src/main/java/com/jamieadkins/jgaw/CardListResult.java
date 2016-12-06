@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public class CardListResult {
+    private String count;
     private List<CardStubResult> results;
 
     public List<CardStubResult> getResults() {
