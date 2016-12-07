@@ -5,4 +5,6 @@
     <string name="decks">My decks</string>
     <string name="collection">Collection</string>
     <string name="news">News</string>
+    <string name="details">Details</string>
+    <string name="out_of_date">Card Database is out of date!</string>
 </resources>
