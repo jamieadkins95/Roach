@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.jamieadkins.gwent.cardui.CardRecyclerViewAdapter;
 import com.jamieadkins.jgaw.GwentApiClient;
 import com.jamieadkins.jgaw.card.BaseApiResult;
+import com.jamieadkins.jgaw.card.CardDetails;
 import com.jamieadkins.jgaw.card.CardStubResult;
 
 import java.util.ArrayList;
@@ -53,26 +54,27 @@ public class CardListActivityFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final GwentApiClient gwentApiClient = new GwentApiClient();
-        Observable.defer(new Callable<ObservableSource<? extends List<CardStubResult>>>() {
+        Observable.defer(new Callable<ObservableSource<? extends CardDetails>>() {
             @Override
-            public ObservableSource<? extends List<CardStubResult>> call() throws Exception {
-                return Observable.just(gwentApiClient.getAllCards());
+            public ObservableSource<? extends CardDetails> call() throws Exception {
+                return Observable.just(gwentApiClient.getCard("triss-mistress-of-magic"));
             }
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CardStubResult>>() {
+                .subscribe(new Observer<CardDetails>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<CardStubResult> value) {
-                        ArrayList<BaseApiResult> cards = new ArrayList<>();
-                        cards.addAll(value);
-                        mAdapter = new CardRecyclerViewAdapter(cards);
+                    public void onNext(CardDetails value) {
+                        ArrayList<CardDetails> cards = new ArrayList<>();
+                        cards.add(value);
+                        mAdapter = new CardRecyclerViewAdapter(cards, CardRecyclerViewAdapter.Detail.LARGE);
                         mCardListView.setAdapter(mAdapter);
+
                     }
 
                     @Override

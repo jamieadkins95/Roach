@@ -5,7 +5,9 @@
     <color name="colorAccent">#FF5252</color>
     <color name="colorPrimaryLight">#B2DFDB</color>
 
-    <color name="textPrimary">#000000</color>
-    <color name="textSecondary">#B3000000</color>
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
     <color name="textHint">#4D000000</color>
+
+    <color name="textDivider">#BDBDBD</color>
 </resources>

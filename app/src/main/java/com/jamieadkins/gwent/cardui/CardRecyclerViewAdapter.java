@@ -7,33 +7,52 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.jgaw.card.BaseApiResult;
+import com.jamieadkins.jgaw.card.CardDetails;
 
 import java.util.List;
 
 /**
- * RecyclerViewAdapter that shows a list of cards
+ * RecyclerViewAdapter that shows a list of cards.
  */
 
-public class CardRecyclerViewAdapter extends RecyclerView.Adapter<SimpleCardViewHolder> {
-    private List<BaseApiResult> mResults;
+public class CardRecyclerViewAdapter extends RecyclerView.Adapter<BaseCardViewHolder> {
+    private List<CardDetails> mResults;
+    private Detail mDetail;
+
+    public enum Detail {
+        SMALL,
+        LARGE
+    }
 
     public BaseApiResult getValueAt(int position) {
         return mResults.get(position);
     }
 
-    public CardRecyclerViewAdapter(List<BaseApiResult> items) {
+    public CardRecyclerViewAdapter(List<CardDetails> items, Detail detail) {
         mResults = items;
+        mDetail = detail;
+    }
+
+    public CardRecyclerViewAdapter(List<CardDetails> items) {
+        this(items, Detail.SMALL);
     }
 
     @Override
-    public SimpleCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_card_small, parent, false);
-        return new SimpleCardViewHolder(view);
+    public BaseCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (mDetail) {
+            case SMALL:
+                return new SimpleCardViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_card_small, parent, false));
+            case LARGE:
+                return new LargeCardViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_card_large, parent, false));
+            default:
+                throw new RuntimeException("Detail level has not been implemented.");
+        }
     }
 
     @Override
-    public void onBindViewHolder(final SimpleCardViewHolder holder, int position) {
+    public void onBindViewHolder(final BaseCardViewHolder holder, int position) {
         holder.bindCard(mResults.get(position));
     }
 

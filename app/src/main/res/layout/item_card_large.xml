@@ -10,10 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:paddingTop="@dimen/activity_vertical_margin"
@@ -26,17 +22,78 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/card_name"
-                    android:text="Google HQ"
+                    android:textColor="@color/textPrimary"
+                    android:text="Triss Merigold"
                     android:textSize="20sp"/>
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/card_description"/>
+                    android:id="@+id/image_row"
+                    android:src="@drawable/ic_cards_outline"
+                    android:tint="@color/textSecondary"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/card_name"/>
+
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_description"
+                    android:textColor="@color/textSecondary"
+                    android:layout_below="@id/card_name"
+                    android:text="Remove 4 strength from an opposing unit."/>
+
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/card_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="?android:listDivider"
+                    android:dividerPadding="2.5dp"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/card_faction"
+                        android:text="Neutral"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/card_rarity"
+                        android:text="Legendary"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/card_loyalty"
+                        android:text="Loyal"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/card_strength"
+                        android:textSize="20sp"
+                        android:text="8"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
-
-        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
