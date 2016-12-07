@@ -26,6 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/bb_height"
             android:layout_alignParentBottom="true"
+            app:bb_inActiveTabAlpha="0.7"
+            app:bb_inActiveTabColor="#FFFFFF"
+            app:bb_activeTabColor="#FFFFFF"
             app:bb_tabXmlResource="@xml/bottombar_tabs_main" />
 
     </RelativeLayout>

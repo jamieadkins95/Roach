@@ -3,13 +3,16 @@
     <tab
         id="@+id/tab_decks"
         icon="@drawable/ic_cards_filled"
-        title="@string/decks" />
+        title="@string/decks"
+        barColorWhenSelected="@color/colorPrimary"/>
     <tab
         id="@+id/tab_collection"
         icon="@drawable/ic_cards_outline"
-        title="@string/collection" />
+        title="@string/collection"
+        barColorWhenSelected="@color/colorPrimary"/>
     <tab
         id="@+id/tab_news"
         icon="@drawable/ic_new_releases"
-        title="@string/news" />
+        title="@string/news"
+        barColorWhenSelected="@color/colorPrimary"/>
 </tabs>
