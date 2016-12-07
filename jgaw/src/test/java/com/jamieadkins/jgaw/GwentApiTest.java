@@ -1,18 +1,12 @@
 package com.jamieadkins.jgaw;
 
-import com.jamieadkins.jgaw.card.Card;
-import com.jamieadkins.jgaw.CardListResult;
-import com.jamieadkins.jgaw.GwentApiV0;
+import com.jamieadkins.jgaw.card.CardDetails;
 import com.jamieadkins.jgaw.card.CardStubResult;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
-
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -32,7 +26,7 @@ public class GwentApiTest {
 
     @Test
     public void getCardTest() throws Exception {
-        Card triss = mApiClient.getCard("triss-mistress-of-magic");
+        CardDetails triss = mApiClient.getCard("triss-mistress-of-magic");
         assertNotNull(triss);
     }
 

@@ -1,6 +1,6 @@
 package com.jamieadkins.jgaw;
 
-import com.jamieadkins.jgaw.card.Card;
+import com.jamieadkins.jgaw.card.CardDetails;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,7 +19,7 @@ public interface GwentApiV0 {
     Call<CardListResult> getAllCards(@Query("limit") String limit, @Query("offset") String offset);
 
     @GET("cards/{cardId}")
-    Call<Card> getCard(@Path("cardId") String cardId);
+    Call<CardDetails> getCard(@Path("cardId") String cardId);
 
     @GET("cards/leaders")
     Call<CardListResult> getLeaders();

@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.jgaw.card.BaseApiResult;
-import com.jamieadkins.jgaw.card.Card;
 
 /**
  * ViewHolder for general yearns

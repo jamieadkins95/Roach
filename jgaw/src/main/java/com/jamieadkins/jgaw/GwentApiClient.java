@@ -1,6 +1,6 @@
 package com.jamieadkins.jgaw;
 
-import com.jamieadkins.jgaw.card.Card;
+import com.jamieadkins.jgaw.card.CardDetails;
 import com.jamieadkins.jgaw.card.CardStubResult;
 import com.jamieadkins.jgaw.exception.GwentApiException;
 
@@ -29,8 +29,8 @@ public class GwentApiClient {
         mGwentApi = retrofit.create(GwentApiV0.class);
     }
 
-    public Card getCard(String id) throws IOException, GwentApiException {
-        Response<Card> response = mGwentApi.getCard(id).execute();
+    public CardDetails getCard(String id) throws IOException, GwentApiException {
+        Response<CardDetails> response = mGwentApi.getCard(id).execute();
 
         if (!response.isSuccessful()) {
             throw new GwentApiException(response.errorBody().string());
