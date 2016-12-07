@@ -1,10 +1,11 @@
-package com.jamieadkins.gwent;
+package com.jamieadkins.gwent.cardui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jamieadkins.gwent.R;
 import com.jamieadkins.jgaw.card.BaseApiResult;
 import com.jamieadkins.jgaw.card.Card;
 

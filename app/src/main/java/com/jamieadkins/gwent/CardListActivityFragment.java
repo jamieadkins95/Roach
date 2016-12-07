@@ -8,14 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jamieadkins.jgaw.CardListResult;
+import com.jamieadkins.gwent.cardui.CardRecyclerViewAdapter;
 import com.jamieadkins.jgaw.GwentApiClient;
 import com.jamieadkins.jgaw.card.BaseApiResult;
-import com.jamieadkins.jgaw.card.Card;
 import com.jamieadkins.jgaw.card.CardStubResult;
-import com.jamieadkins.jgaw.exception.GwentApiException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -25,9 +22,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
 
 /**
  * A placeholder fragment containing a simple view.
