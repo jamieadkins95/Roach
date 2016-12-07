@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_decks"
+        icon="@drawable/ic_cards_filled"
+        title="@string/decks" />
+    <tab
+        id="@+id/tab_collection"
+        icon="@drawable/ic_cards_outline"
+        title="@string/collection" />
+    <tab
+        id="@+id/tab_news"
+        icon="@drawable/ic_new_releases"
+        title="@string/news" />
+</tabs>
