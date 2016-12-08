@@ -1,11 +1,15 @@
 package com.jamieadkins.gwent.data.interactor;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.jamieadkins.gwent.data.Card;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
@@ -82,12 +86,87 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void addCardToDeck(Deck deck, Card card) {
-        mDecksReference.child(deck.getId()).child("cards").child(card.getCardId()).setValue(card);
+        final String cardId = card.getCardId();
+        DatabaseReference deckReference = mDecksReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                if (storedDeck.getCards() == null) {
+                    // First card being added to the deck!
+                    storedDeck.initialiseCardMap();
+                }
+
+                if (storedDeck.getCards().containsKey(cardId)) {
+                    // If the user already has at least one of these cards in their deck.
+                    int currentCardCount = storedDeck.getCards().get(cardId);
+                    storedDeck.getCards().put(cardId, currentCardCount + 1);
+                } else {
+                    // Else add one card to the deck.
+                    storedDeck.getCards().put(cardId, 1);
+                }
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 
     @Override
     public void removeCardFromDeck(Deck deck, Card card) {
-        mDecksReference.child(deck.getId()).child("cards").child(card.getCardId()).removeValue();
+        final String cardId = card.getCardId();
+        DatabaseReference deckReference = mDecksReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                if (storedDeck.getCards() == null) {
+                    // Fresh deck that has no cards in it!
+                    return Transaction.success(mutableData);
+                }
+
+                if (storedDeck.getCards().containsKey(cardId)) {
+                    // If the user already has at least one of these cards in their deck.
+                    int currentCardCount = storedDeck.getCards().get(cardId);
+                    storedDeck.getCards().put(cardId, currentCardCount - 1);
+                } else {
+                    // This deck doesn't have that card in it.
+                }
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Deck {
     private String id;
     private String name = "Some Deck";
     private String faction = Faction.SKELLIGE;
-    private Map<String, Card> cards;
+    private Map<String, Integer> cards;
 
     public Deck() {
         // Required empty constructor for Firebase.
@@ -42,6 +42,14 @@ public class Deck {
 
     public String getId() {
         return id;
+    }
+
+    public void initialiseCardMap() {
+        this.cards = new HashMap<>();
+    }
+
+    public Map<String, Integer> getCards() {
+        return cards;
     }
 
     @Exclude
