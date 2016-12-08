@@ -1,7 +1,6 @@
-package com.jamieadkins.gwent.model;
+package com.jamieadkins.gwent.data;
 
 import com.jamieadkins.jgaw.Faction;
-import java.util.List;
 
 /**
  * Class that models what a deck is.
@@ -12,7 +11,7 @@ public class Deck {
     private Faction faction = Faction.SKELLIGE;
 
     public Deck() {
-        // Required empty constructor for Sugar ORM.
+        // Required empty constructor for Firebase.
     }
 
     public Deck(Faction faction) {

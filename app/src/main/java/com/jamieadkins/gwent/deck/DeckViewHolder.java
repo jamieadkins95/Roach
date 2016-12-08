@@ -1,13 +1,11 @@
-package com.jamieadkins.gwent.deck.ui;
+package com.jamieadkins.gwent.deck;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.cardui.BaseCardViewHolder;
-import com.jamieadkins.gwent.model.Deck;
-import com.jamieadkins.jgaw.card.CardDetails;
+import com.jamieadkins.gwent.data.Deck;
 
 /**
  * Holds much more detail about a card.

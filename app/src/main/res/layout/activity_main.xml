@@ -31,16 +31,6 @@
             app:bb_activeTabColor="@color/white"
             app:bb_tabXmlResource="@xml/bottombar_tabs_main" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_above="@id/bottomBar"
-            android:layout_margin="@dimen/fab_margin"
-            android:tint="@color/white"
-            android:src="@drawable/ic_cards_filled" />
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,12 +1,13 @@
-package com.jamieadkins.gwent.deck.ui;
+package com.jamieadkins.gwent.deck;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.model.Deck;
+import com.jamieadkins.gwent.data.Deck;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +21,8 @@ public class DeckRecyclerViewAdapter extends RecyclerView.Adapter<DeckViewHolder
         return mDecks.get(position);
     }
 
-    public DeckRecyclerViewAdapter(List<Deck> decks) {
-        mDecks = decks;
+    public DeckRecyclerViewAdapter() {
+        mDecks = new ArrayList<>();
     }
 
     @Override
@@ -42,5 +43,10 @@ public class DeckRecyclerViewAdapter extends RecyclerView.Adapter<DeckViewHolder
         } else {
             return mDecks.size();
         }
+    }
+
+    public void addDeck(Deck deck) {
+        mDecks.add(deck);
+        notifyDataSetChanged();
     }
 }
