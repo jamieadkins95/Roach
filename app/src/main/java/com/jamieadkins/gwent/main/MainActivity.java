@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import com.jamieadkins.gwent.CardListActivityFragment;
+import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.LoggedInActivity;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -47,8 +48,12 @@ public class MainActivity extends LoggedInActivity {
                                 new DecksInteractorFirebase());
                         break;
                     case R.id.tab_collection:
-                        fragment = new CardListActivityFragment();
+                        fragment = new ComingSoonFragment();
                         fragmentTransaction.replace(R.id.contentContainer, fragment, "collection");
+                        break;
+                    case R.id.tab_public_decks:
+                        fragment = new ComingSoonFragment();
+                        fragmentTransaction.replace(R.id.contentContainer, fragment, "public");
                         break;
                 }
 

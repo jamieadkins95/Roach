@@ -10,4 +10,10 @@
         icon="@drawable/ic_cards_outline"
         title="@string/collection"
         barColorWhenSelected="@color/gwentGreen"/>
+
+    <tab
+        id="@+id/tab_public_decks"
+        icon="@drawable/ic_public"
+        title="@string/public_decks"
+        barColorWhenSelected="@color/gwentGreen"/>
 </tabs>
