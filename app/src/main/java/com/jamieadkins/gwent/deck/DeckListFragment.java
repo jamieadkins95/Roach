@@ -58,9 +58,16 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mDecksPresenter.requestDecks();
+    public void onStart() {
+        super.onStart();
+        mDecksPresenter.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mViewAdapter.clear();
+        mDecksPresenter.stop();
     }
 
     @Override

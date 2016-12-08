@@ -22,36 +22,42 @@ public class DecksInteractor {
         mDecksReference = mDatabase.getReference(userId + "/decks");
     }
 
+    private ChildEventListener mDecksListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            mPresenter.sendDeckToView(dataSnapshot.getValue(Deck.class));
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
     public void requestDecks() {
-        mDecksReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mPresenter.sendDeckToView(dataSnapshot.getValue(Deck.class));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mDecksReference.addChildEventListener(mDecksListener);
     }
 
     public void createNewDeck() {
         mDecksReference.child(String.valueOf(System.currentTimeMillis())).setValue(new Deck(Faction.SKELLIGE));
+    }
+
+    public void stopData() {
+        mDecksReference.removeEventListener(mDecksListener);
     }
 }

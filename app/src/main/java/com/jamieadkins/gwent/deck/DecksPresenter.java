@@ -26,17 +26,17 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public void requestDecks() {
-        mDecksInteractor.requestDecks();
-    }
-
-    @Override
     public void createNewDeck() {
         mDecksInteractor.createNewDeck();
     }
 
     @Override
     public void start() {
+        mDecksInteractor.requestDecks();
+    }
 
+    @Override
+    public void stop() {
+        mDecksInteractor.stopData();
     }
 }

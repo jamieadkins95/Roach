@@ -49,4 +49,9 @@ public class DeckRecyclerViewAdapter extends RecyclerView.Adapter<DeckViewHolder
         mDecks.add(deck);
         notifyDataSetChanged();
     }
+
+    public void clear() {
+        mDecks.clear();
+        notifyDataSetChanged();
+    }
 }

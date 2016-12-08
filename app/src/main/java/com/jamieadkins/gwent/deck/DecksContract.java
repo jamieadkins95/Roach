@@ -19,7 +19,7 @@ public interface DecksContract {
     interface Presenter extends BasePresenter {
         void sendDeckToView(Deck deck);
 
-        void requestDecks();
+        void stop();
 
         void createNewDeck();
     }
