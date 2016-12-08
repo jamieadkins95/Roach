@@ -2,8 +2,8 @@
     <string name="app_name">Yennefr</string>
     <string name="action_settings">Settings</string>
 
-    <string name="decks">My Decks</string>
-    <string name="collection">My Collection</string>
+    <string name="decks">Decks</string>
+    <string name="collection">Collection</string>
     <string name="news">News</string>
     <string name="details">Details</string>
     <string name="out_of_date">Card Database is out of date!</string>
