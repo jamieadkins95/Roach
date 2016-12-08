@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.data;
 
 import com.jamieadkins.jgaw.Faction;
 
+import java.util.List;
+
 /**
  * Class that models what a deck is.
  */
@@ -10,6 +12,7 @@ public class Deck {
     private String id;
     private String name = "Some Deck";
     private String faction = Faction.SKELLIGE;
+    private List<Card> cards;
 
     public Deck() {
         // Required empty constructor for Firebase.
@@ -37,5 +40,9 @@ public class Deck {
 
     public String getId() {
         return id;
+    }
+
+    public List<Card> getCards() {
+        return cards;
     }
 }

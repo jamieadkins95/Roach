@@ -1,14 +1,11 @@
 package com.jamieadkins.gwent.data.interactor;
 
-import android.util.Log;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.DeckDetails;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.jgaw.Faction;
 
@@ -62,9 +59,6 @@ public class DecksInteractor {
     public void createNewDeck() {
         Deck deck = new Deck(Faction.SKELLIGE);
         mDecksReference.child(deck.getId()).setValue(deck);
-
-        DeckDetails deckDetails = new DeckDetails(deck);
-        mDeckDetailsReference.child(deck.getId()).setValue(deckDetails);
     }
 
     public void stopData() {
