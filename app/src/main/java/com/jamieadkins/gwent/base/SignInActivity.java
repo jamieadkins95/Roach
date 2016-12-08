@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ui.ResultCodes;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
@@ -29,9 +31,26 @@ public class SignInActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startSignInProcess();
+                if (isPlayServicesAvailable()) {
+                    startSignInProcess();
+                }
             }
         });
+    }
+
+    private boolean isPlayServicesAvailable() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(this, result,
+                        RC_SIGN_IN + 1).show();
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     @Override
