@@ -19,7 +19,7 @@ public class DecksInteractor {
 
     public DecksInteractor(DecksContract.Presenter presenter, String userId) {
         mPresenter = presenter;
-        mDecksReference = mDatabase.getReference("decks/" + userId);
+        mDecksReference = mDatabase.getReference(userId + "/decks");
     }
 
     public void requestDecks() {
