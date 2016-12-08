@@ -2,13 +2,33 @@
 
     <!-- Base application theme. -->
     <style name="Base.Theme.Gwent" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/gwentGreen</item>
+        <item name="colorPrimaryDark">@color/gwentGreenDark</item>
+        <item name="colorAccent">@color/gwentAccent</item>
     </style>
 
     <style name="Theme.Gwent" parent="Base.Theme.Gwent">
         <!-- Don't need to do anything here. Used for API level changes. -->
+    </style>
+
+    <style name="Theme.Gwent.Skellige">
+        <item name="colorPrimary">@color/skellige</item>
+        <item name="colorPrimaryDark">@color/skelligeDark</item>
+    </style>
+
+    <style name="Theme.Gwent.Monsters">
+        <item name="colorPrimary">@color/monsters</item>
+        <item name="colorPrimaryDark">@color/monstersDark</item>
+    </style>
+
+    <style name="Theme.Gwent.NorthernRealms">
+        <item name="colorPrimary">@color/northernRealms</item>
+        <item name="colorPrimaryDark">@color/northernRealmsDark</item>
+    </style>
+
+    <style name="Theme.Gwent.Scoiatael">
+        <item name="colorPrimary">@color/scoiatael</item>
+        <item name="colorPrimaryDark">@color/scoiataelDark</item>
     </style>
 
     <style name="Theme.Gwent.NoActionBar">
@@ -17,7 +37,7 @@
     </style>
 
     <style name="Theme.Gwent.NoActionBar.Full">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/gwentGreen</item>
     </style>
 
     <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

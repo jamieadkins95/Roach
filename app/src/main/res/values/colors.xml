@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#FF5252</color>
-    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="gwentGreen">#009688</color>
+    <color name="gwentGreenDark">#00796B</color>
+    <color name="gwentAccent">#FF5252</color>
+    <color name="gwentGreenLight">#B2DFDB</color>
 
     <color name="textPrimary">#212121</color>
     <color name="textSecondary">#757575</color>
 
     <color name="textDivider">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
+
+    <!-- Factions -->
+    <color name="skellige">#3F51B5</color>
+    <color name="skelligeDark">#303F9F</color>
+
+    <color name="monsters">#F44336</color>
+    <color name="monstersDark">#D32F2F</color>
+
+    <color name="northernRealms">#2196F3</color>
+    <color name="northernRealmsDark">#1976D2</color>
+
+    <color name="scoiatael">#4CAF50</color>
+    <color name="scoiataelDark">#388E3C</color>
+
 </resources>
