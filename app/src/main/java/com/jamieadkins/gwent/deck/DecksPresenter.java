@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.deck;
 import android.support.annotation.NonNull;
 
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.DecksInteractor;
+import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
