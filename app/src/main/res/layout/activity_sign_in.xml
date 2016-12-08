@@ -5,25 +5,27 @@
     android:layout_height="match_parent"
     android:id="@+id/coordinator_layout">
 
-    <include layout="@layout/appbar_layout" />
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerInParent="true"/>
+
         <Button
+            android:layout_marginTop="8dp"
+            style="?android:borderlessButtonStyle"
+            android:textColor="@color/authui_inputTextColor"
             android:id="@+id/button_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/icon"
             android:text="@string/sign_in"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/button_sign_in"
-            android:src="@mipmap/ic_launcher"
-            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 

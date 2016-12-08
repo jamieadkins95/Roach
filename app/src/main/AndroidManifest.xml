@@ -22,7 +22,7 @@
             android:theme="@style/Theme.Gwent.NoActionBar">
         </activity>
         <activity android:name=".base.SignInActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar">
+            android:theme="@style/Theme.Gwent.NoActionBar.Full">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

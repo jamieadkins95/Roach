@@ -16,6 +16,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Gwent.NoActionBar.Full">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
     <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
