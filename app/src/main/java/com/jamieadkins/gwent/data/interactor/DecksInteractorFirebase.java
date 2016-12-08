@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.jamieadkins.gwent.data.Card;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
@@ -67,6 +68,16 @@ public class DecksInteractorFirebase implements DecksInteractor {
     public void createNewDeck(String name, String faction) {
         Deck deck = new Deck(name, faction);
         mDecksReference.child(deck.getId()).setValue(deck);
+    }
+
+    @Override
+    public void addCardToDeck(Deck deck, Card card) {
+        mDecksReference.child(deck.getId()).child("cards").child(card.getCardId()).setValue(card);
+    }
+
+    @Override
+    public void removeCardFromDeck(Deck deck, Card card) {
+        mDecksReference.child(deck.getId()).child("cards").child(card.getCardId()).removeValue();
     }
 
     @Override
