@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import com.jamieadkins.gwent.CardListActivityFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.LoggedInActivity;
+import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
@@ -42,7 +43,8 @@ public class MainActivity extends LoggedInActivity {
                         fragmentTransaction.replace(R.id.contentContainer, fragment, "decks");
 
                         // Create the presenter.
-                        mDecksPresenter = new DecksPresenter((DecksContract.View) fragment, getFirebaseUserId());
+                        mDecksPresenter = new DecksPresenter((DecksContract.View) fragment,
+                                new DecksInteractorFirebase());
                         break;
                     case R.id.tab_collection:
                         fragment = new CardListActivityFragment();

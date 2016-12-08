@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
+import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
+import com.jamieadkins.jgaw.Faction;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -14,10 +16,12 @@ public class DecksPresenter implements DecksContract.Presenter {
     private final DecksInteractor mDecksInteractor;
     private final DecksContract.View mDecksView;
 
-    public DecksPresenter(@NonNull DecksContract.View decksView, @NonNull String userId) {
-        mDecksInteractor = new DecksInteractor(this, userId);
-        mDecksView = decksView;
+    public DecksPresenter(@NonNull DecksContract.View decksView,
+                          @NonNull DecksInteractor decksInteractor) {
+        mDecksInteractor = decksInteractor;
+        mDecksInteractor.setPresenter(this);
 
+        mDecksView = decksView;
         mDecksView.setPresenter(this);
     }
     @Override
@@ -28,12 +32,12 @@ public class DecksPresenter implements DecksContract.Presenter {
 
     @Override
     public void createNewDeck() {
-        mDecksInteractor.createNewDeck();
+        mDecksInteractor.createNewDeck(Faction.SKELLIGE, Faction.SKELLIGE);
     }
 
     @Override
     public void start() {
-        mDecksInteractor.requestDecks();
+        mDecksInteractor.requestData();
         mDecksView.setLoadingIndicator(true);
     }
 
