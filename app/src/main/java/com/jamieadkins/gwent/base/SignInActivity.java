@@ -69,6 +69,7 @@ public class SignInActivity extends AppCompatActivity {
         } else {
             ArrayList<AuthUI.IdpConfig> providers = new ArrayList<>();
             providers.add(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
+            providers.add(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build());
             startActivityForResult(
                     // Get an instance of AuthUI based on the default app
                     AuthUI.getInstance()
