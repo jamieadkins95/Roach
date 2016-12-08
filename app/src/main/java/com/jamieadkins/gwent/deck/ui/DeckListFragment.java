@@ -28,7 +28,7 @@ public class DeckListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_deck_list, container, false);
 
         mCardListView = (RecyclerView) rootView.findViewById(R.id.results);
         setupRecyclerView(mCardListView);
