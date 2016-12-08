@@ -11,6 +11,9 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Deals with firebase.
  */
@@ -19,12 +22,13 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private DecksContract.Presenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mDecksReference;
-    private final DatabaseReference mDeckDetailsReference;
+
+    private final String databasePath;
 
     public DecksInteractorFirebase() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDecksReference = mDatabase.getReference(userId + "/decks");
-        mDeckDetailsReference = mDatabase.getReference(userId + "/deck-details");
+        databasePath = userId + "/decks/";
+        mDecksReference = mDatabase.getReference(databasePath);
     }
 
     @Override
@@ -66,8 +70,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void createNewDeck(String name, String faction) {
-        Deck deck = new Deck(name, faction);
-        mDecksReference.child(deck.getId()).setValue(deck);
+        String key = mDecksReference.push().getKey();
+        Deck deck = new Deck(key, name, faction);
+        Map<String, Object> deckValues = deck.toMap();
+
+        Map<String, Object> firebaseUpdates = new HashMap<>();
+        firebaseUpdates.put(key, deckValues);
+
+        mDecksReference.updateChildren(firebaseUpdates);
     }
 
     @Override
