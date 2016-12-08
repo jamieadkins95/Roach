@@ -1,4 +1,4 @@
-package com.jamieadkins.jgaw;
+package com.jamieadkins.gwent.data;
 
 /**
  * Contains all of the possible factions.

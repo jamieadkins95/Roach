@@ -2,10 +2,8 @@ package com.jamieadkins.gwent.data;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.jamieadkins.jgaw.Faction;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
