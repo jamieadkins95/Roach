@@ -1,12 +1,10 @@
 package com.jamieadkins.gwent.model;
 
-import com.orm.SugarRecord;
-
 /**
  * Created by jamiea on 07/12/16.
  */
 
-public class Card extends SugarRecord {
+public class Card {
     private String cardId;
 
     public Card() {

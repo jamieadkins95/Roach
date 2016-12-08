@@ -1,12 +1,11 @@
 package com.jamieadkins.gwent.model;
 
-import com.orm.SugarRecord;
 
 /**
  * Class that models what a deck is.
  */
 
-public class DeckCard extends SugarRecord {
+public class DeckCard {
     private Deck deck;
     private Card card;
 

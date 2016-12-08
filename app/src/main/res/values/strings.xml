@@ -7,4 +7,8 @@
     <string name="news">News</string>
     <string name="details">Details</string>
     <string name="out_of_date">Card Database is out of date!</string>
+    <string name="sign_in_cancelled">Sign in cancelled!</string>
+    <string name="no_internet_connection">No internet connection :(</string>
+    <string name="sign_in_failed">Sign in failed :(</string>
+    <string name="sign_out">Sign out</string>
 </resources>

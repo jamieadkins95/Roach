@@ -36,14 +36,19 @@ dependencies {
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
 
-    // ORM
-    compile 'com.github.satyan:sugar:1.4'
+    // Firebase
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.firebaseui:firebase-ui-auth:1.0.1'
 
     // Testing.
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.google.gms.google-services'
