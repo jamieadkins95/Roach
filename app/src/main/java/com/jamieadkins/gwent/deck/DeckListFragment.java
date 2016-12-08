@@ -81,6 +81,11 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
     }
 
     @Override
+    public void removeDeck(String removedDeckId) {
+        mViewAdapter.removeDeck(removedDeckId);
+    }
+
+    @Override
     public void setPresenter(DecksContract.Presenter presenter) {
         mDecksPresenter = presenter;
     }

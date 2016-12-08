@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.data;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +37,7 @@ public class DecksInteractor {
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            mPresenter.onDeckRemoved(dataSnapshot.getValue(Deck.class).getId());
         }
 
         @Override
@@ -54,7 +56,8 @@ public class DecksInteractor {
     }
 
     public void createNewDeck() {
-        mDecksReference.child(String.valueOf(System.currentTimeMillis())).setValue(new Deck(Faction.SKELLIGE));
+        Deck deck = new Deck(Faction.SKELLIGE);
+        mDecksReference.child(deck.getId()).setValue(deck);
     }
 
     public void stopData() {

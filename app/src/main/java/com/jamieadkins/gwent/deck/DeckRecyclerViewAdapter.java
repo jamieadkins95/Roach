@@ -50,6 +50,18 @@ public class DeckRecyclerViewAdapter extends RecyclerView.Adapter<DeckViewHolder
         notifyDataSetChanged();
     }
 
+    public void removeDeck(String removedDeckId) {
+        Deck deckToRemove = null;
+        for (Deck deck : mDecks) {
+            if (deck.getId().equals(removedDeckId)) {
+                deckToRemove = deck;
+            }
+        }
+
+        mDecks.remove(deckToRemove);
+        notifyDataSetChanged();
+    }
+
     public void clear() {
         mDecks.clear();
         notifyDataSetChanged();

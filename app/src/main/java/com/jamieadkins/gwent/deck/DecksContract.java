@@ -14,10 +14,14 @@ public interface DecksContract {
         void setLoadingIndicator(boolean active);
 
         void showDeck(Deck deck);
+
+        void removeDeck(String removedDeckId);
     }
 
     interface Presenter extends BasePresenter {
         void sendDeckToView(Deck deck);
+
+        void onDeckRemoved(String removedDeckId);
 
         void stop();
 

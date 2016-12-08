@@ -39,4 +39,9 @@ public class DecksPresenter implements DecksContract.Presenter {
     public void stop() {
         mDecksInteractor.stopData();
     }
+
+    @Override
+    public void onDeckRemoved(String removedDeckId) {
+        mDecksView.removeDeck(removedDeckId);
+    }
 }
