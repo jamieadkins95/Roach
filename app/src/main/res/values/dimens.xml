@@ -8,4 +8,5 @@
     <dimen name="card_margin_horizontal">-3dp</dimen>
     <!-- Can apply normal margin here. -->
     <dimen name="card_margin_vertical">8dp</dimen>
+    <dimen name="bb_padding">52dp</dimen>
 </resources>
