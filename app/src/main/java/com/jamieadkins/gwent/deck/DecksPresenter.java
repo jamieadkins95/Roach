@@ -23,6 +23,7 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void sendDeckToView(Deck deck) {
         mDecksView.showDeck(deck);
+        mDecksView.setLoadingIndicator(false);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void start() {
         mDecksInteractor.requestDecks();
+        mDecksView.setLoadingIndicator(true);
     }
 
     @Override

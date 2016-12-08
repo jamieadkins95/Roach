@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.jamieadkins.gwent.data.Deck;
 public class DeckListFragment extends Fragment implements DecksContract.View {
     private DecksContract.Presenter mDecksPresenter;
     private RecyclerView mDeckListView;
+    private SwipeRefreshLayout mRefreshContainer;
     private DeckRecyclerViewAdapter mViewAdapter;
 
     public DeckListFragment() {
@@ -49,6 +51,9 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
             }
         });
 
+        mRefreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshContainer);
+        mRefreshContainer.setColorSchemeResources(R.color.gwentAccent);
+
         return rootView;
     }
 
@@ -72,7 +77,10 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
 
     @Override
     public void setLoadingIndicator(boolean active) {
+        mRefreshContainer.setRefreshing(active);
 
+        // We don't want user's trying to refresh, so only enable the view when we are loading.
+        mRefreshContainer.setEnabled(active);
     }
 
     @Override
