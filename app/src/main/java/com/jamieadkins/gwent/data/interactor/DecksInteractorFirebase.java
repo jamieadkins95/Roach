@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
-import com.jamieadkins.gwent.data.Card;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
