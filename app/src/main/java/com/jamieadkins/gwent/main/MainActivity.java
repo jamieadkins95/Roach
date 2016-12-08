@@ -48,10 +48,6 @@ public class MainActivity extends LoggedInActivity {
                         fragment = new CardListActivityFragment();
                         fragmentTransaction.replace(R.id.contentContainer, fragment, "collection");
                         break;
-                    case R.id.tab_news:
-                        fragment = new CardListActivityFragment();
-                        fragmentTransaction.replace(R.id.contentContainer, fragment, "news");
-                        break;
                 }
 
                 fragmentTransaction.commit();

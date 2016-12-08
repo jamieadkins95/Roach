@@ -10,9 +10,4 @@
         icon="@drawable/ic_cards_outline"
         title="@string/collection"
         barColorWhenSelected="@color/colorPrimary"/>
-    <tab
-        id="@+id/tab_news"
-        icon="@drawable/ic_new_releases"
-        title="@string/news"
-        barColorWhenSelected="@color/colorPrimary"/>
 </tabs>
