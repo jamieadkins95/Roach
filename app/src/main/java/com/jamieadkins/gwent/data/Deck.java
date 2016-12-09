@@ -11,9 +11,10 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Deck {
+    private boolean openToPublic;
     private String id;
-    private String name = "Some Deck";
-    private String faction = Faction.SKELLIGE;
+    private String name;
+    private String faction;
     private Map<String, Integer> cards;
 
     public Deck() {
@@ -24,6 +25,7 @@ public class Deck {
         this.id = id;
         this.name = name;
         this.faction = faction;
+        this.openToPublic = false;
     }
 
     public Deck(String id, String faction) {
@@ -57,6 +59,7 @@ public class Deck {
         result.put("name", name);
         result.put("faction", faction);
         result.put("cards", cards);
+        result.put("openToPublic", openToPublic);
 
         return result;
     }
