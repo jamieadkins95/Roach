@@ -12,11 +12,6 @@
         android:theme="@style/Theme.Gwent">
 
         <activity
-            android:name=".CardListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Gwent.NoActionBar">
-        </activity>
-        <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Gwent.NoActionBar">
