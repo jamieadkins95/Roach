@@ -1,50 +1,83 @@
 package com.jamieadkins.gwent.base;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ui.ResultCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.main.MainActivity;
+import com.jamieadkins.jgaw.GwentApiClient;
 
 import java.util.ArrayList;
 
-public class SignInActivity extends AppCompatActivity {
-    private static final int RC_SIGN_IN = 3294;
+public abstract class AuthenticationActivity extends BaseActivity {
+    private static final int REQUEST_CODE_SIGN_IN = 3294;
+    private static final int REQUEST_CODE_PLAY_SERVICES = 3295;
+    private String mUserId;
+    private boolean mSignedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
-        Button signIn = (Button) findViewById(R.id.button_sign_in);
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isPlayServicesAvailable()) {
-                    startSignInProcess();
-                }
-            }
-        });
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        mSignedIn = auth.getCurrentUser() != null;
+        if (mSignedIn) {
+            mUserId = auth.getCurrentUser().getUid();
+        }
     }
 
-    private boolean isPlayServicesAvailable() {
+    public String getFirebaseUserId() {
+        return mUserId;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sign_out:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // User is now signed out.
+                                onSignedOut();
+                            }
+                        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public boolean isAuthenticated() {
+        return mSignedIn;
+    }
+
+    protected void onSignedIn() {
+        mSignedIn = true;
+    }
+
+    protected void onSignedOut() {
+        mSignedIn = false;
+    }
+
+    public boolean isPlayServicesAvailable() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int result = googleAPI.isGooglePlayServicesAvailable(this);
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(this, result,
-                        RC_SIGN_IN + 1).show();
+                        REQUEST_CODE_PLAY_SERVICES).show();
             }
 
             return false;
@@ -53,19 +86,10 @@ public class SignInActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void startSignInProcess() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            onSignedIn();
-        }
-    }
-
-    private void startSignInProcess() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            onSignedIn();
+            showSnackbar(R.string.sign_in_successful);
         } else {
             ArrayList<AuthUI.IdpConfig> providers = new ArrayList<>();
             providers.add(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
@@ -78,16 +102,16 @@ public class SignInActivity extends AppCompatActivity {
                             .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .setTheme(R.style.Theme_Gwent)
                             .build(),
-                    RC_SIGN_IN);
+                    REQUEST_CODE_SIGN_IN);
         }
     }
 
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // Successful sign in!
+                showSnackbar(R.string.sign_in_successful);
                 onSignedIn();
                 return;
             }
@@ -109,16 +133,20 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    private void onSignedIn() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+    public void showSnackbar(int stringId) {
+        showSnackbar(stringId, 0, null);
     }
 
-    private void showSnackbar(int stringId) {
-        Snackbar.make(
-                findViewById(R.id.coordinator_layout),
-                getString(stringId),
-                Snackbar.LENGTH_LONG)
-                .show();
+    public void showSnackbar(int stringId, int actionStringId, View.OnClickListener action) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.coordinator_layout_for_snackbar),
+                stringId,
+                Snackbar.LENGTH_LONG);
+
+        if (action != null) {
+            snackbar.setAction(actionStringId, action);
+        }
+
+        snackbar.show();
     }
 }
