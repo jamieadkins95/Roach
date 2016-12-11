@@ -2,7 +2,7 @@
 <resources>
     <color name="gwentGreen">#009688</color>
     <color name="gwentGreenDark">#00796B</color>
-    <color name="gwentAccent">#FF5252</color>
+    <color name="gwentAccent">#FFC107</color>
     <color name="gwentGreenLight">#B2DFDB</color>
 
     <color name="textPrimary">#212121</color>
