@@ -31,6 +31,13 @@
             app:bb_activeTabColor="@color/white"
             app:bb_tabXmlResource="@xml/bottombar_tabs_main" />
 
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout_for_snackbar"
+            android:layout_marginBottom="@dimen/snackbar_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottomBar" />
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
