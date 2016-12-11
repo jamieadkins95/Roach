@@ -12,6 +12,12 @@
         barColorWhenSelected="@color/gwentGreen"/>
 
     <tab
+        id="@+id/tab_card_db"
+        icon="@drawable/ic_database"
+        title="@string/card_database"
+        barColorWhenSelected="@color/gwentGreen"/>
+
+    <tab
         id="@+id/tab_public_decks"
         icon="@drawable/ic_public"
         title="@string/public_decks"

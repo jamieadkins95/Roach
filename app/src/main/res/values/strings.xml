@@ -5,6 +5,7 @@
     <string name="decks">My Decks</string>
     <string name="collection">My Collection</string>
     <string name="public_decks">Public Decks</string>
+    <string name="card_database">Card Database</string>
     <string name="news">News</string>
     <string name="details">Details</string>
     <string name="out_of_date">Card Database is out of date!</string>
