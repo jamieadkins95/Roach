@@ -44,6 +44,9 @@ public class MainActivity extends AuthenticationActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Launch Card DB fragment.
+        launchFragment(new ComingSoonFragment());
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
@@ -51,8 +54,6 @@ public class MainActivity extends AuthenticationActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         Fragment fragment;
                         switch (item.getItemId()) {
                             case R.id.tab_decks:
@@ -70,7 +71,6 @@ public class MainActivity extends AuthenticationActivity {
 
                                 // Else, if authenticated.
                                 fragment = new DeckListFragment();
-                                fragmentTransaction.replace(R.id.contentContainer, fragment, "decks");
 
                                 // Create the presenter.
                                 mDecksPresenter = new DecksPresenter((DecksContract.View) fragment,
@@ -91,23 +91,25 @@ public class MainActivity extends AuthenticationActivity {
 
                                 // Else, if authenticated.
                                 fragment = new ComingSoonFragment();
-                                fragmentTransaction.replace(R.id.contentContainer, fragment, "collection");
                                 break;
-                            case R.id.tab_public_decks:
+                            default:
                                 fragment = new ComingSoonFragment();
-                                fragmentTransaction.replace(R.id.contentContainer, fragment, "public");
-                                break;
-                            case R.id.tab_card_db:
-                                fragment = new ComingSoonFragment();
-                                fragmentTransaction.replace(R.id.contentContainer, fragment, "cards");
                                 break;
                         }
 
-                        fragmentTransaction.commit();
+                        launchFragment(fragment);
                         mCurrentTab = item.getItemId();
                         return true;
                     }
                 });
+    }
+
+    private void launchFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(
+                R.id.contentContainer, fragment, fragment.getClass().getSimpleName());
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -121,8 +123,11 @@ public class MainActivity extends AuthenticationActivity {
         super.onSignedOut();
         invalidateOptionsMenu();
 
+        // If we are currently in an activity that requires authentication, switch to another.
         if (mCurrentTab == R.id.tab_collection || mCurrentTab == R.id.tab_decks) {
-            // Switch to card database tab.
+            // Have to recreate activity since there is no way to dynamically trigger the bottom
+            // navigation bar.
+            recreate();
         }
     }
 
