@@ -34,9 +34,6 @@ dependencies {
     // Common Utils.
     compile project(':commonutils')
 
-    // UI.
-    compile 'com.roughike:bottom-bar:2.0.2'
-
     // Gwent API Wrapper.
     compile project(':jgaw')
 

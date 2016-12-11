@@ -21,22 +21,21 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true" />
 
-        <com.roughike.bottombar.BottomBar
-            android:id="@+id/bottomBar"
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bb_height"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:bb_inActiveTabAlpha="0.7"
-            app:bb_inActiveTabColor="@color/white"
-            app:bb_activeTabColor="@color/white"
-            app:bb_tabXmlResource="@xml/bottombar_tabs_main" />
+            app:itemBackground="@color/gwentGreen"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/bottom_navigation_main" />
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout_for_snackbar"
-            android:layout_marginBottom="@dimen/snackbar_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/bottomBar" />
+            android:layout_above="@id/bottom_navigation" />
 
     </RelativeLayout>
 

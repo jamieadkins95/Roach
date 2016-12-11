@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tab_card_db"
+        android:enabled="true"
+        android:icon="@drawable/ic_database"
+        android:title="@string/card_database"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/tab_public_decks"
+        android:enabled="true"
+        android:icon="@drawable/ic_public"
+        android:title="@string/public_decks"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/tab_decks"
+        android:icon="@drawable/ic_cards_filled"
+        android:title="@string/decks"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/tab_collection"
+        android:icon="@drawable/ic_cards_outline"
+        android:title="@string/collection"
+        app:showAsAction="ifRoom" />
+</menu>

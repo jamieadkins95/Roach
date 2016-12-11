@@ -3,9 +3,7 @@ package com.jamieadkins.gwent.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ui.ResultCodes;
@@ -69,6 +67,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     protected void onSignedOut() {
         mSignedIn = false;
+        showSnackbar(getString(R.string.sign_out_successful));
     }
 
     public boolean isPlayServicesAvailable() {
@@ -89,7 +88,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
     public void startSignInProcess() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            showSnackbar(R.string.sign_in_successful);
+            showSnackbar(getString(R.string.sign_in_successful));
         } else {
             ArrayList<AuthUI.IdpConfig> providers = new ArrayList<>();
             providers.add(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
@@ -111,42 +110,25 @@ public abstract class AuthenticationActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // Successful sign in!
-                showSnackbar(R.string.sign_in_successful);
+                showSnackbar(getString(R.string.sign_in_successful));
                 onSignedIn();
                 return;
             }
 
             // Sign in cancelled.
             if (resultCode == RESULT_CANCELED) {
-                showSnackbar(R.string.sign_in_cancelled);
+                showSnackbar(getString(R.string.sign_in_cancelled));
                 return;
             }
 
             // No network.
             if (resultCode == ResultCodes.RESULT_NO_NETWORK) {
-                showSnackbar(R.string.no_internet_connection);
+                showSnackbar(getString(R.string.no_internet_connection));
                 return;
             }
 
             // User is not signed in. Show generic failed snackbar.
-            showSnackbar(R.string.sign_in_failed);
+            showSnackbar(getString(R.string.sign_in_failed));
         }
-    }
-
-    public void showSnackbar(int stringId) {
-        showSnackbar(stringId, 0, null);
-    }
-
-    public void showSnackbar(int stringId, int actionStringId, View.OnClickListener action) {
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.coordinator_layout_for_snackbar),
-                stringId,
-                Snackbar.LENGTH_LONG);
-
-        if (action != null) {
-            snackbar.setAction(actionStringId, action);
-        }
-
-        snackbar.show();
     }
 }
