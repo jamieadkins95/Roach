@@ -92,6 +92,23 @@ public class MainActivity extends AuthenticationActivity {
                                 // Else, if authenticated.
                                 fragment = new ComingSoonFragment();
                                 break;
+
+                            case R.id.tab_results:
+                                // Stop authenticated only tabs from being selected.
+                                if (!isAuthenticated()) {
+                                    showSnackbar(
+                                            String.format(getString(R.string.sign_in_only),
+                                                    getString(R.string.your_results)),
+                                            getString(R.string.sign_in),
+                                            signInClickListener);
+
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
+                                // Else, if authenticated.
+                                fragment = new ComingSoonFragment();
+                                break;
                             default:
                                 fragment = new ComingSoonFragment();
                                 break;
@@ -124,7 +141,9 @@ public class MainActivity extends AuthenticationActivity {
         invalidateOptionsMenu();
 
         // If we are currently in an activity that requires authentication, switch to another.
-        if (mCurrentTab == R.id.tab_collection || mCurrentTab == R.id.tab_decks) {
+        if (mCurrentTab == R.id.tab_collection ||
+                mCurrentTab == R.id.tab_decks ||
+                mCurrentTab == R.id.tab_results) {
             // Have to recreate activity since there is no way to dynamically trigger the bottom
             // navigation bar.
             recreate();

@@ -20,4 +20,6 @@
     <string name="your_decks">your decks</string>
     <string name="your_collections">your collection</string>
     <string name="search">Search</string>
+    <string name="results">Results Tracker</string>
+    <string name="your_results">your results</string>
 </resources>

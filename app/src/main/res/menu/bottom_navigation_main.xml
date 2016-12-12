@@ -23,4 +23,10 @@
         android:icon="@drawable/ic_cards_outline"
         android:title="@string/collection"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/tab_results"
+        android:icon="@drawable/ic_chart"
+        android:title="@string/results"
+        app:showAsAction="ifRoom" />
 </menu>
