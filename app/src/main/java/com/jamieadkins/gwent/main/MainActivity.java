@@ -29,9 +29,7 @@ public class MainActivity extends AuthenticationActivity {
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (isPlayServicesAvailable()) {
-                startSignInProcess();
-            }
+            startSignInProcess();
         }
     };
 
@@ -154,10 +152,12 @@ public class MainActivity extends AuthenticationActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
+        inflater.inflate(R.menu.main_menu, menu);
+
         if (isAuthenticated()) {
-            inflater.inflate(R.menu.main_menu_signed_in, menu);
+            inflater.inflate(R.menu.signed_in, menu);
         } else {
-            inflater.inflate(R.menu.main_menu_signed_out, menu);
+            inflater.inflate(R.menu.signed_out, menu);
         }
 
         MenuItem myActionMenuItem = menu.findItem( R.id.action_search);

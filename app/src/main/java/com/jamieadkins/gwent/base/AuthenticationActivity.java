@@ -52,6 +52,9 @@ public abstract class AuthenticationActivity extends BaseActivity {
                             }
                         });
                 return true;
+            case R.id.action_sign_in:
+                startSignInProcess();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -86,6 +89,11 @@ public abstract class AuthenticationActivity extends BaseActivity {
     }
 
     public void startSignInProcess() {
+
+        if (!isPlayServicesAvailable()) {
+            return;
+        }
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             showSnackbar(getString(R.string.sign_in_successful));
