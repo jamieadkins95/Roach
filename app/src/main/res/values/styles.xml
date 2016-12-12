@@ -14,21 +14,25 @@
     <style name="Theme.Gwent.Skellige">
         <item name="colorPrimary">@color/skellige</item>
         <item name="colorPrimaryDark">@color/skelligeDark</item>
+        <item name="android:textColor">@color/skellige</item>
     </style>
 
     <style name="Theme.Gwent.Monsters">
         <item name="colorPrimary">@color/monsters</item>
         <item name="colorPrimaryDark">@color/monstersDark</item>
+        <item name="android:textColor">@color/monsters</item>
     </style>
 
     <style name="Theme.Gwent.NorthernRealms">
         <item name="colorPrimary">@color/northernRealms</item>
         <item name="colorPrimaryDark">@color/northernRealmsDark</item>
+        <item name="android:textColor">@color/northernRealms</item>
     </style>
 
     <style name="Theme.Gwent.Scoiatael">
         <item name="colorPrimary">@color/scoiatael</item>
         <item name="colorPrimaryDark">@color/scoiataelDark</item>
+        <item name="android:textColor">@color/scoiatael</item>
     </style>
 
     <style name="Theme.Gwent.NoActionBar">

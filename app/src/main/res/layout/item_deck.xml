@@ -22,26 +22,35 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/deck_name"
-                    android:textColor="@color/textPrimary"
-                    android:text="Triss Merigold"
-                    android:textSize="20sp"/>
+                <LinearLayout
+                    android:id="@+id/deck_name_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/image_faction"
-                    android:src="@drawable/ic_cards_outline"
-                    android:tint="@color/textSecondary"
-                    android:layout_alignParentEnd="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/deck_name"
+                        android:textColor="@color/textPrimary"
+                        android:text="Triss Merigold"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/deck_faction"
+                        android:text="Monster"
+                        android:textColor="@color/monsters"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/deck_values"
                     android:layout_marginTop="16dp"
-                    android:layout_below="@id/deck_name"
+                    android:layout_below="@id/deck_name_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="?android:listDivider"

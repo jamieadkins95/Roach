@@ -22,4 +22,13 @@
     <string name="search">Search</string>
     <string name="results">Results Tracker</string>
     <string name="your_results">results</string>
+    <string name="deck_name">Deck name</string>
+    <string name="create">Create</string>
+    <string name="new_deck">New Deck</string>
+
+
+    <string name="northern_realms">Northern Realms</string>
+    <string name="monsters">Monsters</string>
+    <string name="skellige">Skellige</string>
+    <string name="scoiatel">Scoia\'tel</string>
 </resources>

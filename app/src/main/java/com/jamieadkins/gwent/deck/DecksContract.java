@@ -25,6 +25,6 @@ public interface DecksContract {
 
         void stop();
 
-        void createNewDeck();
+        void createNewDeck(String name, String faction);
     }
 }

@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.deck;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Faction;
 
 /**
  * Holds much more detail about a card.
@@ -14,6 +16,7 @@ import com.jamieadkins.gwent.data.Deck;
 public class DeckViewHolder extends RecyclerView.ViewHolder {
     private final View mView;
     private final TextView mDeckName;
+    private final TextView mDeckFaction;
     private final TextView mDeckMelee;
     private final TextView mDeckRanged;
     private final TextView mDeckSiege;
@@ -26,6 +29,7 @@ public class DeckViewHolder extends RecyclerView.ViewHolder {
         super(view);
         mView = view;
         mDeckName = (TextView) view.findViewById(R.id.deck_name);
+        mDeckFaction = (TextView) view.findViewById(R.id.deck_faction);
         mDeckMelee = (TextView) view.findViewById(R.id.deck_melee);
         mDeckRanged = (TextView) view.findViewById(R.id.deck_range);
         mDeckSiege = (TextView) view.findViewById(R.id.deck_siege);
@@ -37,10 +41,31 @@ public class DeckViewHolder extends RecyclerView.ViewHolder {
         mBoundDeck = deck;
 
         mDeckName.setText(mBoundDeck.getName());
+        mDeckFaction.setText(mBoundDeck.getFactionName(mDeckFaction.getContext()));
         mDeckMelee.setText("40");
         mDeckRanged.setText("24");
         mDeckSiege.setText("23");
         mDeckTotalCards.setText("Total Cards: 27");
         mDeckTotalAttack.setText("Total Attack: 80");
+
+        int color;
+        switch (mBoundDeck.getFaction()) {
+            case Faction.MONSTERS:
+                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.monsters);
+                break;
+            case Faction.NORTHERN_REALMS:
+                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.northernRealms);
+                break;
+            case Faction.SCOIATAEL:
+                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.scoiatael);
+                break;
+            case Faction.SKELLIGE:
+                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.skellige);
+                break;
+            default:
+                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.skellige);
+                break;
+        }
+        mDeckFaction.setTextColor(color);
     }
 }

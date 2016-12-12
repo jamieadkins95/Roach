@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.deck;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,9 @@ import com.jamieadkins.gwent.data.Deck;
  * UI fragment that shows a list of the users decks.
  */
 
-public class DeckListFragment extends Fragment implements DecksContract.View {
+public class DeckListFragment extends Fragment implements DecksContract.View,
+        NewDeckDialog.NewDeckDialogListener {
+    private static final int REQUEST_CODE = 3414;
     private DecksContract.Presenter mDecksPresenter;
     private RecyclerView mDeckListView;
     private SwipeRefreshLayout mRefreshContainer;
@@ -47,7 +50,10 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
         buttonNewDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDecksPresenter.createNewDeck();
+                DialogFragment newFragment = new NewDeckDialog();
+                newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
+                newFragment.show(getActivity().getSupportFragmentManager(),
+                        newFragment.getClass().getSimpleName());
             }
         });
 
@@ -96,5 +102,10 @@ public class DeckListFragment extends Fragment implements DecksContract.View {
     @Override
     public void setPresenter(DecksContract.Presenter presenter) {
         mDecksPresenter = presenter;
+    }
+
+    @Override
+    public void createNewDeck(String name, String faction) {
+        mDecksPresenter.createNewDeck(name, faction);
     }
 }

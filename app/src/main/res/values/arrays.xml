@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="factions_array">
+        <item>@string/northern_realms</item>
+        <item>@string/monsters</item>
+        <item>@string/skellige</item>
+        <item>@string/scoiatel</item>
+    </string-array>
+</resources>
