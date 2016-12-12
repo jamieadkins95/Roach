@@ -91,7 +91,7 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
 
     @Override
     public void showDeck(Deck deck) {
-        mViewAdapter.addDeck(deck);
+        mViewAdapter.addItem(deck);
     }
 
     @Override

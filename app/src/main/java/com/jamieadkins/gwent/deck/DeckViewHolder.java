@@ -1,10 +1,10 @@
 package com.jamieadkins.gwent.deck;
 
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
@@ -13,8 +13,7 @@ import com.jamieadkins.gwent.data.Faction;
  * Holds much more detail about a card.
  */
 
-public class DeckViewHolder extends RecyclerView.ViewHolder {
-    private final View mView;
+public class DeckViewHolder extends BaseViewHolder<Deck> {
     private final TextView mDeckName;
     private final TextView mDeckFaction;
     private final TextView mDeckMelee;
@@ -23,11 +22,8 @@ public class DeckViewHolder extends RecyclerView.ViewHolder {
     private final TextView mDeckTotalCards;
     private final TextView mDeckTotalAttack;
 
-    private Deck mBoundDeck;
-
     public DeckViewHolder(View view) {
         super(view);
-        mView = view;
         mDeckName = (TextView) view.findViewById(R.id.deck_name);
         mDeckFaction = (TextView) view.findViewById(R.id.deck_faction);
         mDeckMelee = (TextView) view.findViewById(R.id.deck_melee);
@@ -37,11 +33,12 @@ public class DeckViewHolder extends RecyclerView.ViewHolder {
         mDeckTotalAttack = (TextView) view.findViewById(R.id.deck_total_attack);
     }
 
-    public void bindDeck(Deck deck) {
-        mBoundDeck = deck;
+    @Override
+    public void bindItem(Deck item) {
+        super.bindItem(item);
 
-        mDeckName.setText(mBoundDeck.getName());
-        mDeckFaction.setText(mBoundDeck.getFactionName(mDeckFaction.getContext()));
+        mDeckName.setText(getBoundItem().getName());
+        mDeckFaction.setText(getBoundItem().getFactionName(mDeckFaction.getContext()));
         mDeckMelee.setText("40");
         mDeckRanged.setText("24");
         mDeckSiege.setText("23");
@@ -49,7 +46,7 @@ public class DeckViewHolder extends RecyclerView.ViewHolder {
         mDeckTotalAttack.setText("Total Attack: 80");
 
         int color;
-        switch (mBoundDeck.getFaction()) {
+        switch (getBoundItem().getFaction()) {
             case Faction.MONSTERS:
                 color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.monsters);
                 break;
