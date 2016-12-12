@@ -14,12 +14,12 @@
     <string name="sign_in_failed">Sign in failed :(</string>
     <string name="sign_out">Sign out</string>
     <string name="coming_soon">Coming Soon!</string>
-    <string name="sign_in_only">Sign in to view %s!</string>
+    <string name="sign_in_only">Sign in to view your %s!</string>
     <string name="sign_in_successful">Sign in successful!</string>
     <string name="sign_out_successful">Sign out successful!</string>
-    <string name="your_decks">your decks</string>
-    <string name="your_collections">your collection</string>
+    <string name="your_decks">decks</string>
+    <string name="your_collections">collection</string>
     <string name="search">Search</string>
     <string name="results">Results Tracker</string>
-    <string name="your_results">your results</string>
+    <string name="your_results">results</string>
 </resources>
