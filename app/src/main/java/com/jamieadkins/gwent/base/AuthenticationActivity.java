@@ -106,6 +106,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setProviders(providers)
+                            .setTosUrl("https://github.com/jamieadkins95/Yennefr/blob/master/TOS.md")
                             .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .setTheme(R.style.Theme_Gwent)
                             .build(),
