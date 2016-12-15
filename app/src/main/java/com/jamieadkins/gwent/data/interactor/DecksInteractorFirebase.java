@@ -30,7 +30,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     public DecksInteractorFirebase() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databasePath = userId + "/decks/";
+        databasePath = "users/" + userId + "/decks/";
         mDecksReference = mDatabase.getReference(databasePath);
     }
 
