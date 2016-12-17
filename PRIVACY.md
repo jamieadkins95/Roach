@@ -22,35 +22,63 @@ Authentication information (such as username and email address) is stored using 
 
 When a user creates content, such as creating a deck, using Yennefr, this data is stored using a Firebase Real-time Database.
 Here is the data model we use:
+
 {"users":
+
   {"unique-user-id-non-personally-identifiable":
+  
     {"decks":
+    
       {"unique-deck-id":
+      
         {"faction":"scoiatael",
+	
           "id":"-KZ-QzT4olx_Su-kvBUK",
+	  
           "name":"me deck",
+	  
           "openToPublic":false,
+	  
           {"cards":
+	  
             "example-card-id": 1,
+	    
             "example-card-id2": 0
+	    
           }
+	  
         }
+	
       }
+      
     }
+    
   }
+  
 }
 
 This data is then protected by the following rules:
+
 {
+
   "rules": {
+  
     "users": {
+    
     	"$uid": {
+	
       	// Only this user can read and write to their own bucket.
-				".write": "auth != null && auth.uid == $uid",
+	
+	".write": "auth != null && auth.uid == $uid",
+	
       	".read": "auth != null && auth.uid == $uid"
+	
     	}
+	
     }
+    
   }
+  
 }
 
 As you can see, Yennefr does not actively store any personally identifying information within its storage of user created content.
