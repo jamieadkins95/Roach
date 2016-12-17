@@ -18,6 +18,43 @@ Yennefr also collects potentially personally-identifying information like email 
 ##Gathering of Personally-Identifying Information
 Certain visitors to the mobile application choose to interact with Yennefr in ways that require Yennefr to gather personally-identifying information. The amount and type of information that Automattic gathers depends on the nature of the interaction. For example, we ask visitors who sign up for an account on Yennefr to provide a username and email address. Those who engage in transactions with Yennefr – by purchasing access to more features, for example – will be redirected to the Google Play Store, where they can continue the transaction there. Yennefr does not store any financial information in relation to any transactions made. Yennefr does not disclose personally-identifying information other than as described below. And visitors can always refuse to supply personally-identifying information, with the caveat that it may prevent them from using certain features.
 
+Authentication information (such as username and email address) is stored using Firebase Authentication. Yennefr does not deal directly with this authentication information and this information is not used when storing data associated with any Yennefr services you use.
+
+When a user creates content, such as creating a deck, using Yennefr, this data is stored using a Firebase Real-time Database.
+Here is the data model we use:
+{"users":
+  {"unique-user-id-non-personally-identifiable":
+    {"decks":
+      {"unique-deck-id":
+        {"faction":"scoiatael",
+          "id":"-KZ-QzT4olx_Su-kvBUK",
+          "name":"me deck",
+          "openToPublic":false,
+          {"cards":
+            "example-card-id": 1,
+            "example-card-id2": 0
+          }
+        }
+      }
+    }
+  }
+}
+
+This data is then protected by the following rules:
+{
+  "rules": {
+    "users": {
+    	"$uid": {
+      	// Only this user can read and write to their own bucket.
+				".write": "auth != null && auth.uid == $uid",
+      	".read": "auth != null && auth.uid == $uid"
+    	}
+    }
+  }
+}
+
+As you can see, Yennefr does not actively store any personally identifying information within its storage of user created content.
+
 ##Aggregated Statistics
 Yennefr may collect statistics about the behavior of visitors to its application. Yennefr may display this information publicly or provide it to others. However, Yennefr does not disclose personally-identifying information other than as described below.
 
