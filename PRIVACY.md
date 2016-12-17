@@ -10,8 +10,8 @@ If you have questions about deleting or correcting your personal data please con
 
 Yennefr for Gwent (“Yennefr") operates the mobile application "Yennefr for Gwent". It is our policy to respect your privacy regarding any information we may collect while operating our websites.
 
-##Website Visitors
-Like most website operators, Yennefr collects non-personally-identifying information of the sort that mobile devices typically make available, such as which Android version you are using. Yennefr’s purpose in collecting non-personally identifying information is to better understand how Yennefr’s visitors use its website. From time to time, Yennefr may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website.
+##Application Visitors
+Like most applications, Yennefr collects non-personally-identifying information of the sort that mobile devices typically make available, such as which Android version you are using. Yennefr’s purpose in collecting non-personally identifying information is to better understand how Yennefr’s visitors use its application. From time to time, Yennefr may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website.
 
 Yennefr also collects potentially personally-identifying information like email addresses and usernames used to sign up for an account with Yennefr. Yennefr only discloses email addresses and usernames under the same circumstances that it uses and discloses personally-identifying information as described below.
 
