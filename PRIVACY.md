@@ -6,88 +6,63 @@ We don’t store personal information on our servers unless required for the on-
 
 Below is our privacy policy which incorporates these goals. This document is based on the [Automattic Privacy Policy](https://automattic.com/privacy/). Changes have been made to make it appropriate for Yennefer. This document is available under the [Creative Commons Sharealike](https://creativecommons.org/licenses/by-sa/4.0/) license, if you wish to use it for your own projects.
 
-If you have questions about deleting or correcting your personal data please contact us.
+If you have questions about deleting or correcting your personal data please contact us at jamieadkins95+gwent@gmail.com.
 
 Yennefr for Gwent (“Yennefr") operates the mobile application "Yennefr for Gwent". It is our policy to respect your privacy regarding any information we may collect while operating our websites.
 
 ##Application Visitors
-Like most applications, Yennefr collects non-personally-identifying information of the sort that mobile devices typically make available, such as which Android version you are using. Yennefr’s purpose in collecting non-personally identifying information is to better understand how Yennefr’s visitors use its application. From time to time, Yennefr may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website.
+Like most applications, Yennefr collects non-personally-identifying information of the sort that mobile devices typically make available, such as which Android version you are using. Yennefr’s purpose in collecting non-personally identifying information is to better understand how Yennefr’s visitors use its application. From time to time, Yennefr may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of the application.
 
 Yennefr also collects potentially personally-identifying information like email addresses and usernames used to sign up for an account with Yennefr. Yennefr only discloses email addresses and usernames under the same circumstances that it uses and discloses personally-identifying information as described below.
 
 ##Gathering of Personally-Identifying Information
-Certain visitors to the mobile application choose to interact with Yennefr in ways that require Yennefr to gather personally-identifying information. The amount and type of information that Automattic gathers depends on the nature of the interaction. For example, we ask visitors who sign up for an account on Yennefr to provide a username and email address. Those who engage in transactions with Yennefr – by purchasing access to more features, for example – will be redirected to the Google Play Store, where they can continue the transaction there. Yennefr does not store any financial information in relation to any transactions made. Yennefr does not disclose personally-identifying information other than as described below. And visitors can always refuse to supply personally-identifying information, with the caveat that it may prevent them from using certain features.
+Certain visitors to the mobile application choose to interact with Yennefr in ways that require Yennefr to gather personally-identifying information. The amount and type of information that Yennefr gathers depends on the nature of the interaction. For example, we ask visitors who sign up for an account on Yennefr to provide an email address. Those who engage in transactions with Yennefr – by purchasing access to more features, for example – will be redirected to the Google Play Store, where they can continue the transaction there. Yennefr does not store any financial information in relation to any transactions made. Yennefr does not disclose personally-identifying information other than as described below. And visitors can always refuse to supply personally-identifying information, with the caveat that it may prevent them from using certain features.
 
-Authentication information (such as username and email address) is stored using Firebase Authentication. Yennefr does not deal directly with this authentication information and this information is not used when storing data associated with any Yennefr services you use.
+Authentication information (such as email address) is stored using Firebase Authentication. Yennefr does not deal directly with this authentication information and this information is not used when storing data associated with any Yennefr services you use.
 
 When a user creates content, such as creating a deck, using Yennefr, this data is stored using a Firebase Real-time Database.
 Here is the data model we use:
-
-{"users":
-
-  {"unique-user-id-non-personally-identifiable":
-  
-    {"decks":
-    
-      {"unique-deck-id":
-      
-        {"faction":"scoiatael",
-	
-          "id":"-KZ-QzT4olx_Su-kvBUK",
-	  
-          "name":"me deck",
-	  
-          "openToPublic":false,
-	  
-          {"cards":
-	  
-            "example-card-id": 1,
-	    
-            "example-card-id2": 0
-	    
-          }
-	  
-        }
-	
-      }
-      
-    }
-    
-  }
-  
-}
-
-This data is then protected by the following rules:
-
+```
 {
-
-  "rules": {
-  
-    "users": {
-    
-    	"$uid": {
-	
-      	// Only this user can read and write to their own bucket.
-	
-	".write": "auth != null && auth.uid == $uid",
-	
-      	".read": "auth != null && auth.uid == $uid"
-	
-    	}
-	
-    }
-    
-  }
-  
+  "users": {
+    "unique-user-id-non-personally-identifiable": {
+      "decks": {
+        "unique-deck-id": {
+	  "faction":"scoiatael",	
+          "id":"-KZ-QzT4olx_Su-kvBUK",	  
+          "name":"me deck",	  
+          "openToPublic":false,	  
+       	  "cards": {
+            "example-card-id": 1,	    
+            "example-card-id2": 0
+	  }
+	}
+      }     
+    }    
+  }  
 }
-
+```
+This data is then protected by the following rules:
+```
+{
+  "rules": {  
+    "users": {    
+    	"$uid": {	
+      	// Only this user can read and write to their own bucket.	
+	".write": "auth != null && auth.uid == $uid",	
+      	".read": "auth != null && auth.uid == $uid"	
+    	}	
+    }    
+  }  
+}
+```
 As you can see, Yennefr does not actively store any personally identifying information within its storage of user created content.
 
 ##Aggregated Statistics
 Yennefr may collect statistics about the behavior of visitors to its application. Yennefr may display this information publicly or provide it to others. However, Yennefr does not disclose personally-identifying information other than as described below.
 
 ##Protection of Certain Personally-Identifying Information
-Yennefr discloses potentially personally-identifying and personally-identifying information only to those of its administrators, that have agreed not to disclose it to others. Some of those administrators may be located outside of your home country; by using Yennefr’s Services, you consent to the transfer of such information to them. Yennefr will not rent or sell potentially personally-identifying and personally-identifying information to anyone. Other than to its administrators, as described above, Yennefr discloses potentially personally-identifying and personally-identifying information only in response to a subpoena, court order or other governmental request, or when Yennefr believes in good faith that disclosure is reasonably necessary to protect the property or rights of Yennefr, third parties or the public at large. If you are a registered user of Yennefr and have supplied your email address, Automattic may occasionally send you an email to tell you about new features, solicit your feedback, or just keep you up to date with what’s going on with Automattic and our products. We primarily use our mobile application to communicate this type of information, so we expect to keep this type of email to a minimum. If you send us a request (for example via a support email or via one of our feedback mechanisms), we reserve the right to publish it in order to help us clarify or respond to your request or to help us support other users. Yennefr takes all measures reasonably necessary to protect against the unauthorized access, use, alteration or destruction of potentially personally-identifying and personally-identifying information.
+Yennefr discloses potentially personally-identifying and personally-identifying information only to those of its administrators, that have agreed not to disclose it to others. Some of those administrators may be located outside of your home country; by using Yennefr’s Services, you consent to the transfer of such information to them. Yennefr will not rent or sell potentially personally-identifying and personally-identifying information to anyone. Other than to its administrators, as described above, Yennefr discloses potentially personally-identifying and personally-identifying information only in response to a subpoena, court order or other governmental request, or when Yennefr believes in good faith that disclosure is reasonably necessary to protect the property or rights of Yennefr, third parties or the public at large. If you are a registered user of Yennefr and have supplied your email address, Yennefr may occasionally send you an email to tell you about new features, solicit your feedback, or just keep you up to date with what’s going on with Yennefr and our products. We primarily use our mobile application to communicate this type of information, so we expect to keep this type of email to a minimum. If you send us a request (for example via a support email or via one of our feedback mechanisms), we reserve the right to publish it in order to help us clarify or respond to your request or to help us support other users. Yennefr takes all measures reasonably necessary to protect against the unauthorized access, use, alteration or destruction of potentially personally-identifying and personally-identifying information.
 
 ##Business Transfers
 If Yennefr, or substantially all of its assets, were acquired, user information would be one of the assets that is transferred or acquired by a third party. You acknowledge that such transfers may occur, and that any acquirer of Yennefr may continue to use your personal information as set forth in this policy.
