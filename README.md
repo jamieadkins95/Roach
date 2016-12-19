@@ -1,3 +1,11 @@
+# Yennefr for Gwent
+
+Android Application that helps you manage your decks and collection, as well as tracking your results.
+
+# Gwent Card Scraper
+
+Scrapes data from gwentdb and stores it in a nice handy json.
+
 # JGAW - Java Gwent API Wrapper
 
 Java Wrapper library for https://gwentapi.com/ 
