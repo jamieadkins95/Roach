@@ -12,7 +12,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
-import com.jamieadkins.gwent.deck.DecksPresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void setPresenter(DecksPresenter presenter) {
+    public void setPresenter(DecksContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
