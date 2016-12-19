@@ -11,33 +11,35 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CardDetails {
-    private String id;
+    private String cardid;
     private String name;
-    private String description;
+    private String info;
     private String faction;
     private String rarity;
-    private String position;
-    private Map<String, Boolean> types;
-    private Map<String, Boolean> loyalty;
+    private Map<String, Boolean> position;
+    private String type;
+    private String loyalty;
     private String group;
-    private int strength;
+    private String image;
+    private String strength;
 
     public CardDetails() {
         // Required empty constructor for Firebase.
     }
 
-    public CardDetails(String id, String name, String description, String faction, String rarity,
-                       String position, String group, int strength, Map<String, Boolean> types,
-                       Map<String, Boolean> loyalty) {
-        this.id = id;
+    public CardDetails(String cardid, String name, String info, String faction, String rarity,
+                       Map<String, Boolean> position, String group, String strength, String type,
+                       String loyalty, String image) {
+        this.cardid = cardid;
         this.name = name;
-        this.description = description;
+        this.info = info;
         this.rarity = rarity;
         this.faction = faction;
         this.position = position;
         this.group = group;
         this.strength = strength;
-        this.types = types;
+        this.type = type;
+        this.image = image;
         this.loyalty = loyalty;
     }
 
@@ -45,31 +47,35 @@ public class CardDetails {
         return name;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     public String getFaction() {
         return faction;
     }
 
-    public String getId() {
-        return id;
+    public String getCardid() {
+        return cardid;
     }
 
-    public String getDescription() {
-        return description;
+    public String getInfo() {
+        return info;
     }
 
     public String getRarity() {
         return rarity;
     }
 
-    public String getPosition() {
+    public Map<String, Boolean> getPosition() {
         return position;
     }
 
-    public Map<String, Boolean> getTypes() {
-        return types;
+    public String getType() {
+        return type;
     }
 
-    public Map<String, Boolean> getLoyalty() {
+    public String getLoyalty() {
         return loyalty;
     }
 
@@ -77,22 +83,23 @@ public class CardDetails {
         return group;
     }
 
-    public int getStrength() {
+    public String getStrength() {
         return strength;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
+        result.put("cardid", cardid);
         result.put("name", name);
         result.put("faction", faction);
-        result.put("description", description);
+        result.put("info", info);
         result.put("rarity", rarity);
         result.put("position", position);
         result.put("group", group);
         result.put("strength", strength);
-        result.put("types", types);
+        result.put("type", type);
+        result.put("image", image);
         result.put("loyalty", loyalty);
 
         return result;

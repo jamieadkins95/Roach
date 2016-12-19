@@ -1,10 +1,10 @@
-package com.jamieadkins.gwent.cardui;
+package com.jamieadkins.gwent.card;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.jgaw.card.CardDetails;
+import com.jamieadkins.gwent.data.CardDetails;
 
 /**
  * Holds much more detail about a card.
@@ -27,13 +27,13 @@ public class LargeCardViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void bindCard(CardDetails card) {
-        super.bindCard(card);
+    public void bindItem(CardDetails card) {
+        super.bindItem(card);
 
-        mCardDescription.setText(getBoundCard().getText());
-        mCardFaction.setText(getBoundCard().getFaction().getName());
-        mCardRarity.setText(getBoundCard().getRarity().getName());
-        mCardLoyalty.setText(getBoundCard().getType().getName());
-        mCardStrength.setText("8");
+        mCardDescription.setText(getBoundItem().getInfo());
+        mCardFaction.setText(getBoundItem().getFaction());
+        mCardRarity.setText(getBoundItem().getRarity());
+        mCardLoyalty.setText(getBoundItem().getLoyalty());
+        mCardStrength.setText(getBoundItem().getStrength());
     }
 }

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.cardui;
+package com.jamieadkins.gwent.card;
 
 import android.view.View;
 

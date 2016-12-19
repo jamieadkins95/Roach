@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
+import com.jamieadkins.gwent.card.CardListFragment;
+import com.jamieadkins.gwent.card.CardsContract;
+import com.jamieadkins.gwent.card.CardsPresenter;
+import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
@@ -24,6 +28,8 @@ import com.jamieadkins.gwent.deck.DeckListFragment;
 public class MainActivity extends AuthenticationActivity {
 
     private DecksPresenter mDecksPresenter;
+    private CardsPresenter mCardsPresenter;
+
     private int mCurrentTab;
 
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
@@ -43,7 +49,10 @@ public class MainActivity extends AuthenticationActivity {
         super.onCreate(savedInstanceState);
 
         // Launch Card DB fragment.
-        launchFragment(new ComingSoonFragment());
+        Fragment startingFragment = new CardListFragment();
+        mCardsPresenter = new CardsPresenter((CardsContract.View) startingFragment,
+                new CardsInteractorFirebase());
+        launchFragment(startingFragment);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -54,6 +63,13 @@ public class MainActivity extends AuthenticationActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment fragment;
                         switch (item.getItemId()) {
+                            case R.id.tab_card_db:
+                                fragment = new CardListFragment();
+
+                                // Create the presenter.
+                                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
+                                        new CardsInteractorFirebase());
+                                break;
                             case R.id.tab_decks:
                                 // Stop authenticated only tabs from being selected.
                                 if (!isAuthenticated()) {
