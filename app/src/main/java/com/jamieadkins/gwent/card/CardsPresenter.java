@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.DecksContract;
 
 import io.reactivex.Observable;
@@ -40,7 +41,7 @@ public class CardsPresenter implements CardsContract.Presenter {
     }
 
     @Override
-    public Observable<CardDetails> getMoreCards() {
+    public Observable<RxDatabaseEvent<CardDetails>> getMoreCards() {
         return mCardsInteractor.getMoreCards();
     }
 }

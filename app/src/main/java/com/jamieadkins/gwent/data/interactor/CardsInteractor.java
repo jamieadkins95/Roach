@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 
 public interface CardsInteractor extends BaseInteractor<CardsContract.Presenter> {
 
-    Observable<CardDetails> getMoreCards();
+    Observable<RxDatabaseEvent<CardDetails>> getMoreCards();
 
     CardDetails getCard(String id);
 }

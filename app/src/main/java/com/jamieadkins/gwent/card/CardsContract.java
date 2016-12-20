@@ -4,6 +4,7 @@ import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
 
@@ -20,6 +21,6 @@ public interface CardsContract {
     interface Presenter extends BasePresenter {
         void stop();
 
-        Observable<CardDetails> getMoreCards();
+        Observable<RxDatabaseEvent<CardDetails>> getMoreCards();
     }
 }

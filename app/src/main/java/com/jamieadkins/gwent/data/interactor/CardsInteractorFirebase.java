@@ -43,13 +43,13 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
-    public Observable<CardDetails> getMoreCards() {
-        return Observable.defer(new Callable<ObservableSource<? extends CardDetails>>() {
+    public Observable<RxDatabaseEvent<CardDetails>> getMoreCards() {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
-            public ObservableSource<? extends CardDetails> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<CardDetails>() {
+            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<CardDetails> emitter) throws Exception {
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
                         if (currentStartAtIndex == START_POINTS.length - 1) {
                             emitter.onComplete();
                             return;
@@ -66,12 +66,14 @@ public class CardsInteractorFirebase implements CardsInteractor {
                         ValueEventListener cardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                int count = 0;
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
-                                    emitter.onNext(cardSnapshot.getValue(CardDetails.class));
-                                    count++;
+                                    emitter.onNext(
+                                            new RxDatabaseEvent<CardDetails>(
+                                                    cardSnapshot.getKey(),
+                                                    cardSnapshot.getValue(CardDetails.class),
+                                                    RxDatabaseEvent.EventType.ADDED
+                                    ));
                                 }
-                                Log.d("JAMIEA", count + "");
 
                                 emitter.onComplete();
                             }
