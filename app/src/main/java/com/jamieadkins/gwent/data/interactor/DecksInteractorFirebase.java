@@ -60,6 +60,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                mPresenter.onLoadingComplete();
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
