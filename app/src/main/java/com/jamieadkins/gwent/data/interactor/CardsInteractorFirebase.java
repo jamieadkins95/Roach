@@ -43,6 +43,11 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
+    public void resetMorePagesCounter() {
+        currentStartAtIndex = 0;
+    }
+
+    @Override
     public Observable<RxDatabaseEvent<CardDetails>> getMoreCards() {
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override

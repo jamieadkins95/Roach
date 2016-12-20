@@ -37,7 +37,7 @@ public class CardsPresenter implements CardsContract.Presenter {
 
     @Override
     public void stop() {
-
+        mCardsInteractor.resetMorePagesCounter();
     }
 
     @Override
