@@ -9,6 +9,7 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.DecksContract;
+import com.twitter.sdk.android.core.models.Card;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -40,18 +41,12 @@ public class CardsPresenter implements CardsContract.Presenter {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<CardDetails>> search(String query) {
-        mCardsInteractor.resetMorePagesCounter();
-        return mCardsInteractor.search(query);
-    }
-
-    @Override
     public void stop() {
-        mCardsInteractor.resetMorePagesCounter();
+
     }
 
     @Override
-    public Observable<RxDatabaseEvent<CardDetails>> getMoreCards() {
-        return mCardsInteractor.getMoreCards();
+    public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter filter) {
+        return mCardsInteractor.getCards(filter);
     }
 }

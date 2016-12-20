@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
@@ -23,7 +24,6 @@ public abstract class BaseFragment<T> extends Fragment {
     private SwipeRefreshLayout mRefreshContainer;
     private BaseRecyclerViewAdapter<T> mViewAdapter;
     private boolean mLoading = false;
-    private boolean mLoadMore = true;
 
     private Observer<RxDatabaseEvent<T>> mObserver = new Observer<RxDatabaseEvent<T>>() {
 
@@ -55,10 +55,6 @@ public abstract class BaseFragment<T> extends Fragment {
         }
     };
 
-    public void setLoadMore(boolean loadMore) {
-        mLoadMore = loadMore;
-    }
-
     public void setupViews(View rootView) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         setupRecyclerView(mRecyclerView);
@@ -72,20 +68,6 @@ public abstract class BaseFragment<T> extends Fragment {
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(mViewAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int totalItemCount = linearLayoutManager.getItemCount();
-                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-
-                if (!mLoading && mLoadMore &&
-                        totalItemCount <= (lastVisibleItem + VISIBLE_THRESHHOLD)) {
-                    onLoadData();
-                }
-            }
-        });
     }
 
     @Override

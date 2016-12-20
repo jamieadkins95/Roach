@@ -11,35 +11,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.card.CardsPresenter;
-import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
 
-import java.util.ArrayList;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AuthenticationActivity {
 
     private DecksPresenter mDecksPresenter;
     private CardsContract.View mCardsView;
     private CardsPresenter mCardsPresenter;
+    private CardFilter mCardFilter;
 
     private int mCurrentTab;
 
@@ -65,6 +58,7 @@ public class MainActivity extends AuthenticationActivity {
         launchFragment(startingFragment);
         mCardsView = startingFragment;
         mCurrentTab = R.id.tab_card_db;
+        mCardFilter = new CardFilter();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -239,42 +233,21 @@ public class MainActivity extends AuthenticationActivity {
                 public boolean onQueryTextChange(String query) {
                     if (query.equals("")) {
                         // Don't search for everything!
+                        mCardFilter.setSearchQuery(null);
                         return false;
                     }
 
-                    final ArrayList<CardDetails> searchResults = new ArrayList<CardDetails>();
-                    mCardsPresenter.search(query)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<RxDatabaseEvent<CardDetails>>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
-                                }
-
-                                @Override
-                                public void onNext(RxDatabaseEvent<CardDetails> value) {
-                                    searchResults.add(value.getValue());
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onComplete() {
-                                    mCardsView.onSearchResult(searchResults);
-                                }
-                            });
-
-                    // Return false to hide the keyboard.
+                    mCardFilter.setSearchQuery(query);
+                    mCardsView.onCardFilterUpdated();
                     return false;
                 }
             });
+
             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 @Override
                 public boolean onClose() {
-                    mCardsView.onSearchClosed();
+                    mCardFilter.setSearchQuery(null);
+                    mCardsView.onCardFilterUpdated();
                     return false;
                 }
             });
@@ -289,5 +262,9 @@ public class MainActivity extends AuthenticationActivity {
         }
 
         return true;
+    }
+
+    public CardFilter getCardFilter() {
+        return mCardFilter;
     }
 }

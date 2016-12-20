@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 
@@ -27,9 +28,6 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mCardsReference;
 
-    private static final String[] START_POINTS = new String[] {"A", "E", "M", "S", "ZZ"};
-    private int currentStartAtIndex = 0;
-
     private final String databasePath;
 
     public CardsInteractorFirebase() {
@@ -43,83 +41,40 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
-    public void resetMorePagesCounter() {
-        currentStartAtIndex = 0;
-    }
-
-    @Override
-    public Observable<RxDatabaseEvent<CardDetails>> getMoreCards() {
+    public Observable<RxDatabaseEvent<CardDetails>> getCards(final CardFilter filter) {
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
             public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        if (currentStartAtIndex == START_POINTS.length - 1) {
-                            emitter.onComplete();
-                            return;
+                        Query cardsQuery = mCardsReference.orderByChild("name");
+
+                        if (filter.getSearchQuery() != null) {
+                            cardsQuery = cardsQuery.
+                                    startAt(filter.getSearchQuery())
+                                    // No 'contains' query so have to fudge it.
+                                    .endAt(filter.getSearchQuery() + "zzzz");
                         }
 
-                        String startAt = START_POINTS[currentStartAtIndex];
-                        String endAt = START_POINTS[currentStartAtIndex + 1];
-                        currentStartAtIndex++;
-
-                        Query cardsQuery = mCardsReference.orderByChild("name")
-                                .startAt(startAt)
-                                .endAt(endAt);
-
                         ValueEventListener cardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
-                                    emitter.onNext(
-                                            new RxDatabaseEvent<CardDetails>(
-                                                    cardSnapshot.getKey(),
-                                                    cardSnapshot.getValue(CardDetails.class),
-                                                    RxDatabaseEvent.EventType.ADDED
-                                            ));
-                                }
+                                    CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
-                                emitter.onComplete();
-                            }
+                                    // Only add card if the card meets all the filters.
+                                    if (filter.getFactions().get(cardDetails.getFaction()) &&
+                                            filter.getRarities().get(cardDetails.getRarity()) &&
+                                            filter.getTypes().get(cardDetails.getType())) {
+                                        emitter.onNext(
+                                                new RxDatabaseEvent<CardDetails>(
+                                                        cardSnapshot.getKey(),
+                                                        cardDetails,
+                                                        RxDatabaseEvent.EventType.ADDED
+                                                ));
+                                    }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        };
-
-                        cardsQuery.addListenerForSingleValueEvent(cardListener);
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public Observable<RxDatabaseEvent<CardDetails>> search(final String query) {
-        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
-            @Override
-            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        // Sort alphabetically the cards
-                        Query cardsQuery = mCardsReference.orderByChild("name")
-                                .startAt(query)
-                                // There is no 'contains' query, so we have to fudge it like this.
-                                .endAt(query + "zzzz");
-
-                        ValueEventListener cardListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
-                                    emitter.onNext(
-                                            new RxDatabaseEvent<CardDetails>(
-                                                    cardSnapshot.getKey(),
-                                                    cardSnapshot.getValue(CardDetails.class),
-                                                    RxDatabaseEvent.EventType.ADDED
-                                            ));
                                 }
 
                                 emitter.onComplete();

@@ -18,16 +18,12 @@ public interface CardsContract {
 
         void setLoadingIndicator(boolean active);
 
-        void onSearchResult(ArrayList<CardDetails> searchResults);
-
-        void onSearchClosed();
+        void onCardFilterUpdated();
     }
 
     interface Presenter extends BasePresenter {
         void stop();
 
-        Observable<RxDatabaseEvent<CardDetails>> getMoreCards();
-
-        Observable<RxDatabaseEvent<CardDetails>> search(String query);
+        Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter);
     }
 }

@@ -31,7 +31,6 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
-        setLoadMore(false);
     }
 
     @Override

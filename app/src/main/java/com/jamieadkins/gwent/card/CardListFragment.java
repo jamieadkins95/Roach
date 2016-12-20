@@ -2,10 +2,6 @@ package com.jamieadkins.gwent.card;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +9,9 @@ import android.view.ViewGroup;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.main.MainActivity;
 
-import java.util.ArrayList;
-
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -62,7 +54,8 @@ public class CardListFragment extends BaseFragment<CardDetails> implements Cards
     @Override
     public void onLoadData() {
         super.onLoadData();
-        mCardsPresenter.getMoreCards()
+        CardFilter cardFilter = ((MainActivity) getActivity()).getCardFilter();
+        mCardsPresenter.getCards(cardFilter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
@@ -74,19 +67,9 @@ public class CardListFragment extends BaseFragment<CardDetails> implements Cards
     }
 
     @Override
-    public void onSearchClosed() {
-        setLoadMore(true);
+    public void onCardFilterUpdated() {
         getRecyclerViewAdapter().clear();
         onLoadData();
-    }
-
-    @Override
-    public void onSearchResult(ArrayList<CardDetails> searchResults) {
-        setLoadMore(false);
-        getRecyclerViewAdapter().clear();
-        for (CardDetails result : searchResults) {
-            getRecyclerViewAdapter().addItem(result);
-        }
     }
 
     @Override
