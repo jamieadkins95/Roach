@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
@@ -71,11 +72,20 @@ public class MainActivity extends AuthenticationActivity {
                                         new CardsInteractorFirebase());
                                 break;
                             case R.id.tab_decks:
+                                // Hide this feature in release versions for now.
+                                if (!BuildConfig.DEBUG) {
+                                    showSnackbar(String.format(
+                                            getString(R.string.is_coming_soon),
+                                            getString(R.string.my_decks)));
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
                                 // Stop authenticated only tabs from being selected.
                                 if (!isAuthenticated()) {
                                     showSnackbar(
-                                            String.format(getString(R.string.sign_in_only),
-                                                    getString(R.string.your_decks)),
+                                            String.format(getString(R.string.sign_in_to_view),
+                                                    getString(R.string.decks)),
                                             getString(R.string.sign_in),
                                             signInClickListener);
 
@@ -91,11 +101,20 @@ public class MainActivity extends AuthenticationActivity {
                                         new DecksInteractorFirebase());
                                 break;
                             case R.id.tab_collection:
+                                // Hide this feature in release versions for now.
+                                if (!BuildConfig.DEBUG) {
+                                    showSnackbar(String.format(
+                                            getString(R.string.is_coming_soon),
+                                            getString(R.string.my_collection)));
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
                                 // Stop authenticated only tabs from being selected.
                                 if (!isAuthenticated()) {
                                     showSnackbar(
-                                            String.format(getString(R.string.sign_in_only),
-                                                    getString(R.string.your_collections)),
+                                            String.format(getString(R.string.sign_in_to_view),
+                                                    getString(R.string.collection)),
                                             getString(R.string.sign_in),
                                             signInClickListener);
 
@@ -108,10 +127,19 @@ public class MainActivity extends AuthenticationActivity {
                                 break;
 
                             case R.id.tab_results:
+                                // Hide this feature in release versions for now.
+                                if (!BuildConfig.DEBUG) {
+                                    showSnackbar(String.format(
+                                            getString(R.string.is_coming_soon),
+                                            getString(R.string.results)));
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
                                 // Stop authenticated only tabs from being selected.
                                 if (!isAuthenticated()) {
                                     showSnackbar(
-                                            String.format(getString(R.string.sign_in_only),
+                                            String.format(getString(R.string.sign_in_to_view),
                                                     getString(R.string.your_results)),
                                             getString(R.string.sign_in),
                                             signInClickListener);
@@ -123,9 +151,22 @@ public class MainActivity extends AuthenticationActivity {
                                 // Else, if authenticated.
                                 fragment = new ComingSoonFragment();
                                 break;
-                            default:
+                            case R.id.tab_public_decks:
+                                // Hide this feature in release versions for now.
+                                if (!BuildConfig.DEBUG) {
+                                    showSnackbar(String.format(
+                                            getString(R.string.are_coming_soon),
+                                            getString(R.string.public_decks)));
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
                                 fragment = new ComingSoonFragment();
                                 break;
+                            default:
+                                showSnackbar(getString(R.string.coming_soon));
+                                // Don't display the item as the selected item.
+                                return false;
                         }
 
                         launchFragment(fragment);
@@ -176,7 +217,7 @@ public class MainActivity extends AuthenticationActivity {
             inflater.inflate(R.menu.signed_out, menu);
         }
 
-        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

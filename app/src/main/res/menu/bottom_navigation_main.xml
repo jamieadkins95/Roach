@@ -16,12 +16,12 @@
     <item
         android:id="@+id/tab_decks"
         android:icon="@drawable/ic_cards_filled"
-        android:title="@string/decks"
+        android:title="@string/my_decks"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/tab_collection"
         android:icon="@drawable/ic_cards_outline"
-        android:title="@string/collection"
+        android:title="@string/my_collection"
         app:showAsAction="ifRoom" />
 
     <item
