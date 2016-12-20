@@ -20,7 +20,7 @@
     "info": "Double the strength of all non-Gold units on a row on your side, then banish.",
     "loyalty": "Loyal",
     "name": "Commander's Horn",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -34,7 +34,7 @@
     "info": "Convert all instances of a non-Gold unit on your side of the battlefield to Gold until removed from the battlefield or the round ends.",
     "loyalty": null,
     "name": "Promote",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -62,7 +62,7 @@
     "info": "Choose a Bronze unit on your side of the battlefield. Spawn an exact copy on the same row.",
     "loyalty": null,
     "name": "Foltest",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -76,7 +76,7 @@
     "info": "Add 3 strength to 3 non-Gold units on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "John Natalis",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -104,7 +104,7 @@
     "info": "Resurrect a non-Gold, non-Permadeath unit and convert it to Gold until removed from the battlefield or the round ends.",
     "loyalty": "Loyal",
     "name": "Shani",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -118,7 +118,7 @@
     "info": "Redraw up to 1 card.",
     "loyalty": "Loyal",
     "name": "Thaler",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -132,7 +132,7 @@
     "info": "Play a Blue Stripes Commando from your deck whenever a Gold card appears on your side.",
     "loyalty": "Loyal",
     "name": "Ves",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -146,7 +146,7 @@
     "info": "Remove 1 strength from all non-Gold units on the opposite row. Gain 1 strength for each.",
     "loyalty": "Loyal",
     "name": "Trololo",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -160,7 +160,7 @@
     "info": "Resurrect a non-Gold, non-Permadeath unit.",
     "loyalty": "Loyal",
     "name": "Nenneke",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -174,7 +174,7 @@
     "info": "Move to a random row on the same side at the start of your turn and add 1 strength to all other non-Gold units on the row.",
     "loyalty": "Loyal",
     "name": "Odrin",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -188,7 +188,7 @@
     "info": "Spawn a base copy of the last non-Gold Special Card played, then banish.",
     "loyalty": null,
     "name": "Nature's Gift",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -202,7 +202,7 @@
     "info": "Spawn an exact copy of this unit on the same row.",
     "loyalty": "Loyal",
     "name": "Poor Infantry",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -216,7 +216,7 @@
     "info": "Choose a Bronze unit on your side of the battlefield. Play an instance of it from your deck.",
     "loyalty": "Loyal",
     "name": "Reaver Scout",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -230,7 +230,7 @@
     "info": "If 3 or more Redanian Elites are on your side of the battlefield, convert them to Gold until removed from the battlefield or the round ends.",
     "loyalty": "Loyal",
     "name": "Redanian Elite",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -244,7 +244,7 @@
     "info": "Add 3 strength to 2 non-Gold units on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "Kaedweni Siege Support",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -258,7 +258,7 @@
     "info": "Add 4 strength to a non-Gold unit on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "Blue Stripes Scout",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -272,7 +272,7 @@
     "info": "Add 2 strength to all your other Blue Stripes Commandos, wherever they are.",
     "loyalty": "Loyal",
     "name": "Blue Stripes Commando",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -286,7 +286,7 @@
     "info": "Resurrect a random non-Gold, non-Permadeath unit.",
     "loyalty": "Loyal",
     "name": "Field Medic",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -300,7 +300,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Dun Banner Light Cavalry",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -314,7 +314,7 @@
     "info": "After 2 turns, convert to Gold until removed from the battlefield or the round ends.",
     "loyalty": "Loyal",
     "name": "Dun Banner Heavy Cavalry",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -328,7 +328,7 @@
     "info": "Destroy the weakest non-Gold unit(s) on the battlefield.",
     "loyalty": null,
     "name": "Epidemic",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -342,7 +342,7 @@
     "info": "Destroy the strongest non-Gold unit(s) on the battlefield.",
     "loyalty": null,
     "name": "Scorch",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -356,7 +356,7 @@
     "info": "Spawn a Frost effect on both Melee rows that sets the strength of all non-Gold units on or appearing there to 1.",
     "loyalty": null,
     "name": "Biting Frost",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -384,7 +384,7 @@
     "info": "Return a non-Relentless unit on your side to your hand and immediately play it again.",
     "loyalty": null,
     "name": "Eithn\u00e9",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -398,7 +398,7 @@
     "info": "Play a Silver card from your deck.",
     "loyalty": null,
     "name": "Brouver Hoog",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -426,7 +426,7 @@
     "info": "Remove 2 strength from all other non-Gold units on the row. Draw a card.",
     "loyalty": "Disloyal",
     "name": "Yaevinn",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -440,7 +440,7 @@
     "info": "Add 3 strength to a non-Gold unit in your hand.",
     "loyalty": "Loyal",
     "name": "Vrihedd Dragoon",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -482,7 +482,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Sheldon Skaggs",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -496,7 +496,7 @@
     "info": "Add 3 strength to all other non-Gold units on the row.",
     "loyalty": "Loyal",
     "name": "Hawker Healer",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -510,7 +510,7 @@
     "info": "Add 1 strength to the weakest non-Gold unit(s) on your side of the battlefield (except self), remove 1 strength from the weakest opposing non-Gold unit(s).",
     "loyalty": "Loyal",
     "name": "Vrihedd Officer",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -524,7 +524,7 @@
     "info": "Ambush: When a revealed non-Gold unit appears on the row, remove 5 strength from all non-Gold units on the row (except self).",
     "loyalty": "Loyal",
     "name": "Dol Blathanna Trapper",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -538,7 +538,7 @@
     "info": "Gain 2 strength for each Dwarf unit on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "Dwarven Mercenary",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -552,7 +552,7 @@
     "info": "Immune to Frost. Add 3 strength to a non-Gold unit on your side of the battlefield. If it's a Dwarf, add {add2} strength instead.",
     "loyalty": "Loyal",
     "name": "Mahakam Guard",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -566,7 +566,7 @@
     "info": "Play a random non-Gold Special Card from your deck.",
     "loyalty": "Loyal",
     "name": "Elven Mercenary",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -580,7 +580,7 @@
     "info": "Spawn a Commando Neophyte on a random row.",
     "loyalty": "Loyal",
     "name": "Vrihedd Vanguard",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -594,7 +594,7 @@
     "info": "Return a Bronze, non-Relentless unit on your side (other than a Blue Mountain Commando) to your hand and immediately play it again.",
     "loyalty": "Loyal",
     "name": "Blue Mountain Commando",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -608,7 +608,7 @@
     "info": "Spawn a Fog effect on both Ranged rows that sets the strength of all non-Gold units on or appearing there to 1.",
     "loyalty": null,
     "name": "Impenetrable Fog",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -622,7 +622,7 @@
     "info": "Play Eredin.",
     "loyalty": null,
     "name": "Eredin",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -636,7 +636,7 @@
     "info": "Spawn a Biting Frost, Impenetrable Fog, Torrential Rain or First Light card.",
     "loyalty": null,
     "name": "Dagon",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -664,7 +664,7 @@
     "info": "Immune to Fog. Spawn a Fog effect and 3 Rabid Wolves.",
     "loyalty": "Loyal",
     "name": "Woodland Spirit",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -678,7 +678,7 @@
     "info": "Immune to Frost. Spawn a Frost effect and 2 Wild Hunt Hounds.",
     "loyalty": "Loyal",
     "name": "Caranthir",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -706,7 +706,7 @@
     "info": "Immune to Frost. Gain 7 strength while on a row affected by Frost.",
     "loyalty": "Loyal",
     "name": "Ice Giant",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -720,7 +720,7 @@
     "info": "Every 2 turns, if possible, banish a random non-Gold Special Card in your graveyard and gain 3 strength.",
     "loyalty": "Loyal",
     "name": "Frightener",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -734,7 +734,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Fiend",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -748,7 +748,7 @@
     "info": "Play all Crone units from your deck.",
     "loyalty": "Loyal",
     "name": "Crone: Whispess",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -762,7 +762,7 @@
     "info": "Play all Crone units from your deck.",
     "loyalty": "Loyal",
     "name": "Crone: Brewess",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -776,7 +776,7 @@
     "info": "Play all Crone units from your deck.",
     "loyalty": "Loyal",
     "name": "Crone: Weavess",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -790,7 +790,7 @@
     "info": "Every 3 turns, banish a random non-Gold unit in your graveyard and absorb its strength.",
     "loyalty": "Loyal",
     "name": "Katakan",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -804,7 +804,7 @@
     "info": "If possible, discard a non-Gold unit, absorb its strength and draw a card.",
     "loyalty": "Loyal",
     "name": "Giant Toad",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -818,7 +818,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Manticore",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -846,7 +846,7 @@
     "info": "Immune to Fog. Play from your deck or graveyard whenever Fog is spawned. Gain 1 strength whenever a Fog effect is applied. Destroy when moved outside of Fog or Fog is removed.",
     "loyalty": "Loyal",
     "name": "Foglet",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -860,7 +860,7 @@
     "info": "Immune to Fog. Gain 1 strength at the start of your turn if on a row affected by Fog.",
     "loyalty": "Loyal",
     "name": "Ancient Foglet",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -874,7 +874,7 @@
     "info": "Remove 4 strength from an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Wyvern",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -888,7 +888,7 @@
     "info": "Move a non-Gold card from your opponent's graveyard to your own.",
     "loyalty": "Loyal",
     "name": "Griffin",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -902,7 +902,7 @@
     "info": "Immune to Frost. Remove 1 strength from an opposing non-Gold unit and gain 2 strength if that unit is destroyed.",
     "loyalty": "Loyal",
     "name": "Wild Hunt Warrior",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -916,7 +916,7 @@
     "info": "Immune to Frost. Play all Wild Hunt Riders from your deck.",
     "loyalty": "Loyal",
     "name": "Wild Hunt Rider",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -930,7 +930,7 @@
     "info": "Spawn a Rain effect on both Siege rows that sets the strength of all non-Gold units on or appearing there to 1.",
     "loyalty": null,
     "name": "Torrential Rain",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -958,7 +958,7 @@
     "info": "Spawn 2 Clan an Craite Warriors.",
     "loyalty": null,
     "name": "Crach an Craite",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -972,7 +972,7 @@
     "info": "Remove 3 strength from all weakened opposing units and 2 strength from all other opposing units.",
     "loyalty": null,
     "name": "Harald the Cripple",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -1028,7 +1028,7 @@
     "info": "Move all non-Gold units on the opposite row one row back. Remove 1 strength from all moved units.",
     "loyalty": "Loyal",
     "name": "Geralt: Aard",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1042,7 +1042,7 @@
     "info": "If possible, discard 2 cards and draw 2 cards.",
     "loyalty": "Loyal",
     "name": "Ermion",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -1056,7 +1056,7 @@
     "info": "Set strength to that of an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Dudu",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -1070,7 +1070,7 @@
     "info": "Play Vesemir and Lambert from your deck.",
     "loyalty": "Loyal",
     "name": "Eskel",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1084,7 +1084,7 @@
     "info": "Resurrect at the start of the round and lose 2 base strength.",
     "loyalty": "Loyal",
     "name": "Olgierd",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1098,7 +1098,7 @@
     "info": "Move a card in your hand to the bottom of your deck. Create in your hand a base copy of another card of the same color randomly chosen from both players' cards (all locations). Banish when destroyed.",
     "loyalty": "Loyal",
     "name": "Johnny",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -1154,7 +1154,7 @@
     "info": "Spawn Frost and Rain effects.",
     "loyalty": null,
     "name": "Merigold's Hailstorm",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -1168,7 +1168,7 @@
     "info": "Remove 2 strength from all non-Gold units on both sides of the battlefield.",
     "loyalty": null,
     "name": "Stammelford's Tremors",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1182,7 +1182,7 @@
     "info": "Reset all units on the battlefield to their base strength.",
     "loyalty": null,
     "name": "Dimeritium Bomb",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1210,7 +1210,7 @@
     "info": "Remove 7 strength from a non-Gold unit.",
     "loyalty": null,
     "name": "Alzur's Thunder",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -1224,7 +1224,7 @@
     "info": "Remove 4 strength from all instances of a non-Gold unit on its side.",
     "loyalty": null,
     "name": "Manticore Venom",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -1238,7 +1238,7 @@
     "info": "Keep a non-Gold unit on the battlefield at the end of this round.",
     "loyalty": null,
     "name": "Adrenaline Rush",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -1252,7 +1252,7 @@
     "info": "Add 8 strength to a non-Gold unit. If it's a Witcher, add {add2} strength instead.",
     "loyalty": null,
     "name": "Swallow Potion",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1266,7 +1266,7 @@
     "info": "Add 4 strength to all instances of a non-Gold unit on its side. If it's a Witcher, add {add2} strength instead.",
     "loyalty": null,
     "name": "Thunderbolt Potion",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1280,7 +1280,7 @@
     "info": "Double the strength of all weakened non-Gold units on your side of the battlefield.",
     "loyalty": null,
     "name": "Warcry",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -1294,7 +1294,7 @@
     "info": "Swap the strength of the strongest and weakest units on the battlefield. Ties are resolved randomly.",
     "loyalty": null,
     "name": "Bekker's Twisted Mirror",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -1322,7 +1322,7 @@
     "info": "Remove 8 strength from any unit.",
     "loyalty": null,
     "name": "Radovid",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -1350,7 +1350,7 @@
     "info": "Convert all units on one of your rows to Gold until removed from the battlefield or the round ends.",
     "loyalty": "Loyal",
     "name": "Henselt",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1392,7 +1392,7 @@
     "info": "Remove 4 strength from an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "S\u00edle de Tansarville",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -1406,7 +1406,7 @@
     "info": "When destroyed, remove 3 strength from all non-Gold units on its side.",
     "loyalty": "Disloyal",
     "name": "Sabrina Glevissig",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -1420,7 +1420,7 @@
     "info": "Draw 1 card face up and 1 card face down. Keep 1, return the other to your deck.",
     "loyalty": "Disloyal",
     "name": "Prince Stennis",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -1448,7 +1448,7 @@
     "info": "Spawn a Ban Ard Adept whenever a Gold card appears on your side.",
     "loyalty": "Loyal",
     "name": "Margarita Laux\u2013Antille",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -1462,7 +1462,7 @@
     "info": "Convert a Gold unit to Silver (or Bronze, if that was its original color).",
     "loyalty": "Loyal",
     "name": "Kaedweni Sergeant",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -1476,7 +1476,7 @@
     "info": "Remove 2 strength from an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Ballista",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -1490,7 +1490,7 @@
     "info": "Remove 1 strength from a random opposing non-Gold unit whenever a Gold card appears on your side.",
     "loyalty": "Loyal",
     "name": "Reinforced Ballista",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -1504,7 +1504,7 @@
     "info": "Remove 2 strength from 2 opposing non-Gold units.",
     "loyalty": "Loyal",
     "name": "Trebuchet",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -1518,7 +1518,7 @@
     "info": "Gain 2 strength whenever a Gold card appears on your side.",
     "loyalty": "Loyal",
     "name": "Reinforced Siege Tower",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -1532,7 +1532,7 @@
     "info": "Add 1 strength to all your other Reaver Hunters, wherever they are. After 2 turns, play a Reaver Hunter from your deck.",
     "loyalty": "Loyal",
     "name": "Reaver Hunter",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -1546,7 +1546,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Redanian Knight",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -1560,7 +1560,7 @@
     "info": "Every 3 turns, remove 2 strength from a random opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Reinforced Trebuchet",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -1574,7 +1574,7 @@
     "info": "Play all instances from your deck of a Bronze unit on your side of the battlefield.",
     "loyalty": null,
     "name": "Reinforcement",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1588,7 +1588,7 @@
     "info": "Set the strength of all non-Gold units on one of your rows to 6.",
     "loyalty": "Loyal",
     "name": "Ge'els",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1630,7 +1630,7 @@
     "info": "Spawn an Arachas whenever a unit on your side absorbs strength.",
     "loyalty": "Loyal",
     "name": "Arachas Behemoth",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -1644,7 +1644,7 @@
     "info": "Immune to Rain. Spawn a Rain effect.",
     "loyalty": "Loyal",
     "name": "Water Hag",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -1658,7 +1658,7 @@
     "info": "Create in your deck 2 base copies of a Bronze unit on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "Nekker Warrior",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -1672,7 +1672,7 @@
     "info": "When removed from the battlefield, spawn 3 Lesser Earth Elementals on the row where this unit was.",
     "loyalty": "Loyal",
     "name": "Earth Elemental",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1686,7 +1686,7 @@
     "info": "Play all Arachasae from your deck.",
     "loyalty": "Loyal",
     "name": "Arachas",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -1700,7 +1700,7 @@
     "info": "While in your hand or deck, gain 1 strength whenever a unit on your side absorbs another's strength. When removed from the battlefield, play a Nekker from your deck.",
     "loyalty": "Loyal",
     "name": "Nekker",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -1714,7 +1714,7 @@
     "info": "Banish a random non-Gold unit in either graveyard and absorb its strength.",
     "loyalty": "Loyal",
     "name": "Ghoul",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -1728,7 +1728,7 @@
     "info": "Remove Weather from its row and reset all weakened non-immune units there to their base strength.",
     "loyalty": "Loyal",
     "name": "Archgriffin",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -1742,7 +1742,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Vran Warrior",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -1756,7 +1756,7 @@
     "info": "Destroy a non-Gold unit on your side and absorb its strength.",
     "loyalty": "Loyal",
     "name": "Ekimmara",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -1770,7 +1770,7 @@
     "info": "Immune to Rain. Move an opposing non-Gold unit to that side's Siege row.",
     "loyalty": "Loyal",
     "name": "Drowner",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -1798,7 +1798,7 @@
     "info": "Give all instances of a non-Gold unit on your side a shield. The shield protects its bearer from one strength-removing effect.",
     "loyalty": null,
     "name": "Quen Sign",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1812,7 +1812,7 @@
     "info": "Spawn a base copy of all Breedable units on your side of the battlefield.",
     "loyalty": null,
     "name": "Monster Nest",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -1826,7 +1826,7 @@
     "info": "Redraw up to 3 cards.",
     "loyalty": null,
     "name": "Francesca",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -1868,7 +1868,7 @@
     "info": "Return the strongest non-Gold, non-Relentless unit (except self) on each side to the owners' hands. Ties are resolved randomly.",
     "loyalty": "Loyal",
     "name": "Milva",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -1882,7 +1882,7 @@
     "info": "Ambush: When the next non-Gold Special Card is played, cancel its effects.",
     "loyalty": "Loyal",
     "name": "Ida Emean",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1896,7 +1896,7 @@
     "info": "Ambush: When the opposing player passes, add 2 strength to all other non-Gold units on the row.",
     "loyalty": "Loyal",
     "name": "Toruviel",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1910,7 +1910,7 @@
     "info": "Ambush: When the round ends, return to the hand of the current owner if that player lost.",
     "loyalty": "Loyal",
     "name": "Ciaran",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1924,7 +1924,7 @@
     "info": "Add 1 strength to all your other Dwarf units, wherever they are.",
     "loyalty": "Loyal",
     "name": "Barclay Els",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -1938,7 +1938,7 @@
     "info": "Remove an amount equal to this unit's strength from an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Braenn",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1952,7 +1952,7 @@
     "info": "Remove 1 strength from a random opposing non-Gold unit whenever a revealed Elf unit appears on your side.",
     "loyalty": "Loyal",
     "name": "Malena",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -1966,7 +1966,7 @@
     "info": "Play immediately from your deck whenever there are 5 or more revealed Elf units on your side.",
     "loyalty": "Loyal",
     "name": "Aelirenn",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -1980,7 +1980,7 @@
     "info": "Keep on the battlefield at the end of this round.",
     "loyalty": "Loyal",
     "name": "Yarpen Zigrin",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2008,7 +2008,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Vrihedd Brigade",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2022,7 +2022,7 @@
     "info": "Remove 3 strength from an opposing non-Gold unit. If it is not destroyed, gain 2 strength.",
     "loyalty": "Loyal",
     "name": "Dwarven Skirmisher",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -2036,7 +2036,7 @@
     "info": "Keep on the battlefield at the end of each round.",
     "loyalty": "Loyal",
     "name": "Mahakam Defender",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2050,7 +2050,7 @@
     "info": "Remove 2 strength from all non-Gold units on the row whenever a Special Card is played.",
     "loyalty": "Loyal",
     "name": "Vrihedd Sappers",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2064,7 +2064,7 @@
     "info": "Remove 5 strength from an opposing non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Dol Blathanna Archer",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2078,7 +2078,7 @@
     "info": "Gain 3 strength whenever you play a Special Card.",
     "loyalty": "Loyal",
     "name": "Hawker Support",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2092,7 +2092,7 @@
     "info": "Gain 4 strength whenever an Ambush is played.",
     "loyalty": "Loyal",
     "name": "Elven Wardancer",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2106,7 +2106,7 @@
     "info": "Ambush: When a revealed non-Gold unit appears on the opposite side, remove 5 strength from it.",
     "loyalty": "Loyal",
     "name": "Fireball Trap",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2120,7 +2120,7 @@
     "info": "Discard 2 cards and add 2 base strength to them. Choose any card in your deck and place it in your hand.",
     "loyalty": null,
     "name": "King Bran",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -2134,7 +2134,7 @@
     "info": "Draw 3 cards. Keep 1 and discard the rest.",
     "loyalty": "Disloyal",
     "name": "Birna Bran",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -2148,7 +2148,7 @@
     "info": "Gain 2 strength at the start of your turn if it's the sole unit on its row.",
     "loyalty": "Loyal",
     "name": "Champion of Champions",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2162,7 +2162,7 @@
     "info": "Remove 2 strength from 3 non-Gold units on your side of the battlefield. Gain 3 strength for each.",
     "loyalty": "Loyal",
     "name": "Gremist",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2176,7 +2176,7 @@
     "info": "Immune to Fog. Remove 2 strength from 3 non-Gold units.",
     "loyalty": "Loyal",
     "name": "Holger Blackhand",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -2190,7 +2190,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Jutta an Dimun",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2204,7 +2204,7 @@
     "info": "Remove 3 strength from this unit, then from the strongest opposing non-Gold unit(s). When removed from the battlefield, spawn Craven Revived on the same row.",
     "loyalty": "Loyal",
     "name": "Skjall",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2218,7 +2218,7 @@
     "info": "If possible, discard 1 card and draw 1 card.",
     "loyalty": "Loyal",
     "name": "Svanrige",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -2232,7 +2232,7 @@
     "info": "Transform into a Raging Bear if weakened but not destroyed.",
     "loyalty": "Loyal",
     "name": "Raging Berserker",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2246,7 +2246,7 @@
     "info": "When moved to the graveyard, transform into a Bear.",
     "loyalty": "Loyal",
     "name": "Berserker marauder",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2260,7 +2260,7 @@
     "info": "Remove 3 strength from a non-Gold unit.",
     "loyalty": "Loyal",
     "name": "Clan Brokvar Hunter",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -2274,7 +2274,7 @@
     "info": "Add 2 strength to all other non-Gold units on the row.",
     "loyalty": "Loyal",
     "name": "Clan Heymaey Skald",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2288,7 +2288,7 @@
     "info": "Immune to Rain.",
     "loyalty": "Loyal",
     "name": "Light Longship",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -2302,7 +2302,7 @@
     "info": "Gain 2 strength whenever another unit on your side is weakened.",
     "loyalty": "Loyal",
     "name": "Clan Tuirseach Axeman",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -2316,7 +2316,7 @@
     "info": "When resurrected, gain 4 base strength.",
     "loyalty": "Loyal",
     "name": "Clan Tuirseach Skirmishers",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2330,7 +2330,7 @@
     "info": "Remove 2 strength from a random opposing non-Gold unit whenever a unit on your side is destroyed or you discard a unit.",
     "loyalty": "Loyal",
     "name": "War Longship",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Siege": true
     },
@@ -2344,7 +2344,7 @@
     "info": "Immune to Rain. Remove 1 strength from 3 non-Gold units.",
     "loyalty": "Loyal",
     "name": "Clan Brokvar Archer",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -2358,7 +2358,7 @@
     "info": "Add 2 to the base strength of a non-Gold unit in your graveyard (can be Permadeath), then resurrect it.",
     "loyalty": null,
     "name": "Restore",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -2372,7 +2372,7 @@
     "info": "Remove 3 strength from all non-Gold units on a row.",
     "loyalty": "Loyal",
     "name": "Lacerate",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2400,7 +2400,7 @@
     "info": "When destroyed, add 3 strength to all opposing non-Gold units.",
     "loyalty": "Disloyal",
     "name": "Iris",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2414,7 +2414,7 @@
     "info": "Play the strongest non-Gold unit from your deck. Ties are resolved randomly.",
     "loyalty": null,
     "name": "Alzur's Double\u2013Cross",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -2428,7 +2428,7 @@
     "info": "Reset any unit on the battlefield to its base strength. If Gold, convert it to Silver (or Bronze, if that was its original color).",
     "loyalty": null,
     "name": "Dimeritium Shackles",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Event": true
     },
@@ -2442,7 +2442,7 @@
     "info": "At the start of your turn, remove 1 strength from the strongest non-Gold unit(s) (except self) on the battlefield.",
     "loyalty": "Loyal",
     "name": "Yennefer: The Conjurer",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2456,7 +2456,7 @@
     "info": "Spawn either a Mutagen or a Spores effect.",
     "loyalty": null,
     "name": "Mardroeme",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -2484,7 +2484,7 @@
     "info": "Draw 1 card and discard 1 random non-Gold card from your deck.",
     "loyalty": "Disloyal",
     "name": "Donar an Hindar",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -2498,7 +2498,7 @@
     "info": "Move a random card from your opponent's graveyard to your hand.",
     "loyalty": "Disloyal",
     "name": "Udalryk",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2512,7 +2512,7 @@
     "info": "Remove 1 strength from each non-Gold unit played on the battlefield. Does not affect spawned units.",
     "loyalty": "Loyal",
     "name": "Savage Bear",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Melee": true
     },
@@ -2526,7 +2526,7 @@
     "info": "Add 2 base strength to all non-Gold units in your graveyard.",
     "loyalty": "Loyal",
     "name": "Draig Bon\u2013Dhu",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2540,7 +2540,7 @@
     "info": "Resurrect a non-Gold unit (can be Permadeath). Gain 1 strength whenever a unit is played from the graveyard.",
     "loyalty": "Loyal",
     "name": "Sigrdrifa",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2554,7 +2554,7 @@
     "info": "Spawn a Spectral Whale on a random row on the opposite side.",
     "loyalty": "Loyal",
     "name": "Blueboy Lugos",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2582,7 +2582,7 @@
     "info": "Return to your hand if you lose the round.",
     "loyalty": "Loyal",
     "name": "Ciri",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2624,7 +2624,7 @@
     "info": "Keep on the battlefield at the end of each round.",
     "loyalty": "Loyal",
     "name": "Zoltan Chivay",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2638,7 +2638,7 @@
     "info": "Resurrect when discarded.",
     "loyalty": "Loyal",
     "name": "Clan an Craite Raider",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2652,7 +2652,7 @@
     "info": "Lose 2 strength.",
     "loyalty": "Loyal",
     "name": "Clan an Craite Warrior",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2666,7 +2666,7 @@
     "info": "Add 2 base strength to a non-Gold unit on your side of the battlefield.",
     "loyalty": "Loyal",
     "name": "Clan Tordarroch Shieldsmith",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -2680,7 +2680,7 @@
     "info": "Resurrect all Queensguards and add 1 base strength to your Cerys unit, wherever it is.",
     "loyalty": "Loyal",
     "name": "Queensguard",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2694,7 +2694,7 @@
     "info": "Immune to Fog. Discard all Clan Dimun Pirates from your deck.",
     "loyalty": "Loyal",
     "name": "Clan Dimun Pirate",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Ranged": true
     },
@@ -2708,7 +2708,7 @@
     "info": "Immune to Fog. Gain 2 strength whenever you discard a unit.",
     "loyalty": "Loyal",
     "name": "Clan Dimun Pirate Captain",
-    "rarity": "Legendary",
+    "rarity": "Rare",
     "rows": {
       "Ranged": true
     },
@@ -2722,7 +2722,7 @@
     "info": "Resurrect a Bronze non-Permadeath unit.",
     "loyalty": "Loyal",
     "name": "Priestess of Freya",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Siege": true
     },
@@ -2750,7 +2750,7 @@
     "info": "No ability.",
     "loyalty": "Loyal",
     "name": "Geralt",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2764,7 +2764,7 @@
     "info": "Add 2 strength to each non-Gold unit played on your side and 1 strength to each played on the opposing side. Does not affect spawned units.",
     "loyalty": "Loyal",
     "name": "Dandelion",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2778,7 +2778,7 @@
     "info": "Draw 2 non-Gold cards. Play 1 and return the other to your deck.",
     "loyalty": "Loyal",
     "name": "Priscilla",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2820,7 +2820,7 @@
     "info": "Spawn 3 Shadows.",
     "loyalty": "Loyal",
     "name": "Gaunter O'Dimm",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -2834,7 +2834,7 @@
     "info": "When removed from the battlefield, spawn a Chort on the row where this unit was.",
     "loyalty": "Loyal",
     "name": "Prize-Winning Cow",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2848,7 +2848,7 @@
     "info": "Play Eskel and Lambert from your deck.",
     "loyalty": "Loyal",
     "name": "Vesemir",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2862,7 +2862,7 @@
     "info": "Play Eskel and Vesemir from your deck.",
     "loyalty": "Loyal",
     "name": "Lambert",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Melee": true
     },
@@ -2918,7 +2918,7 @@
     "info": "When removed from the battlefield, spawn 2 Lesser Golems on the row where this unit was.",
     "loyalty": "Loyal",
     "name": "Golem",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Melee": true
     },
@@ -2974,7 +2974,7 @@
     "info": "Spawn a Lesser Fire Elemental on this unit's row at the start of your turn.",
     "loyalty": "Loyal",
     "name": "Fire Elemental",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Ranged": true
     },
@@ -2988,7 +2988,7 @@
     "info": "Immune to Weather. Gain 3 strength each time a Weather effect appears.",
     "loyalty": "Loyal",
     "name": "Sarah",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Siege": true
     },
@@ -3002,7 +3002,7 @@
     "info": "Spawn either a Clear Skies or a Rally effect.",
     "loyalty": null,
     "name": "First Light",
-    "rarity": "Legendary",
+    "rarity": "Common",
     "rows": {
       "Event": true
     },
@@ -3016,7 +3016,7 @@
     "info": "Spawn Fog and Rain effects.",
     "loyalty": null,
     "name": "Skellige Storm",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },
@@ -3030,7 +3030,7 @@
     "info": "Spawn Frost and Fog effects.",
     "loyalty": null,
     "name": "White Frost",
-    "rarity": "Legendary",
+    "rarity": "Epic",
     "rows": {
       "Event": true
     },

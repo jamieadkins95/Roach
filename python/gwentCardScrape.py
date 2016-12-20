@@ -85,11 +85,11 @@ def cardInfoFromGwentDb():
             cards[cardData['cardid']] = cardData
 
 def getRarityString(rarityId):
-    if rarityId == '1':
+    if rarityId == 1:
         return "Common"
-    elif rarityId == '2':
+    elif rarityId == 2:
         return "Rare"
-    elif rarityId == '3':
+    elif rarityId == 3:
         return "Epic"
     else: # rarityId == '4'
         return  "Legendary"
