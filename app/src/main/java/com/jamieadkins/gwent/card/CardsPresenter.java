@@ -11,6 +11,10 @@ import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.DecksContract;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -33,6 +37,12 @@ public class CardsPresenter implements CardsContract.Presenter {
     @Override
     public void start() {
 
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<CardDetails>> search(String query) {
+        mCardsInteractor.resetMorePagesCounter();
+        return mCardsInteractor.search(query);
     }
 
     @Override

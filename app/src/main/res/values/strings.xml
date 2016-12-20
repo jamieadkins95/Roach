@@ -33,4 +33,5 @@
     <string name="monsters">Monsters</string>
     <string name="skellige">Skellige</string>
     <string name="scoiatel">Scoia\'tel</string>
+    <string name="search_hint">Card Name - Case Sensitive!</string>
 </resources>

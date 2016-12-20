@@ -16,5 +16,7 @@ public interface CardsInteractor extends BaseInteractor<CardsContract.Presenter>
 
     void resetMorePagesCounter();
 
+    Observable<RxDatabaseEvent<CardDetails>> search(String query);
+
     CardDetails getCard(String id);
 }

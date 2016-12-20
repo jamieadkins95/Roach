@@ -77,7 +77,49 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                                     cardSnapshot.getKey(),
                                                     cardSnapshot.getValue(CardDetails.class),
                                                     RxDatabaseEvent.EventType.ADDED
-                                    ));
+                                            ));
+                                }
+
+                                emitter.onComplete();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        cardsQuery.addListenerForSingleValueEvent(cardListener);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<CardDetails>> search(final String query) {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
+            @Override
+            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+                    @Override
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
+                        // Sort alphabetically the cards
+                        Query cardsQuery = mCardsReference.orderByChild("name")
+                                .startAt(query)
+                                // There is no 'contains' query, so we have to fudge it like this.
+                                .endAt(query + "zzzz");
+
+                        ValueEventListener cardListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
+                                    emitter.onNext(
+                                            new RxDatabaseEvent<CardDetails>(
+                                                    cardSnapshot.getKey(),
+                                                    cardSnapshot.getValue(CardDetails.class),
+                                                    RxDatabaseEvent.EventType.ADDED
+                                            ));
                                 }
 
                                 emitter.onComplete();

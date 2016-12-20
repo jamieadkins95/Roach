@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+
+import java.util.ArrayList;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,6 +71,22 @@ public class CardListFragment extends BaseFragment<CardDetails> implements Cards
     @Override
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
+    }
+
+    @Override
+    public void onSearchClosed() {
+        setLoadMore(true);
+        getRecyclerViewAdapter().clear();
+        onLoadData();
+    }
+
+    @Override
+    public void onSearchResult(ArrayList<CardDetails> searchResults) {
+        setLoadMore(false);
+        getRecyclerViewAdapter().clear();
+        for (CardDetails result : searchResults) {
+            getRecyclerViewAdapter().addItem(result);
+        }
     }
 
     @Override

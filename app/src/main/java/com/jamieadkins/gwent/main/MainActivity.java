@@ -20,15 +20,25 @@ import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.card.CardsPresenter;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
 
+import java.util.ArrayList;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class MainActivity extends AuthenticationActivity {
 
     private DecksPresenter mDecksPresenter;
+    private CardsContract.View mCardsView;
     private CardsPresenter mCardsPresenter;
 
     private int mCurrentTab;
@@ -50,10 +60,10 @@ public class MainActivity extends AuthenticationActivity {
         super.onCreate(savedInstanceState);
 
         // Launch Card DB fragment.
-        Fragment startingFragment = new CardListFragment();
-        mCardsPresenter = new CardsPresenter((CardsContract.View) startingFragment,
-                new CardsInteractorFirebase());
+        CardListFragment startingFragment = new CardListFragment();
+        mCardsPresenter = new CardsPresenter(startingFragment, new CardsInteractorFirebase());
         launchFragment(startingFragment);
+        mCardsView = startingFragment;
         mCurrentTab = R.id.tab_card_db;
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -71,6 +81,7 @@ public class MainActivity extends AuthenticationActivity {
                                 // Create the presenter.
                                 mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
                                         new CardsInteractorFirebase());
+                                mCardsView = (CardsContract.View) fragment;
                                 break;
                             case R.id.tab_decks:
                                 // Hide this feature in release versions for now.
@@ -218,18 +229,52 @@ public class MainActivity extends AuthenticationActivity {
 
             MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
             SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+            searchView.setQueryHint(getString(R.string.search_hint));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    Toast.makeText(MainActivity.this,
-                            getString(R.string.coming_soon), Toast.LENGTH_LONG)
-                            .show();
+                    return false;
+                }
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    if (query.equals("")) {
+                        // Don't search for everything!
+                        return false;
+                    }
+
+                    final ArrayList<CardDetails> searchResults = new ArrayList<CardDetails>();
+                    mCardsPresenter.search(query)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<RxDatabaseEvent<CardDetails>>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+                                }
+
+                                @Override
+                                public void onNext(RxDatabaseEvent<CardDetails> value) {
+                                    searchResults.add(value.getValue());
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    mCardsView.onSearchResult(searchResults);
+                                }
+                            });
 
                     // Return false to hide the keyboard.
                     return false;
                 }
+            });
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 @Override
-                public boolean onQueryTextChange(String s) {
+                public boolean onClose() {
+                    mCardsView.onSearchClosed();
                     return false;
                 }
             });
