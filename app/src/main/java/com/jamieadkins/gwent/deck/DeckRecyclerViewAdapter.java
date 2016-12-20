@@ -20,6 +20,11 @@ public class DeckRecyclerViewAdapter extends BaseRecyclerViewAdapter<Deck> {
     }
 
     @Override
+    public void addItem(Deck item) {
+        super.addItem(item);
+    }
+
+    @Override
     public void removeItem(Deck removedDeck) {
         String removedDeckId = removedDeck.getId();
         Deck deckToRemove = null;

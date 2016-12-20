@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -24,15 +25,23 @@ public abstract class BaseFragment<T> extends Fragment {
     private boolean mLoading = false;
     private boolean mLoadMore = true;
 
-    private Observer<T> mObserver = new Observer<T>() {
+    private Observer<RxDatabaseEvent<T>> mObserver = new Observer<RxDatabaseEvent<T>>() {
+
         @Override
         public void onSubscribe(Disposable d) {
 
         }
 
         @Override
-        public void onNext(T value) {
-            mViewAdapter.addItem(value);
+        public void onNext(RxDatabaseEvent<T> value) {
+            switch (value.getEventType()) {
+                case ADDED:
+                    mViewAdapter.addItem(value.getValue());
+                    break;
+                case REMOVED:
+                    mViewAdapter.removeItem(value.getValue());
+                    break;
+            }
         }
 
         @Override
@@ -109,7 +118,7 @@ public abstract class BaseFragment<T> extends Fragment {
         return mViewAdapter;
     }
 
-    public Observer<T> getObserver() {
+    public Observer<RxDatabaseEvent<T>> getObserver() {
         return mObserver;
     }
 }

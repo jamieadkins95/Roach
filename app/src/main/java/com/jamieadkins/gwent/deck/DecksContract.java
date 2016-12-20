@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.deck;
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
 
@@ -18,10 +18,12 @@ public interface DecksContract {
     }
 
     interface Presenter extends BasePresenter {
-        Observable<RxFirebaseChildEvent<Deck>> getDecks();
+        Observable<RxDatabaseEvent<Deck>> getDecks();
 
         void stop();
 
         void createNewDeck(String name, String faction);
+
+        void onLoadingComplete();
     }
 }

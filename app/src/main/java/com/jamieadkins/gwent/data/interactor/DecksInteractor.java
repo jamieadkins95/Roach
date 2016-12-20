@@ -19,7 +19,7 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     void removeCardFromDeck(Deck deck, String cardId);
 
-    Observable<RxFirebaseChildEvent<Deck>> getDecks();
+    Observable<RxDatabaseEvent<Deck>> getDecks();
 
     void stopData();
 }

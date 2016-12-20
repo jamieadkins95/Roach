@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +11,8 @@ import android.view.ViewGroup;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -76,35 +69,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         mDecksPresenter.getDecks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RxFirebaseChildEvent<Deck>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(RxFirebaseChildEvent<Deck> value) {
-                        switch (value.getEventType()) {
-                            case ADDED:
-                                getRecyclerViewAdapter().addItem(value.getValue());
-                                break;
-                            case REMOVED:
-                                getRecyclerViewAdapter().removeItem(value.getValue());
-                                break;
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        setLoading(false);
-                    }
-                });
+                .subscribe(getObserver());
     }
 
     @Override

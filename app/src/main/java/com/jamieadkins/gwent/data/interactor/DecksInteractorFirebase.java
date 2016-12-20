@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
 
@@ -49,59 +50,57 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxFirebaseChildEvent<Deck>> getDecks() {
-        return Observable.defer(new Callable<ObservableSource<? extends RxFirebaseChildEvent<Deck>>>() {
+    public Observable<RxDatabaseEvent<Deck>> getDecks() {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
-            public ObservableSource<? extends RxFirebaseChildEvent<Deck>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxFirebaseChildEvent<Deck>>() {
+            public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<RxFirebaseChildEvent<Deck>> emitter) throws Exception {
-                        mDeckListener = mDecksQuery.addChildEventListener(
-                                new ChildEventListener() {
-                                    @Override
-                                    public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                                        emitter.onNext(
-                                                new RxFirebaseChildEvent<Deck>(
-                                                        dataSnapshot.getKey(),
-                                                        dataSnapshot.getValue(Deck.class),
-                                                        previousChildName,
-                                                        RxFirebaseChildEvent.EventType.ADDED));
-                                    }
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                        mDeckListener = new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                dataSnapshot.getValue(Deck.class),
+                                                RxDatabaseEvent.EventType.ADDED));
+                            }
 
-                                    @Override
-                                    public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                                        emitter.onNext(
-                                                new RxFirebaseChildEvent<Deck>(
-                                                        dataSnapshot.getKey(),
-                                                        dataSnapshot.getValue(Deck.class),
-                                                        previousChildName,
-                                                        RxFirebaseChildEvent.EventType.CHANGED));
-                                    }
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                dataSnapshot.getValue(Deck.class),
+                                                RxDatabaseEvent.EventType.CHANGED));
+                            }
 
-                                    @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                        emitter.onNext(
-                                                new RxFirebaseChildEvent<Deck>(
-                                                        dataSnapshot.getKey(),
-                                                        dataSnapshot.getValue(Deck.class),
-                                                        RxFirebaseChildEvent.EventType.REMOVED));
-                                    }
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                dataSnapshot.getValue(Deck.class),
+                                                RxDatabaseEvent.EventType.REMOVED));
+                            }
 
-                                    @Override
-                                    public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                                        emitter.onNext(
-                                                new RxFirebaseChildEvent<Deck>(
-                                                        dataSnapshot.getKey(),
-                                                        dataSnapshot.getValue(Deck.class),
-                                                        previousChildName,
-                                                        RxFirebaseChildEvent.EventType.MOVED));
-                                    }
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                dataSnapshot.getValue(Deck.class),
+                                                RxDatabaseEvent.EventType.MOVED));
+                            }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError error) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
+                            }
+                        };
+
+                        mDecksQuery.addChildEventListener(mDeckListener);
                     }
                 });
             }

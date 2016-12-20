@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
 
@@ -38,12 +38,17 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Observable<RxFirebaseChildEvent<Deck>> getDecks() {
+    public Observable<RxDatabaseEvent<Deck>> getDecks() {
         return mDecksInteractor.getDecks();
     }
 
     @Override
     public void stop() {
         mDecksInteractor.stopData();
+    }
+
+    @Override
+    public void onLoadingComplete() {
+        mDecksView.setLoadingIndicator(false);
     }
 }
