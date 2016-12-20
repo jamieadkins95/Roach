@@ -33,7 +33,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
 
     public CardsInteractorFirebase() {
-        databasePath = "card-data/test";
+        databasePath = "card-data/v0-8-33";
         mCardsReference = mDatabase.getReference(databasePath);
     }
 
