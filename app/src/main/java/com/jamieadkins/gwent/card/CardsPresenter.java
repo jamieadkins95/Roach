@@ -9,6 +9,8 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.deck.DecksContract;
 
+import io.reactivex.Observable;
+
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
@@ -41,5 +43,10 @@ public class CardsPresenter implements CardsContract.Presenter {
     @Override
     public void stop() {
         mCardsInteractor.stopData();
+    }
+
+    @Override
+    public Observable<CardDetails> getMoreCards() {
+        return mCardsInteractor.getMoreCards();
     }
 }
