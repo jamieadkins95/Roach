@@ -30,13 +30,11 @@ public class CardsPresenter implements CardsContract.Presenter {
     }
     @Override
     public void sendCardToView(CardDetails card) {
-        mCardsView.showCard(card);
         mCardsView.setLoadingIndicator(false);
     }
 
     @Override
     public void start() {
-        mCardsInteractor.requestData();
         mCardsView.setLoadingIndicator(true);
     }
 
