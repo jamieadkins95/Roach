@@ -18,8 +18,6 @@ public interface CardsContract {
     }
 
     interface Presenter extends BasePresenter {
-        void sendCardToView(CardDetails card);
-
         void stop();
 
         Observable<CardDetails> getMoreCards();

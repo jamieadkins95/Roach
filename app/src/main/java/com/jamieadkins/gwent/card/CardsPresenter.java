@@ -28,19 +28,15 @@ public class CardsPresenter implements CardsContract.Presenter {
         mCardsView = decksView;
         mCardsView.setPresenter(this);
     }
-    @Override
-    public void sendCardToView(CardDetails card) {
-        mCardsView.setLoadingIndicator(false);
-    }
 
     @Override
     public void start() {
-        mCardsView.setLoadingIndicator(true);
+
     }
 
     @Override
     public void stop() {
-        mCardsInteractor.stopData();
+
     }
 
     @Override

@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
+
+import io.reactivex.Observable;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -23,11 +26,6 @@ public class DecksPresenter implements DecksContract.Presenter {
         mDecksView = decksView;
         mDecksView.setPresenter(this);
     }
-    @Override
-    public void sendDeckToView(Deck deck) {
-        mDecksView.showDeck(deck);
-        mDecksView.setLoadingIndicator(false);
-    }
 
     @Override
     public void createNewDeck(String name, String faction) {
@@ -36,17 +34,16 @@ public class DecksPresenter implements DecksContract.Presenter {
 
     @Override
     public void start() {
-        mDecksInteractor.requestData();
         mDecksView.setLoadingIndicator(true);
+    }
+
+    @Override
+    public Observable<RxFirebaseChildEvent<Deck>> getDecks() {
+        return mDecksInteractor.getDecks();
     }
 
     @Override
     public void stop() {
         mDecksInteractor.stopData();
-    }
-
-    @Override
-    public void onDeckRemoved(String removedDeckId) {
-        mDecksView.removeDeck(removedDeckId);
     }
 }

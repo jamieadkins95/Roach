@@ -22,6 +22,7 @@ public abstract class BaseFragment<T> extends Fragment {
     private SwipeRefreshLayout mRefreshContainer;
     private BaseRecyclerViewAdapter<T> mViewAdapter;
     private boolean mLoading = false;
+    private boolean mLoadMore = true;
 
     private Observer<T> mObserver = new Observer<T>() {
         @Override
@@ -45,6 +46,10 @@ public abstract class BaseFragment<T> extends Fragment {
         }
     };
 
+    public void setLoadMore(boolean loadMore) {
+        mLoadMore = loadMore;
+    }
+
     public void setupViews(View rootView) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         setupRecyclerView(mRecyclerView);
@@ -66,7 +71,8 @@ public abstract class BaseFragment<T> extends Fragment {
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
 
-                if (!mLoading && totalItemCount <= (lastVisibleItem + VISIBLE_THRESHHOLD)) {
+                if (!mLoading && mLoadMore &&
+                        totalItemCount <= (lastVisibleItem + VISIBLE_THRESHHOLD)) {
                     onLoadData();
                 }
             }

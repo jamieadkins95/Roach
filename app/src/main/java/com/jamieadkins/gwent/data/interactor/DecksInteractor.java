@@ -5,6 +5,8 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 
+import io.reactivex.Observable;
+
 /**
  * Deck manipulation class.
  */
@@ -16,4 +18,8 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
     void addCardToDeck(Deck deck, String cardId);
 
     void removeCardFromDeck(Deck deck, String cardId);
+
+    Observable<RxFirebaseChildEvent<Deck>> getDecks();
+
+    void stopData();
 }

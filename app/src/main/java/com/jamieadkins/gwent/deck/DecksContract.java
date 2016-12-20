@@ -3,6 +3,9 @@ package com.jamieadkins.gwent.deck;
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
+
+import io.reactivex.Observable;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -12,16 +15,10 @@ public interface DecksContract {
     interface View extends BaseView<Presenter> {
 
         void setLoadingIndicator(boolean active);
-
-        void showDeck(Deck deck);
-
-        void removeDeck(String removedDeckId);
     }
 
     interface Presenter extends BasePresenter {
-        void sendDeckToView(Deck deck);
-
-        void onDeckRemoved(String removedDeckId);
+        Observable<RxFirebaseChildEvent<Deck>> getDecks();
 
         void stop();
 

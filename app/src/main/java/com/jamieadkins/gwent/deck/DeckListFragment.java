@@ -13,19 +13,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.interactor.RxFirebaseChildEvent;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public class DeckListFragment extends Fragment implements DecksContract.View,
+public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
         NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
     private DecksContract.Presenter mDecksPresenter;
-    private RecyclerView mDeckListView;
-    private SwipeRefreshLayout mRefreshContainer;
-    private DeckRecyclerViewAdapter mViewAdapter;
 
     public DeckListFragment() {
     }
@@ -33,7 +37,8 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewAdapter = new DeckRecyclerViewAdapter();
+        setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
+        setLoadMore(false);
     }
 
     @Override
@@ -41,8 +46,7 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_deck_list, container, false);
 
-        mDeckListView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        setupRecyclerView(mDeckListView);
+        setupViews(rootView);
 
         FloatingActionButton buttonNewDeck =
                 (FloatingActionButton) rootView.findViewById(R.id.new_deck);
@@ -57,46 +61,57 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
             }
         });
 
-        mRefreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshContainer);
-        mRefreshContainer.setColorSchemeResources(R.color.gwentAccent);
-
         return rootView;
-    }
-
-    private void setupRecyclerView(RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(mViewAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mDecksPresenter.start();
+        onLoadData();
+    }
+
+    @Override
+    public void onLoadData() {
+        super.onLoadData();
+        mDecksPresenter.getDecks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RxFirebaseChildEvent<Deck>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RxFirebaseChildEvent<Deck> value) {
+                        switch (value.getEventType()) {
+                            case ADDED:
+                                getRecyclerViewAdapter().addItem(value.getValue());
+                                break;
+                            case REMOVED:
+                                getRecyclerViewAdapter().removeItem(value.getValue());
+                                break;
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        setLoading(false);
+                    }
+                });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mViewAdapter.clear();
+        getRecyclerViewAdapter().clear();
         mDecksPresenter.stop();
-    }
-
-    @Override
-    public void setLoadingIndicator(boolean active) {
-        mRefreshContainer.setRefreshing(active);
-
-        // We don't want user's trying to refresh, so only enable the view when we are loading.
-        mRefreshContainer.setEnabled(active);
-    }
-
-    @Override
-    public void showDeck(Deck deck) {
-        mViewAdapter.addItem(deck);
-    }
-
-    @Override
-    public void removeDeck(String removedDeckId) {
-        mViewAdapter.removeDeck(removedDeckId);
     }
 
     @Override
@@ -107,5 +122,10 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
     @Override
     public void createNewDeck(String name, String faction) {
         mDecksPresenter.createNewDeck(name, faction);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        setLoading(active);
     }
 }

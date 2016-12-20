@@ -19,7 +19,9 @@ public class DeckRecyclerViewAdapter extends BaseRecyclerViewAdapter<Deck> {
                 .inflate(R.layout.item_deck, parent, false));
     }
 
-    public void removeDeck(String removedDeckId) {
+    @Override
+    public void removeItem(Deck removedDeck) {
+        String removedDeckId = removedDeck.getId();
         Deck deckToRemove = null;
         for (Deck deck : getItems()) {
             if (deck.getId().equals(removedDeckId)) {
