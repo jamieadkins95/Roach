@@ -54,6 +54,7 @@ public class MainActivity extends AuthenticationActivity {
         mCardsPresenter = new CardsPresenter((CardsContract.View) startingFragment,
                 new CardsInteractorFirebase());
         launchFragment(startingFragment);
+        mCurrentTab = R.id.tab_card_db;
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -182,6 +183,9 @@ public class MainActivity extends AuthenticationActivity {
         fragmentTransaction.replace(
                 R.id.contentContainer, fragment, fragment.getClass().getSimpleName());
         fragmentTransaction.commit();
+
+        // Our options menu will be different for different tabs.
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -209,31 +213,33 @@ public class MainActivity extends AuthenticationActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.main_menu, menu);
+        if (mCurrentTab == R.id.tab_card_db) {
+            inflater.inflate(R.menu.search, menu);
+
+            MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+            SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Toast.makeText(MainActivity.this,
+                            getString(R.string.coming_soon), Toast.LENGTH_LONG)
+                            .show();
+
+                    // Return false to hide the keyboard.
+                    return false;
+                }
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
 
         if (isAuthenticated()) {
             inflater.inflate(R.menu.signed_in, menu);
         } else {
             inflater.inflate(R.menu.signed_out, menu);
         }
-
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this,
-                        getString(R.string.coming_soon), Toast.LENGTH_LONG)
-                        .show();
-
-                // Return false to hide the keyboard.
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
 
         return true;
     }
