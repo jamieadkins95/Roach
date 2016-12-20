@@ -283,7 +283,9 @@ public class MainActivity extends AuthenticationActivity {
         if (isAuthenticated()) {
             inflater.inflate(R.menu.signed_in, menu);
         } else {
-            inflater.inflate(R.menu.signed_out, menu);
+            if (!BuildConfig.DEBUG) {
+                inflater.inflate(R.menu.signed_out, menu);
+            }
         }
 
         return true;
