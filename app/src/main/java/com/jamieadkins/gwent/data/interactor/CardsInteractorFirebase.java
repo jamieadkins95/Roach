@@ -74,7 +74,6 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                                         RxDatabaseEvent.EventType.ADDED
                                                 ));
                                     }
-
                                 }
 
                                 emitter.onComplete();
