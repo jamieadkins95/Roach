@@ -1,4 +1,4 @@
-# Yennefr for Gwent
+# Roach for Gwent
 
 Android Application that helps you manage your decks and collection, as well as tracking your results.
 
