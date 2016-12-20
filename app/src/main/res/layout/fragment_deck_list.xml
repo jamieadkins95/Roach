@@ -5,19 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/refreshContainer">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/results"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <include layout="@layout/recycler_view_loading" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_deck"

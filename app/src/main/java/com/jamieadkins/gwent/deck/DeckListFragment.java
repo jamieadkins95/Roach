@@ -41,7 +41,7 @@ public class DeckListFragment extends Fragment implements DecksContract.View,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_deck_list, container, false);
 
-        mDeckListView = (RecyclerView) rootView.findViewById(R.id.results);
+        mDeckListView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         setupRecyclerView(mDeckListView);
 
         FloatingActionButton buttonNewDeck =

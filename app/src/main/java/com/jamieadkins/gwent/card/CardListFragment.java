@@ -35,9 +35,9 @@ public class CardListFragment extends Fragment implements CardsContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_deck_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_card_list, container, false);
 
-        mCardListView = (RecyclerView) rootView.findViewById(R.id.results);
+        mCardListView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         setupRecyclerView(mCardListView);
 
         mRefreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshContainer);
