@@ -22,7 +22,10 @@
     "name": "Commander's Horn",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Event": true,
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "0",
     "type": "Silver"
@@ -148,7 +151,9 @@
     "name": "Trololo",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -176,7 +181,9 @@
     "name": "Odrin",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -246,6 +253,8 @@
     "name": "Kaedweni Siege Support",
     "rarity": "Rare",
     "rows": {
+      "Melee": true,
+      "Ranged": true,
       "Siege": true
     },
     "strength": "2",
@@ -414,6 +423,8 @@
     "name": "Agla\u00efs",
     "rarity": "Legendary",
     "rows": {
+      "Melee": true,
+      "Ranged": true,
       "Siege": true
     },
     "strength": "5",
@@ -428,7 +439,9 @@
     "name": "Yaevinn",
     "rarity": "Epic",
     "rows": {
-      "Ranged": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "11",
     "type": "Silver"
@@ -442,7 +455,9 @@
     "name": "Vrihedd Dragoon",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "5",
     "type": "Bronze"
@@ -456,7 +471,9 @@
     "name": "Morenn",
     "rarity": "Legendary",
     "rows": {
-      "Ranged": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "7",
     "type": "Silver"
@@ -470,7 +487,9 @@
     "name": "Schirr\u00fa",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "5",
     "type": "Gold"
@@ -498,7 +517,9 @@
     "name": "Hawker Healer",
     "rarity": "Rare",
     "rows": {
-      "Ranged": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "2",
     "type": "Bronze"
@@ -512,7 +533,9 @@
     "name": "Vrihedd Officer",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Bronze"
@@ -526,6 +549,8 @@
     "name": "Dol Blathanna Trapper",
     "rarity": "Common",
     "rows": {
+      "Melee": true,
+      "Ranged": true,
       "Siege": true
     },
     "strength": "2",
@@ -568,7 +593,9 @@
     "name": "Elven Mercenary",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "3",
     "type": "Bronze"
@@ -582,7 +609,9 @@
     "name": "Vrihedd Vanguard",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "6",
     "type": "Bronze"
@@ -596,7 +625,9 @@
     "name": "Blue Mountain Commando",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Bronze"
@@ -1030,7 +1061,8 @@
     "name": "Geralt: Aard",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true
     },
     "strength": "6",
     "type": "Gold"
@@ -1352,7 +1384,10 @@
     "name": "Henselt",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Event": true,
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "0",
     "type": "Leader"
@@ -1366,7 +1401,9 @@
     "name": "Philippa Eilhart",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "10",
     "type": "Gold"
@@ -1380,7 +1417,9 @@
     "name": "Keira Metz",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "7",
     "type": "Gold"
@@ -1590,7 +1629,10 @@
     "name": "Ge'els",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Event": true,
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "0",
     "type": "Leader"
@@ -1730,7 +1772,9 @@
     "name": "Archgriffin",
     "rarity": "Common",
     "rows": {
-      "Ranged": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "5",
     "type": "Bronze"
@@ -1786,7 +1830,9 @@
     "name": "Geralt: Igni",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "6",
     "type": "Gold"
@@ -1842,7 +1888,9 @@
     "name": "Isengrim",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "6",
     "type": "Gold"
@@ -1856,7 +1904,9 @@
     "name": "Iorveth",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "6",
     "type": "Gold"
@@ -1884,7 +1934,9 @@
     "name": "Ida Emean",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "5",
     "type": "Silver"
@@ -1898,7 +1950,9 @@
     "name": "Toruviel",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "6",
     "type": "Silver"
@@ -1912,7 +1966,9 @@
     "name": "Ciaran",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -1940,7 +1996,9 @@
     "name": "Braenn",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "3",
     "type": "Silver"
@@ -1954,7 +2012,9 @@
     "name": "Malena",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -1996,7 +2056,9 @@
     "name": "Ele'yas",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -2010,7 +2072,9 @@
     "name": "Vrihedd Brigade",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "8",
     "type": "Bronze"
@@ -2052,7 +2116,9 @@
     "name": "Vrihedd Sappers",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Bronze"
@@ -2066,7 +2132,9 @@
     "name": "Dol Blathanna Archer",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "2",
     "type": "Bronze"
@@ -2080,7 +2148,9 @@
     "name": "Hawker Support",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "3",
     "type": "Bronze"
@@ -2094,7 +2164,9 @@
     "name": "Elven Wardancer",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Bronze"
@@ -2108,7 +2180,9 @@
     "name": "Fireball Trap",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "1",
     "type": "Bronze"
@@ -2150,7 +2224,9 @@
     "name": "Champion of Champions",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -2206,7 +2282,9 @@
     "name": "Skjall",
     "rarity": "Epic",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Silver"
@@ -2276,7 +2354,9 @@
     "name": "Clan Heymaey Skald",
     "rarity": "Rare",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "4",
     "type": "Bronze"
@@ -2374,7 +2454,10 @@
     "name": "Lacerate",
     "rarity": "Common",
     "rows": {
-      "Melee": true
+      "Event": true,
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "0",
     "type": "Bronze"
@@ -2878,7 +2961,9 @@
     "name": "Roach",
     "rarity": "Legendary",
     "rows": {
-      "Melee": true
+      "Melee": true,
+      "Ranged": true,
+      "Siege": true
     },
     "strength": "3",
     "type": "Silver"
