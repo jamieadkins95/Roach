@@ -3,6 +3,7 @@
 Created on Sat Nov 12 07:50:06 2016
 
 @author: Chris
+Amended by Jamie Adkins (jamieadkins95)
 """
 
 import requests, os, bs4, time
@@ -10,6 +11,7 @@ import json
 import logging as log
 import os.path
 import string
+import re
 
 #!python3
 
@@ -17,13 +19,14 @@ def cardInfoFromGwentDb():
     # All rarities won't have 4 pages, so lots of information is process twice. Doesn't matter as it will just overwrite with the same info.
     for page in range(1, 5):
       for rarity in range(1, 5):
-        queries = {'filter-display': '1', 'page': str(page), 'filter-rarity': rarity}
+        queries = {'filter-display': '1', 'page': page, 'filter-rarity': rarity}
         url = 'http://www.gwentdb.com/cards'
         print(url)
         res = requests.post(url, params=queries)
+        res.encoding = 'UTF-8'
         res.raise_for_status()
 
-        soup = bs4.BeautifulSoup(res.text)
+        soup = bs4.BeautifulSoup(res.text, "lxml")
 
         for cardRow in soup.find_all('tr'):
             # Check we are dealing with a row that contains card data.
@@ -73,7 +76,7 @@ def cardInfoFromGwentDb():
                     cardData['loyalty'] = details.span.get('title')
 
                  if 'col-abilities' in details.get('class'):
-                    cardData['info'] = details.span.get('title')
+                    cardData['info'] = removeHtml(details.span.get('title'))
 
                  if 'col-name' in details.get('class'):
                      cardData['name'] = details.a.contents[0]
@@ -91,6 +94,11 @@ def getRarityString(rarityId):
     else: # rarityId == '4'
         return  "Legendary"
 
+def removeHtml(raw_html):
+  cleanr = re.compile('<.*?>')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return cleantext
+
 def saveCardsAsJson(filename, cards):
     log.debug("saveCardsAsJson() saving %s cards to %s", len(cards), filename)
     filepath = os.path.join('./' + filename)
@@ -100,4 +108,4 @@ def saveCardsAsJson(filename, cards):
 
 cards = {}
 cardInfoFromGwentDb()
-saveCardsAsJson('test.json', cards)
+saveCardsAsJson('latest.json', cards)
