@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.main;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,12 +22,14 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.card.CardsPresenter;
+import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Group;
+import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
-
 
 public class MainActivity extends AuthenticationActivity {
 
@@ -251,6 +255,8 @@ public class MainActivity extends AuthenticationActivity {
                     return false;
                 }
             });
+
+            inflater.inflate(R.menu.card_filters, menu);
         }
 
         if (isAuthenticated()) {
@@ -261,6 +267,79 @@ public class MainActivity extends AuthenticationActivity {
             }
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // We may waste this Dialog if it is not a filter item, but it makes for cleaner code.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        switch (item.getItemId()) {
+            case R.id.filter_reset:
+                mCardFilter.clearFilters();
+                mCardsView.onCardFilterUpdated();
+                return true;
+            case R.id.filter_faction:
+                boolean[] factions = new boolean[mCardFilter.getFactions().size()];
+
+                for (String key : mCardFilter.getFactions().keySet()) {
+                    factions[Faction.CONVERT_STRING.get(key)] = mCardFilter.getFactions().get(key);
+                }
+
+                builder.setMultiChoiceItems(
+                        R.array.factions_array_with_neutral,
+                        factions,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
+                                mCardFilter.getFactions().put(Faction.CONVERT_INT.get(i), selected);
+                                mCardsView.onCardFilterUpdated();
+                            }
+                        });
+                break;
+            case R.id.filter_rarity:
+                boolean[] rarities = new boolean[mCardFilter.getRarities().size()];
+
+                for (String key : mCardFilter.getRarities().keySet()) {
+                    rarities[Rarity.CONVERT_STRING.get(key)] = mCardFilter.getRarities().get(key);
+                }
+
+                builder.setMultiChoiceItems(
+                        R.array.rarity_array,
+                        rarities,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
+                                mCardFilter.getRarities().put(Rarity.CONVERT_INT.get(i), selected);
+                                mCardsView.onCardFilterUpdated();
+                            }
+                        });
+                break;
+            case R.id.filter_type:
+                boolean[] types = new boolean[mCardFilter.getTypes().size()];
+
+                for (String key : mCardFilter.getTypes().keySet()) {
+                    types[Group.CONVERT_STRING.get(key)] = mCardFilter.getTypes().get(key);
+                }
+
+                builder.setMultiChoiceItems(
+                        R.array.types_array,
+                        types,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
+                                mCardFilter.getTypes().put(Group.CONVERT_INT.get(i), selected);
+                                mCardsView.onCardFilterUpdated();
+                            }
+                        });
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        builder.setPositiveButton(R.string.button_done, null);
+        builder.show();
         return true;
     }
 

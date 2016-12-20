@@ -59,4 +59,18 @@ public class CardFilter {
     public Map<String, Boolean> getTypes() {
         return mTypes;
     }
+
+    public void clearFilters() {
+        for (String faction : mFactions.keySet()) {
+            mFactions.put(faction, true);
+        }
+
+        for (String type : mTypes.keySet()) {
+            mTypes.put(type, true);
+        }
+
+        for (String rarity : mRarities.keySet()) {
+            mRarities.put(rarity, true);
+        }
+    }
 }
