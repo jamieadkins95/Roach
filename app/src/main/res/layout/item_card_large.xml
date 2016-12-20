@@ -37,14 +37,6 @@
                         android:textSize="20sp"
                         android:layout_gravity="center_vertical"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/image_row"
-                        android:text="Monster"
-                        android:textColor="@color/monsters"
-                        android:layout_gravity="center_vertical"/>
-
                 </LinearLayout>
 
                 <TextView
@@ -72,8 +64,19 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:layout_gravity="center_vertical"
+                        android:id="@+id/card_type"
+                        android:text="Bronze"
+                        android:textColor="@color/bronze"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
                         android:id="@+id/card_faction"
-                        android:text="Neutral"/>
+                        android:text="Monster"
+                        android:textColor="@color/monsters"/>
 
                     <TextView
                         android:layout_width="0dp"
@@ -91,7 +94,8 @@
                         android:gravity="center"
                         android:layout_gravity="center_vertical"
                         android:id="@+id/card_loyalty"
-                        android:text="Loyal"/>
+                        android:text="Loyal"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:layout_width="0dp"

@@ -39,21 +39,6 @@ public class Deck {
         return name;
     }
 
-    public String getFactionName(Context context) {
-        switch (faction) {
-            case Faction.MONSTERS:
-                return context.getString(R.string.monsters);
-            case Faction.SCOIATAEL:
-                return context.getString(R.string.scoiatel);
-            case Faction.SKELLIGE:
-                return context.getString(R.string.skellige);
-            case Faction.NORTHERN_REALMS:
-                return context.getString(R.string.northern_realms);
-            default:
-                return context.getString(R.string.monsters);
-        }
-    }
-
     public String getFaction() {
         return faction;
     }

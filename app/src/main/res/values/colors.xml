@@ -12,6 +12,8 @@
     <color name="white">#FFFFFF</color>
 
     <!-- Factions -->
+    <color name="neutral">@color/textSecondary</color>
+
     <color name="skellige">#3F51B5</color>
     <color name="skelligeDark">#303F9F</color>
 
@@ -23,5 +25,16 @@
 
     <color name="scoiatael">#4CAF50</color>
     <color name="scoiataelDark">#388E3C</color>
+
+    <!-- Rarities -->
+    <color name="common">@color/textSecondary</color>
+    <color name="rare">#2196F3</color>
+    <color name="epic">#9C27B0</color>
+    <color name="legendary">#FFC107</color>
+
+    <!-- Types -->
+    <color name="bronze">#795548</color>
+    <color name="silver">#9E9E9E</color>
+    <color name="gold">#FFC107</color>
 
 </resources>

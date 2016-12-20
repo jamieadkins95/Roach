@@ -29,7 +29,7 @@ public class DecksPresenter implements DecksContract.Presenter {
 
     @Override
     public void createNewDeck(String name, String faction) {
-        mDecksInteractor.createNewDeck(name, Faction.getFactionIdFromName(faction));
+        mDecksInteractor.createNewDeck(name, faction);
     }
 
     @Override

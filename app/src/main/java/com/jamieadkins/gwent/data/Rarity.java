@@ -5,8 +5,8 @@ package com.jamieadkins.gwent.data;
  */
 
 public class Rarity {
-    public static final String COMMON = "common";
-    public static final String EPIC = "epic";
-    public static final String LEGENDARY = "legendary";
-    public static final String RARE = "rare";
+    public static final String COMMON = "Common";
+    public static final String EPIC = "Epic";
+    public static final String LEGENDARY = "Legendary";
+    public static final String RARE = "Rare";
 }

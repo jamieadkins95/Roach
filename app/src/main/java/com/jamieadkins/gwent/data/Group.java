@@ -5,8 +5,8 @@ package com.jamieadkins.gwent.data;
  */
 
 public class Group {
-    public static final String BRONZE = "bronze";
-    public static final String SILVER = "silver";
-    public static final String GOLD = "gold";
-    public static final String LEADER = "leader";
+    public static final String BRONZE = "Bronze";
+    public static final String SILVER = "Silver";
+    public static final String GOLD = "Gold";
+    public static final String LEADER = "Leader";
 }
