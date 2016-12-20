@@ -7,7 +7,7 @@
     <!--On pre-Lollipop, CardView adds padding to its content to draw shadows to that area. -->
     <dimen name="card_margin_horizontal">-3dp</dimen>
     <!-- Can apply normal margin here. -->
-    <dimen name="card_margin_vertical">8dp</dimen>
+    <dimen name="card_margin_vertical">4dp</dimen>
     <dimen name="bb_padding">52dp</dimen>
 
     <!-- Since the bottom bar is elevated, placing the snackbar above it leaves a small gap. -->
