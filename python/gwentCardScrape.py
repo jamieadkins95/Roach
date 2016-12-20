@@ -60,8 +60,8 @@ def cardInfoFromGwentDb():
 
             for details in cardRow.find_all('td'):
                  if 'col-row' in details.get('class'):
-                     for row in details.span.contents:
-                         cardData['rows'][row] = True
+                     for row in details:
+                         cardData['rows'][row.get_text()] = True
 
                  if 'col-power' in details.get('class'):
                     cardData['strength'] = details.contents[0]
