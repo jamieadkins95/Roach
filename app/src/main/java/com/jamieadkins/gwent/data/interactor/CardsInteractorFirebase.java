@@ -1,13 +1,12 @@
 package com.jamieadkins.gwent.data.interactor;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -24,7 +23,7 @@ import io.reactivex.ObservableSource;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
-    private CardsContract.Presenter mPresenter;
+    private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mCardsReference;
 
@@ -36,7 +35,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
+    public void setPresenter(BasePresenter presenter) {
         mPresenter = presenter;
     }
 
@@ -93,7 +92,39 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
-    public CardDetails getCard(String id) {
-        return null;
+    public Observable<RxDatabaseEvent<CardDetails>> getCard(final String id) {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
+            @Override
+            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+                    @Override
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
+                        Query cardsQuery = mCardsReference.child(id);
+
+                        ValueEventListener cardListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
+                                emitter.onNext(
+                                        new RxDatabaseEvent<CardDetails>(
+                                                dataSnapshot.getKey(),
+                                                cardDetails,
+                                                RxDatabaseEvent.EventType.ADDED
+                                        ));
+
+                                emitter.onComplete();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        cardsQuery.addListenerForSingleValueEvent(cardListener);
+                    }
+                });
+            }
+        });
     }
 }

@@ -21,6 +21,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".detail.DetailActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="www.gwentdb.com"
+                    android:scheme="http"
+                    android:pathPrefix="/cards/" />
+
+                <data
+                    android:host="gwentdb.com"
+                    android:scheme="http"
+                    android:pathPrefix="/cards/ " />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
