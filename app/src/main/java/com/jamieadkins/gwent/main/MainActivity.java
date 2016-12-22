@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
@@ -55,6 +56,9 @@ public class MainActivity extends AuthenticationActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Enable offline use. This has to be done before any other firebase database work.
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Launch Card DB fragment.
         CardListFragment startingFragment = new CardListFragment();
