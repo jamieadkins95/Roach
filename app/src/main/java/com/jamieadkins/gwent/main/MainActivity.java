@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.main;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.about.AboutActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardListFragment;
@@ -261,6 +263,7 @@ public class MainActivity extends AuthenticationActivity {
             });
 
             inflater.inflate(R.menu.card_filters, menu);
+            inflater.inflate(R.menu.base_menu, menu);
         }
 
         if (isAuthenticated()) {
@@ -338,6 +341,9 @@ public class MainActivity extends AuthenticationActivity {
                             }
                         });
                 break;
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -45,6 +45,10 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".about.AboutActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
     </application>
 
 </manifest>

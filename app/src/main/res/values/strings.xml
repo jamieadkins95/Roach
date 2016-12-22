@@ -49,4 +49,9 @@
     <string name="legendary">Legendary</string>
     <string name="reset_filters">Clear Filters</string>
     <string name="loading">Loading</string>
+    <string name="about">About</string>
+
+    <string name="pref_licenses">Licenses</string>
+    <string name="pref_rxjava">Rxjava</string>
+    <string name="pref_glide">Glide</string>
 </resources>

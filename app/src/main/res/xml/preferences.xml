@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_licenses"
+        android:key="pref_key_licenses">
+
+        <Preference android:title="@string/pref_rxjava">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://github.com/ReactiveX/RxJava/blob/2.x/LICENSE" />
+        </Preference>
+        <Preference android:title="@string/pref_glide">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://github.com/bumptech/glide/blob/master/LICENSE" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

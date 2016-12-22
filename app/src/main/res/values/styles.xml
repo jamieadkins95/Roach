@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/gwentGreen</item>
         <item name="colorPrimaryDark">@color/gwentGreenDark</item>
         <item name="colorAccent">@color/gwentAccent</item>
+        <item name="preferenceTheme">@style/PreferenceFragment.Material</item>
     </style>
 
     <style name="Theme.Gwent" parent="Base.Theme.Gwent">
