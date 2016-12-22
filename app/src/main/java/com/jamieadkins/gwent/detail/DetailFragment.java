@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
@@ -25,6 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailFragment extends Fragment implements DetailContract.View {
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
+    private LargeCardView mLargeCardView;
 
     private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
 
@@ -43,6 +45,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                             .load(value.getValue().getImage())
                             .fitCenter()
                             .into(mCardPicture);
+
+                    mLargeCardView.setCardDetails(value.getValue());
                     break;
             }
         }
@@ -64,6 +68,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mCardPicture = (ImageView) rootView.findViewById(R.id.card_image);
+        mLargeCardView = (LargeCardView) rootView.findViewById(R.id.card_details);
         return rootView;
     }
 

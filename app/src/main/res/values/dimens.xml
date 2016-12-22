@@ -13,4 +13,7 @@
     <!-- Since the bottom bar is elevated, placing the snackbar above it leaves a small gap. -->
     <!-- Setting a negative margin removes that gap. -->
     <dimen name="snackbar_margin">-5dp</dimen>
+
+    <dimen name="card_image_pixel_negation_vertical">-25px</dimen>
+    <dimen name="card_image_pixel_negation_horizontal">-150px</dimen>
 </resources>

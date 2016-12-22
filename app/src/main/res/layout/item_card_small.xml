@@ -1,42 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
-        android:layout_marginTop="@dimen/card_margin_vertical"
-        android:layout_marginBottom="@dimen/card_margin_vertical"
-        android:layout_marginLeft="@dimen/card_margin_horizontal"
-        android:layout_marginRight="@dimen/card_margin_horizontal"
-        app:cardCornerRadius="0dp"
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:id="@+id/card_name"
+            android:text="Google HQ"
+            android:textSize="20sp"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/card_name"
-                    android:text="Google HQ"
-                    android:textSize="20sp"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -34,10 +34,10 @@ public class CardRecyclerViewAdapter extends BaseRecyclerViewAdapter<CardDetails
         switch (mDetail) {
             case SMALL:
                 return new SimpleCardViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_card_small, parent, false));
+                        .inflate(R.layout.card_simple_layout, parent, false));
             case LARGE:
                 return new LargeCardViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_card_large, parent, false));
+                        .inflate(R.layout.card_detail_layout, parent, false));
             default:
                 throw new RuntimeException("Detail level has not been implemented.");
         }
