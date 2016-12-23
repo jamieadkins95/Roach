@@ -13,6 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.DecksContract;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import io.reactivex.ObservableSource;
 
 public class DecksInteractorFirebase implements DecksInteractor {
     private DecksContract.Presenter mPresenter;
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mDecksReference;
     private final Query mDecksQuery;
     private ChildEventListener mDeckListener;

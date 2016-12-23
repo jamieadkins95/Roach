@@ -10,6 +10,7 @@ import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 
 import java.util.concurrent.Callable;
 
@@ -24,7 +25,7 @@ import io.reactivex.ObservableSource;
 
 public class CardsInteractorFirebase implements CardsInteractor {
     private BasePresenter mPresenter;
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCardsReference;
 
     private final String databasePath;

@@ -59,9 +59,6 @@ public class MainActivity extends AuthenticationActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Enable offline use. This has to be done before any other firebase database work.
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
         // Launch Card DB fragment.
         CardListFragment startingFragment = new CardListFragment();
         mCardsPresenter = new CardsPresenter(startingFragment, new CardsInteractorFirebase());
