@@ -30,14 +30,14 @@ When a user creates content using this Application, the data is stored according
     "unique-user-id-non-personally-identifiable": {
       "decks": {
         "unique-deck-id": {
-	  "faction":"scoiatael",	
+          "faction":"scoiatael",	
           "id":"-KZ-QzT4olx_Su-kvBUK",	  
           "name":"me deck",	  
           "openToPublic":false,	  
        	  "cards": {
             "example-card-id": 1,	    
             "example-card-id2": 0
-	  }
+          }
         }
       }     
     }    
