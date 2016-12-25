@@ -18,8 +18,6 @@ import io.reactivex.disposables.Disposable;
  * UI fragment that shows a list of the users decks.
  */
 public abstract class BaseFragment<T> extends Fragment {
-    private static final int VISIBLE_THRESHHOLD = 5;
-
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private BaseRecyclerViewAdapter<T> mViewAdapter;
@@ -68,12 +66,6 @@ public abstract class BaseFragment<T> extends Fragment {
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(mViewAdapter);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mViewAdapter.clear();
     }
 
     public void onLoadData() {

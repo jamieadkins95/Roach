@@ -35,19 +35,13 @@ public class CardListFragment extends BaseFragment<CardDetails> implements Cards
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_card_list, container, false);
         setupViews(rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         onLoadData();
+        return rootView;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getRecyclerViewAdapter().clear();
         mCardsPresenter.stop();
     }
 
