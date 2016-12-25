@@ -1,42 +1,44 @@
-We don’t ask you for personal information unless we truly need it. (We can’t stand services that ask you for things like your gender or income level for no apparent reason.)
-
-We don’t share your personal information with anyone except to comply with the law, develop our products, or protect our rights.
-
-We don’t store personal information on our servers unless required for the on-going operation of one of our services.
-
-Below is our privacy policy which incorporates these goals. This document is based on the [Automattic Privacy Policy](https://automattic.com/privacy/). Changes have been made to make it appropriate for Yennefer. This document is available under the [Creative Commons Sharealike](https://creativecommons.org/licenses/by-sa/4.0/) license, if you wish to use it for your own projects.
-
 If you have questions about deleting or correcting your personal data please contact us at jamieadkins95+gwent@gmail.com.
 
-Yennefr for Gwent (“Yennefr") operates the mobile application "Yennefr for Gwent". It is our policy to respect your privacy regarding any information we may collect while operating our websites.
+Jamie Adkins (“Developer") operates the mobile application "Roach for Gwent" ("Application"). It is our policy to respect your privacy regarding any information we may collect while operating Roach.
 
-##Application Visitors
-Like most applications, Yennefr collects non-personally-identifying information of the sort that mobile devices typically make available, such as which Android version you are using. Yennefr’s purpose in collecting non-personally identifying information is to better understand how Yennefr’s visitors use its application. From time to time, Yennefr may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of the application.
+##Personal Data
+Among the types of Personal Data that this Application collects, by itself or through third parties, there are: email address, password and User ID.
+This information is used for authentication purposes only, to allow the user private access to content they have created.
+The Personal Data may be freely provided by the User, or collected automatically when using this Application.
 
-Yennefr also collects potentially personally-identifying information like email addresses and usernames used to sign up for an account with Yennefr. Yennefr only discloses email addresses and usernames under the same circumstances that it uses and discloses personally-identifying information as described below.
+##The use of the collected Data
+The Data concerning the User is collected to allow the Developer to provide its services, as well as for the following purposes: Registration and authentication, User Created Data.
+The Personal Data used for each purpose is outlined in the specific sections of this document.
 
-##Gathering of Personally-Identifying Information
-Certain visitors to the mobile application choose to interact with Yennefr in ways that require Yennefr to gather personally-identifying information. The amount and type of information that Yennefr gathers depends on the nature of the interaction. For example, we ask visitors who sign up for an account on Yennefr to provide an email address. Those who engage in transactions with Yennefr – by purchasing access to more features, for example – will be redirected to the Google Play Store, where they can continue the transaction there. Yennefr does not store any financial information in relation to any transactions made. Yennefr does not disclose personally-identifying information other than as described below. And visitors can always refuse to supply personally-identifying information, with the caveat that it may prevent them from using certain features.
+##Registration and Authentication
+By registering or authenticating, Users allow this Application to identify them and give them access to dedicated services.
+Depending on what is described below, third parties may provide registration and authentication services. In this case, this Application will be able to access some Data, stored by these third party services, for registration or identification purposes.
+Google OAuth (Google Inc.)
+Google OAuth is a registration and authentication service provided by Google Inc. and is connected to the Google network.
+Personal Data collected: various types of Data as specified in the privacy policy of the service.
+Place of processing: US
+Direct registration (This Application)
+The User registers by filling out the registration form and providing the Personal Data directly to this Application.
+Personal Data collected: email address, password and User ID.
 
-Authentication information (such as email address) is stored using Firebase Authentication. Yennefr does not deal directly with this authentication information and this information is not used when storing data associated with any Yennefr services you use.
-
-When a user creates content, such as creating a deck, using Yennefr, this data is stored using a Firebase Real-time Database.
-Here is the data model we use:
+##User Created Data
+When a user creates content using this Application, the data is stored according to the following model:
 ```
 {
   "users": {
     "unique-user-id-non-personally-identifiable": {
       "decks": {
         "unique-deck-id": {
-	  "faction":"scoiatael",	
+          "faction":"scoiatael",	
           "id":"-KZ-QzT4olx_Su-kvBUK",	  
           "name":"me deck",	  
           "openToPublic":false,	  
        	  "cards": {
             "example-card-id": 1,	    
             "example-card-id2": 0
-	  }
-	}
+          }
+        }
       }     
     }    
   }  
@@ -56,16 +58,50 @@ This data is then protected by the following rules:
   }  
 }
 ```
-As you can see, Yennefr does not actively store any personally identifying information within its storage of user created content.
+User Created Data is stored without any personably indentifiable information and can only be accessed by the user that created it.
 
-##Aggregated Statistics
-Yennefr may collect statistics about the behavior of visitors to its application. Yennefr may display this information publicly or provide it to others. However, Yennefr does not disclose personally-identifying information other than as described below.
+##Firebase
+Roach uses various Firebase services to provide functionality to this Application. These are:
 
-##Protection of Certain Personally-Identifying Information
-Yennefr discloses potentially personally-identifying and personally-identifying information only to those of its administrators, that have agreed not to disclose it to others. Some of those administrators may be located outside of your home country; by using Yennefr’s Services, you consent to the transfer of such information to them. Yennefr will not rent or sell potentially personally-identifying and personally-identifying information to anyone. Other than to its administrators, as described above, Yennefr discloses potentially personally-identifying and personally-identifying information only in response to a subpoena, court order or other governmental request, or when Yennefr believes in good faith that disclosure is reasonably necessary to protect the property or rights of Yennefr, third parties or the public at large. If you are a registered user of Yennefr and have supplied your email address, Yennefr may occasionally send you an email to tell you about new features, solicit your feedback, or just keep you up to date with what’s going on with Yennefr and our products. We primarily use our mobile application to communicate this type of information, so we expect to keep this type of email to a minimum. If you send us a request (for example via a support email or via one of our feedback mechanisms), we reserve the right to publish it in order to help us clarify or respond to your request or to help us support other users. Yennefr takes all measures reasonably necessary to protect against the unauthorized access, use, alteration or destruction of potentially personally-identifying and personally-identifying information.
+###Analytics
+Firebase will collect anonymous usage statistics to help future development of this Application. This information can include, anonymous information about your device (e.g Android version), and Application usage time.
 
-##Business Transfers
-If Yennefr, or substantially all of its assets, were acquired, user information would be one of the assets that is transferred or acquired by a third party. You acknowledge that such transfers may occur, and that any acquirer of Yennefr may continue to use your personal information as set forth in this policy.
+Analytics is strictly opt-in, and will only be enabled if the user enables it. It can be disabled at anytime through the Application settings.
 
-##Privacy Policy Changes
-Although most changes are likely to be minor, Yennefr may change its Privacy Policy from time to time, and in Yennefr’s sole discretion. Yennefr encourages visitors to frequently check this page for any changes to its Privacy Policy. Your continued use of our Services after any change in this Privacy Policy will constitute your acceptance of such change.
+###Authentication
+As described in the Registration and Authentication section, users can register and authenticae with a Roach account. This authentication procedure is provided by Firebase.
+
+###Database
+Any user created data is stored in a Firebase Realtime Database according to the model described above.
+
+###Crash Reporting
+Roach will automatically report Application crashes to Firebase. The reports are completely anonymous. By using Roach, you are agreeing to the use of this feature.
+
+##Additional information about Data collection and processing
+
+###Legal action
+
+The User's Personal Data may be used for legal purposes by the Data Controller, in Court or in the stages leading to possible legal action arising from improper use of this Application or the related services.
+The User declares to be aware that the Data Controller may be required to reveal personal data upon request of public authorities.
+
+###Additional information about User's Personal Data
+
+In addition to the information contained in this privacy policy, this Application may provide the User with additional and contextual information concerning particular services or the collection and processing of Personal Data upon request.
+
+###System logs and maintenance
+
+For operation and maintenance purposes, this Application and any third party services may collect files that record interaction with this Application (System logs) or use for this purpose other Personal Data (such as IP Address).
+
+###Information not contained in this policy
+
+More details concerning the collection or processing of Personal Data may be requested from the Data Controller at any time. Please see the contact information at the beginning of this document.
+
+###The rights of Users
+
+Users have the right, at any time, to know whether their Personal Data has been stored and can consult the Data Controller to learn about their contents and origin, to verify their accuracy or to ask for them to be supplemented, cancelled, updated or corrected, or for their transformation into anonymous format or to block any data held in violation of the law, as well as to oppose their treatment for any and all legitimate reasons. Requests should be sent to the Data Controller at the contact information set out above.
+This Application does not support “Do Not Track” requests.
+To determine whether any of the third party services it uses honor the “Do Not Track” requests, please read their privacy policies.
+
+###Changes to this privacy policy
+
+The Data Controller reserves the right to make changes to this privacy policy at any time by giving notice to its Users on this page. It is strongly recommended to check this page often. If a User objects to any of the changes to the Policy, the User must cease using this Application and can request that the Data Controller remove the Personal Data. Unless stated otherwise, the then-current privacy policy applies to all Personal Data the Data Controller has about Users.
