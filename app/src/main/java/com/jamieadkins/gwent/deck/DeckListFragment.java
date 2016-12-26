@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.main.PresenterFactory;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -27,9 +29,20 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     public DeckListFragment() {
     }
 
+    private PresenterFactory<DecksContract.Presenter> mPresenterFactory =
+            new PresenterFactory<DecksContract.Presenter>() {
+                @NonNull
+                @Override
+                public DecksContract.Presenter createPresenter() {
+                    return new DecksPresenter();
+                }
+            };
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDecksPresenter = getPresenterCache().getPresenter(getClass().getSimpleName(), mPresenterFactory);
         setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
     }
 
@@ -57,6 +70,18 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mDecksPresenter.bindView(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDecksPresenter.unbindView();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         onLoadData();
@@ -76,11 +101,6 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         super.onStop();
         getRecyclerViewAdapter().clear();
         mDecksPresenter.stop();
-    }
-
-    @Override
-    public void setPresenter(DecksContract.Presenter presenter) {
-        mDecksPresenter = presenter;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.detail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.main.PresenterCache;
+import com.jamieadkins.gwent.main.PresenterFactory;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,6 +30,15 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
+
+    private PresenterFactory<DetailContract.Presenter> mPresenterFactory =
+            new PresenterFactory<DetailContract.Presenter>() {
+                @NonNull
+                @Override
+                public DetailContract.Presenter createPresenter() {
+                    return new DetailPresenter();
+                }
+            };
 
     private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
 
@@ -62,6 +74,13 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         }
     };
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDetailPresenter = PresenterCache.getInstance()
+                .getPresenter(getClass().getSimpleName(), mPresenterFactory);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,9 +92,21 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mDetailPresenter.bindView(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDetailPresenter.unbindView();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        mDetailPresenter.getCard(mDetailPresenter.getCardId())
+        mDetailPresenter.getCard(((DetailActivity) getActivity()).getCardId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
@@ -84,10 +115,5 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     @Override
     public void setLoadingIndicator(boolean active) {
 
-    }
-
-    @Override
-    public void setPresenter(DetailContract.Presenter presenter) {
-        mDetailPresenter = presenter;
     }
 }

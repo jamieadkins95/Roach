@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
@@ -24,15 +23,10 @@ import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
-import com.jamieadkins.gwent.card.CardsPresenter;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Group;
 import com.jamieadkins.gwent.data.Rarity;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.deck.DecksContract;
-import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
 
 import java.util.HashMap;
@@ -40,10 +34,7 @@ import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity {
 
-    private DecksPresenter mDecksPresenter;
     private CardsContract.View mCardsView;
-    private CardsPresenter mCardsPresenter;
-    private CardsPresenter mCollectionPresenter;
 
     private Map<Integer, CardFilter> mCardFilters;
 
@@ -67,7 +58,6 @@ public class MainActivity extends AuthenticationActivity {
 
         // Launch Card DB fragment.
         CardListFragment startingFragment = new CardListFragment();
-        mCardsPresenter = new CardsPresenter(startingFragment, new CardsInteractorFirebase());
         launchFragment(startingFragment);
         mCardsView = startingFragment;
         mCurrentTab = R.id.tab_card_db;
@@ -86,10 +76,6 @@ public class MainActivity extends AuthenticationActivity {
                         switch (item.getItemId()) {
                             case R.id.tab_card_db:
                                 fragment = new CardListFragment();
-
-                                // Create the presenter.
-                                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                                        new CardsInteractorFirebase());
                                 mCardsView = (CardsContract.View) fragment;
                                 break;
                             case R.id.tab_decks:
@@ -116,10 +102,6 @@ public class MainActivity extends AuthenticationActivity {
 
                                 // Else, if authenticated.
                                 fragment = new DeckListFragment();
-
-                                // Create the presenter.
-                                mDecksPresenter = new DecksPresenter((DecksContract.View) fragment,
-                                        new DecksInteractorFirebase());
                                 break;
                             case R.id.tab_collection:
                                 // Hide this feature in release versions for now.
@@ -145,9 +127,6 @@ public class MainActivity extends AuthenticationActivity {
 
                                 // Else, if authenticated.
                                 fragment = new CollectionFragment();
-
-                                mCollectionPresenter = new CardsPresenter((CardsContract.View) fragment,
-                                        new CardsInteractorFirebase());
                                 mCardsView = (CardsContract.View) fragment;
                                 break;
 
