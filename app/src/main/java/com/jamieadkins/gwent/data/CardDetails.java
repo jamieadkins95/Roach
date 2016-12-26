@@ -22,6 +22,7 @@ public class CardDetails {
     private String group;
     private String image;
     private String strength;
+    private boolean collectible;
 
     public CardDetails() {
         // Required empty constructor for Firebase.
@@ -87,6 +88,10 @@ public class CardDetails {
         return strength;
     }
 
+    public boolean isCollectible() {
+        return collectible;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -101,6 +106,7 @@ public class CardDetails {
         result.put("type", type);
         result.put("image", image);
         result.put("loyalty", loyalty);
+        result.put("collectible", collectible);
 
         return result;
     }

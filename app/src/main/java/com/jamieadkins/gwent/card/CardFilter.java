@@ -12,10 +12,12 @@ import java.util.Map;
  */
 
 public class CardFilter {
-    String mSearchQuery;
-    Map<String, Boolean> mFactions;
-    Map<String, Boolean> mTypes;
-    Map<String, Boolean> mRarities;
+    private String mSearchQuery;
+    private Map<String, Boolean> mFactions;
+    private Map<String, Boolean> mTypes;
+    private Map<String, Boolean> mRarities;
+
+    private boolean mCollectableOnly = false;
 
     public CardFilter() {
         mSearchQuery = null;
@@ -58,6 +60,10 @@ public class CardFilter {
 
     public Map<String, Boolean> getTypes() {
         return mTypes;
+    }
+
+    public boolean isCollectableOnly() {
+        return mCollectableOnly;
     }
 
     public void clearFilters() {
