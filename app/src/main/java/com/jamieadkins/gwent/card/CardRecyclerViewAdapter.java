@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
 
 /**
@@ -16,7 +17,8 @@ public class CardRecyclerViewAdapter extends BaseRecyclerViewAdapter<CardDetails
 
     public enum Detail {
         SMALL,
-        LARGE
+        LARGE,
+        COLLECTION
     }
 
     public CardRecyclerViewAdapter(Detail detail) {
@@ -33,11 +35,14 @@ public class CardRecyclerViewAdapter extends BaseRecyclerViewAdapter<CardDetails
     public BaseCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (mDetail) {
             case SMALL:
-                return new SimpleCardViewHolder(LayoutInflater.from(parent.getContext())
+                return new BaseCardViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_simple_layout, parent, false));
             case LARGE:
-                return new LargeCardViewHolder(LayoutInflater.from(parent.getContext())
+                return new BaseCardViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_detail_layout, parent, false));
+            case COLLECTION:
+                return new CollectionCardViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.card_collection_layout, parent, false));
             default:
                 throw new RuntimeException("Detail level has not been implemented.");
         }
