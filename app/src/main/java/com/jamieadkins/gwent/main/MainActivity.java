@@ -25,6 +25,7 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.card.CardsPresenter;
+import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Group;
 import com.jamieadkins.gwent.data.Rarity;
@@ -34,12 +35,17 @@ import com.jamieadkins.gwent.deck.DecksContract;
 import com.jamieadkins.gwent.deck.DecksPresenter;
 import com.jamieadkins.gwent.deck.DeckListFragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AuthenticationActivity {
 
     private DecksPresenter mDecksPresenter;
     private CardsContract.View mCardsView;
     private CardsPresenter mCardsPresenter;
-    private CardFilter mCardFilter;
+    private CardsPresenter mCollectionPresenter;
+
+    private Map<Integer, CardFilter> mCardFilters;
 
     private int mCurrentTab;
 
@@ -65,7 +71,9 @@ public class MainActivity extends AuthenticationActivity {
         launchFragment(startingFragment);
         mCardsView = startingFragment;
         mCurrentTab = R.id.tab_card_db;
-        mCardFilter = new CardFilter();
+        mCardFilters = new HashMap<>();
+        mCardFilters.put(R.id.tab_card_db, new CardFilter());
+        mCardFilters.put(R.id.tab_collection, new CardFilter());
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -136,7 +144,11 @@ public class MainActivity extends AuthenticationActivity {
                                 }
 
                                 // Else, if authenticated.
-                                fragment = new ComingSoonFragment();
+                                fragment = new CollectionFragment();
+
+                                mCollectionPresenter = new CardsPresenter((CardsContract.View) fragment,
+                                        new CardsInteractorFirebase());
+                                mCardsView = (CardsContract.View) fragment;
                                 break;
 
                             case R.id.tab_results:
@@ -225,7 +237,7 @@ public class MainActivity extends AuthenticationActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        if (mCurrentTab == R.id.tab_card_db) {
+        if (mCurrentTab == R.id.tab_card_db || mCurrentTab == R.id.tab_collection) {
             inflater.inflate(R.menu.search, menu);
 
             MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
@@ -240,11 +252,11 @@ public class MainActivity extends AuthenticationActivity {
                 public boolean onQueryTextChange(String query) {
                     if (query.equals("")) {
                         // Don't search for everything!
-                        mCardFilter.setSearchQuery(null);
+                        mCardFilters.get(mCurrentTab).setSearchQuery(null);
                         return false;
                     }
 
-                    mCardFilter.setSearchQuery(query);
+                    mCardFilters.get(mCurrentTab).setSearchQuery(query);
                     mCardsView.onCardFilterUpdated();
                     return false;
                 }
@@ -253,7 +265,7 @@ public class MainActivity extends AuthenticationActivity {
             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 @Override
                 public boolean onClose() {
-                    mCardFilter.setSearchQuery(null);
+                    mCardFilters.get(mCurrentTab).setSearchQuery(null);
                     mCardsView.onCardFilterUpdated();
                     return false;
                 }
@@ -281,14 +293,15 @@ public class MainActivity extends AuthenticationActivity {
 
         switch (item.getItemId()) {
             case R.id.filter_reset:
-                mCardFilter.clearFilters();
+                mCardFilters.get(mCurrentTab).clearFilters();
                 mCardsView.onCardFilterUpdated();
                 return true;
             case R.id.filter_faction:
-                boolean[] factions = new boolean[mCardFilter.getFactions().size()];
+                boolean[] factions = new boolean[mCardFilters.get(mCurrentTab).getFactions().size()];
 
-                for (String key : mCardFilter.getFactions().keySet()) {
-                    factions[Faction.CONVERT_STRING.get(key)] = mCardFilter.getFactions().get(key);
+                for (String key : mCardFilters.get(mCurrentTab).getFactions().keySet()) {
+                    factions[Faction.CONVERT_STRING.get(key)] =
+                            mCardFilters.get(mCurrentTab).getFactions().get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -297,16 +310,18 @@ public class MainActivity extends AuthenticationActivity {
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilter.getFactions().put(Faction.CONVERT_INT.get(i), selected);
+                                mCardFilters.get(mCurrentTab)
+                                        .getFactions().put(Faction.CONVERT_INT.get(i), selected);
                                 mCardsView.onCardFilterUpdated();
                             }
                         });
                 break;
             case R.id.filter_rarity:
-                boolean[] rarities = new boolean[mCardFilter.getRarities().size()];
+                boolean[] rarities = new boolean[mCardFilters.get(mCurrentTab).getRarities().size()];
 
-                for (String key : mCardFilter.getRarities().keySet()) {
-                    rarities[Rarity.CONVERT_STRING.get(key)] = mCardFilter.getRarities().get(key);
+                for (String key : mCardFilters.get(mCurrentTab).getRarities().keySet()) {
+                    rarities[Rarity.CONVERT_STRING.get(key)] =
+                            mCardFilters.get(mCurrentTab).getRarities().get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -315,16 +330,16 @@ public class MainActivity extends AuthenticationActivity {
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilter.getRarities().put(Rarity.CONVERT_INT.get(i), selected);
+                                mCardFilters.get(mCurrentTab).getRarities().put(Rarity.CONVERT_INT.get(i), selected);
                                 mCardsView.onCardFilterUpdated();
                             }
                         });
                 break;
             case R.id.filter_type:
-                boolean[] types = new boolean[mCardFilter.getTypes().size()];
+                boolean[] types = new boolean[mCardFilters.get(mCurrentTab).getTypes().size()];
 
-                for (String key : mCardFilter.getTypes().keySet()) {
-                    types[Group.CONVERT_STRING.get(key)] = mCardFilter.getTypes().get(key);
+                for (String key : mCardFilters.get(mCurrentTab).getTypes().keySet()) {
+                    types[Group.CONVERT_STRING.get(key)] = mCardFilters.get(mCurrentTab).getTypes().get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -333,7 +348,8 @@ public class MainActivity extends AuthenticationActivity {
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilter.getTypes().put(Group.CONVERT_INT.get(i), selected);
+                                mCardFilters.get(mCurrentTab)
+                                        .getTypes().put(Group.CONVERT_INT.get(i), selected);
                                 mCardsView.onCardFilterUpdated();
                             }
                         });
@@ -351,6 +367,6 @@ public class MainActivity extends AuthenticationActivity {
     }
 
     public CardFilter getCardFilter() {
-        return mCardFilter;
+        return mCardFilters.get(mCurrentTab);
     }
 }
