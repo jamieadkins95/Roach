@@ -54,4 +54,6 @@
     <string name="pref_licenses">Licenses</string>
     <string name="pref_rxjava">Rxjava</string>
     <string name="pref_glide">Glide</string>
+
+    <string name="transition_card">com.jamieadkins.gwent.transition.card</string>
 </resources>
