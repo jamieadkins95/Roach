@@ -5,8 +5,6 @@ import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 
 /**
@@ -15,9 +13,6 @@ import io.reactivex.Observable;
 
 public interface CardsContract {
     interface View extends BaseView {
-
-        void setLoadingIndicator(boolean active);
-
         void onCardFilterUpdated();
     }
 

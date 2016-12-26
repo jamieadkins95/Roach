@@ -13,8 +13,7 @@ import io.reactivex.Observable;
 
 public interface DecksContract {
     interface View extends BaseView {
-
-        void setLoadingIndicator(boolean active);
+        // Don't need anything here.
     }
 
     interface Presenter extends BasePresenter<View> {
