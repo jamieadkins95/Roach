@@ -2,12 +2,14 @@ package com.jamieadkins.gwent.collection;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.card.BaseCardListFragment;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardsContract;
@@ -21,8 +23,7 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseFragment<CardDetails> implements CardsContract.View {
-    private CardsContract.Presenter mCardsPresenter;
+public class CollectionFragment extends BaseCardListFragment {
 
     public CollectionFragment() {
     }
@@ -34,43 +35,20 @@ public class CollectionFragment extends BaseFragment<CardDetails> implements Car
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card_list, container, false);
-        setupViews(rootView);
-        onLoadData();
-        return rootView;
+    public int getLayoutId() {
+        return R.layout.fragment_collection;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mCardsPresenter.stop();
-    }
+    public void setupViews(View rootView) {
+        super.setupViews(rootView);
 
-    @Override
-    public void onLoadData() {
-        super.onLoadData();
-        CardFilter cardFilter = ((MainActivity) getActivity()).getCardFilter();
-        mCardsPresenter.getCards(cardFilter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
-    }
+        FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.new_keg);
 
-    @Override
-    public void setLoadingIndicator(boolean active) {
-        setLoading(active);
-    }
-
-    @Override
-    public void onCardFilterUpdated() {
-        getRecyclerViewAdapter().clear();
-        onLoadData();
-    }
-
-    @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        mCardsPresenter = presenter;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Open keg.
+            }
+        });
     }
 }
