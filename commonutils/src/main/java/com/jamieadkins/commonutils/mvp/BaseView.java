@@ -1,5 +1,5 @@
 package com.jamieadkins.commonutils.mvp;
 
-public interface BaseView {
-    void setLoadingIndicator(boolean active);
+public interface BaseView<T> {
+    void setPresenter(T presenter);
 }

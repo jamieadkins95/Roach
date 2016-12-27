@@ -6,7 +6,6 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
@@ -18,16 +17,16 @@ import io.reactivex.Observable;
 
 public class DetailPresenter implements DetailContract.Presenter {
     private final CardsInteractor mDetailInteractor;
-    private DetailContract.View mDetailView;
+    private final DetailContract.View mDetailView;
     private String mCardId;
 
-    public DetailPresenter(@NonNull CardsInteractor detailInteractor) {
+    public DetailPresenter(@NonNull DetailContract.View detailView,
+                           @NonNull CardsInteractor detailInteractor) {
         mDetailInteractor = detailInteractor;
         mDetailInteractor.setPresenter(this);
-    }
 
-    public DetailPresenter() {
-        this(new CardsInteractorFirebase());
+        mDetailView = detailView;
+        mDetailView.setPresenter(this);
     }
 
     @Override
@@ -38,16 +37,6 @@ public class DetailPresenter implements DetailContract.Presenter {
     @Override
     public void start() {
 
-    }
-
-    @Override
-    public void bindView(DetailContract.View view) {
-        mDetailView = view;
-    }
-
-    @Override
-    public void unbindView() {
-        mDetailView = null;
     }
 
     @Override

@@ -1,9 +1,5 @@
 package com.jamieadkins.commonutils.mvp;
 
-public interface BasePresenter<T> {
+public interface BasePresenter {
     void start();
-
-    void bindView(T view);
-
-    void unbindView();
 }

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
@@ -17,16 +16,15 @@ import io.reactivex.Observable;
 
 public class DecksPresenter implements DecksContract.Presenter {
     private final DecksInteractor mDecksInteractor;
-    private DecksContract.View mDecksView;
+    private final DecksContract.View mDecksView;
 
-    public DecksPresenter(@NonNull DecksInteractor decksInteractor) {
+    public DecksPresenter(@NonNull DecksContract.View decksView,
+                          @NonNull DecksInteractor decksInteractor) {
         mDecksInteractor = decksInteractor;
         mDecksInteractor.setPresenter(this);
-    }
 
-    public DecksPresenter() {
-        mDecksInteractor = new DecksInteractorFirebase();
-        mDecksInteractor.setPresenter(this);
+        mDecksView = decksView;
+        mDecksView.setPresenter(this);
     }
 
     @Override
@@ -37,16 +35,6 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void start() {
         mDecksView.setLoadingIndicator(true);
-    }
-
-    @Override
-    public void bindView(DecksContract.View view) {
-        mDecksView = view;
-    }
-
-    @Override
-    public void unbindView() {
-        mDecksView = null;
     }
 
     @Override

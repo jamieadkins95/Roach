@@ -9,7 +9,6 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
-import com.jamieadkins.gwent.main.PresenterCache;
 
 /**
  * Shows card image and details.
@@ -17,6 +16,7 @@ import com.jamieadkins.gwent.main.PresenterCache;
 
 public class DetailActivity extends BaseActivity {
     public static final String EXTRA_CARD_ID = "com.jamieadkins.gwent.cardid";
+    private DetailContract.Presenter mDetailsPresenter;
     private String mCardId;
     private boolean mFromUrl = false;
 
@@ -42,6 +42,13 @@ public class DetailActivity extends BaseActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mDetailsPresenter = new DetailPresenter(
+                (DetailContract.View) getSupportFragmentManager().findFragmentById(R.id.fragment),
+                new CardsInteractorFirebase());
+
+        mDetailsPresenter.setCardId(mCardId);
     }
 
     @Override
@@ -61,9 +68,5 @@ public class DetailActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public String getCardId() {
-        return mCardId;
     }
 }

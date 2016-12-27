@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.card;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.main.MainActivity;
-import com.jamieadkins.gwent.main.PresenterFactory;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -20,7 +18,8 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CardListFragment extends BaseCardListFragment {
+public class CardListFragment extends BaseFragment<CardDetails> implements CardsContract.View {
+    private CardsContract.Presenter mCardsPresenter;
 
     public CardListFragment() {
     }
@@ -32,7 +31,43 @@ public class CardListFragment extends BaseCardListFragment {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_card_list;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_card_list, container, false);
+        setupViews(rootView);
+        onLoadData();
+        return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mCardsPresenter.stop();
+    }
+
+    @Override
+    public void onLoadData() {
+        super.onLoadData();
+        CardFilter cardFilter = ((MainActivity) getActivity()).getCardFilter();
+        mCardsPresenter.getCards(cardFilter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getObserver());
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        setLoading(active);
+    }
+
+    @Override
+    public void onCardFilterUpdated() {
+        getRecyclerViewAdapter().clear();
+        onLoadData();
+    }
+
+    @Override
+    public void setPresenter(CardsContract.Presenter presenter) {
+        mCardsPresenter = presenter;
     }
 }

@@ -12,11 +12,12 @@ import io.reactivex.Observable;
  */
 
 public interface DecksContract {
-    interface View extends BaseView {
-        // Don't need anything here.
+    interface View extends BaseView<Presenter> {
+
+        void setLoadingIndicator(boolean active);
     }
 
-    interface Presenter extends BasePresenter<View> {
+    interface Presenter extends BasePresenter {
         Observable<RxDatabaseEvent<Deck>> getDecks();
 
         void stop();
