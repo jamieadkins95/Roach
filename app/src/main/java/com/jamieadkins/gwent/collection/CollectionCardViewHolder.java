@@ -15,27 +15,38 @@ import com.jamieadkins.gwent.data.CardDetails;
 public class CollectionCardViewHolder extends BaseCardViewHolder {
     Button buttonAdd;
     Button buttonRemove;
+    CollectionButtonListener mListener;
 
-    public CollectionCardViewHolder(View view) {
+    public interface CollectionButtonListener {
+        void addCard(String cardId);
+        void removeCard(String cardId);
+    }
+
+    public CollectionCardViewHolder(View view, CollectionButtonListener listener) {
         super(view);
         buttonAdd = (Button) view.findViewById(R.id.add_card);
         buttonRemove = (Button) view.findViewById(R.id.remove_card);
+        mListener = listener;
     }
 
     @Override
-    public void bindItem(CardDetails item) {
+    public void bindItem(final CardDetails item) {
         super.bindItem(item);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("JAMIEA", "Add card");
+                if (mListener != null) {
+                    mListener.addCard(item.getCardid());
+                }
             }
         });
         buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("JAMIEA", "Remove card");
+                if (mListener != null) {
+                    mListener.removeCard(item.getCardid());
+                }
             }
         });
     }

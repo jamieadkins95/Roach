@@ -18,7 +18,6 @@ public class CardRecyclerViewAdapter extends BaseRecyclerViewAdapter<CardDetails
     public enum Detail {
         SMALL,
         LARGE,
-        COLLECTION
     }
 
     public CardRecyclerViewAdapter(Detail detail) {
@@ -40,9 +39,6 @@ public class CardRecyclerViewAdapter extends BaseRecyclerViewAdapter<CardDetails
             case LARGE:
                 return new BaseCardViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_detail_layout, parent, false));
-            case COLLECTION:
-                return new CollectionCardViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.card_collection_layout, parent, false));
             default:
                 throw new RuntimeException("Detail level has not been implemented.");
         }
