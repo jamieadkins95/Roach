@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
-        implements CardsContract.View {
+        implements CardFilterListener {
     private CardsContract.Presenter mCardsPresenter;
     private boolean mDataLoaded = false;
 
@@ -47,6 +47,12 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     }
 
     @Override
+    public void onCardFilterUpdated() {
+        getRecyclerViewAdapter().clear();
+        onLoadData();
+    }
+
+    @Override
     public void onLoadData() {
         super.onLoadData();
         CardFilter cardFilter = ((MainActivity) getActivity()).getCardFilter();
@@ -57,20 +63,7 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
         mDataLoaded = true;
     }
 
-    @Override
-    public void setLoadingIndicator(boolean active) {
-        setLoading(active);
-    }
-
-    @Override
-    public void onCardFilterUpdated() {
-        getRecyclerViewAdapter().clear();
-        onLoadData();
-    }
-
-
-    @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        mCardsPresenter = presenter;
+    public void setCardsPresenter(CardsContract.Presenter cardsPresenter) {
+        mCardsPresenter = cardsPresenter;
     }
 }

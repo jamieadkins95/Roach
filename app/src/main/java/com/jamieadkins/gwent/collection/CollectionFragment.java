@@ -13,7 +13,8 @@ import com.jamieadkins.gwent.card.BaseCardListFragment;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment {
+public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
+    CollectionContract.Presenter mPresenter;
 
     public CollectionFragment() {
     }
@@ -21,7 +22,8 @@ public class CollectionFragment extends BaseCardListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new CollectionRecyclerViewAdapter(new CollectionCardViewHolder.CollectionButtonListener() {
+        setRecyclerViewAdapter(new CollectionRecyclerViewAdapter(
+                new CollectionCardViewHolder.CollectionButtonListener() {
             @Override
             public void addCard(String cardId) {
                 Toast.makeText(getContext(), "Add " + cardId, Toast.LENGTH_SHORT).show();
@@ -50,5 +52,16 @@ public class CollectionFragment extends BaseCardListFragment {
                 // Open keg.
             }
         });
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        setLoading(active);
+    }
+
+    @Override
+    public void setPresenter(CollectionContract.Presenter presenter) {
+        setCardsPresenter(presenter);
+        mPresenter = presenter;
     }
 }

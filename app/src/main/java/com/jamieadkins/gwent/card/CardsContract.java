@@ -17,8 +17,6 @@ public interface CardsContract {
     interface View extends BaseView<Presenter> {
 
         void setLoadingIndicator(boolean active);
-
-        void onCardFilterUpdated();
     }
 
     interface Presenter extends BasePresenter {
