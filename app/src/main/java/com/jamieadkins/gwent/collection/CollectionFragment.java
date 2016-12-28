@@ -8,6 +8,12 @@ import android.widget.Toast;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.BaseCardListFragment;
+import com.jamieadkins.gwent.data.Collection;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -15,6 +21,7 @@ import com.jamieadkins.gwent.card.BaseCardListFragment;
 
 public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
     CollectionContract.Presenter mPresenter;
+    CollectionRecyclerViewAdapter mAdapter;
 
     public CollectionFragment() {
     }
@@ -22,18 +29,19 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new CollectionRecyclerViewAdapter(
+        mAdapter = new CollectionRecyclerViewAdapter(
                 new CollectionCardViewHolder.CollectionButtonListener() {
-            @Override
-            public void addCard(String cardId) {
-                Toast.makeText(getContext(), "Add " + cardId, Toast.LENGTH_SHORT).show();
-            }
+                    @Override
+                    public void addCard(String cardId) {
+                        Toast.makeText(getContext(), "Add " + cardId, Toast.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void removeCard(String cardId) {
-                Toast.makeText(getContext(), "Remove " + cardId, Toast.LENGTH_SHORT).show();
-            }
-        }));
+                    @Override
+                    public void removeCard(String cardId) {
+                        Toast.makeText(getContext(), "Remove " + cardId, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        setRecyclerViewAdapter(mAdapter);
     }
 
     @Override
@@ -52,6 +60,35 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                 // Open keg.
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mPresenter.getCollection()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Collection>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Collection value) {
+                        mAdapter.setCollection(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

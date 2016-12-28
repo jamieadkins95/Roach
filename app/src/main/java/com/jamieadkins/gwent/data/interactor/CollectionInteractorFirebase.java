@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.data.Collection;
 import com.jamieadkins.gwent.data.Deck;
@@ -60,6 +61,29 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
 
     @Override
     public Observable<Collection> getCollection() {
-        return null;
+        return Observable.defer(new Callable<ObservableSource<? extends Collection>>() {
+            @Override
+            public ObservableSource<? extends Collection> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<Collection>() {
+                    @Override
+                    public void subscribe(final ObservableEmitter<Collection> emitter) throws Exception {
+                        ValueEventListener collectionListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Collection collection = dataSnapshot.getValue(Collection.class);
+                                emitter.onNext(collection);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        mCollectionReference.addValueEventListener(collectionListener);
+                    }
+                });
+            }
+        });
     }
 }

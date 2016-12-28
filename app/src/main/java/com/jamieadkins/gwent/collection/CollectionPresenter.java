@@ -48,7 +48,7 @@ public class CollectionPresenter implements CollectionContract.Presenter {
 
     @Override
     public Observable<Collection> getCollection() {
-        return null;
+        return mCollectionInteractor.getCollection();
     }
 
     @Override

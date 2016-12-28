@@ -14,7 +14,7 @@ public class Collection {
     private Map<String, Integer> cards;
 
     public Collection() {
-        // Required empty constructor for Firebase.
+        cards = new HashMap<>();
     }
 
     public Map<String, Integer> getCards() {

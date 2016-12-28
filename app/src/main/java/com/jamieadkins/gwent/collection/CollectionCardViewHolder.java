@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.collection;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.BaseCardViewHolder;
@@ -13,9 +14,10 @@ import com.jamieadkins.gwent.data.CardDetails;
  */
 
 public class CollectionCardViewHolder extends BaseCardViewHolder {
-    Button buttonAdd;
-    Button buttonRemove;
-    CollectionButtonListener mListener;
+    private Button buttonAdd;
+    private Button buttonRemove;
+    private TextView collectionCount;
+    private CollectionButtonListener mListener;
 
     public interface CollectionButtonListener {
         void addCard(String cardId);
@@ -26,6 +28,7 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
         super(view);
         buttonAdd = (Button) view.findViewById(R.id.add_card);
         buttonRemove = (Button) view.findViewById(R.id.remove_card);
+        collectionCount = (TextView) view.findViewById(R.id.collection_count);
         mListener = listener;
     }
 
@@ -49,5 +52,10 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
                 }
             }
         });
+    }
+
+    public void setItemCount(int count) {
+        collectionCount.setText(String.format(
+                collectionCount.getContext().getString(R.string.in_collection), count));
     }
 }
