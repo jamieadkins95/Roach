@@ -57,6 +57,14 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
     }
 
     public void setItemCount(int count) {
+
+        // Hide remove button if there are already 0 cards in collection.
+        if (count > 0) {
+            buttonRemove.setVisibility(View.VISIBLE);
+        } else {
+            buttonRemove.setVisibility(View.INVISIBLE);
+        }
+
         collectionCount.setText(String.format(
                 collectionCount.getContext().getString(R.string.in_collection), count));
     }

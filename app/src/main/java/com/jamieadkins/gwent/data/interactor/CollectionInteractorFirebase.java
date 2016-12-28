@@ -50,13 +50,65 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
     }
 
     @Override
-    public void addCardToCollection(String cardId) {
+    public void addCardToCollection(final String cardId) {
+        // Transactions will ensure concurrency errors don't occur.
+        mCollectionReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Collection storedCollection = mutableData.getValue(Collection.class);
 
+                if (storedCollection.getCards().containsKey(cardId)) {
+                    // If the user already has at least one of these cards in their deck.
+                    int currentCardCount = storedCollection.getCards().get(cardId);
+                    storedCollection.getCards().put(cardId, currentCardCount + 1);
+                } else {
+                    // Else add one card to the deck.
+                    storedCollection.getCards().put(cardId, 1);
+                }
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedCollection);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 
     @Override
-    public void removeCardFromCollection(String cardId) {
+    public void removeCardFromCollection(final String cardId) {
+        // Transactions will ensure concurrency errors don't occur.
+        mCollectionReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Collection storedCollection = mutableData.getValue(Collection.class);
 
+                if (storedCollection.getCards().containsKey(cardId)) {
+                    // If the user already has at least one of these cards in their deck.
+                    int currentCardCount = storedCollection.getCards().get(cardId);
+                    // Can't have a negative card amount.
+                    storedCollection.getCards().put(cardId, Math.max(currentCardCount - 1, 0));
+                } else {
+                    // This deck doesn't have that card in it.
+                }
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedCollection);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 
     @Override

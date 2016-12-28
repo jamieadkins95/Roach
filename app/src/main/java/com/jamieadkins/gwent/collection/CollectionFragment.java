@@ -33,12 +33,12 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                 new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
                     public void addCard(String cardId) {
-                        Toast.makeText(getContext(), "Add " + cardId, Toast.LENGTH_SHORT).show();
+                        mPresenter.addCard(cardId);
                     }
 
                     @Override
                     public void removeCard(String cardId) {
-                        Toast.makeText(getContext(), "Remove " + cardId, Toast.LENGTH_SHORT).show();
+                        mPresenter.removeCard(cardId);
                     }
                 });
         setRecyclerViewAdapter(mAdapter);

@@ -22,5 +22,9 @@ public interface CollectionContract {
 
     interface Presenter extends CardsContract.Presenter {
         Observable<Collection> getCollection();
+
+        void addCard(String cardId);
+
+        void removeCard(String cardId);
     }
 }
