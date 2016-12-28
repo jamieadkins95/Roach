@@ -31,21 +31,25 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
         getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getView().getContext(), DetailActivity.class);
-                intent.putExtra(DetailActivity.EXTRA_CARD_ID, item.getCardid());
-
-                String transitionName = getView().getContext().getString(R.string.transition_card);
-
-                ActivityOptionsCompat options =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                (Activity) getView().getContext(),
-                                getView(),
-                                transitionName
-                        );
-
-                // Show details using transition animation.
-                ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
+                launchDetailActivity();
             }
         });
+    }
+
+    public void launchDetailActivity() {
+        Intent intent = new Intent(getView().getContext(), DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getCardid());
+
+        String transitionName = getView().getContext().getString(R.string.transition_card);
+
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) getView().getContext(),
+                        getView(),
+                        transitionName
+                );
+
+        // Show details using transition animation.
+        ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
     }
 }

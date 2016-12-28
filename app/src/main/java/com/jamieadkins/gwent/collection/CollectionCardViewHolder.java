@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.collection;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.detail.DetailActivity;
 
 /**
  * Includes buttons to add and remove cards from a collection.
@@ -57,5 +59,12 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
     public void setItemCount(int count) {
         collectionCount.setText(String.format(
                 collectionCount.getContext().getString(R.string.in_collection), count));
+    }
+
+    @Override
+    public void launchDetailActivity() {
+        Intent intent = new Intent(getView().getContext(), DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getCardid());
+        getView().getContext().startActivity(intent);
     }
 }
