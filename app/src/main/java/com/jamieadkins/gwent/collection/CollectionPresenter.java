@@ -38,7 +38,7 @@ public class CollectionPresenter implements CollectionContract.Presenter {
 
     @Override
     public void stop() {
-
+        mCollectionInteractor.stopCollectionUpdates();
     }
 
     @Override

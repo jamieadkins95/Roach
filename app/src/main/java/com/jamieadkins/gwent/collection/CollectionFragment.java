@@ -63,8 +63,8 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onLoadData() {
+        super.onLoadData();
         mPresenter.getCollection()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -100,5 +100,11 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     public void setPresenter(CollectionContract.Presenter presenter) {
         setCardsPresenter(presenter);
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.stop();
     }
 }

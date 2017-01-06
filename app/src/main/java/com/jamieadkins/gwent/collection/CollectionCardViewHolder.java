@@ -68,11 +68,4 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
         collectionCount.setText(String.format(
                 collectionCount.getContext().getString(R.string.in_collection), count));
     }
-
-    @Override
-    public void launchDetailActivity() {
-        Intent intent = new Intent(getView().getContext(), DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getCardid());
-        getView().getContext().startActivity(intent);
-    }
 }

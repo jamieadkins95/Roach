@@ -17,4 +17,6 @@ public interface CollectionInteractor extends BaseInteractor<CollectionContract.
     void removeCardFromCollection(String cardId);
 
     Observable<Collection> getCollection();
+
+    void stopCollectionUpdates();
 }

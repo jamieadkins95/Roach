@@ -41,12 +41,6 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        mCardsPresenter.stop();
-    }
-
-    @Override
     public void onCardFilterUpdated() {
         getRecyclerViewAdapter().clear();
         onLoadData();

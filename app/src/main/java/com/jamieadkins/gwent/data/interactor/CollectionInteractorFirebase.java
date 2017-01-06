@@ -35,6 +35,7 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
     private CollectionContract.Presenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCollectionReference;
+    private ValueEventListener mCollectionListener;
 
     private final String databasePath;
 
@@ -119,7 +120,7 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
                 return Observable.create(new ObservableOnSubscribe<Collection>() {
                     @Override
                     public void subscribe(final ObservableEmitter<Collection> emitter) throws Exception {
-                        ValueEventListener collectionListener = new ValueEventListener() {
+                        mCollectionListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Collection collection = dataSnapshot.getValue(Collection.class);
@@ -132,10 +133,15 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
                             }
                         };
 
-                        mCollectionReference.addValueEventListener(collectionListener);
+                        mCollectionReference.addValueEventListener(mCollectionListener);
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void stopCollectionUpdates() {
+        mCollectionReference.removeEventListener(mCollectionListener);
     }
 }
