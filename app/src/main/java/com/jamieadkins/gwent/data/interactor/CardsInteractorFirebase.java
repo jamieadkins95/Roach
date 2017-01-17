@@ -31,7 +31,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
 
     public CardsInteractorFirebase() {
-        databasePath = "card-data/v0-8-33";
+        databasePath = "card-data/v0-8-37";
         mCardsReference = mDatabase.getReference(databasePath);
     }
 
@@ -63,10 +63,16 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
+                                    boolean typeFilter;
+                                    if (cardDetails.getType() == null) {
+                                        typeFilter = true;
+                                    } else {
+                                        typeFilter = filter.getTypes().get(cardDetails.getType());
+                                    }
                                     // Only add card if the card meets all the filters.
                                     if (filter.getFactions().get(cardDetails.getFaction()) &&
                                             filter.getRarities().get(cardDetails.getRarity()) &&
-                                            filter.getTypes().get(cardDetails.getType())) {
+                                            typeFilter) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),

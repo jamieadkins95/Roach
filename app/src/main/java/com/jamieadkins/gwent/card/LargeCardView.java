@@ -58,8 +58,13 @@ public class LargeCardView extends SimpleCardView {
         setDescription(cardDetails.getInfo());
         setFaction(cardDetails.getFaction());
         setRarity(cardDetails.getRarity());
-        setLoyalty(cardDetails.getLoyalty());
-        setType(cardDetails.getType());
+        if (cardDetails.getLoyalty() != null) {
+            setLoyalty(cardDetails.getLoyalty().get(0));
+        }
+        if (cardDetails.getType() != null) {
+            setType(cardDetails.getType());
+        }
+
         setStrength(cardDetails.getStrength());
     }
 

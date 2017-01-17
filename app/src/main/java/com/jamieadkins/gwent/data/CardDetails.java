@@ -4,6 +4,7 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,41 +16,25 @@ public class CardDetails {
     private String name;
     private String info;
     private String faction;
-    private String rarity;
-    private Map<String, Boolean> position;
+    private List<String> lane;
     private String type;
-    private String loyalty;
+    private List<String> loyalty;
     private String group;
-    private String image;
     private String strength;
+    private Map<String, String> craft;
+    private Map<String, String> mill;
     private boolean collectible;
+    private String flavor;
+    private List<Variation> variations;
+    private List<String> category;
+
 
     public CardDetails() {
         // Required empty constructor for Firebase.
     }
 
-    public CardDetails(String cardid, String name, String info, String faction, String rarity,
-                       Map<String, Boolean> position, String group, String strength, String type,
-                       String loyalty, String image) {
-        this.cardid = cardid;
-        this.name = name;
-        this.info = info;
-        this.rarity = rarity;
-        this.faction = faction;
-        this.position = position;
-        this.group = group;
-        this.strength = strength;
-        this.type = type;
-        this.image = image;
-        this.loyalty = loyalty;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getImage() {
-        return image;
     }
 
     public String getFaction() {
@@ -64,19 +49,11 @@ public class CardDetails {
         return info;
     }
 
-    public String getRarity() {
-        return rarity;
-    }
-
-    public Map<String, Boolean> getPosition() {
-        return position;
-    }
-
     public String getType() {
         return type;
     }
 
-    public String getLoyalty() {
+    public List<String> getLoyalty() {
         return loyalty;
     }
 
@@ -92,6 +69,40 @@ public class CardDetails {
         return collectible;
     }
 
+    public List<String> getLane() {
+        return lane;
+    }
+
+    public Map<String, String> getCraft() {
+        return craft;
+    }
+
+    public Map<String, String> getMill() {
+        return mill;
+    }
+
+    public String getFlavor() {
+        return flavor;
+    }
+
+    public List<Variation> getVariations() {
+        return variations;
+    }
+
+    @Exclude
+    public String getImage() {
+        return variations.get(0).getArt().getFullsizeImageUrl();
+    }
+
+    @Exclude
+    public String getRarity() {
+        return variations.get(0).getRarity();
+    }
+
+    public List<String> getCategory() {
+        return category;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -99,15 +110,70 @@ public class CardDetails {
         result.put("name", name);
         result.put("faction", faction);
         result.put("info", info);
-        result.put("rarity", rarity);
-        result.put("position", position);
+        result.put("lane", lane);
         result.put("group", group);
         result.put("strength", strength);
         result.put("type", type);
-        result.put("image", image);
         result.put("loyalty", loyalty);
         result.put("collectible", collectible);
+        result.put("lane", lane);
+        result.put("craft", craft);
+        result.put("mill", mill);
+        result.put("flavor", flavor);
+        result.put("variations", variations);
+        result.put("category", category);
 
         return result;
+    }
+
+    public static class Variation {
+
+        private String availability;
+        private String rarity;
+        private Art art;
+
+        public Variation() {
+            // Required empty constructor for Firebase.
+        }
+
+        public String getAvailability() {
+            return availability;
+        }
+
+        public String getRarity() {
+            return rarity;
+        }
+
+        public Art getArt() {
+            return art;
+        }
+
+        @Exclude
+        public Map<String, Object> toMap() {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("availability", availability);
+            result.put("rarity", rarity);
+            result.put("art", art);
+            return result;
+        }
+    }
+
+    public static class Art {
+        private String fullsizeImageUrl;
+
+        public Art() {
+            // Required empty constructor for Firebase.
+        }
+
+        public String getFullsizeImageUrl() {
+            return fullsizeImageUrl;
+        }
+
+        @Exclude
+        public Map<String, Object> toMap() {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("fullsizeImageUrl", fullsizeImageUrl);
+            return result;
+        }
     }
 }
