@@ -63,16 +63,11 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
-                                    boolean typeFilter;
-                                    if (cardDetails.getType() == null) {
-                                        typeFilter = true;
-                                    } else {
-                                        typeFilter = filter.getTypes().get(cardDetails.getType());
-                                    }
                                     // Only add card if the card meets all the filters.
-                                    if (filter.getFactions().get(cardDetails.getFaction()) &&
-                                            filter.getRarities().get(cardDetails.getRarity()) &&
-                                            typeFilter) {
+                                    // Also check name and info are not null. Those are dud cards.
+                                    if (filter.get(cardDetails.getFaction()) &&
+                                            filter.get(cardDetails.getRarity()) &&
+                                            filter.get(cardDetails.getType())) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),

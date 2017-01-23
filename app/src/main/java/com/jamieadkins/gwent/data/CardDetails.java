@@ -12,22 +12,17 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CardDetails {
-    private String cardid;
+    private String ingameId;
     private String name;
     private String info;
     private String faction;
     private List<String> lane;
     private String type;
     private List<String> loyalty;
-    private String group;
-    private String strength;
-    private Map<String, String> craft;
-    private Map<String, String> mill;
-    private boolean collectible;
+    private int strength;
     private String flavor;
-    private List<Variation> variations;
+    private Map<String, Variation> variations;
     private List<String> category;
-
 
     public CardDetails() {
         // Required empty constructor for Firebase.
@@ -41,8 +36,8 @@ public class CardDetails {
         return faction;
     }
 
-    public String getCardid() {
-        return cardid;
+    public String getIngameId() {
+        return ingameId;
     }
 
     public String getInfo() {
@@ -57,73 +52,42 @@ public class CardDetails {
         return loyalty;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public String getStrength() {
+    public int getStrength() {
         return strength;
-    }
-
-    public boolean isCollectible() {
-        return collectible;
     }
 
     public List<String> getLane() {
         return lane;
     }
 
-    public Map<String, String> getCraft() {
-        return craft;
-    }
-
-    public Map<String, String> getMill() {
-        return mill;
-    }
-
     public String getFlavor() {
         return flavor;
     }
 
-    public List<Variation> getVariations() {
+    public Map<String, Variation> getVariations() {
         return variations;
     }
 
     @Exclude
     public String getImage() {
-        return variations.get(0).getArt().getFullsizeImageUrl();
+        for (String key : variations.keySet()) {
+            return variations.get(key).getArt().getFullsizeImageUrl();
+        }
+
+        return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
     }
 
     @Exclude
     public String getRarity() {
-        return variations.get(0).getRarity();
+        for (String key : variations.keySet()) {
+            return variations.get(key).getRarity();
+        }
+
+        return Rarity.COMMON;
     }
 
     public List<String> getCategory() {
         return category;
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("cardid", cardid);
-        result.put("name", name);
-        result.put("faction", faction);
-        result.put("info", info);
-        result.put("lane", lane);
-        result.put("group", group);
-        result.put("strength", strength);
-        result.put("type", type);
-        result.put("loyalty", loyalty);
-        result.put("collectible", collectible);
-        result.put("lane", lane);
-        result.put("craft", craft);
-        result.put("mill", mill);
-        result.put("flavor", flavor);
-        result.put("variations", variations);
-        result.put("category", category);
-
-        return result;
     }
 
     public static class Variation {
@@ -131,6 +95,10 @@ public class CardDetails {
         private String availability;
         private String rarity;
         private Art art;
+        private Map<String, Integer> craft;
+        private Map<String, Integer> mill;
+        private boolean collectible;
+        private String variationId;
 
         public Variation() {
             // Required empty constructor for Firebase.
@@ -148,18 +116,27 @@ public class CardDetails {
             return art;
         }
 
-        @Exclude
-        public Map<String, Object> toMap() {
-            HashMap<String, Object> result = new HashMap<>();
-            result.put("availability", availability);
-            result.put("rarity", rarity);
-            result.put("art", art);
-            return result;
+        public Map<String, Integer> getCraft() {
+            return craft;
+        }
+
+        public Map<String, Integer> getMill() {
+            return mill;
+        }
+
+        public boolean isCollectible() {
+            return collectible;
+        }
+
+        public String getVariationId() {
+            return variationId;
         }
     }
 
     public static class Art {
         private String fullsizeImageUrl;
+        private String thumbnailImageUrl;
+        private String artist;
 
         public Art() {
             // Required empty constructor for Firebase.
@@ -169,11 +146,12 @@ public class CardDetails {
             return fullsizeImageUrl;
         }
 
-        @Exclude
-        public Map<String, Object> toMap() {
-            HashMap<String, Object> result = new HashMap<>();
-            result.put("fullsizeImageUrl", fullsizeImageUrl);
-            return result;
+        public String getArtist() {
+            return artist;
+        }
+
+        public String getThumbnailImageUrl() {
+            return thumbnailImageUrl;
         }
     }
 }

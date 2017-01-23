@@ -15,9 +15,12 @@ import java.util.Map;
 public class Faction {
     public static final String NORTHERN_REALMS = "Northern Realms";
     public static final String SKELLIGE = "Skellige";
-    public static final String MONSTERS = "Monsters";
-    public static final String SCOIATAEL = "Scoia'tael";
+    public static final String MONSTERS = "Monster";
+    public static final String SCOIATAEL = "Scoiatael";
     public static final String NEUTRAL = "Neutral";
+
+    public static final String[] ALL_FACTIONS = new String[] {
+            MONSTERS, NEUTRAL, NORTHERN_REALMS, SCOIATAEL, SKELLIGE};
 
     public static final Map<Integer, String> CONVERT_INT;
     public static final Map<String, Integer> CONVERT_STRING;

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Group;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.Rarity;
 
 /**
@@ -65,7 +65,7 @@ public class LargeCardView extends SimpleCardView {
             setType(cardDetails.getType());
         }
 
-        setStrength(cardDetails.getStrength());
+        setStrength(String.valueOf(cardDetails.getStrength()));
     }
 
     private void setType(String type) {
@@ -73,16 +73,16 @@ public class LargeCardView extends SimpleCardView {
 
         int typeColor;
         switch (type) {
-            case Group.BRONZE:
+            case Type.BRONZE:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.bronze);
                 break;
-            case Group.SILVER:
+            case Type.SILVER:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.silver);
                 break;
-            case Group.GOLD:
+            case Type.GOLD:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.gold);
                 break;
-            case Group.LEADER:
+            case Type.LEADER:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.gold);
                 break;
             default:
