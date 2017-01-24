@@ -1,6 +1,6 @@
 # Roach for Gwent
 
-Android Application that helps you manage your decks and collection, as well as tracking your results. Download the beta [here](https://play.google.com/store/apps/details?id=com.jamieadkins.gwent)
+Android Application that helps you manage your decks and collection, as well as tracking your results. Download the beta [here](https://play.google.com/store/apps/details?id=com.jamieadkins.gwent).
 
 # Gwent Card Scraper
 
