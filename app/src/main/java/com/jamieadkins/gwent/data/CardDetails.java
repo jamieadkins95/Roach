@@ -21,6 +21,7 @@ public class CardDetails {
     private List<String> loyalty;
     private int strength;
     private String flavor;
+    private boolean released;
     private Map<String, Variation> variations;
     private List<String> category;
 
@@ -62,6 +63,10 @@ public class CardDetails {
 
     public String getFlavor() {
         return flavor;
+    }
+
+    public boolean isReleased() {
+        return released;
     }
 
     public Map<String, Variation> getVariations() {

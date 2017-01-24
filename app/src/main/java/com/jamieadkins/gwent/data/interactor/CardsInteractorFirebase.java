@@ -67,7 +67,8 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                     // Also check name and info are not null. Those are dud cards.
                                     if (filter.get(cardDetails.getFaction()) &&
                                             filter.get(cardDetails.getRarity()) &&
-                                            filter.get(cardDetails.getType())) {
+                                            filter.get(cardDetails.getType()) &&
+                                            cardDetails.isReleased()) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),
