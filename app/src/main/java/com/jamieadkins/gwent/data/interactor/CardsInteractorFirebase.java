@@ -33,6 +33,8 @@ public class CardsInteractorFirebase implements CardsInteractor {
     public CardsInteractorFirebase() {
         databasePath = "card-data/v0-8-37";
         mCardsReference = mDatabase.getReference(databasePath);
+        // Keep Cards data in cache at all times.
+        mCardsReference.keepSynced(true);
     }
 
     @Override
