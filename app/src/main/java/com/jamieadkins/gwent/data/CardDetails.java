@@ -4,6 +4,7 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,103 +12,151 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CardDetails {
-    private String cardid;
+    private String ingameId;
     private String name;
     private String info;
     private String faction;
-    private String rarity;
-    private Map<String, Boolean> position;
+    private List<String> lane;
     private String type;
-    private String loyalty;
-    private String group;
-    private String image;
-    private String strength;
-    private boolean collectible;
+    private List<String> loyalty;
+    private int strength;
+    private String flavor;
+    private boolean released;
+    private Map<String, Variation> variations;
+    private List<String> category;
 
     public CardDetails() {
         // Required empty constructor for Firebase.
-    }
-
-    public CardDetails(String cardid, String name, String info, String faction, String rarity,
-                       Map<String, Boolean> position, String group, String strength, String type,
-                       String loyalty, String image) {
-        this.cardid = cardid;
-        this.name = name;
-        this.info = info;
-        this.rarity = rarity;
-        this.faction = faction;
-        this.position = position;
-        this.group = group;
-        this.strength = strength;
-        this.type = type;
-        this.image = image;
-        this.loyalty = loyalty;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getImage() {
-        return image;
-    }
-
     public String getFaction() {
         return faction;
     }
 
-    public String getCardid() {
-        return cardid;
+    public String getIngameId() {
+        return ingameId;
     }
 
     public String getInfo() {
         return info;
     }
 
-    public String getRarity() {
-        return rarity;
-    }
-
-    public Map<String, Boolean> getPosition() {
-        return position;
-    }
-
     public String getType() {
         return type;
     }
 
-    public String getLoyalty() {
+    public List<String> getLoyalty() {
         return loyalty;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public String getStrength() {
+    public int getStrength() {
         return strength;
     }
 
-    public boolean isCollectible() {
-        return collectible;
+    public List<String> getLane() {
+        return lane;
+    }
+
+    public String getFlavor() {
+        return flavor;
+    }
+
+    public boolean isReleased() {
+        return released;
+    }
+
+    public Map<String, Variation> getVariations() {
+        return variations;
     }
 
     @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("cardid", cardid);
-        result.put("name", name);
-        result.put("faction", faction);
-        result.put("info", info);
-        result.put("rarity", rarity);
-        result.put("position", position);
-        result.put("group", group);
-        result.put("strength", strength);
-        result.put("type", type);
-        result.put("image", image);
-        result.put("loyalty", loyalty);
-        result.put("collectible", collectible);
+    public String getImage() {
+        for (String key : variations.keySet()) {
+            return variations.get(key).getArt().getFullsizeImageUrl();
+        }
 
-        return result;
+        return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
+    }
+
+    @Exclude
+    public String getRarity() {
+        for (String key : variations.keySet()) {
+            return variations.get(key).getRarity();
+        }
+
+        return Rarity.COMMON;
+    }
+
+    public List<String> getCategory() {
+        return category;
+    }
+
+    public static class Variation {
+
+        private String availability;
+        private String rarity;
+        private Art art;
+        private Map<String, Integer> craft;
+        private Map<String, Integer> mill;
+        private boolean collectible;
+        private String variationId;
+
+        public Variation() {
+            // Required empty constructor for Firebase.
+        }
+
+        public String getAvailability() {
+            return availability;
+        }
+
+        public String getRarity() {
+            return rarity;
+        }
+
+        public Art getArt() {
+            return art;
+        }
+
+        public Map<String, Integer> getCraft() {
+            return craft;
+        }
+
+        public Map<String, Integer> getMill() {
+            return mill;
+        }
+
+        public boolean isCollectible() {
+            return collectible;
+        }
+
+        public String getVariationId() {
+            return variationId;
+        }
+    }
+
+    public static class Art {
+        private String fullsizeImageUrl;
+        private String thumbnailImageUrl;
+        private String artist;
+
+        public Art() {
+            // Required empty constructor for Firebase.
+        }
+
+        public String getFullsizeImageUrl() {
+            return fullsizeImageUrl;
+        }
+
+        public String getArtist() {
+            return artist;
+        }
+
+        public String getThumbnailImageUrl() {
+            return thumbnailImageUrl;
+        }
     }
 }

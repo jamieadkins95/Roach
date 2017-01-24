@@ -1,27 +1,37 @@
 package com.jamieadkins.gwent.data;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Contains all of the possible types.
+ * Contains all of the possible groups.
  */
 
 public class Type {
-    public static final String AMBUSH = "common";
-    public static final String BLUE_STRIPES = "blue-stripes";
-    public static final String BREEDABLE = "breedable";
-    public static final String DRAGON = "dragon";
-    public static final String DRYAD = "dryad";
-    public static final String DWARF = "dwarf";
-    public static final String ELF = "elf";
-    public static final String FLEETING = "fleeting";
-    public static final String MAGE = "mage";
-    public static final String PERMADEATH = "permadeath";
-    public static final String POTION = "potion";
-    public static final String RELENTLESS = "relentless";
-    public static final String SHAPESHIFTER = "shapeshifter";
-    public static final String SPECIAL = "special";
-    public static final String VAMPIRE = "vampire";
-    public static final String VODYANOI = "vodyanoi";
-    public static final String WEATHER = "weather";
-    public static final String WILD_HUNT = "wild-hunt";
-    public static final String WITCHER = "witcher";
+    public static final String BRONZE = "Bronze";
+    public static final String SILVER = "Silver";
+    public static final String GOLD = "Gold";
+    public static final String LEADER = "Leader";
+
+    public static final String[] ALL_TYPES = new String[] {BRONZE, SILVER, GOLD, LEADER};
+
+    public static final Map<Integer, String> CONVERT_INT;
+    public static final Map<String, Integer> CONVERT_STRING;
+
+    static {
+        Map<Integer, String> intToString = new HashMap<>();
+        intToString.put(0, BRONZE);
+        intToString.put(1, SILVER);
+        intToString.put(2, GOLD);
+        intToString.put(3, LEADER);
+        CONVERT_INT = Collections.unmodifiableMap(intToString);
+
+        Map<String, Integer> stringToInt = new HashMap<>();
+        stringToInt.put(BRONZE, 0);
+        stringToInt.put(SILVER, 1);
+        stringToInt.put(GOLD, 2);
+        stringToInt.put(LEADER, 3);
+        CONVERT_STRING = Collections.unmodifiableMap(stringToInt);
+    }
 }

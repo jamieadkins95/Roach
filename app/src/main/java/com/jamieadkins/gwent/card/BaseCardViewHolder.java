@@ -38,7 +38,7 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
 
     public void launchDetailActivity() {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getCardid());
+        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getIngameId());
 
         String transitionName = getView().getContext().getString(R.string.transition_card);
 

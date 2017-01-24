@@ -1,8 +1,9 @@
 package com.jamieadkins.gwent.card;
 
+import com.facebook.internal.FetchedAppSettings;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Group;
 import com.jamieadkins.gwent.data.Rarity;
+import com.jamieadkins.gwent.data.Type;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,33 +14,25 @@ import java.util.Map;
 
 public class CardFilter {
     private String mSearchQuery;
-    private Map<String, Boolean> mFactions;
-    private Map<String, Boolean> mTypes;
-    private Map<String, Boolean> mRarities;
+    private Map<String, Boolean> mFilters;
 
-    private boolean mCollectableOnly = false;
+    private boolean mCollectibleOnly = false;
 
     public CardFilter() {
         mSearchQuery = null;
-        mFactions = new HashMap<>();
-        mTypes = new HashMap<>();
-        mRarities = new HashMap<>();
+        mFilters = new HashMap<>();
 
-        mRarities.put(Rarity.COMMON, true);
-        mRarities.put(Rarity.RARE, true);
-        mRarities.put(Rarity.EPIC, true);
-        mRarities.put(Rarity.LEGENDARY, true);
+        for (String rarity : Rarity.ALL_RARITIES) {
+            mFilters.put(rarity, true);
+        }
 
-        mTypes.put(Group.BRONZE, true);
-        mTypes.put(Group.SILVER, true);
-        mTypes.put(Group.GOLD, true);
-        mTypes.put(Group.LEADER, true);
+        for (String type : Type.ALL_TYPES) {
+            mFilters.put(type, true);
+        }
 
-        mFactions.put(Faction.NEUTRAL, true);
-        mFactions.put(Faction.NORTHERN_REALMS, true);
-        mFactions.put(Faction.SKELLIGE, true);
-        mFactions.put(Faction.SCOIATAEL, true);
-        mFactions.put(Faction.MONSTERS, true);
+        for (String faction : Faction.ALL_FACTIONS) {
+            mFilters.put(faction, true);
+        }
     }
 
     public String getSearchQuery() {
@@ -50,33 +43,25 @@ public class CardFilter {
         this.mSearchQuery = mSearchQuery;
     }
 
-    public Map<String, Boolean> getFactions() {
-        return mFactions;
-    }
-
-    public Map<String, Boolean> getRarities() {
-        return mRarities;
-    }
-
-    public Map<String, Boolean> getTypes() {
-        return mTypes;
-    }
-
-    public boolean isCollectableOnly() {
-        return mCollectableOnly;
+    public boolean isCollectibleOnly() {
+        return mCollectibleOnly;
     }
 
     public void clearFilters() {
-        for (String faction : mFactions.keySet()) {
-            mFactions.put(faction, true);
+        for (String faction : mFilters.keySet()) {
+            mFilters.put(faction, true);
         }
+    }
 
-        for (String type : mTypes.keySet()) {
-            mTypes.put(type, true);
+    public boolean get(String key) {
+        if (mFilters.get(key) != null) {
+            return mFilters.get(key);
+        } else {
+            return false;
         }
+    }
 
-        for (String rarity : mRarities.keySet()) {
-            mRarities.put(rarity, true);
-        }
+    public void put(String key, boolean filter) {
+        mFilters.put(key, filter);
     }
 }

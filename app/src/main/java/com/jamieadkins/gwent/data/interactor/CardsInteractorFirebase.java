@@ -24,6 +24,8 @@ import io.reactivex.ObservableSource;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
+    private static final String LATEST_PATCH = "v0-8-37";
+
     private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCardsReference;
@@ -31,8 +33,10 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
 
     public CardsInteractorFirebase() {
-        databasePath = "card-data/v0-8-33";
+        databasePath = "card-data/" + LATEST_PATCH;
         mCardsReference = mDatabase.getReference(databasePath);
+        // Keep Cards data in cache at all times.
+        mCardsReference.keepSynced(true);
     }
 
     @Override
@@ -64,9 +68,11 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
                                     // Only add card if the card meets all the filters.
-                                    if (filter.getFactions().get(cardDetails.getFaction()) &&
-                                            filter.getRarities().get(cardDetails.getRarity()) &&
-                                            filter.getTypes().get(cardDetails.getType())) {
+                                    // Also check name and info are not null. Those are dud cards.
+                                    if (filter.get(cardDetails.getFaction()) &&
+                                            filter.get(cardDetails.getRarity()) &&
+                                            filter.get(cardDetails.getType()) &&
+                                            cardDetails.isReleased()) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),

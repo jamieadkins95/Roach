@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.collection;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.BaseCardViewHolder;
@@ -38,8 +37,8 @@ public class CollectionRecyclerViewAdapter extends CardRecyclerViewAdapter {
         super.onBindViewHolder(holder, position);
         CollectionCardViewHolder collectionCardViewHolder = (CollectionCardViewHolder) holder;
         if (mCollection != null &&
-                mCollection.getCards().containsKey(getItemAt(position).getCardid())) {
-            final int count = mCollection.getCards().get(getItemAt(position).getCardid());
+                mCollection.getCards().containsKey(getItemAt(position).getIngameId())) {
+            final int count = mCollection.getCards().get(getItemAt(position).getIngameId());
             collectionCardViewHolder.setItemCount(count);
         } else {
             collectionCardViewHolder.setItemCount(0);

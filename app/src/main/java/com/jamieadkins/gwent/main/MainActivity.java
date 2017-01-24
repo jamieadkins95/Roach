@@ -29,7 +29,7 @@ import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Group;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
@@ -302,11 +302,11 @@ public class MainActivity extends AuthenticationActivity {
                 mCardFilterListener.onCardFilterUpdated();
                 return true;
             case R.id.filter_faction:
-                boolean[] factions = new boolean[mCardFilters.get(mCurrentTab).getFactions().size()];
+                boolean[] factions = new boolean[Faction.ALL_FACTIONS.length];
 
-                for (String key : mCardFilters.get(mCurrentTab).getFactions().keySet()) {
+                for (String key : Faction.ALL_FACTIONS) {
                     factions[Faction.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).getFactions().get(key);
+                            mCardFilters.get(mCurrentTab).get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -316,17 +316,17 @@ public class MainActivity extends AuthenticationActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
                                 mCardFilters.get(mCurrentTab)
-                                        .getFactions().put(Faction.CONVERT_INT.get(i), selected);
+                                        .put(Faction.CONVERT_INT.get(i), selected);
                                 mCardFilterListener.onCardFilterUpdated();
                             }
                         });
                 break;
             case R.id.filter_rarity:
-                boolean[] rarities = new boolean[mCardFilters.get(mCurrentTab).getRarities().size()];
+                boolean[] rarities = new boolean[Rarity.ALL_RARITIES.length];
 
-                for (String key : mCardFilters.get(mCurrentTab).getRarities().keySet()) {
+                for (String key : Rarity.ALL_RARITIES) {
                     rarities[Rarity.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).getRarities().get(key);
+                            mCardFilters.get(mCurrentTab).get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -335,16 +335,17 @@ public class MainActivity extends AuthenticationActivity {
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab).getRarities().put(Rarity.CONVERT_INT.get(i), selected);
+                                mCardFilters.get(mCurrentTab)
+                                        .put(Rarity.CONVERT_INT.get(i), selected);
                                 mCardFilterListener.onCardFilterUpdated();
                             }
                         });
                 break;
             case R.id.filter_type:
-                boolean[] types = new boolean[mCardFilters.get(mCurrentTab).getTypes().size()];
+                boolean[] types = new boolean[Type.ALL_TYPES.length];
 
-                for (String key : mCardFilters.get(mCurrentTab).getTypes().keySet()) {
-                    types[Group.CONVERT_STRING.get(key)] = mCardFilters.get(mCurrentTab).getTypes().get(key);
+                for (String key : Type.ALL_TYPES) {
+                    types[Type.CONVERT_STRING.get(key)] = mCardFilters.get(mCurrentTab).get(key);
                 }
 
                 builder.setMultiChoiceItems(
@@ -354,7 +355,7 @@ public class MainActivity extends AuthenticationActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
                                 mCardFilters.get(mCurrentTab)
-                                        .getTypes().put(Group.CONVERT_INT.get(i), selected);
+                                        .put(Type.CONVERT_INT.get(i), selected);
                                 mCardFilterListener.onCardFilterUpdated();
                             }
                         });

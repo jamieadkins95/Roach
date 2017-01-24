@@ -14,6 +14,8 @@ public class Rarity {
     public static final String LEGENDARY = "Legendary";
     public static final String RARE = "Rare";
 
+    public static final String[] ALL_RARITIES = new String[] {COMMON, RARE, EPIC, LEGENDARY};
+
     public static final Map<Integer, String> CONVERT_INT;
     public static final Map<String, Integer> CONVERT_STRING;
 
