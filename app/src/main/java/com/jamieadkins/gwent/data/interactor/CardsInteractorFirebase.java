@@ -24,6 +24,8 @@ import io.reactivex.ObservableSource;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
+    private static final String LATEST_PATCH = "v0-8-37";
+
     private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCardsReference;
@@ -31,7 +33,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
 
     public CardsInteractorFirebase() {
-        databasePath = "card-data/v0-8-37";
+        databasePath = "card-data/" + LATEST_PATCH;
         mCardsReference = mDatabase.getReference(databasePath);
         // Keep Cards data in cache at all times.
         mCardsReference.keepSynced(true);
