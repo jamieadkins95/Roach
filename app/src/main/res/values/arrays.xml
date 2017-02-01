@@ -5,6 +5,7 @@
         <item>@string/monster</item>
         <item>@string/skellige</item>
         <item>@string/scoiatael</item>
+        <item>@string/nilfgaard</item>
     </string-array>
 
     <string-array name="factions_array_with_neutral">
@@ -13,6 +14,7 @@
         <item>@string/skellige</item>
         <item>@string/scoiatael</item>
         <item>@string/monster</item>
+        <item>@string/nilfgaard</item>
     </string-array>
 
     <string-array name="types_array">

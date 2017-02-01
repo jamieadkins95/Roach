@@ -152,6 +152,9 @@ public class LargeCardView extends SimpleCardView {
             case Faction.NEUTRAL:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.neutral);
                 break;
+            case Faction.NILFGAARD:
+                factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.nilfgaard);
+                break;
             default:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.neutral);
                 break;

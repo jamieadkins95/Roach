@@ -26,6 +26,8 @@
     <color name="scoiatael">#4CAF50</color>
     <color name="scoiataelDark">#388E3C</color>
 
+    <color name="nilfgaard">#212121</color>
+
     <!-- Rarities -->
     <color name="common">@color/textSecondary</color>
     <color name="rare">#2196F3</color>

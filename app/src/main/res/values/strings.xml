@@ -34,6 +34,7 @@
     <string name="skellige">Skellige</string>
     <string name="scoiatael">Scoia\'tael</string>
     <string name="neutral">Neutral</string>
+    <string name="nilfgaard">Nilfgaard</string>
     <string name="search_hint">Card Name - Case Sensitive!</string>
     <string name="filter">Filter</string>
     <string name="faction">Faction</string>
