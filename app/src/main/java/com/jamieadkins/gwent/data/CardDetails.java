@@ -22,11 +22,15 @@ public class CardDetails {
     private int strength;
     private String flavor;
     private boolean released;
-    private Map<String, Variation> variations;
+    private List<Variation> variations;
     private List<String> category;
 
     public CardDetails() {
         // Required empty constructor for Firebase.
+    }
+
+    public void setIngameId(String ingameId) {
+        this.ingameId = ingameId;
     }
 
     public String getName() {
@@ -69,14 +73,14 @@ public class CardDetails {
         return released;
     }
 
-    public Map<String, Variation> getVariations() {
+    public List<Variation> getVariations() {
         return variations;
     }
 
     @Exclude
     public String getImage() {
-        for (String key : variations.keySet()) {
-            return variations.get(key).getArt().getFullsizeImageUrl();
+        for (Variation variation : variations) {
+            return variation.getArt().getFullsizeImageUrl();
         }
 
         return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
@@ -84,8 +88,8 @@ public class CardDetails {
 
     @Exclude
     public String getRarity() {
-        for (String key : variations.keySet()) {
-            return variations.get(key).getRarity();
+        for (Variation variation : variations) {
+            return variation.getRarity();
         }
 
         return Rarity.COMMON;

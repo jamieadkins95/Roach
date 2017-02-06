@@ -24,7 +24,7 @@ import io.reactivex.ObservableSource;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
-    private static final String LATEST_PATCH = "v0-8-37";
+    private static final String LATEST_PATCH = "v0-8-60";
 
     private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
@@ -66,13 +66,13 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
+                                    cardDetails.setIngameId(cardSnapshot.getKey());
 
                                     // Only add card if the card meets all the filters.
                                     // Also check name and info are not null. Those are dud cards.
                                     if (filter.get(cardDetails.getFaction()) &&
                                             filter.get(cardDetails.getRarity()) &&
-                                            filter.get(cardDetails.getType()) &&
-                                            cardDetails.isReleased()) {
+                                            filter.get(cardDetails.getType())) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),
