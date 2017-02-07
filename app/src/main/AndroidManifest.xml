@@ -29,7 +29,8 @@
             android:name=".detail.DetailActivity"
             android:theme="@style/Theme.Gwent.NoActionBar">
 
-            <intent-filter>
+            <!-- Can't open gwentdb links at the moment as we are using data from elsewhere. -->
+            <!--<intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -42,7 +43,7 @@
                     android:host="gwentdb.com"
                     android:scheme="http"
                     android:pathPrefix="/cards/ " />
-            </intent-filter>
+            </intent-filter>-->
 
         </activity>
 
