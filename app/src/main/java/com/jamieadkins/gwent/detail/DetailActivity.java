@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
 
@@ -16,6 +17,7 @@ import com.jamieadkins.gwent.main.MainActivity;
 
 public class DetailActivity extends BaseActivity {
     public static final String EXTRA_CARD_ID = "com.jamieadkins.gwent.cardid";
+    public static final String EXTRA_PATCH = "com.jamieadkins.gwent.patch";
     private DetailContract.Presenter mDetailsPresenter;
     private String mCardId;
     private boolean mFromUrl = false;
@@ -43,10 +45,19 @@ public class DetailActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        String patch = getIntent().getStringExtra(EXTRA_PATCH);
+
+        CardsInteractor cardsInteractor;
+
+        if (patch != null) {
+            cardsInteractor = new CardsInteractorFirebase(patch);
+        } else {
+            cardsInteractor = new CardsInteractorFirebase();
+        }
 
         mDetailsPresenter = new DetailPresenter(
                 (DetailContract.View) getSupportFragmentManager().findFragmentById(R.id.fragment),
-                new CardsInteractorFirebase());
+                cardsInteractor);
 
         mDetailsPresenter.setCardId(mCardId);
     }

@@ -25,6 +25,8 @@ public class CardDetails {
     private Map<String, Variation> variations;
     private List<String> category;
 
+    private String patch;
+
     public CardDetails() {
         // Required empty constructor for Firebase.
     }
@@ -71,6 +73,16 @@ public class CardDetails {
 
     public Map<String, Variation> getVariations() {
         return variations;
+    }
+
+    @Exclude
+    public String getPatch() {
+        return patch;
+    }
+
+    @Exclude
+    public void setPatch(String patch) {
+        this.patch = patch;
     }
 
     @Exclude

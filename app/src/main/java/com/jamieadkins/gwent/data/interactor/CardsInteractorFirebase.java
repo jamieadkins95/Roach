@@ -33,9 +33,16 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
     private Query mCardsQuery;
     private ValueEventListener mCardListener;
+    private String mPatch;
 
     public CardsInteractorFirebase() {
-        databasePath = "card-data/" + LATEST_PATCH;
+        // No patch specified, use latest.
+        this(LATEST_PATCH);
+    }
+
+    public CardsInteractorFirebase(String patch) {
+        mPatch = patch;
+        databasePath = "card-data/" + mPatch;
         mCardsReference = mDatabase.getReference(databasePath);
         // Keep Cards data in cache at all times.
         mCardsReference.keepSynced(true);
@@ -68,6 +75,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
+                                    cardDetails.setPatch(mPatch);
 
                                     // Only add card if the card meets all the filters.
                                     // Also check name and info are not null. Those are dud cards.
@@ -114,6 +122,8 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
+                                cardDetails.setPatch(mPatch);
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<CardDetails>(
                                                 dataSnapshot.getKey(),
