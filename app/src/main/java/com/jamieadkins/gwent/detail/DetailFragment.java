@@ -41,10 +41,17 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                 case ADDED:
                     // Update UI with card details.
                     getActivity().setTitle(value.getValue().getName());
-                    Glide.with(getActivity())
-                            .load(value.getValue().getImage())
-                            .fitCenter()
-                            .into(mCardPicture);
+
+                    if (value.getValue().getImage().contains("CardAssets")) {
+                        // No art available.
+                        getView().findViewById(R.id.no_art).setVisibility(View.VISIBLE);
+                        mCardPicture.setVisibility(View.GONE);
+                    } else {
+                        Glide.with(getActivity())
+                                .load(value.getValue().getImage())
+                                .fitCenter()
+                                .into(mCardPicture);
+                    }
 
                     mLargeCardView.setCardDetails(value.getValue());
                     break;

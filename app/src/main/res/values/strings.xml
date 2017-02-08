@@ -60,4 +60,5 @@
     <string name="in_collection">%d in collection</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
+    <string name="no_card_art">No art available.</string>
 </resources>

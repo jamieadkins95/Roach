@@ -24,7 +24,7 @@ import io.reactivex.ObservableSource;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
-    private static final String LATEST_PATCH = "v0-8-37";
+    private static final String LATEST_PATCH = "v0-8-60-2";
 
     private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
