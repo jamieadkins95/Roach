@@ -17,4 +17,6 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
     Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter filter);
 
     Observable<RxDatabaseEvent<CardDetails>> getCard(String id);
+
+    void removeListeners();
 }

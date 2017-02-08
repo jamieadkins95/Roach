@@ -82,6 +82,12 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mDetailPresenter.onStop();
+    }
+
+    @Override
     public void setLoadingIndicator(boolean active) {
 
     }

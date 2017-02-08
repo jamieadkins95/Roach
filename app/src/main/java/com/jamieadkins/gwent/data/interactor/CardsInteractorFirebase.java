@@ -31,6 +31,8 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final DatabaseReference mCardsReference;
 
     private final String databasePath;
+    private Query mCardsQuery;
+    private ValueEventListener mCardListener;
 
     public CardsInteractorFirebase() {
         databasePath = "card-data/" + LATEST_PATCH;
@@ -52,16 +54,16 @@ public class CardsInteractorFirebase implements CardsInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        Query cardsQuery = mCardsReference.orderByChild("name");
+                        mCardsQuery = mCardsReference.orderByChild("name");
 
                         if (filter.getSearchQuery() != null) {
-                            cardsQuery = cardsQuery.
+                            mCardsQuery = mCardsQuery.
                                     startAt(filter.getSearchQuery())
                                     // No 'contains' query so have to fudge it.
                                     .endAt(filter.getSearchQuery() + "zzzz");
                         }
 
-                        ValueEventListener cardListener = new ValueEventListener() {
+                        mCardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
@@ -91,7 +93,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             }
                         };
 
-                        cardsQuery.addListenerForSingleValueEvent(cardListener);
+                        mCardsQuery.addListenerForSingleValueEvent(mCardListener);
                     }
                 });
             }
@@ -106,9 +108,9 @@ public class CardsInteractorFirebase implements CardsInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        Query cardsQuery = mCardsReference.child(id);
+                        mCardsQuery = mCardsReference.child(id);
 
-                        ValueEventListener cardListener = new ValueEventListener() {
+                        mCardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
@@ -128,10 +130,17 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             }
                         };
 
-                        cardsQuery.addListenerForSingleValueEvent(cardListener);
+                        mCardsQuery.addListenerForSingleValueEvent(mCardListener);
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void removeListeners() {
+        if (mCardsQuery != null) {
+            mCardsQuery.removeEventListener(mCardListener);
+        }
     }
 }

@@ -48,4 +48,9 @@ public class DetailPresenter implements DetailContract.Presenter {
     public String getCardId() {
         return mCardId;
     }
+
+    @Override
+    public void onStop() {
+        mDetailInteractor.removeListeners();
+    }
 }
