@@ -67,6 +67,10 @@
     <string name="analytics">Anonymous Analytics</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="analytics_message" formatted="false">Roach would like to collect anonymous usage statistics in order to help future development of the app. This information is not shared with any 3rd parties and is used purely for development purposes.\n\nWould you like to opt in?\n\nIf you change your mind this option is also available in the settings.</string>
+    <string name="analytics_message" formatted="false">Roach would like to collect anonymous information about how you use the app. This information is used by the developer to learn which features to focus development on. The information is not shared with any 3rd party and is not used to identify or contact you.\n\nYou can opt in or out at anytime in the Settings.\n\nWould you like to opt in?</string>
     <string name="analytics_summary">Allow Roach to collect anonymous statistics to help future development of the app.</string>
+    <string name="contact">Contact Developer</string>
+    <string name="developer_email">jamieadkins95+gwent@gmail.com</string>
+    <string name="email_subject">Roach for Android</string>
+    <string name="email_template">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
 </resources>

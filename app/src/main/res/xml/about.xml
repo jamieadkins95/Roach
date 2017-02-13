@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_licenses"
-        android:key="pref_key_licenses">
+        android:title="@string/pref_licenses">
 
         <Preference android:title="@string/pref_rxjava">
             <intent android:action="android.intent.action.VIEW"
@@ -11,6 +10,18 @@
         <Preference android:title="@string/pref_glide">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/bumptech/glide/blob/master/LICENSE" />
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_general">
+        <Preference android:title="@string/contact">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:jamieadkins95+gwent@gmail.com" >
+                <extra
+                    android:name="android.intent.extra.SUBJECT"
+                    android:value="@string/email_subject" />
+            </intent>
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
