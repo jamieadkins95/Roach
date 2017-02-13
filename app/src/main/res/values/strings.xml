@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Roach</string>
-    <string name="action_settings">Settings</string>
+    <string name="settings">Settings</string>
 
     <string name="my_decks">My Decks</string>
     <string name="my_collection">My Collection</string>
@@ -56,6 +56,9 @@
     <string name="pref_rxjava">Rxjava</string>
     <string name="pref_glide">Glide</string>
 
+    <string name="pref_general">General</string>
+    <string name="pref_analytics_key">com.jamieadkins.gwent.analytics</string>
+
     <string name="transition_card">com.jamieadkins.gwent.transition.card</string>
     <string name="in_collection">%d in collection</string>
     <string name="add">Add</string>
@@ -65,4 +68,5 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="analytics_message" formatted="false">Roach would like to collect anonymous usage statistics in order to help future development of the app. This information is not shared with any 3rd parties and is used purely for development purposes.\n\nWould you like to opt in?\n\nIf you change your mind this option is also available in the settings.</string>
+    <string name="analytics_summary">Allow Roach to collect anonymous statistics to help future development of the app.</string>
 </resources>

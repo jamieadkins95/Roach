@@ -22,6 +22,7 @@ import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.about.BasePreferenceActivity;
+import com.jamieadkins.gwent.about.SettingsActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
@@ -44,9 +45,9 @@ import com.jamieadkins.gwent.deck.DeckListFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AuthenticationActivity {
-    private static final String PREFERENCE_ANALYTICS = "com.jamieadkins.gwent.analytics";
+import static com.jamieadkins.gwent.about.SettingsActivity.PREFERENCE_ANALYTICS;
 
+public class MainActivity extends AuthenticationActivity {
     private DecksPresenter mDecksPresenter;
     private CardFilterListener mCardFilterListener;
     private CardsPresenter mCardsPresenter;
@@ -401,6 +402,13 @@ public class MainActivity extends AuthenticationActivity {
                 about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
                 about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
                 startActivity(about);
+                return true;
+            case R.id.action_settings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
+                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
+                startActivity(settings);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

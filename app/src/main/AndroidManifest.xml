@@ -12,7 +12,9 @@
         android:theme="@style/Theme.Gwent">
 
         <!-- Disable analytics collection. No user consent yet! -->
-        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
 
         <activity
             android:name=".main.MainActivity"
@@ -49,6 +51,10 @@
 
         <activity
             android:name=".about.BasePreferenceActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
+
+        <activity
+            android:name=".about.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
     </application>
 
