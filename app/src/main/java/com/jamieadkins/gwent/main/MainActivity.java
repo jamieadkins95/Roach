@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,12 +10,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
@@ -42,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity {
+    private static final String PREFERENCE_ANALYTICS = "com.jamieadkins.gwent.analytics";
 
     private DecksPresenter mDecksPresenter;
     private CardFilterListener mCardFilterListener;
@@ -215,6 +219,38 @@ public class MainActivity extends AuthenticationActivity {
 
         // Our options menu will be different for different tabs.
         invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!preferences.contains(PREFERENCE_ANALYTICS)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            // Analytics are off by default.
+            onAnalyticsResponse(false);
+
+            builder.setTitle(R.string.analytics)
+                    .setMessage(R.string.analytics_message)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            onAnalyticsResponse(true);
+                        }
+                    })
+                    .setNegativeButton(R.string.no, null)
+                    .create()
+                    .show();
+        }
+    }
+
+    private void onAnalyticsResponse(boolean response) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putBoolean(PREFERENCE_ANALYTICS, response);
+        editor.apply();
+
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(response);
     }
 
     @Override

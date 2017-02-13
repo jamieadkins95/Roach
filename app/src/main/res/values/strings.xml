@@ -61,4 +61,8 @@
     <string name="add">Add</string>
     <string name="remove">Remove</string>
     <string name="no_card_art">No art available.</string>
+    <string name="analytics">Anonymous Analytics</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="analytics_message" formatted="false">Roach would like to collect anonymous usage statistics in order to help future development of the app. This information is not shared with any 3rd parties and is used purely for development purposes.\n\nWould you like to opt in?\n\nIf you change your mind this option is also available in the settings.</string>
 </resources>
