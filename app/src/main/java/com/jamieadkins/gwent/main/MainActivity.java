@@ -21,7 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.about.AboutActivity;
+import com.jamieadkins.gwent.about.BasePreferenceActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
@@ -397,8 +397,10 @@ public class MainActivity extends AuthenticationActivity {
                         });
                 break;
             case R.id.action_about:
-                Intent intent = new Intent(this, AboutActivity.class);
-                startActivity(intent);
+                Intent about = new Intent(this, BasePreferenceActivity.class);
+                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
+                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
+                startActivity(about);
             default:
                 return super.onOptionsItemSelected(item);
         }
