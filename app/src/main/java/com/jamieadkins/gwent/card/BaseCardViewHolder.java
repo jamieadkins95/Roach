@@ -9,6 +9,7 @@ import android.view.View;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.detail.DetailActivity;
 
 /**
@@ -52,5 +53,10 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
 
         // Show details using transition animation.
         ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
+
+        // Log what card has been viewed.
+        FirebaseUtils.logCard(getView().getContext(),
+                getBoundItem().getIngameId(),
+                getBoundItem().getName());
     }
 }

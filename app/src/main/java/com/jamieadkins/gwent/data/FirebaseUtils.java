@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.data;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 
@@ -61,5 +62,14 @@ public class FirebaseUtils {
         editor.apply();
 
         FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(response);
+    }
+
+    public static void logCard(Context context, String cardId, String cardName) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, cardId);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cardName);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "card");
+        FirebaseAnalytics.getInstance(context)
+                .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }
