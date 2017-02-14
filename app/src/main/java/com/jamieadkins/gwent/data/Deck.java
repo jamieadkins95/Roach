@@ -19,6 +19,8 @@ public class Deck {
     private String name;
     private String author;
     private String faction;
+    private String leader;
+    // Map of card ids to variation ids to card count.
     private Map<String, Integer> cards;
 
     public Deck() {
@@ -35,6 +37,14 @@ public class Deck {
 
     public Deck(String id, String faction, String author) {
         this(id, id, faction, author);
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
+    }
+
+    public String getLeader() {
+        return leader;
     }
 
     public String getName() {
@@ -65,6 +75,7 @@ public class Deck {
         result.put("author", author);
         result.put("faction", faction);
         result.put("cards", cards);
+        result.put("leader", leader);
         result.put("openToPublic", openToPublic);
 
         return result;
