@@ -79,10 +79,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
 
                                     // Only add card if the card meets all the filters.
                                     // Also check name and info are not null. Those are dud cards.
-                                    if (filter.get(cardDetails.getFaction()) &&
-                                            filter.get(cardDetails.getRarity()) &&
-                                            filter.get(cardDetails.getType()) &&
-                                            cardDetails.isReleased()) {
+                                    if (filter.doesCardMeetFilter(cardDetails)) {
                                         emitter.onNext(
                                                 new RxDatabaseEvent<CardDetails>(
                                                         cardSnapshot.getKey(),
@@ -108,6 +105,11 @@ public class CardsInteractorFirebase implements CardsInteractor {
         });
     }
 
+    /**
+     * We have a separate method for getting one card as it is significantly quicker than using a
+     * card filter.
+     * @param id id of the card to retrieve
+     */
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCard(final String id) {
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {

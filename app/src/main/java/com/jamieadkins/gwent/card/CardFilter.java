@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.card;
 
-import com.facebook.internal.FetchedAppSettings;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,12 +17,14 @@ import java.util.Map;
 public class CardFilter {
     private String mSearchQuery;
     private Map<String, Boolean> mFilters;
+    private List<String> mCardIds;
 
     private boolean mCollectibleOnly = false;
 
     public CardFilter() {
         mSearchQuery = null;
         mFilters = new HashMap<>();
+        mCardIds = null;
 
         for (String rarity : Rarity.ALL_RARITIES) {
             mFilters.put(rarity, true);
@@ -63,5 +67,23 @@ public class CardFilter {
 
     public void put(String key, boolean filter) {
         mFilters.put(key, filter);
+    }
+
+    public void addCardId(String cardId) {
+        if (mCardIds == null) {
+            mCardIds = new ArrayList<>();
+        }
+
+        mCardIds.add(cardId);
+    }
+
+    public boolean doesCardMeetFilter(CardDetails card) {
+        if (mCardIds != null) {
+            // If there are card ids specified, use them only.
+            return mCardIds.contains(card.getIngameId());
+        } else {
+            return get(card.getFaction()) && get(card.getRarity())
+                    && get(card.getType()) && card.isReleased();
+        }
     }
 }
