@@ -127,7 +127,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     @Override
     public void createNewDeck(String name, String faction) {
         String key = mDecksReference.push().getKey();
-        Deck deck = new Deck(key, name, faction);
+        String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Deck deck = new Deck(key, name, faction, author);
         Map<String, Object> deckValues = deck.toMap();
 
         Map<String, Object> firebaseUpdates = new HashMap<>();

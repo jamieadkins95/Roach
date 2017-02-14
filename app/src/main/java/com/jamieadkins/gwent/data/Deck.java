@@ -17,6 +17,7 @@ public class Deck {
     private boolean openToPublic;
     private String id;
     private String name;
+    private String author;
     private String faction;
     private Map<String, Integer> cards;
 
@@ -24,15 +25,16 @@ public class Deck {
         // Required empty constructor for Firebase.
     }
 
-    public Deck(String id, String name, String faction) {
+    public Deck(String id, String name, String faction, String author) {
         this.id = id;
         this.name = name;
         this.faction = faction;
+        this.author = author;
         this.openToPublic = false;
     }
 
-    public Deck(String id, String faction) {
-        this(id, id, faction);
+    public Deck(String id, String faction, String author) {
+        this(id, id, faction, author);
     }
 
     public String getName() {
@@ -60,6 +62,7 @@ public class Deck {
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);
         result.put("name", name);
+        result.put("author", author);
         result.put("faction", faction);
         result.put("cards", cards);
         result.put("openToPublic", openToPublic);
