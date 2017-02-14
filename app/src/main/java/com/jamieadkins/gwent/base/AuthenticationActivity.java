@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.jgaw.GwentApiClient;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     protected void onSignedIn() {
         mSignedIn = true;
+        FirebaseUtils.askForAnalyticsPermission(this);
     }
 
     protected void onSignedOut() {

@@ -228,12 +228,6 @@ public class MainActivity extends AuthenticationActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUtils.askForAnalyticsPermission(this);
-    }
-
-    @Override
     protected void onSignedIn() {
         super.onSignedIn();
         invalidateOptionsMenu();
