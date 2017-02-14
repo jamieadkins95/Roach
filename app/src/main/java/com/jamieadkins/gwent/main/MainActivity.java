@@ -123,8 +123,10 @@ public class MainActivity extends AuthenticationActivity {
                                 fragment = new DeckListFragment();
 
                                 // Create the presenter.
-                                mDecksPresenter = new DecksPresenter((DecksContract.View) fragment,
-                                        new DecksInteractorFirebase());
+                                mDecksPresenter =
+                                        new DecksPresenter((DecksContract.View) fragment,
+                                                new DecksInteractorFirebase(),
+                                                new CardsInteractorFirebase());
                                 break;
                             case R.id.tab_collection:
                                 // Hide this feature in release versions for now.
@@ -198,7 +200,8 @@ public class MainActivity extends AuthenticationActivity {
                                 // Create the presenter.
                                 mPublicDecksPresenter =
                                         new DecksPresenter((DecksContract.View) fragment,
-                                        new DecksInteractorFirebase(true));
+                                                new DecksInteractorFirebase(true),
+                                                new CardsInteractorFirebase());
                                 break;
                             default:
                                 showSnackbar(getString(R.string.coming_soon));
