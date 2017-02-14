@@ -290,8 +290,9 @@ public class MainActivity extends AuthenticationActivity {
             });
 
             inflater.inflate(R.menu.card_filters, menu);
-            inflater.inflate(R.menu.base_menu, menu);
         }
+
+        inflater.inflate(R.menu.base_menu, menu);
 
         if (isAuthenticated()) {
             inflater.inflate(R.menu.signed_in, menu);
