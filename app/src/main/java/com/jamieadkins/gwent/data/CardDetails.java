@@ -87,6 +87,12 @@ public class CardDetails {
     }
 
     @Exclude
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Exclude
     public String getPatch() {
         return patch;
     }

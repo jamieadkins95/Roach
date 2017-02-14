@@ -55,7 +55,7 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
         });
 
         mDeckName.setText(getBoundItem().getName());
-        mDeckLeader.setText(getBoundItem().getFactionId());
+        mDeckLeader.setText(getBoundItem().getLeader().getName());
         mDeckMelee.setText("40");
         mDeckRanged.setText("24");
         mDeckSiege.setText("23");

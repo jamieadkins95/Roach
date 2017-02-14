@@ -28,10 +28,12 @@ public class Deck {
         this.cardCount = new HashMap<>();
     }
 
-    public Deck(String id, String name, String factionId, String author, String patch) {
+    public Deck(String id, String name, String factionId, CardDetails leader,
+                String author, String patch) {
         this.id = id;
         this.name = name;
         this.factionId = factionId;
+        this.leader = leader;
         this.author = author;
         this.patch = patch;
         this.publicDeck = false;

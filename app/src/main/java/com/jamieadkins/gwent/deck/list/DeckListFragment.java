@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -56,7 +57,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
             buttonNewDeck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment newFragment = new NewDeckDialog();
+                    DialogFragment newFragment =  NewDeckDialog.newInstance(mDecksPresenter);
                     newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
                     newFragment.show(getActivity().getSupportFragmentManager(),
                             newFragment.getClass().getSimpleName());
@@ -98,8 +99,8 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     }
 
     @Override
-    public void createNewDeck(String name, String faction) {
-        mDecksPresenter.createNewDeck(name, faction);
+    public void createNewDeck(String name, String faction, CardDetails leader) {
+        mDecksPresenter.createNewDeck(name, faction, leader);
     }
 
     @Override

@@ -18,4 +18,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/factions"/>
 
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/leaders"/>
+
 </LinearLayout>
