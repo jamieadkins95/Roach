@@ -24,7 +24,16 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     private static final int REQUEST_CODE = 3414;
     private DecksContract.Presenter mDecksPresenter;
 
+    // Set up to show user decks by default.
+    private boolean mUserDecks = true;
+
     public DeckListFragment() {
+    }
+
+    public static DeckListFragment newInstance(boolean userDecks) {
+        DeckListFragment fragment = new DeckListFragment();
+        fragment.mUserDecks = userDecks;
+        return fragment;
     }
 
     @Override
@@ -43,15 +52,20 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         FloatingActionButton buttonNewDeck =
                 (FloatingActionButton) rootView.findViewById(R.id.new_deck);
 
-        buttonNewDeck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment newFragment = new NewDeckDialog();
-                newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
-                newFragment.show(getActivity().getSupportFragmentManager(),
-                        newFragment.getClass().getSimpleName());
-            }
-        });
+        if (mUserDecks) {
+            buttonNewDeck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment newFragment = new NewDeckDialog();
+                    newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
+                    newFragment.show(getActivity().getSupportFragmentManager(),
+                            newFragment.getClass().getSimpleName());
+                }
+            });
+        } else {
+            buttonNewDeck.setVisibility(View.GONE);
+            buttonNewDeck.setEnabled(false);
+        }
 
         return rootView;
     }

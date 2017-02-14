@@ -45,6 +45,7 @@ import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity {
     private DecksPresenter mDecksPresenter;
+    private DecksPresenter mPublicDecksPresenter;
     private CardFilterListener mCardFilterListener;
     private CardsPresenter mCardsPresenter;
     private CollectionPresenter mCollectionPresenter;
@@ -192,7 +193,12 @@ public class MainActivity extends AuthenticationActivity {
                                     return false;
                                 }
 
-                                fragment = new ComingSoonFragment();
+                                fragment = DeckListFragment.newInstance(false);
+
+                                // Create the presenter.
+                                mPublicDecksPresenter =
+                                        new DecksPresenter((DecksContract.View) fragment,
+                                        new DecksInteractorFirebase(true));
                                 break;
                             default:
                                 showSnackbar(getString(R.string.coming_soon));

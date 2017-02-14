@@ -39,10 +39,20 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private final String databasePath;
 
     public DecksInteractorFirebase() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databasePath = "users/" + userId + "/decks/";
-        mDecksReference = mDatabase.getReference(databasePath);
-        mDecksQuery = mDecksReference.orderByChild("name");
+        this(false);
+    }
+
+    public DecksInteractorFirebase(boolean publicDecks) {
+        if (publicDecks) {
+            databasePath = "public-decks/";
+            mDecksReference = mDatabase.getReference(databasePath);
+            mDecksQuery = mDecksReference.orderByChild("week");
+        } else {
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            databasePath = "users/" + userId + "/decks/";
+            mDecksReference = mDatabase.getReference(databasePath);
+            mDecksQuery = mDecksReference.orderByChild("name");
+        }
     }
 
     @Override
