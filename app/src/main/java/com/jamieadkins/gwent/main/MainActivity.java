@@ -23,6 +23,7 @@ import com.jamieadkins.gwent.about.SettingsActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.CardListFragment;
 import com.jamieadkins.gwent.card.CardsContract;
 import com.jamieadkins.gwent.card.CardsPresenter;
@@ -43,7 +44,7 @@ import com.jamieadkins.gwent.deck.DeckListFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AuthenticationActivity {
+public class MainActivity extends AuthenticationActivity implements CardFilterProvider {
     private DecksPresenter mDecksPresenter;
     private DecksPresenter mPublicDecksPresenter;
     private CardFilterListener mCardFilterListener;
@@ -392,6 +393,7 @@ public class MainActivity extends AuthenticationActivity {
         return true;
     }
 
+    @Override
     public CardFilter getCardFilter() {
         return mCardFilters.get(mCurrentTab);
     }
