@@ -50,6 +50,10 @@
         </activity>
 
         <activity
+            android:name=".deck.detail.DeckDetailActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
+
+        <activity
             android:name=".settings.BasePreferenceActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 

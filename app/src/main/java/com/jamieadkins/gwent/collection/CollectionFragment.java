@@ -48,6 +48,7 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         return R.layout.fragment_collection;
     }
 
+    @Override
     public void setupViews(View rootView) {
         super.setupViews(rootView);
 

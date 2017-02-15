@@ -6,6 +6,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class that models what a deck is.
@@ -73,6 +74,16 @@ public class CardDetails {
 
     public Map<String, Variation> getVariations() {
         return variations;
+    }
+
+    @Exclude
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof CardDetails) {
+            return ingameId.equals(((CardDetails) obj).getIngameId());
+        } else {
+            return false;
+        }
     }
 
     @Exclude

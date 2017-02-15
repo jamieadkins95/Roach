@@ -20,5 +20,7 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     Observable<RxDatabaseEvent<Deck>> getDecks();
 
+    Observable<RxDatabaseEvent<Deck>> getDeck(String deckId);
+
     void stopData();
 }

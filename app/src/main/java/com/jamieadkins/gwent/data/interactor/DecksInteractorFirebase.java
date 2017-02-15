@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.list.DecksContract;
@@ -33,7 +34,9 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mDecksReference;
     private final Query mDecksQuery;
-    private ChildEventListener mDeckListener;
+    private Query mDeckQuery;
+    private ChildEventListener mDecksListener;
+    private ValueEventListener mDeckDetailListener;
 
     private final String databasePath;
 
@@ -67,7 +70,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDeckListener = new ChildEventListener() {
+                        mDecksListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 mPresenter.onLoadingComplete();
@@ -111,7 +114,39 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDecksQuery.addChildEventListener(mDeckListener);
+                        mDecksQuery.addChildEventListener(mDecksListener);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId) {
+        mDeckQuery = mDecksReference.child(deckId);
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
+            @Override
+            public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                        mDeckDetailListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                dataSnapshot.getValue(Deck.class),
+                                                RxDatabaseEvent.EventType.CHANGED));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        mDeckQuery.addValueEventListener(mDeckDetailListener);
                     }
                 });
             }
@@ -120,7 +155,12 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void stopData() {
-        mDecksQuery.removeEventListener(mDeckListener);
+        if (mDecksQuery != null && mDecksListener != null) {
+            mDecksQuery.removeEventListener(mDecksListener);
+        }
+        if (mDeckQuery != null && mDeckDetailListener != null) {
+            mDeckQuery.removeEventListener(mDeckDetailListener);
+        }
     }
 
     @Override

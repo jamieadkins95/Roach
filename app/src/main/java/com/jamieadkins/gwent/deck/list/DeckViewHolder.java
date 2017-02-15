@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.list;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +9,8 @@ import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 /**
  * Holds much more detail about a card.
@@ -36,6 +39,20 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
     @Override
     public void bindItem(Deck item) {
         super.bindItem(item);
+
+        getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getView().getContext(), DeckDetailActivity.class);
+                intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, getBoundItem().getId());
+                intent.putExtra(DeckDetailActivity.EXTRA_PATCH, getBoundItem().getPatch());
+                getView().getContext().startActivity(intent);
+
+                // Log what card has been viewed.
+                FirebaseUtils.logAnalytics(getView().getContext(),
+                        getBoundItem().getId(), getBoundItem().getName(), "View Deck");
+            }
+        });
 
         mDeckName.setText(getBoundItem().getName());
         mDeckFaction.setText(getBoundItem().getFaction());

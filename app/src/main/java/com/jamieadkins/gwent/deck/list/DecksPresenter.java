@@ -50,6 +50,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId) {
+        return mDecksInteractor.getDeck(deckId);
+    }
+
+    @Override
     public void stop() {
         mDecksInteractor.stopData();
     }

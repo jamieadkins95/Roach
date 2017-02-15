@@ -56,8 +56,7 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
         ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
 
         // Log what card has been viewed.
-        FirebaseUtils.logCard(getView().getContext(),
-                getBoundItem().getIngameId(),
-                getBoundItem().getName());
+        FirebaseUtils.logAnalytics(getView().getContext(),
+                getBoundItem().getIngameId(), getBoundItem().getName(), "View Card");
     }
 }

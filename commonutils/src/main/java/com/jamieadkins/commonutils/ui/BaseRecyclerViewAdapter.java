@@ -35,8 +35,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     }
 
     public void addItem(T item) {
-        mItems.add(item);
-        notifyDataSetChanged();
+        if (!mItems.contains(item)) {
+            mItems.add(item);
+            notifyDataSetChanged();
+        }
     }
 
     public void removeItem(T itemToRemove) {

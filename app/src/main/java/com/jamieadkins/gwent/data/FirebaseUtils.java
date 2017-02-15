@@ -85,11 +85,11 @@ public class FirebaseUtils {
         FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(response);
     }
 
-    public static void logCard(Context context, String cardId, String cardName) {
+    public static void logAnalytics(Context context, String id, String name, String contentType) {
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, cardId);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cardName);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "card");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType);
         FirebaseAnalytics.getInstance(context)
                 .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
