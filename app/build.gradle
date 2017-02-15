@@ -50,6 +50,8 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:1.0.1'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.firebase:firebase-storage:10.0.1'
+    compile 'com.firebaseui:firebase-ui-storage:1.0.1'
     releaseCompile 'com.google.firebase:firebase-crash:10.0.1'
 
     // Testing.

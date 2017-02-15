@@ -9,8 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:layout_marginTop="@dimen/card_image_pixel_negation_vertical"
-        android:layout_marginLeft="@dimen/card_image_pixel_negation_horizontal"
         android:id="@+id/card_image"
         android:scaleType="fitCenter" />
 

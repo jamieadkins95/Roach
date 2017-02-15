@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -47,9 +50,13 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                         getView().findViewById(R.id.no_art).setVisibility(View.VISIBLE);
                         mCardPicture.setVisibility(View.GONE);
                     } else {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReferenceFromUrl(
+                                "gs://gwent-9e62a.appspot.com/" + value.getValue().getImage());
                         Glide.with(getActivity())
-                                .load(value.getValue().getImage())
-                                .fitCenter()
+                                .using(new FirebaseImageLoader())
+                                .load(storageReference)
+                                .centerCrop()
                                 .into(mCardPicture);
                     }
 
