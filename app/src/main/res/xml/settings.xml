@@ -7,5 +7,10 @@
             android:title="@string/analytics"
             android:summary="@string/analytics_summary"
             android:defaultValue="false" />
+
+        <CheckBoxPreference android:key="@string/pref_crowd_sourcing_key"
+            android:title="@string/crowd_sourcing"
+            android:summary="@string/crowd_sourcing_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>
