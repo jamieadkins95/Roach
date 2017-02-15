@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
@@ -31,6 +35,25 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
 
+    private RequestListener<StorageReference, GlideDrawable> mGlideListener =
+            new RequestListener<StorageReference, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, StorageReference model,
+                                           Target<GlideDrawable> target, boolean isFirstResource) {
+                    // No art available.
+                    getView().findViewById(R.id.no_art).setVisibility(View.VISIBLE);
+                    mCardPicture.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, StorageReference model,
+                                               Target<GlideDrawable> target,
+                                               boolean isFromMemoryCache, boolean isFirstResource) {
+                    return false;
+                }
+            };
+
     private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
 
         @Override
@@ -45,20 +68,16 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                     // Update UI with card details.
                     getActivity().setTitle(value.getValue().getName());
 
-                    if (value.getValue().getImage().contains("CardAssets")) {
-                        // No art available.
-                        getView().findViewById(R.id.no_art).setVisibility(View.VISIBLE);
-                        mCardPicture.setVisibility(View.GONE);
-                    } else {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReferenceFromUrl(
-                                "gs://gwent-9e62a.appspot.com/" + value.getValue().getImage());
-                        Glide.with(getActivity())
-                                .using(new FirebaseImageLoader())
-                                .load(storageReference)
-                                .centerCrop()
-                                .into(mCardPicture);
-                    }
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageReference = storage.getReferenceFromUrl(
+                            FirebaseUtils.STORAGE_BUCKET + value.getValue().getImage());
+
+                    Glide.with(getActivity())
+                            .using(new FirebaseImageLoader())
+                            .load(storageReference)
+                            .listener(mGlideListener)
+                            .centerCrop()
+                            .into(mCardPicture);
 
                     mLargeCardView.setCardDetails(value.getValue());
                     break;

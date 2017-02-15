@@ -20,6 +20,7 @@ import static com.jamieadkins.gwent.settings.SettingsActivity.PREFERENCE_ANALYTI
  */
 
 public class FirebaseUtils {
+    public static final String STORAGE_BUCKET = "gs://gwent-9e62a.appspot.com/";
 
     private static boolean persistanceSet = false;
 
