@@ -36,9 +36,9 @@ import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.deck.DecksContract;
-import com.jamieadkins.gwent.deck.DecksPresenter;
-import com.jamieadkins.gwent.deck.DeckListFragment;
+import com.jamieadkins.gwent.deck.list.DecksContract;
+import com.jamieadkins.gwent.deck.list.DecksPresenter;
+import com.jamieadkins.gwent.deck.list.DeckListFragment;
 
 import java.util.HashMap;
 import java.util.Map;

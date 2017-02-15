@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck;
+package com.jamieadkins.gwent.deck.list;
 
 import android.app.Dialog;
 import android.content.Context;

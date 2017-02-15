@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck;
+package com.jamieadkins.gwent.deck.list;
 
 import android.support.annotation.NonNull;
 
@@ -7,7 +7,6 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
-import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;

@@ -3,23 +3,17 @@ package com.jamieadkins.gwent.data.interactor;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.data.Collection;
-import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.deck.DecksContract;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;

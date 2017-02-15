@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck;
+package com.jamieadkins.gwent.deck.list;
 
 import android.support.v4.content.ContextCompat;
 import android.view.View;

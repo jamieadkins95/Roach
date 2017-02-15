@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck;
+package com.jamieadkins.gwent.deck.list;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

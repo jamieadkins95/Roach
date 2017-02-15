@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck;
+package com.jamieadkins.gwent.deck.list;
 
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;

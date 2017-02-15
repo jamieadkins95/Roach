@@ -11,10 +11,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.deck.DecksContract;
+import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.HashMap;
 import java.util.Map;

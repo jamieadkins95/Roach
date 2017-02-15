@@ -2,8 +2,7 @@ package com.jamieadkins.gwent.data.interactor;
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.deck.DecksContract;
-import com.jamieadkins.gwent.deck.DecksPresenter;
+import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Observable;
 
