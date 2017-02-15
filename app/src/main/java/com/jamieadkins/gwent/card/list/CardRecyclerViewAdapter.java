@@ -1,11 +1,10 @@
-package com.jamieadkins.gwent.card;
+package com.jamieadkins.gwent.card.list;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
 
 /**

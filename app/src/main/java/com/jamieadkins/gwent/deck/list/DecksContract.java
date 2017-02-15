@@ -1,8 +1,7 @@
 package com.jamieadkins.gwent.deck.list;
 
-import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
-import com.jamieadkins.gwent.card.CardsContract;
+import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 

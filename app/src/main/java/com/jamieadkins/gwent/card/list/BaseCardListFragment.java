@@ -1,14 +1,15 @@
-package com.jamieadkins.gwent.card;
+package com.jamieadkins.gwent.card.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.card.CardFilterListener;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.main.MainActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

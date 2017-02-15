@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.BaseCardViewHolder;
-import com.jamieadkins.gwent.card.CardRecyclerViewAdapter;
+import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
+import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Collection;
 

@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.BaseCardViewHolder;
+import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
 
 /**

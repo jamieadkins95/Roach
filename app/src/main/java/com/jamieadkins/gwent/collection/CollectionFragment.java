@@ -4,10 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.BaseCardListFragment;
+import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.data.Collection;
 
 import io.reactivex.Observer;

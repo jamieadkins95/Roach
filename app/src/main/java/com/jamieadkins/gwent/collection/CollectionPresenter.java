@@ -3,8 +3,6 @@ package com.jamieadkins.gwent.collection;
 import android.support.annotation.NonNull;
 
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardsContract;
-import com.jamieadkins.gwent.card.CardsPresenter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Collection;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;

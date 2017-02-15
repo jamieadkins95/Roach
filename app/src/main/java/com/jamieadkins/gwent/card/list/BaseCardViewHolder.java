@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.card;
+package com.jamieadkins.gwent.card.list;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.card.SimpleCardView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
