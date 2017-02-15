@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -35,13 +37,22 @@ public class DeckDetailFragment extends BaseCardListFragment implements DecksCon
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_card_list;
+        return R.layout.fragment_deck_detail;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
+    }
+
+    @Override
+    public void setupViews(View rootView) {
+        super.setupViews(rootView);
+        View bottomSheet = rootView.findViewById(R.id.bottom_sheet);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setPeekHeight(250);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
