@@ -10,7 +10,7 @@ import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.detail.DetailActivity;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 
 /**
  * ViewHolder for general yearns

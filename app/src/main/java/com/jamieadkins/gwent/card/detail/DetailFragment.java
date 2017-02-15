@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.detail;
+package com.jamieadkins.gwent.card.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

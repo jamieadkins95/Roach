@@ -1,8 +1,7 @@
-package com.jamieadkins.gwent.detail;
+package com.jamieadkins.gwent.card.detail;
 
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
-import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
