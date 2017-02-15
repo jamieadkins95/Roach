@@ -103,7 +103,6 @@ public class DeckDetailFragment extends BaseCardListFragment implements DecksCon
     public void onStop() {
         super.onStop();
         mDecksPresenter.stop();
-        getRecyclerViewAdapter().clear();
     }
 
     @Override
