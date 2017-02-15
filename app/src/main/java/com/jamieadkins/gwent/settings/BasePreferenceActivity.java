@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.about;
+package com.jamieadkins.gwent.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;

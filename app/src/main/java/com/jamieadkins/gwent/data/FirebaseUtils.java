@@ -8,14 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.FirebaseDatabase;
-import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 
-import static com.jamieadkins.gwent.about.SettingsActivity.PREFERENCE_ANALYTICS;
+import static com.jamieadkins.gwent.settings.SettingsActivity.PREFERENCE_ANALYTICS;
 
 /**
  * Misc utils for firebase.

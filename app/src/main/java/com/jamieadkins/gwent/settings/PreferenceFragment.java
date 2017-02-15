@@ -1,9 +1,7 @@
-package com.jamieadkins.gwent.about;
+package com.jamieadkins.gwent.settings;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
-
-import com.jamieadkins.gwent.R;
 
 /**
  * Shows information about the app.

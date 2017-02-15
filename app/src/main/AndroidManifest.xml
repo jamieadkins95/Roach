@@ -50,11 +50,11 @@
         </activity>
 
         <activity
-            android:name=".about.BasePreferenceActivity"
+            android:name=".settings.BasePreferenceActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
         <activity
-            android:name=".about.SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
     </application>
 
