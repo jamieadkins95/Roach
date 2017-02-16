@@ -83,4 +83,5 @@
     <string name="ranged">Ranged</string>
     <string name="total">Total</string>
     <string name="total_cards">Total Cards: %d</string>
+    <string name="publish_deck">Publish Deck</string>
 </resources>

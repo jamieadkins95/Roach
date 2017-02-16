@@ -28,6 +28,8 @@ public interface DecksContract {
 
         void createNewDeck(String name, String faction, CardDetails leader);
 
+        void publishDeck(Deck deck);
+
         void onLoadingComplete();
     }
 }

@@ -80,6 +80,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public void publishDeck(Deck deck) {
+        mDecksInteractor.publishDeck(deck);
+    }
+
+    @Override
     public void stop() {
         mDecksInteractor.stopData();
     }

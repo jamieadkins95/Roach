@@ -31,29 +31,29 @@ import io.reactivex.ObservableSource;
  */
 
 public class DecksInteractorFirebase implements DecksInteractor {
+    private static final String PUBLIC_DECKS_PATH = "public-decks/";
+
     private DecksContract.Presenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mDecksReference;
+    private final DatabaseReference mPublicDecksReference;
     private final Query mDecksQuery;
     private Query mDeckQuery;
     private ChildEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
-
-    private final String databasePath;
 
     public DecksInteractorFirebase() {
         this(false);
     }
 
     public DecksInteractorFirebase(boolean publicDecks) {
+        mPublicDecksReference = mDatabase.getReference(PUBLIC_DECKS_PATH);
         if (publicDecks) {
-            databasePath = "public-decks/";
-            mDecksReference = mDatabase.getReference(databasePath);
+            mDecksReference = mPublicDecksReference;
             mDecksQuery = mDecksReference.orderByChild("week");
         } else {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            databasePath = "users/" + userId + "/decks/";
-            mDecksReference = mDatabase.getReference(databasePath);
+            mDecksReference = mDatabase.getReference("users/" + userId + "/decks/");
             mDecksQuery = mDecksReference.orderByChild("name");
         }
     }
@@ -175,6 +175,20 @@ public class DecksInteractorFirebase implements DecksInteractor {
         firebaseUpdates.put(key, deckValues);
 
         mDecksReference.updateChildren(firebaseUpdates);
+    }
+
+    @Override
+    public void publishDeck(Deck deck) {
+        String key = mPublicDecksReference.push().getKey();
+
+        Map<String, Object> deckValues = deck.toMap();
+        deckValues.put("id", key);
+        deckValues.put("publicDeck", true);
+        deckValues.put("week", 0);
+        Map<String, Object> firebaseUpdates = new HashMap<>();
+        firebaseUpdates.put(key, deckValues);
+
+        mPublicDecksReference.updateChildren(firebaseUpdates);
     }
 
     @Override
