@@ -54,7 +54,7 @@ public class CardImageView extends LinearLayout implements RequestListener {
     public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
         // No art available.
         findViewById(R.id.no_art).setVisibility(View.VISIBLE);
-        findViewById(R.id.card_image).setVisibility(View.GONE);
+        mImageView.setVisibility(View.GONE);
         setLoading(false);
         return false;
     }
