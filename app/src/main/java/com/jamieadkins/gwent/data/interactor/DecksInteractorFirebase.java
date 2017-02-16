@@ -177,7 +177,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(Deck deck, final String cardId) {
+    public void addCardToDeck(Deck deck, final String cardId, final String variationId) {
         DatabaseReference deckReference = mDecksReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
@@ -196,12 +196,23 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 }
 
                 if (storedDeck.getCards().containsKey(cardId)) {
-                    // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCards().get(cardId);
-                    storedDeck.getCards().put(cardId, currentCardCount + 1);
+                    if (storedDeck.getCards().get(cardId).containsKey(variationId)) {
+                        // If the user already has at least one of these card variations in their deck.
+                        int currentCardCount = storedDeck.getCards().get(cardId).get(variationId);
+                        Map<String, Integer> variations = storedDeck.getCards().get(cardId);
+                        variations.put(variationId, currentCardCount + 1);
+                        storedDeck.getCards().put(cardId, variations);
+                    } else {
+                        // If user has the card but not this variation.
+                        Map<String, Integer> variations = storedDeck.getCards().get(cardId);
+                        variations.put(variationId, 1);
+                        storedDeck.getCards().put(cardId, variations);
+                    }
                 } else {
-                    // Else add one card to the deck.
-                    storedDeck.getCards().put(cardId, 1);
+                    // User doesn't have this card at all.
+                    Map<String, Integer> variations = new HashMap<>();
+                    variations.put(variationId, 1);
+                    storedDeck.getCards().put(cardId, variations);
                 }
 
                 // Set value and report transaction success.
@@ -219,7 +230,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void removeCardFromDeck(Deck deck, final String cardId) {
+    public void removeCardFromDeck(Deck deck, final String cardId, final String variationId) {
         DatabaseReference deckReference = mDecksReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
@@ -238,9 +249,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 }
 
                 if (storedDeck.getCards().containsKey(cardId)) {
-                    // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCards().get(cardId);
-                    storedDeck.getCards().put(cardId, currentCardCount - 1);
+                    if (storedDeck.getCards().get(cardId).containsKey(variationId)) {
+                        // If the user already has at least one of these cards in their deck.
+                        int currentCardCount = storedDeck.getCards().get(cardId).get(variationId);
+
+                        Map<String, Integer> variations = storedDeck.getCards().get(cardId);
+                        variations.put(variationId, currentCardCount - 1);
+                        storedDeck.getCards().put(cardId, variations);
+                    }
                 } else {
                     // This deck doesn't have that card in it.
                 }
