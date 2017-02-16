@@ -2,7 +2,9 @@ package com.jamieadkins.gwent.card.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,25 +36,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
-
-    private RequestListener<StorageReference, GlideDrawable> mGlideListener =
-            new RequestListener<StorageReference, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, StorageReference model,
-                                           Target<GlideDrawable> target, boolean isFirstResource) {
-                    // No art available.
-                    getView().findViewById(R.id.no_art).setVisibility(View.VISIBLE);
-                    mCardPicture.setVisibility(View.GONE);
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, StorageReference model,
-                                               Target<GlideDrawable> target,
-                                               boolean isFromMemoryCache, boolean isFirstResource) {
-                    return false;
-                }
-            };
+    private ViewPager mViewPager;
+    private CardImagePagerAdapter mAdapter;
 
     private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
 
@@ -65,21 +50,23 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         public void onNext(RxDatabaseEvent<CardDetails> value) {
             switch (value.getEventType()) {
                 case ADDED:
+                    CardDetails card = value.getValue();
+
                     // Update UI with card details.
-                    getActivity().setTitle(value.getValue().getName());
+                    getActivity().setTitle(card.getName());
 
                     FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageReference = storage.getReferenceFromUrl(
-                            FirebaseUtils.STORAGE_BUCKET + value.getValue().getImage());
 
-                    Glide.with(getActivity())
-                            .using(new FirebaseImageLoader())
-                            .load(storageReference)
-                            .listener(mGlideListener)
-                            .centerCrop()
-                            .into(mCardPicture);
+                    for (String variationId : card.getVariations().keySet()) {
+                        CardDetails.Variation variation = card.getVariations().get(variationId);
+                        StorageReference storageReference = storage.getReferenceFromUrl(
+                                FirebaseUtils.STORAGE_BUCKET +
+                                        variation.getArt().getFullsizeImageUrl());
 
-                    mLargeCardView.setCardDetails(value.getValue());
+                        mAdapter.addItem(storageReference);
+                    }
+
+                    mLargeCardView.setCardDetails(card);
                     break;
             }
         }
@@ -102,6 +89,14 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mCardPicture = (ImageView) rootView.findViewById(R.id.card_image);
         mLargeCardView = (LargeCardView) rootView.findViewById(R.id.card_details);
+
+        mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+        mAdapter = new CardImagePagerAdapter(getActivity());
+        mViewPager.setAdapter(mAdapter);
+
         return rootView;
     }
 
