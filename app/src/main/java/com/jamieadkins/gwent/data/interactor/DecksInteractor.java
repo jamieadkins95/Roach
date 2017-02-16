@@ -14,9 +14,9 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     void createNewDeck(String name, String faction);
 
-    void addCardToDeck(Deck deck, String cardId, String variationId);
+    void addCardToDeck(Deck deck, String cardId);
 
-    void removeCardFromDeck(Deck deck, String cardId, String variationId);
+    void removeCardFromDeck(Deck deck, String cardId);
 
     Observable<RxDatabaseEvent<Deck>> getDecks();
 
