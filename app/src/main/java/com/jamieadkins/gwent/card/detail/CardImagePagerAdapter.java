@@ -29,66 +29,22 @@ public class CardImagePagerAdapter extends PagerAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<StorageReference> mItems;
-    // Unfortunate hack we need to do to reference views later.
-    private List<View> mViews;
-
-    private RequestListener<StorageReference, GlideDrawable> mGlideListener =
-            new RequestListener<StorageReference, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, StorageReference model,
-                                           Target<GlideDrawable> target, boolean isFirstResource) {
-                    // No art available.
-                    View view =  mViews.get(mItems.indexOf(model));
-                    view.findViewById(R.id.no_art).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.card_image).setVisibility(View.GONE);
-
-                    hideLoadingIndicator(view);
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, StorageReference model,
-                                               Target<GlideDrawable> target,
-                                               boolean isFromMemoryCache, boolean isFirstResource) {
-                    hideLoadingIndicator(mViews.get(mItems.indexOf(model)));
-                    return false;
-                }
-
-                private void hideLoadingIndicator(View view) {
-                    SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
-                            view.findViewById(R.id.refreshContainer);
-                    refreshContainer.setRefreshing(false);
-                    refreshContainer.setEnabled(false);
-                }
-            };
 
     public CardImagePagerAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mItems = new ArrayList<>();
-        mViews = new ArrayList<>();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.item_card_image, container, false);
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.card_image);
-        SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
-                itemView.findViewById(R.id.refreshContainer);
-        refreshContainer.setColorSchemeResources(R.color.gwentAccent);
-        refreshContainer.setRefreshing(true);
-
+        CardImageView imageView = (CardImageView) itemView.findViewById(R.id.card_image);
         container.addView(itemView);
 
-        Glide.with(mContext)
-                .using(new FirebaseImageLoader())
-                .load(mItems.get(position))
-                .listener(mGlideListener)
-                .fitCenter()
-                .into(imageView);
+        imageView.setCardImage(mItems.get(position));
 
-        mViews.add(position, itemView);
         return itemView;
     }
 
@@ -119,6 +75,5 @@ public class CardImagePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
-        mViews.remove(position);
     }
 }
