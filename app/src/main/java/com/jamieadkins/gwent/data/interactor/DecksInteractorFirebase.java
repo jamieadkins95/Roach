@@ -12,6 +12,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.list.DecksContract;
@@ -164,10 +165,10 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void createNewDeck(String name, String faction) {
+    public void createNewDeck(String name, String faction, String patch) {
         String key = mDecksReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Deck deck = new Deck(key, name, faction, author);
+        Deck deck = new Deck(key, name, faction, author, patch);
         Map<String, Object> deckValues = deck.toMap();
 
         Map<String, Object> firebaseUpdates = new HashMap<>();
@@ -177,7 +178,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(Deck deck, final String cardId) {
+    public void addCardToDeck(Deck deck, final CardDetails card) {
         DatabaseReference deckReference = mDecksReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
@@ -190,19 +191,16 @@ public class DecksInteractorFirebase implements DecksInteractor {
                     return Transaction.success(mutableData);
                 }
 
-                if (storedDeck.getCards() == null) {
-                    // First card being added to the deck!
-                    storedDeck.initialiseCardMap();
-                }
-
-                if (storedDeck.getCards().containsKey(cardId)) {
+                if (storedDeck.getCardCount().containsKey(card.getIngameId())) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCards().get(cardId);
-                    storedDeck.getCards().put(cardId, currentCardCount + 1);
+                    int currentCardCount = storedDeck.getCardCount().get(card.getIngameId());
+                    storedDeck.getCardCount().put(card.getIngameId(), currentCardCount + 1);
                 } else {
                     // Else add one card to the deck.
-                    storedDeck.getCards().put(cardId, 1);
+                    storedDeck.getCardCount().put(card.getIngameId(), 1);
                 }
+
+                storedDeck.getCards().put(card.getIngameId(), card);
 
                 // Set value and report transaction success.
                 mutableData.setValue(storedDeck);
@@ -219,7 +217,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void removeCardFromDeck(Deck deck, final String cardId) {
+    public void removeCardFromDeck(Deck deck, final CardDetails card) {
         DatabaseReference deckReference = mDecksReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
@@ -232,15 +230,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
                     return Transaction.success(mutableData);
                 }
 
-                if (storedDeck.getCards() == null) {
-                    // Fresh deck that has no cards in it!
-                    return Transaction.success(mutableData);
-                }
-
-                if (storedDeck.getCards().containsKey(cardId)) {
+                if (storedDeck.getCardCount().containsKey(card.getIngameId())) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCards().get(cardId);
-                    storedDeck.getCards().put(cardId, currentCardCount - 1);
+                    int currentCardCount = storedDeck.getCardCount().get(card.getIngameId());
+                    storedDeck.getCardCount().put(card.getIngameId(), currentCardCount - 1);
+
+                    if (currentCardCount == 0) {
+                        storedDeck.getCards().put(card.getIngameId(), null);
+                    }
                 } else {
                     // This deck doesn't have that card in it.
                 }

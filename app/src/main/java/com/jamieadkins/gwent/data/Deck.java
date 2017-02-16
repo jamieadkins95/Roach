@@ -1,10 +1,7 @@
 package com.jamieadkins.gwent.data;
 
-import android.content.Context;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.jamieadkins.gwent.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,32 +16,32 @@ public class Deck {
     private String name;
     private String author;
     private String faction;
-    private String leader;
+    private CardDetails leader;
     private String patch = "v0-8-60-2";
-    // Map of card ids to variation ids to card count.
-    private Map<String, Integer> cards;
+    // Map of card ids to card count.
+    private Map<String, Integer> cardCount;
+    private Map<String, CardDetails> cards;
 
     public Deck() {
         // Required empty constructor for Firebase.
+        this.cards = new HashMap<>();
+        this.cardCount = new HashMap<>();
     }
 
-    public Deck(String id, String name, String faction, String author) {
+    public Deck(String id, String name, String faction, String author, String patch) {
         this.id = id;
         this.name = name;
         this.faction = faction;
         this.author = author;
+        this.patch = patch;
         this.openToPublic = false;
     }
 
-    public Deck(String id, String faction, String author) {
-        this(id, id, faction, author);
-    }
-
-    public void setLeader(String leader) {
+    public void setLeader(CardDetails leader) {
         this.leader = leader;
     }
 
-    public String getLeader() {
+    public CardDetails getLeader() {
         return leader;
     }
 
@@ -64,12 +61,12 @@ public class Deck {
         return id;
     }
 
-    public void initialiseCardMap() {
-        this.cards = new HashMap<>();
+    public Map<String, CardDetails> getCards() {
+        return cards;
     }
 
-    public Map<String, Integer> getCards() {
-        return cards;
+    public Map<String, Integer> getCardCount() {
+        return cardCount;
     }
 
     @Exclude
@@ -80,6 +77,7 @@ public class Deck {
         result.put("author", author);
         result.put("faction", faction);
         result.put("cards", cards);
+        result.put("cardCount", cardCount);
         result.put("leader", leader);
         result.put("patch", patch);
         result.put("openToPublic", openToPublic);

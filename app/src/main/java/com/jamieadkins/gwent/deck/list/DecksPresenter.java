@@ -7,9 +7,13 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
+import com.jamieadkins.gwent.data.interactor.PatchInteractor;
+import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -19,6 +23,7 @@ import io.reactivex.Observable;
 public class DecksPresenter implements DecksContract.Presenter {
     private final DecksInteractor mDecksInteractor;
     private final CardsInteractor mCardsInteractor;
+    private final PatchInteractor mPatchInteractor;
     private final DecksContract.View mDecksView;
 
     public DecksPresenter(@NonNull DecksContract.View decksView,
@@ -30,13 +35,35 @@ public class DecksPresenter implements DecksContract.Presenter {
         mCardsInteractor = cardsInteractor;
         mCardsInteractor.setPresenter(this);
 
+        mPatchInteractor = new PatchInteractorFirebase();
+
         mDecksView = decksView;
         mDecksView.setPresenter(this);
     }
 
     @Override
-    public void createNewDeck(String name, String faction) {
-        mDecksInteractor.createNewDeck(name, faction);
+    public void createNewDeck(final String name, final String faction) {
+        mPatchInteractor.getLatestPatch().subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String patch) {
+                mDecksInteractor.createNewDeck(name, faction, patch);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
