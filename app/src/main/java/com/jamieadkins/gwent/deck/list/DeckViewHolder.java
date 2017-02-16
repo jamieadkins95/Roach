@@ -45,7 +45,7 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
             public void onClick(View view) {
                 Intent intent = new Intent(getView().getContext(), DeckDetailActivity.class);
                 intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, getBoundItem().getId());
-                intent.putExtra(DeckDetailActivity.EXTRA_PATCH, getBoundItem().getPatch());
+                intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, getBoundItem().isPublicDeck());
                 getView().getContext().startActivity(intent);
 
                 // Log what card has been viewed.

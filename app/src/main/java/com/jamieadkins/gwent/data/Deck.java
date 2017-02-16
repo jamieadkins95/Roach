@@ -11,7 +11,7 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Deck {
-    private boolean openToPublic;
+    private boolean publicDeck;
     private String id;
     private String name;
     private String author;
@@ -34,7 +34,7 @@ public class Deck {
         this.faction = faction;
         this.author = author;
         this.patch = patch;
-        this.openToPublic = false;
+        this.publicDeck = false;
     }
 
     public void setLeader(CardDetails leader) {
@@ -69,6 +69,10 @@ public class Deck {
         return cardCount;
     }
 
+    public boolean isPublicDeck() {
+        return publicDeck;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -80,7 +84,7 @@ public class Deck {
         result.put("cardCount", cardCount);
         result.put("leader", leader);
         result.put("patch", patch);
-        result.put("openToPublic", openToPublic);
+        result.put("publicDeck", publicDeck);
 
         return result;
     }

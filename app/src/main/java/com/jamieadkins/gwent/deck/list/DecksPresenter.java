@@ -22,18 +22,13 @@ import io.reactivex.disposables.Disposable;
 
 public class DecksPresenter implements DecksContract.Presenter {
     private final DecksInteractor mDecksInteractor;
-    private final CardsInteractor mCardsInteractor;
     private final PatchInteractor mPatchInteractor;
     private final DecksContract.View mDecksView;
 
     public DecksPresenter(@NonNull DecksContract.View decksView,
-                          @NonNull DecksInteractor decksInteractor,
-                          @NonNull CardsInteractor cardsInteractor) {
+                          @NonNull DecksInteractor decksInteractor) {
         mDecksInteractor = decksInteractor;
         mDecksInteractor.setPresenter(this);
-
-        mCardsInteractor = cardsInteractor;
-        mCardsInteractor.setPresenter(this);
 
         mPatchInteractor = new PatchInteractorFirebase();
 
@@ -84,11 +79,6 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void stop() {
         mDecksInteractor.stopData();
-    }
-
-    @Override
-    public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
-        return mCardsInteractor.getCards(cardFilter);
     }
 
     @Override

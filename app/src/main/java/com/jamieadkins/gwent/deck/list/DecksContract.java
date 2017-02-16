@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.list;
 
+import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Deck;
@@ -17,7 +18,7 @@ public interface DecksContract {
         void setLoadingIndicator(boolean active);
     }
 
-    interface Presenter extends CardsContract.Presenter {
+    interface Presenter extends BasePresenter {
         Observable<RxDatabaseEvent<Deck>> getDecks();
 
         Observable<RxDatabaseEvent<Deck>> getDeck(String deckId);

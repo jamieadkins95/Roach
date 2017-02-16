@@ -125,8 +125,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                 // Create the presenter.
                                 mDecksPresenter =
                                         new DecksPresenter((DecksContract.View) fragment,
-                                                new DecksInteractorFirebase(),
-                                                new CardsInteractorFirebase());
+                                                new DecksInteractorFirebase());
                                 break;
                             case R.id.tab_collection:
                                 // Hide this feature in release versions for now.
@@ -200,8 +199,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                 // Create the presenter.
                                 mPublicDecksPresenter =
                                         new DecksPresenter((DecksContract.View) fragment,
-                                                new DecksInteractorFirebase(true),
-                                                new CardsInteractorFirebase());
+                                                new DecksInteractorFirebase(true));
                                 break;
                             default:
                                 showSnackbar(getString(R.string.coming_soon));

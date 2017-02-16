@@ -22,37 +22,17 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class DeckDetailFragment extends BaseCardListFragment implements DecksContract.View {
-    private DecksContract.Presenter mDecksPresenter;
-    private String mDeckId;
+public abstract class BaseDeckDetailFragment extends BaseCardListFragment implements DecksContract.View {
+    protected DecksContract.Presenter mDecksPresenter;
+    protected String mDeckId;
 
-    public DeckDetailFragment() {
-    }
-
-    public static DeckDetailFragment newInstance(String deckId) {
-        DeckDetailFragment fragment = new DeckDetailFragment();
-        fragment.mDeckId = deckId;
-        return fragment;
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_deck_detail;
+    public BaseDeckDetailFragment() {
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
-    }
-
-    @Override
-    public void setupViews(View rootView) {
-        super.setupViews(rootView);
-        View bottomSheet = rootView.findViewById(R.id.bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.setPeekHeight(250);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -75,15 +55,10 @@ public class DeckDetailFragment extends BaseCardListFragment implements DecksCon
                     @Override
                     public void onNext(RxDatabaseEvent<Deck> value) {
                         getActivity().setTitle(value.getValue().getName());
-                        CardFilter cardFilter = new CardFilter();
-                        if (value.getValue().getCards() != null) {
-                            for (String cardId : value.getValue().getCards().keySet()) {
-                                cardFilter.addCardId(cardId);
-                            }
-                            mDecksPresenter.getCards(cardFilter)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(getObserver());
+
+                        getRecyclerViewAdapter().clear();
+                        for (String cardId : value.getValue().getCards().keySet()) {
+                            getRecyclerViewAdapter().addItem(value.getValue().getCards().get(cardId));
                         }
                     }
 
