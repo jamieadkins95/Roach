@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.card.detail;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,11 @@ public class CardImagePagerAdapter extends PagerAdapter {
                 public boolean onResourceReady(GlideDrawable resource, StorageReference model,
                                                Target<GlideDrawable> target,
                                                boolean isFromMemoryCache, boolean isFirstResource) {
+                    View view =  mViews.get(mItems.indexOf(model));
+                    SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
+                            view.findViewById(R.id.refreshContainer);
+                    refreshContainer.setRefreshing(false);
+                    refreshContainer.setEnabled(false);
                     return false;
                 }
             };
@@ -63,6 +69,11 @@ public class CardImagePagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.item_card_image, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.card_image);
+        SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
+                itemView.findViewById(R.id.refreshContainer);
+        refreshContainer.setColorSchemeResources(R.color.gwentAccent);
+        refreshContainer.setRefreshing(true);
+
         container.addView(itemView);
 
         Glide.with(mContext)

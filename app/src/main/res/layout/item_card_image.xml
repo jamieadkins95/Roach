@@ -4,21 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:id="@+id/card_image"
-        android:scaleType="fitCenter" />
+        android:id="@+id/refreshContainer">
 
-    <TextView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:gravity="center"
-        android:textStyle="italic"
-        android:id="@+id/no_art"
-        android:text="@string/no_card_art"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_image"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:id="@+id/no_art"
+            android:text="@string/no_card_art"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
