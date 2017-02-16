@@ -85,7 +85,7 @@ public class CardImagePagerAdapter extends PagerAdapter {
                 .using(new FirebaseImageLoader())
                 .load(mItems.get(position))
                 .listener(mGlideListener)
-                .centerCrop()
+                .fitCenter()
                 .into(imageView);
 
         mViews.add(position, itemView);
