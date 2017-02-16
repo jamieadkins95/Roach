@@ -93,8 +93,17 @@ public class CardImagePagerAdapter extends PagerAdapter {
     }
 
     public void addItem(StorageReference storageReference) {
-        mItems.add(storageReference);
-        notifyDataSetChanged();
+        boolean alreadyAdded = false;
+        for (StorageReference reference : mItems) {
+            if (reference.getPath().equals(storageReference.getPath())) {
+                alreadyAdded = true;
+            }
+        }
+
+        if (!alreadyAdded) {
+            mItems.add(storageReference);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
