@@ -22,7 +22,7 @@ public class Deck {
     private String leader;
     private String patch = "v0-8-60-2";
     // Map of card ids to variation ids to card count.
-    private Map<String, Integer> cards;
+    private Map<String, Map<String, Integer>> cards;
 
     public Deck() {
         // Required empty constructor for Firebase.
@@ -68,7 +68,7 @@ public class Deck {
         this.cards = new HashMap<>();
     }
 
-    public Map<String, Integer> getCards() {
+    public Map<String, Map<String, Integer>> getCards() {
         return cards;
     }
 
