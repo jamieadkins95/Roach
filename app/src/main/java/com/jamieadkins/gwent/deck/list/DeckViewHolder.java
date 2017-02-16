@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 /**
@@ -56,11 +57,13 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
 
         mDeckName.setText(getBoundItem().getName());
         mDeckLeader.setText(getBoundItem().getLeader().getName());
-        mDeckMelee.setText("40");
-        mDeckRanged.setText("24");
-        mDeckSiege.setText("23");
-        mDeckTotalCards.setText("Total Cards: 27");
-        mDeckTotalAttack.setText("80");
+        mDeckMelee.setText(String.valueOf(getBoundItem().getStrengthForPosition(Position.MELEE)));
+        mDeckRanged.setText(String.valueOf(getBoundItem().getStrengthForPosition(Position.RANGED)));
+        mDeckSiege.setText(String.valueOf(getBoundItem().getStrengthForPosition(Position.SIEGE)));
+        mDeckTotalCards.setText(String.format(
+                mDeckTotalCards.getContext().getString(R.string.total_cards),
+                getBoundItem().getTotalCardCount()));
+        mDeckTotalAttack.setText(String.valueOf(getBoundItem().getTotalStrength()));
 
         int color;
         switch (getBoundItem().getFactionId()) {

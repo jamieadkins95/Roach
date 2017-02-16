@@ -90,4 +90,35 @@ public class Deck {
 
         return result;
     }
+
+    @Exclude
+    public int getStrengthForPosition(String position) {
+        int strength = 0;
+        for (String cardId : cards.keySet()) {
+            CardDetails card = cards.get(cardId);
+            if (card.getLane().contains(position)) {
+                strength += card.getStrength();
+            }
+        }
+        return strength;
+    }
+
+    @Exclude
+    public int getTotalStrength() {
+        int strength = 0;
+        for (String cardId : cards.keySet()) {
+            CardDetails card = cards.get(cardId);
+            strength += card.getStrength();
+        }
+        return strength;
+    }
+
+    @Exclude
+    public int getTotalCardCount() {
+        int count = 0;
+        for (String cardId : cardCount.keySet()) {
+            count += cardCount.get(cardId);
+        }
+        return count;
+    }
 }
