@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ViewPager adapter that holds card iamges
+ * ViewPager adapter that holds card images.
  */
 
 public class CardImagePagerAdapter extends PagerAdapter {
 
-    Context mContext;
-    LayoutInflater mLayoutInflater;
-    List<StorageReference> mItems;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private List<StorageReference> mItems;
     // Unfortunate hack we need to do to reference views later.
-    List<View> mViews;
+    private List<View> mViews;
 
     private RequestListener<StorageReference, GlideDrawable> mGlideListener =
             new RequestListener<StorageReference, GlideDrawable>() {
@@ -42,10 +42,7 @@ public class CardImagePagerAdapter extends PagerAdapter {
                     view.findViewById(R.id.no_art).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.card_image).setVisibility(View.GONE);
 
-                    SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
-                            view.findViewById(R.id.refreshContainer);
-                    refreshContainer.setRefreshing(false);
-                    refreshContainer.setEnabled(false);
+                    hideLoadingIndicator(view);
                     return false;
                 }
 
@@ -53,12 +50,15 @@ public class CardImagePagerAdapter extends PagerAdapter {
                 public boolean onResourceReady(GlideDrawable resource, StorageReference model,
                                                Target<GlideDrawable> target,
                                                boolean isFromMemoryCache, boolean isFirstResource) {
-                    View view =  mViews.get(mItems.indexOf(model));
+                    hideLoadingIndicator(mViews.get(mItems.indexOf(model)));
+                    return false;
+                }
+
+                private void hideLoadingIndicator(View view) {
                     SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
                             view.findViewById(R.id.refreshContainer);
                     refreshContainer.setRefreshing(false);
                     refreshContainer.setEnabled(false);
-                    return false;
                 }
             };
 
