@@ -15,7 +15,7 @@ public class Deck {
     private String id;
     private String name;
     private String author;
-    private String faction;
+    private String factionId;
     private CardDetails leader;
     private String patch = "v0-8-60-2";
     // Map of card ids to card count.
@@ -28,10 +28,10 @@ public class Deck {
         this.cardCount = new HashMap<>();
     }
 
-    public Deck(String id, String name, String faction, String author, String patch) {
+    public Deck(String id, String name, String factionId, String author, String patch) {
         this.id = id;
         this.name = name;
-        this.faction = faction;
+        this.factionId = factionId;
         this.author = author;
         this.patch = patch;
         this.publicDeck = false;
@@ -53,8 +53,8 @@ public class Deck {
         return name;
     }
 
-    public String getFaction() {
-        return faction;
+    public String getFactionId() {
+        return factionId;
     }
 
     public String getId() {
@@ -79,7 +79,7 @@ public class Deck {
         result.put("id", id);
         result.put("name", name);
         result.put("author", author);
-        result.put("faction", faction);
+        result.put("factionId", factionId);
         result.put("cards", cards);
         result.put("cardCount", cardCount);
         result.put("leader", leader);

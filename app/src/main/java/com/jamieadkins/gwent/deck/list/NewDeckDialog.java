@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.Faction;
 
 /**
  * Prompts user for new deck name and faction.
@@ -59,7 +60,7 @@ public class NewDeckDialog extends DialogFragment {
                         EditText deckName = (EditText) rootView.findViewById(R.id.deck_name);
                         Spinner faction = (Spinner) rootView.findViewById(R.id.factions);
                         mListener.createNewDeck(deckName.getText().toString(),
-                                faction.getSelectedItem().toString());
+                                Faction.ALL_FACTIONS[faction.getSelectedItemPosition()]);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);

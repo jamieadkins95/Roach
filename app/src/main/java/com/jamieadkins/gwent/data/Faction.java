@@ -21,28 +21,28 @@ public class Faction {
     public static final String NILFGAARD = "Nilfgaard";
 
     public static final String[] ALL_FACTIONS = new String[] {
-            MONSTERS, NEUTRAL, NORTHERN_REALMS, SCOIATAEL, SKELLIGE, NILFGAARD};
+            MONSTERS, NORTHERN_REALMS, SCOIATAEL, SKELLIGE, NILFGAARD, NEUTRAL};
 
     public static final Map<Integer, String> CONVERT_INT;
     public static final Map<String, Integer> CONVERT_STRING;
 
     static {
         Map<Integer, String> intToString = new HashMap<>();
-        intToString.put(0, NEUTRAL);
+        intToString.put(0, MONSTERS);
         intToString.put(1, NORTHERN_REALMS);
-        intToString.put(2, SKELLIGE);
-        intToString.put(3, SCOIATAEL);
-        intToString.put(4, MONSTERS);
-        intToString.put(5, NILFGAARD);
+        intToString.put(2, SCOIATAEL);
+        intToString.put(3, SKELLIGE);
+        intToString.put(4, NILFGAARD);
+        intToString.put(5, NEUTRAL);
         CONVERT_INT = Collections.unmodifiableMap(intToString);
 
         Map<String, Integer> stringToInt = new HashMap<>();
-        stringToInt.put(NEUTRAL, 0);
+        stringToInt.put(MONSTERS, 0);
         stringToInt.put(NORTHERN_REALMS, 1);
-        stringToInt.put(SKELLIGE, 2);
-        stringToInt.put(SCOIATAEL, 3);
-        stringToInt.put(MONSTERS, 4);
-        stringToInt.put(NILFGAARD, 5);
+        stringToInt.put(SCOIATAEL, 2);
+        stringToInt.put(SKELLIGE, 3);
+        stringToInt.put(NILFGAARD, 4);
+        stringToInt.put(NEUTRAL, 5);
         CONVERT_STRING = Collections.unmodifiableMap(stringToInt);
     }
 }

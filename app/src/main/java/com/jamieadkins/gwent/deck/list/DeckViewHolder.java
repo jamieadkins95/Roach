@@ -55,7 +55,7 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
         });
 
         mDeckName.setText(getBoundItem().getName());
-        mDeckLeader.setText(getBoundItem().getFaction());
+        mDeckLeader.setText(getBoundItem().getFactionId());
         mDeckMelee.setText("40");
         mDeckRanged.setText("24");
         mDeckSiege.setText("23");
@@ -63,7 +63,7 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
         mDeckTotalAttack.setText("80");
 
         int color;
-        switch (getBoundItem().getFaction()) {
+        switch (getBoundItem().getFactionId()) {
             case Faction.MONSTERS:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.monsters);
                 break;
@@ -75,6 +75,9 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
                 break;
             case Faction.SKELLIGE:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
+                break;
+            case Faction.NILFGAARD:
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.nilfgaard);
                 break;
             default:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
