@@ -18,7 +18,7 @@ import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 public class DeckViewHolder extends BaseViewHolder<Deck> {
     private final TextView mDeckName;
-    private final TextView mDeckFaction;
+    private final TextView mDeckLeader;
     private final TextView mDeckMelee;
     private final TextView mDeckRanged;
     private final TextView mDeckSiege;
@@ -28,7 +28,7 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
     public DeckViewHolder(View view) {
         super(view);
         mDeckName = (TextView) view.findViewById(R.id.deck_name);
-        mDeckFaction = (TextView) view.findViewById(R.id.deck_faction);
+        mDeckLeader = (TextView) view.findViewById(R.id.deck_leader);
         mDeckMelee = (TextView) view.findViewById(R.id.deck_melee);
         mDeckRanged = (TextView) view.findViewById(R.id.deck_range);
         mDeckSiege = (TextView) view.findViewById(R.id.deck_siege);
@@ -55,31 +55,31 @@ public class DeckViewHolder extends BaseViewHolder<Deck> {
         });
 
         mDeckName.setText(getBoundItem().getName());
-        mDeckFaction.setText(getBoundItem().getFaction());
+        mDeckLeader.setText(getBoundItem().getFaction());
         mDeckMelee.setText("40");
         mDeckRanged.setText("24");
         mDeckSiege.setText("23");
         mDeckTotalCards.setText("Total Cards: 27");
-        mDeckTotalAttack.setText("Total Attack: 80");
+        mDeckTotalAttack.setText("80");
 
         int color;
         switch (getBoundItem().getFaction()) {
             case Faction.MONSTERS:
-                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.monsters);
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.monsters);
                 break;
             case Faction.NORTHERN_REALMS:
-                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.northernRealms);
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.northernRealms);
                 break;
             case Faction.SCOIATAEL:
-                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.scoiatael);
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.scoiatael);
                 break;
             case Faction.SKELLIGE:
-                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.skellige);
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
                 break;
             default:
-                color = ContextCompat.getColor(mDeckFaction.getContext(), R.color.skellige);
+                color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
                 break;
         }
-        mDeckFaction.setTextColor(color);
+        mDeckLeader.setTextColor(color);
     }
 }
