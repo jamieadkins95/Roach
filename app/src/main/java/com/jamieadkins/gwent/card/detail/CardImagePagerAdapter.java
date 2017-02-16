@@ -41,6 +41,11 @@ public class CardImagePagerAdapter extends PagerAdapter {
                     View view =  mViews.get(mItems.indexOf(model));
                     view.findViewById(R.id.no_art).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.card_image).setVisibility(View.GONE);
+
+                    SwipeRefreshLayout refreshContainer = (SwipeRefreshLayout)
+                            view.findViewById(R.id.refreshContainer);
+                    refreshContainer.setRefreshing(false);
+                    refreshContainer.setEnabled(false);
                     return false;
                 }
 
