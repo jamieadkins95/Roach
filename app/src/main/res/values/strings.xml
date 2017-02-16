@@ -78,4 +78,8 @@
     <string name="developer_email">jamieadkins95+gwent@gmail.com</string>
     <string name="email_subject">Roach for Android</string>
     <string name="email_template">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
+    <string name="melee">Melee</string>
+    <string name="siege">Siege</string>
+    <string name="ranged">Ranged</string>
+    <string name="total">Total</string>
 </resources>

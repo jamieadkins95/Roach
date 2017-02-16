@@ -59,20 +59,19 @@
                     android:showDividers="middle">
 
                     <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <TextView
                             android:layout_height="wrap_content"
-                            android:tint="@color/textSecondary"
-                            android:src="@drawable/ic_cards_outline"/>
+                            android:layout_width="wrap_content"
+                            android:text="@string/melee"/>
 
                         <TextView
-                            android:layout_marginLeft="8dp"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:id="@+id/deck_melee"
@@ -81,20 +80,19 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <TextView
                             android:layout_height="wrap_content"
-                            android:tint="@color/textSecondary"
-                            android:src="@drawable/ic_cards_outline"/>
+                            android:layout_width="wrap_content"
+                            android:text="@string/ranged"/>
 
                         <TextView
-                            android:layout_marginLeft="8dp"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:id="@+id/deck_range"
@@ -103,24 +101,44 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <TextView
                             android:layout_height="wrap_content"
-                            android:tint="@color/textSecondary"
-                            android:src="@drawable/ic_cards_outline"/>
+                            android:layout_width="wrap_content"
+                            android:text="@string/siege"/>
 
                         <TextView
-                            android:layout_marginLeft="8dp"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:id="@+id/deck_siege"
                             android:text="23"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="@string/total"/>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/deck_total_attack"
+                            android:text="87"/>
 
                     </LinearLayout>
 
@@ -144,15 +162,6 @@
                         android:layout_gravity="center_vertical"
                         android:id="@+id/deck_total_cards"
                         android:text="Total cards: 27"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/deck_total_attack"
-                        android:text="Total Attack: 80"/>
 
                 </LinearLayout>
 
