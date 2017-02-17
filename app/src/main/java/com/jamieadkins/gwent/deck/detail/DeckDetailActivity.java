@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.data.Deck;
@@ -63,7 +64,9 @@ public class DeckDetailActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.deck_detail, menu);
+        if (BuildConfig.DEBUG) {
+            inflater.inflate(R.menu.deck_detail, menu);
+        }
         return true;
     }
 
