@@ -40,3 +40,6 @@ captures/
 *.jks
 
 *google-services.json
+
+data_mining/inputs/
+data_mining/outputs/
