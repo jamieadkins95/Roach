@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Roach</string>
-    <string name="settings">Settings</string>
+    <string name="app_name" translatable="false">Roach</string>
 
+    <string name="settings">Settings</string>
     <string name="my_decks">My Decks</string>
     <string name="my_collection">My Collection</string>
     <string name="public_decks">Public Decks</string>
@@ -53,20 +53,20 @@
     <string name="about">About</string>
 
     <string name="pref_licenses">Licenses</string>
-    <string name="pref_rxjava">Rxjava</string>
-    <string name="pref_glide">Glide</string>
+    <string name="pref_rxjava" translatable="false">Rxjava</string>
+    <string name="pref_glide" translatable="false">Glide</string>
 
     <string name="pref_general">General</string>
-    <string name="pref_analytics_key">com.jamieadkins.gwent.analytics</string>
+    <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="analytics">Anonymous Analytics</string>
     <string name="analytics_message" formatted="false">Roach would like to collect anonymous information about how you use the app. This information is used by the developer to learn which features to focus development on. The information is not shared with any 3rd party and is not used to identify or contact you.\n\nYou can opt in or out at anytime in the Settings.\n\nWould you like to opt in?</string>
     <string name="analytics_summary">Allow Roach to collect anonymous statistics to help future development of the app.</string>
 
-    <string name="pref_crowd_sourcing_key">com.jamieadkins.gwent.crowd.sourcing</string>
+    <string name="pref_crowd_sourcing_key" translatable="false">com.jamieadkins.gwent.crowd.sourcing</string>
     <string name="crowd_sourcing">Help Crowd Source Card Data</string>
     <string name="crowd_sourcing_summary">Help Roach get up to date quickly when a new Gwent patch is released by answering questions about cards that have been updated.</string>
 
-    <string name="transition_card">com.jamieadkins.gwent.transition.card</string>
+    <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="in_collection">%d in collection</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
@@ -75,9 +75,9 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="contact">Contact Developer</string>
-    <string name="developer_email">jamieadkins95+gwent@gmail.com</string>
+    <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
     <string name="email_subject">Roach for Android</string>
-    <string name="email_template">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
+    <string name="email_template" translatable="false">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
     <string name="melee">Melee</string>
     <string name="siege">Siege</string>
     <string name="ranged">Ranged</string>
