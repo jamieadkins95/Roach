@@ -1,10 +1,12 @@
 package com.jamieadkins.gwent.card.detail;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private ViewPager mViewPager;
     private CardImagePagerAdapter mAdapter;
 
+    private boolean mUseLowData = false;
+
     private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
 
         @Override
@@ -59,9 +63,16 @@ public class DetailFragment extends Fragment implements DetailContract.View {
 
                     for (String variationId : card.getVariations().keySet()) {
                         CardDetails.Variation variation = card.getVariations().get(variationId);
-                        StorageReference storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET +
-                                        variation.getArt().getFullsizeImageUrl());
+                        StorageReference storageReference;
+                        if (mUseLowData) {
+                            storageReference = storage.getReferenceFromUrl(
+                                    FirebaseUtils.STORAGE_BUCKET +
+                                            variation.getArt().getLowImage());
+                        } else {
+                            storageReference = storage.getReferenceFromUrl(
+                                    FirebaseUtils.STORAGE_BUCKET +
+                                            variation.getArt().getHighImage());
+                        }
 
                         mAdapter.addItem(storageReference);
                     }
@@ -96,6 +107,9 @@ public class DetailFragment extends Fragment implements DetailContract.View {
 
         mAdapter = new CardImagePagerAdapter(getActivity());
         mViewPager.setAdapter(mAdapter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mUseLowData = preferences.getBoolean(getString(R.string.pref_low_data_key), false);
 
         return rootView;
     }

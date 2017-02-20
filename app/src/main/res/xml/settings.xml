@@ -12,5 +12,10 @@
             android:title="@string/crowd_sourcing"
             android:summary="@string/crowd_sourcing_summary"
             android:defaultValue="false" />
+
+        <CheckBoxPreference android:key="@string/pref_low_data_key"
+            android:title="@string/low_data"
+            android:summary="@string/low_data_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>
