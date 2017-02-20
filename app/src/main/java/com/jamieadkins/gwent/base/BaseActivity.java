@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void showSnackbar(String message, String actionString, View.OnClickListener action) {
         Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.coordinator_layout_for_snackbar),
+                findViewById(R.id.coordinator_layout),
                 message,
                 Snackbar.LENGTH_LONG);
 

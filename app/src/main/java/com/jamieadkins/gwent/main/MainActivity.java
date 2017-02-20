@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +40,15 @@ import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +63,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private Map<Integer, CardFilter> mCardFilters;
 
     private int mCurrentTab;
+
+    private Drawer mNavigationDrawer;
 
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
@@ -80,138 +92,150 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mCardFilters.put(R.id.tab_card_db, new CardFilter());
         mCardFilters.put(R.id.tab_collection, new CardFilter());
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .build();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
-                        switch (item.getItemId()) {
-                            case R.id.tab_card_db:
-                                fragment = new CardListFragment();
+        Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                Fragment fragment;
+                switch ((int) drawerItem.getIdentifier()) {
+                    case R.id.tab_card_db:
+                        fragment = new CardListFragment();
 
-                                // Create the presenter.
-                                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                                        new CardsInteractorFirebase());
-                                mCardFilterListener = (CardFilterListener) fragment;
-                                break;
-                            case R.id.tab_decks:
-                                // Hide this feature in release versions for now.
-                                if (!BuildConfig.DEBUG) {
-                                    showSnackbar(String.format(
-                                            getString(R.string.is_coming_soon),
-                                            getString(R.string.my_decks)));
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Stop authenticated only tabs from being selected.
-                                if (!isAuthenticated()) {
-                                    showSnackbar(
-                                            String.format(getString(R.string.sign_in_to_view),
-                                                    getString(R.string.decks)),
-                                            getString(R.string.sign_in),
-                                            signInClickListener);
-
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Else, if authenticated.
-                                fragment = new DeckListFragment();
-
-                                // Create the presenter.
-                                mDecksPresenter =
-                                        new DecksPresenter((DecksContract.View) fragment,
-                                                new DecksInteractorFirebase());
-                                break;
-                            case R.id.tab_collection:
-                                // Hide this feature in release versions for now.
-                                if (!BuildConfig.DEBUG) {
-                                    showSnackbar(String.format(
-                                            getString(R.string.is_coming_soon),
-                                            getString(R.string.my_collection)));
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Stop authenticated only tabs from being selected.
-                                if (!isAuthenticated()) {
-                                    showSnackbar(
-                                            String.format(getString(R.string.sign_in_to_view),
-                                                    getString(R.string.collection)),
-                                            getString(R.string.sign_in),
-                                            signInClickListener);
-
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Else, if authenticated.
-                                fragment = new CollectionFragment();
-
-                                mCollectionPresenter = new CollectionPresenter(
-                                        (CollectionContract.View) fragment,
-                                        new CollectionInteractorFirebase(),
-                                        new CardsInteractorFirebase());
-                                mCardFilterListener = (CardFilterListener) fragment;
-                                break;
-
-                            case R.id.tab_results:
-                                // Hide this feature in release versions for now.
-                                if (!BuildConfig.DEBUG) {
-                                    showSnackbar(String.format(
-                                            getString(R.string.is_coming_soon),
-                                            getString(R.string.results)));
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Stop authenticated only tabs from being selected.
-                                if (!isAuthenticated()) {
-                                    showSnackbar(
-                                            String.format(getString(R.string.sign_in_to_view),
-                                                    getString(R.string.your_results)),
-                                            getString(R.string.sign_in),
-                                            signInClickListener);
-
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                // Else, if authenticated.
-                                fragment = new ComingSoonFragment();
-                                break;
-                            case R.id.tab_public_decks:
-                                // Hide this feature in release versions for now.
-                                if (!BuildConfig.DEBUG) {
-                                    showSnackbar(String.format(
-                                            getString(R.string.are_coming_soon),
-                                            getString(R.string.public_decks)));
-                                    // Don't display the item as the selected item.
-                                    return false;
-                                }
-
-                                fragment = DeckListFragment.newInstance(false);
-
-                                // Create the presenter.
-                                mPublicDecksPresenter =
-                                        new DecksPresenter((DecksContract.View) fragment,
-                                                new DecksInteractorFirebase(true));
-                                break;
-                            default:
-                                showSnackbar(getString(R.string.coming_soon));
-                                // Don't display the item as the selected item.
-                                return false;
+                        // Create the presenter.
+                        mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
+                                new CardsInteractorFirebase());
+                        mCardFilterListener = (CardFilterListener) fragment;
+                        break;
+                    case R.id.tab_decks:
+                        // Hide this feature in release versions for now.
+                        if (!BuildConfig.DEBUG) {
+                            showSnackbar(String.format(
+                                    getString(R.string.is_coming_soon),
+                                    getString(R.string.my_decks)));
+                            // Don't display the item as the selected item.
+                            return false;
                         }
 
-                        launchFragment(fragment);
-                        mCurrentTab = item.getItemId();
-                        return true;
-                    }
-                });
+                        // Stop authenticated only tabs from being selected.
+                        if (!isAuthenticated()) {
+                            showSnackbar(
+                                    String.format(getString(R.string.sign_in_to_view),
+                                            getString(R.string.decks)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener);
+
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        // Else, if authenticated.
+                        fragment = new DeckListFragment();
+
+                        // Create the presenter.
+                        mDecksPresenter =
+                                new DecksPresenter((DecksContract.View) fragment,
+                                        new DecksInteractorFirebase());
+                        break;
+                    case R.id.tab_collection:
+                        // Hide this feature in release versions for now.
+                        if (!BuildConfig.DEBUG) {
+                            showSnackbar(String.format(
+                                    getString(R.string.is_coming_soon),
+                                    getString(R.string.my_collection)));
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        // Stop authenticated only tabs from being selected.
+                        if (!isAuthenticated()) {
+                            showSnackbar(
+                                    String.format(getString(R.string.sign_in_to_view),
+                                            getString(R.string.collection)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener);
+
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        // Else, if authenticated.
+                        fragment = new CollectionFragment();
+
+                        mCollectionPresenter = new CollectionPresenter(
+                                (CollectionContract.View) fragment,
+                                new CollectionInteractorFirebase(),
+                                new CardsInteractorFirebase());
+                        mCardFilterListener = (CardFilterListener) fragment;
+                        break;
+
+                    case R.id.tab_results:
+                        // Hide this feature in release versions for now.
+                        if (!BuildConfig.DEBUG) {
+                            showSnackbar(String.format(
+                                    getString(R.string.is_coming_soon),
+                                    getString(R.string.results)));
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        // Stop authenticated only tabs from being selected.
+                        if (!isAuthenticated()) {
+                            showSnackbar(
+                                    String.format(getString(R.string.sign_in_to_view),
+                                            getString(R.string.your_results)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener);
+
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        // Else, if authenticated.
+                        fragment = new ComingSoonFragment();
+                        break;
+                    case R.id.tab_public_decks:
+                        // Hide this feature in release versions for now.
+                        if (!BuildConfig.DEBUG) {
+                            showSnackbar(String.format(
+                                    getString(R.string.are_coming_soon),
+                                    getString(R.string.public_decks)));
+                            // Don't display the item as the selected item.
+                            return false;
+                        }
+
+                        fragment = DeckListFragment.newInstance(false);
+
+                        // Create the presenter.
+                        mPublicDecksPresenter =
+                                new DecksPresenter((DecksContract.View) fragment,
+                                        new DecksInteractorFirebase(true));
+                        break;
+                    default:
+                        showSnackbar(getString(R.string.coming_soon));
+                        // Don't display the item as the selected item.
+                        return false;
+                }
+
+                launchFragment(fragment);
+                mCurrentTab = (int) drawerItem.getIdentifier();
+                return false;
+            }
+        };
+
+        mNavigationDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar((Toolbar) findViewById(R.id.toolbar))
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withIdentifier(R.id.tab_card_db).withName(R.string.card_database).withIcon(R.drawable.ic_database),
+                        new PrimaryDrawerItem().withIdentifier(R.id.tab_decks).withName(R.string.my_decks).withIcon(R.drawable.ic_cards_filled),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withIdentifier(R.id.action_settings).withName(R.string.settings).withIcon(R.drawable.ic_settings))
+                .withOnDrawerItemClickListener(drawerItemClickListener)
+                .build();
     }
 
     private void launchFragment(Fragment fragment) {

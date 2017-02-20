@@ -37,6 +37,9 @@ dependencies {
 
     // UI.
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile('com.mikepenz:materialdrawer:5.8.1@aar') {
+        transitive = true
+    }
 
     // Common Utils.
     compile project(':commonutils')
