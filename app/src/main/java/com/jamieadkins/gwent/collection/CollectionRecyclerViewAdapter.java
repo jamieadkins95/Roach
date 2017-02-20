@@ -38,10 +38,19 @@ public class CollectionRecyclerViewAdapter extends CardRecyclerViewAdapter {
         CollectionCardViewHolder collectionCardViewHolder = (CollectionCardViewHolder) holder;
         if (mCollection != null &&
                 mCollection.getCards().containsKey(getItemAt(position).getIngameId())) {
-            final int count = mCollection.getCards().get(getItemAt(position).getIngameId());
-            collectionCardViewHolder.setItemCount(count);
+
+            for (String variationId : getItemAt(position).getVariations().keySet()) {
+                if (mCollection.getCards().get(getItemAt(position).getIngameId()).containsKey(variationId)) {
+                    final int count = mCollection.getCards().get(getItemAt(position).getIngameId()).get(variationId);
+                    collectionCardViewHolder.setItemCount(variationId, count);
+                } else {
+                    collectionCardViewHolder.setItemCount(variationId, 0);
+                }
+            }
         } else {
-            collectionCardViewHolder.setItemCount(0);
+            for (String variationId : getItemAt(position).getVariations().keySet()) {
+                collectionCardViewHolder.setItemCount(variationId, 0);
+            }
         }
 
     }

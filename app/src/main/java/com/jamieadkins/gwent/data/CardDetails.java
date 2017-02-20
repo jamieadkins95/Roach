@@ -165,6 +165,14 @@ public class CardDetails {
         public String getVariationId() {
             return variationId;
         }
+
+        @Exclude
+        public static int getVariationNumber(String variationId) {
+            return Integer.valueOf(variationId.substring(
+                    Math.max(variationId.length() - 2, 0),
+                    Math.max(variationId.length() - 1, 0)
+            )) + 1;
+        }
     }
 
     public static class Art {

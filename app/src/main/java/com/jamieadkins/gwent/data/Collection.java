@@ -11,13 +11,14 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Collection {
-    private Map<String, Integer> cards;
+    // Map of CardIds to VariationIds to card count.
+    private Map<String, Map<String, Integer>> cards;
 
     public Collection() {
         cards = new HashMap<>();
     }
 
-    public Map<String, Integer> getCards() {
+    public Map<String, Map<String, Integer>> getCards() {
         return cards;
     }
 

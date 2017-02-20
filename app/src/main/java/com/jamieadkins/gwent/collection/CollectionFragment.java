@@ -31,13 +31,13 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         mAdapter = new CollectionRecyclerViewAdapter(
                 new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
-                    public void addCard(String cardId) {
-                        mPresenter.addCard(cardId);
+                    public void addCard(String cardId, String variationId) {
+                        mPresenter.addCard(cardId, variationId);
                     }
 
                     @Override
-                    public void removeCard(String cardId) {
-                        mPresenter.removeCard(cardId);
+                    public void removeCard(String cardId, String variationId) {
+                        mPresenter.removeCard(cardId, variationId);
                     }
                 });
         setRecyclerViewAdapter(mAdapter);

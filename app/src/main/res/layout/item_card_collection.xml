@@ -10,39 +10,116 @@
 
     <include layout="@layout/item_card_core" android:id="@+id/card_core" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/card_core"
-        android:id="@+id/collection_controls">
+        android:orientation="vertical"
+        android:divider="?android:listDivider"
+        android:dividerPadding="2.5dp"
+        android:showDividers="middle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:text="@string/in_collection"
-            android:id="@+id/collection_count" />
+            android:id="@+id/collection_controls_1">
 
-        <Button
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/in_collection"
+                android:id="@+id/collection_count_1" />
+
+            <Button
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_variation_1"
+                android:text="@string/add"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+            <Button
+                android:layout_toLeftOf="@id/add_variation_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remove_variation_1"
+                android:text="@string/remove"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/add_card"
-            android:text="@string/add"
-            android:textColor="@color/gwentGreen"
-            style="?android:borderlessButtonStyle" />
+            android:id="@+id/collection_controls_2">
 
-        <Button
-            android:layout_toLeftOf="@id/add_card"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/in_collection"
+                android:id="@+id/collection_count_2" />
+
+            <Button
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_variation_2"
+                android:text="@string/add"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+            <Button
+                android:layout_toLeftOf="@id/add_variation_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remove_variation_2"
+                android:text="@string/remove"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/remove_card"
-            android:text="@string/remove"
-            android:textColor="@color/gwentGreen"
-            style="?android:borderlessButtonStyle" />
+            android:id="@+id/collection_controls_3">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/in_collection"
+                android:id="@+id/collection_count_3" />
+
+            <Button
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_variation_3"
+                android:text="@string/add"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+            <Button
+                android:layout_toLeftOf="@id/add_variation_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remove_variation_3"
+                android:text="@string/remove"
+                android:textColor="@color/gwentGreen"
+                style="?android:borderlessButtonStyle" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

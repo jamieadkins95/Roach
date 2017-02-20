@@ -12,9 +12,9 @@ import io.reactivex.Observable;
 
 public interface CollectionInteractor extends BaseInteractor<CollectionContract.Presenter> {
 
-    void addCardToCollection(String cardId);
+    void addCardToCollection(String cardId, String variationId);
 
-    void removeCardFromCollection(String cardId);
+    void removeCardFromCollection(String cardId, String variationId);
 
     Observable<Collection> getCollection();
 

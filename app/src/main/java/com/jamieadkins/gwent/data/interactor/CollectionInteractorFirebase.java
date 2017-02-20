@@ -14,6 +14,8 @@ import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.data.Collection;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -45,20 +47,37 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
     }
 
     @Override
-    public void addCardToCollection(final String cardId) {
+    public void addCardToCollection(final String cardId, final String variationId) {
         // Transactions will ensure concurrency errors don't occur.
         mCollectionReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Collection storedCollection = mutableData.getValue(Collection.class);
 
+                // User doesn't have a collection yet.
+                if (storedCollection == null) {
+                    storedCollection = new Collection();
+                }
+
                 if (storedCollection.getCards().containsKey(cardId)) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedCollection.getCards().get(cardId);
-                    storedCollection.getCards().put(cardId, currentCardCount + 1);
+                    Map<String, Integer> variations = storedCollection.getCards().get(cardId);
+
+                    if (storedCollection.getCards().get(cardId).containsKey(variationId)) {
+                        // If they already have at least one of these variations.
+                        int currentCardCount = variations.get(variationId);
+                        variations.put(variationId, currentCardCount + 1);
+                    } else {
+                        variations.put(variationId, 1);
+                    }
+
+                    storedCollection.getCards().put(cardId, variations);
+
                 } else {
-                    // Else add one card to the deck.
-                    storedCollection.getCards().put(cardId, 1);
+                    // User is adding first variation of this card.
+                    Map<String, Integer> variations = new HashMap<>();
+                    variations.put(variationId, 1);
+                    storedCollection.getCards().put(cardId, variations);
                 }
 
                 // Set value and report transaction success.
@@ -76,20 +95,33 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
     }
 
     @Override
-    public void removeCardFromCollection(final String cardId) {
+    public void removeCardFromCollection(final String cardId, final String variationId) {
         // Transactions will ensure concurrency errors don't occur.
         mCollectionReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Collection storedCollection = mutableData.getValue(Collection.class);
 
+                // User doesn't have a collection yet.
+                if (storedCollection == null) {
+                    return Transaction.success(mutableData);
+                }
+
                 if (storedCollection.getCards().containsKey(cardId)) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedCollection.getCards().get(cardId);
-                    // Can't have a negative card amount.
-                    storedCollection.getCards().put(cardId, Math.max(currentCardCount - 1, 0));
+                    Map<String, Integer> variations = storedCollection.getCards().get(cardId);
+
+                    if (storedCollection.getCards().get(cardId).containsKey(variationId)) {
+                        // If they already have at least one of these variations.
+                        int currentCardCount = variations.get(variationId);
+                        // Can't have a negative card amount.
+                        variations.put(variationId, Math.max(currentCardCount - 1, 0));
+                        storedCollection.getCards().put(cardId, variations);
+                    } else {
+                        // This collection doesn't have that variation in it.
+                    }
                 } else {
-                    // This deck doesn't have that card in it.
+                    // This collection doesn't have that card in it.
                 }
 
                 // Set value and report transaction success.

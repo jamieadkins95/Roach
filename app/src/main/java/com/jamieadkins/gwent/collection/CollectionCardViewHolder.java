@@ -8,61 +8,110 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Includes buttons to add and remove cards from a collection.
  */
 
 public class CollectionCardViewHolder extends BaseCardViewHolder {
-    private Button buttonAdd;
-    private Button buttonRemove;
-    private TextView collectionCount;
+    private Map<String, Button> mAddButtons;
+    private Map<String, Button> mRemoveButtons;
+    private Map<String, TextView> mCollectionCounts;
     private CollectionButtonListener mListener;
 
     public interface CollectionButtonListener {
-        void addCard(String cardId);
-        void removeCard(String cardId);
+        void addCard(String cardId, String variationId);
+        void removeCard(String cardId, String variationId);
     }
 
     public CollectionCardViewHolder(View view, CollectionButtonListener listener) {
         super(view);
-        buttonAdd = (Button) view.findViewById(R.id.add_card);
-        buttonRemove = (Button) view.findViewById(R.id.remove_card);
-        collectionCount = (TextView) view.findViewById(R.id.collection_count);
         mListener = listener;
+        mAddButtons = new HashMap<>();
+        mRemoveButtons = new HashMap<>();
+        mCollectionCounts = new HashMap<>();
     }
 
     @Override
     public void bindItem(final CardDetails item) {
         super.bindItem(item);
 
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.addCard(item.getIngameId());
-                }
+        resetViews();
+
+        for (final String variationId : item.getVariations().keySet()) {
+            int variationNumber = CardDetails.Variation.getVariationNumber(variationId);
+            switch (variationNumber) {
+                case 1:
+                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_1));
+                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_1));
+                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_1));
+                    getView().findViewById(R.id.collection_controls_1).setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_2));
+                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_2));
+                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_2));
+                    getView().findViewById(R.id.collection_controls_2).setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_3));
+                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_3));
+                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_3));
+                    getView().findViewById(R.id.collection_controls_3).setVisibility(View.VISIBLE);
+                    break;
             }
-        });
-        buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.removeCard(item.getIngameId());
+
+            mAddButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.addCard(item.getIngameId(), variationId);
+                    }
                 }
-            }
-        });
+            });
+            mRemoveButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.removeCard(getBoundItem().getIngameId(), variationId);
+                    }
+                }
+            });
+        }
     }
 
-    public void setItemCount(int count) {
+    private void resetViews() {
+        // Default to hidden.
+        getView().findViewById(R.id.collection_controls_1).setVisibility(View.GONE);
+        getView().findViewById(R.id.collection_controls_2).setVisibility(View.GONE);
+        getView().findViewById(R.id.collection_controls_3).setVisibility(View.GONE);
+
+        getView().findViewById(R.id.add_variation_1).setOnClickListener(null);
+        getView().findViewById(R.id.add_variation_2).setOnClickListener(null);
+        getView().findViewById(R.id.add_variation_3).setOnClickListener(null);
+
+        getView().findViewById(R.id.remove_variation_1).setOnClickListener(null);
+        getView().findViewById(R.id.remove_variation_2).setOnClickListener(null);
+        getView().findViewById(R.id.remove_variation_3).setOnClickListener(null);
+
+        mAddButtons = new HashMap<>();
+        mRemoveButtons = new HashMap<>();
+        mCollectionCounts = new HashMap<>();
+    }
+
+    public void setItemCount(String variationId, int count) {
 
         // Hide remove button if there are already 0 cards in collection.
         if (count > 0) {
-            buttonRemove.setVisibility(View.VISIBLE);
+            mRemoveButtons.get(variationId).setVisibility(View.VISIBLE);
         } else {
-            buttonRemove.setVisibility(View.INVISIBLE);
+            mRemoveButtons.get(variationId).setVisibility(View.INVISIBLE);
         }
 
-        collectionCount.setText(String.format(
-                collectionCount.getContext().getString(R.string.in_collection), count));
+        mCollectionCounts.get(variationId).setText(String.format(
+                mCollectionCounts.get(variationId).getContext().getString(R.string.in_collection),
+                CardDetails.Variation.getVariationNumber(variationId), count));
     }
 }
