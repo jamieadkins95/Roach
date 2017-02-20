@@ -3,6 +3,11 @@
 import os
 import sys
 
+from PIL import Image
+
+MEDIUM = 1093, 1462
+LOW = 547, 731
+
 def printUsage():
     print("Please supply the directory of the images as an argument when running this script.")
     print("e.g.")
@@ -41,5 +46,20 @@ for filename in os.listdir(inputDirectory):
         if not os.path.exists(variationDirectory):
             os.makedirs(variationDirectory)
 
-        print(os.path.join(inputDirectory, filename), "->", os.path.join(variationDirectory, "fullsize.png"))
-        os.rename(os.path.join(inputDirectory, filename), os.path.join(variationDirectory, "fullsize.png"))
+        # Have to call it fullsize to support legacy versions.
+        highPath = os.path.join(variationDirectory, "fullsize.png")
+
+        print(os.path.join(inputDirectory, filename), "->", highPath)
+        os.rename(os.path.join(inputDirectory, filename), highPath)
+
+        # Make lower resolution images.
+        try:
+            medium = Image.open(highPath)
+            medium.thumbnail(MEDIUM, Image.ANTIALIAS)
+            medium.save(os.path.join(variationDirectory, "medium.png"), "png")
+
+            low = Image.open(highPath)
+            low.thumbnail(LOW, Image.ANTIALIAS)
+            low.save(os.path.join(variationDirectory, "low.png"), "png")
+        except IOError:
+            print("cannot create thumbnail for '%s'" % highPath)

@@ -186,12 +186,12 @@ def createCardJson():
         # False by default, will be set to true if collectible or is a token of a released card.
         card['released'] = False
 
-        card['info'] = ""
+        card['tooltips'] = {}
         if (template.find('Tooltip') != None):
             # Set to tooltipId for now, we will evaluate after we have looked at every card.
-            card['info'] = template.find('Tooltip').attrib['key']
+            card['tooltips']['en-US'] = template.find('Tooltip').attrib['key']
 
-        card['lane'] = []
+        card['positions'] = []
         card['loyalty'] = []
         for flag in template.iter('flag'):
             key = flag.attrib['name']
@@ -200,13 +200,13 @@ def createCardJson():
                 card['loyalty'].append(key)
 
             if key == "Melee" or key == "Ranged" or key == "Siege" or key == "Event":
-                card['lane'].append(key)
+                card['positions'].append(key)
 
-        card['category'] = []
+        card['categories'] = []
         for flag in template.iter('Category'):
             key = flag.attrib['id']
             if key in CATEGORIES:
-                card['category'].append(key.replace("_", " "))
+                card['categories'].append(key.replace("_", " "))
 
         card['variations'] = {}
 
@@ -229,8 +229,9 @@ def createCardJson():
             variation['mill'] = MILL_VALUES[variation['rarity']]
 
             art = {}
-            art['fullsizeImageUrl'] = "images/" + card['ingameId'] + "/" + variation['variationId'] + "/" + "fullsize.png"
-            art['thumbnailImageUrl'] = "images/" + card['ingameId'] + "/" + variation['variationId'] + "/" + "thumbnail.png"
+            art['highImage'] = "images/" + card['ingameId'] + "/" + variation['variationId'] + "/" + "fullsize.png"
+            art['mediumImage'] = "images/" + card['ingameId'] + "/" + variation['variationId'] + "/" + "medium.png"
+            art['lowImage'] = "images/" + card['ingameId'] + "/" + variation['variationId'] + "/" + "low.png"
             art['artist'] = definition.find("UnityLinks").find("StandardArt").attrib['author']
             variation['art'] = art
 
