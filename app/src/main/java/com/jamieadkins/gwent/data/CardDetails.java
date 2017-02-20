@@ -105,7 +105,7 @@ public class CardDetails {
     @Exclude
     public String getImage() {
         for (String key : variations.keySet()) {
-            return variations.get(key).getArt().getHighImage();
+            return variations.get(key).getArt().getLowImage();
         }
 
         return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";

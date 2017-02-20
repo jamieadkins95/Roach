@@ -1,14 +1,22 @@
 package com.jamieadkins.gwent.card;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.Rarity;
 
@@ -23,6 +31,8 @@ public class LargeCardView extends SimpleCardView {
     private TextView mCardLoyalty;
     private TextView mCardStrength;
     private TextView mCardType;
+
+    private ImageView mCardImage;
 
     public LargeCardView(Context context) {
         super(context);
@@ -45,6 +55,7 @@ public class LargeCardView extends SimpleCardView {
         mCardLoyalty = (TextView) findViewById(R.id.card_loyalty);
         mCardStrength = (TextView) findViewById(R.id.card_strength);
         mCardType = (TextView) findViewById(R.id.card_type);
+        mCardImage = (ImageView) findViewById(R.id.card_image);
     }
 
     @Override
@@ -66,6 +77,23 @@ public class LargeCardView extends SimpleCardView {
         }
 
         setStrength(String.valueOf(cardDetails.getStrength()));
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mCardImage.getContext());
+        if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), true)) {
+            mCardImage.setVisibility(VISIBLE);
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(
+                    FirebaseUtils.STORAGE_BUCKET +
+                            cardDetails.getImage());
+
+            Glide.with(getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(storageReference)
+                    .fitCenter()
+                    .into(mCardImage);
+        } else {
+            mCardImage.setVisibility(GONE);
+        }
     }
 
     private void setType(String type) {
