@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
@@ -59,6 +60,8 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
     public void onLoadData() {
         super.onLoadData();
         CardFilter cardFilter = new CardFilter();
+        cardFilter.setCollectibleOnly(true);
+        cardFilter.put(Type.LEADER, false);
         mDecksPresenter.getCards(cardFilter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
