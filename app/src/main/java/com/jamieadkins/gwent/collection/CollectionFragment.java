@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.data.Collection;
 
@@ -41,6 +42,8 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                     }
                 });
         setRecyclerViewAdapter(mAdapter);
+
+        ((CardFilterProvider) getActivity()).getCardFilter().setCollectibleOnly(true);
     }
 
     @Override
