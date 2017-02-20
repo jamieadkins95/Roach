@@ -103,8 +103,8 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         mPresenter.stop();
     }
 }

@@ -36,7 +36,7 @@ public class FirebaseUtils {
 
     public static void askForAnalyticsPermission(final Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!preferences.contains(PREFERENCE_ANALYTICS)) {
+        if (!preferences.getBoolean(PREFERENCE_ANALYTICS, false)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
             // Analytics are off by default.
