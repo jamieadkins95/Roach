@@ -79,7 +79,7 @@ public class LargeCardView extends SimpleCardView {
         setStrength(String.valueOf(cardDetails.getStrength()));
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mCardImage.getContext());
-        if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), true)) {
+        if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), false)) {
             mCardImage.setVisibility(VISIBLE);
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(

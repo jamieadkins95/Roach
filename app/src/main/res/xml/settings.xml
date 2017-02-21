@@ -20,11 +20,13 @@
         <CheckBoxPreference android:key="@string/pref_low_data_key"
             android:title="@string/low_data"
             android:summary="@string/low_data_summary"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:enabled="false" />
 
         <CheckBoxPreference android:key="@string/pref_show_images_key"
             android:title="@string/show_images_in_list"
             android:summary="@string/show_images_in_list_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false"
+            android:enabled="false" />
     </PreferenceCategory>
 </PreferenceScreen>
