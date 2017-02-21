@@ -51,6 +51,10 @@ public class CardFilter {
         return mCollectibleOnly;
     }
 
+    public void setCollectibleOnly(boolean collectibleOnly) {
+        mCollectibleOnly = collectibleOnly;
+    }
+
     public void clearFilters() {
         for (String faction : mFilters.keySet()) {
             mFilters.put(faction, true);
@@ -82,8 +86,16 @@ public class CardFilter {
             // If there are card ids specified, use them only.
             return mCardIds.contains(card.getIngameId());
         } else {
+            boolean collectible = false;
+            for (String variationId : card.getVariations().keySet()) {
+                if (card.getVariations().get(variationId).isCollectible()) {
+                    collectible = true;
+                }
+            }
+
+            boolean include = !mCollectibleOnly || collectible;
             return get(card.getFaction()) && get(card.getRarity())
-                    && get(card.getType()) && card.isReleased();
+                    && get(card.getType()) && card.isReleased() && include;
         }
     }
 }

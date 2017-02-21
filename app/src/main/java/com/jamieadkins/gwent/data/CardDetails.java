@@ -105,7 +105,7 @@ public class CardDetails {
     @Exclude
     public String getImage() {
         for (String key : variations.keySet()) {
-            return variations.get(key).getArt().getFullsizeImageUrl();
+            return variations.get(key).getArt().getLowImage();
         }
 
         return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
@@ -165,27 +165,41 @@ public class CardDetails {
         public String getVariationId() {
             return variationId;
         }
+
+        @Exclude
+        public static int getVariationNumber(String variationId) {
+            return Integer.valueOf(variationId.substring(
+                    Math.max(variationId.length() - 2, 0),
+                    Math.max(variationId.length() - 1, 0)
+            )) + 1;
+        }
     }
 
     public static class Art {
-        private String fullsizeImageUrl;
-        private String thumbnailImageUrl;
+        private String highImage;
+        private String mediumImage;
+        private String lowImage;
+
         private String artist;
 
         public Art() {
             // Required empty constructor for Firebase.
         }
 
-        public String getFullsizeImageUrl() {
-            return fullsizeImageUrl;
-        }
-
         public String getArtist() {
             return artist;
         }
 
-        public String getThumbnailImageUrl() {
-            return thumbnailImageUrl;
+        public String getHighImage() {
+            return highImage;
+        }
+
+        public String getMediumImage() {
+            return mediumImage;
+        }
+
+        public String getLowImage() {
+            return lowImage;
         }
     }
 }

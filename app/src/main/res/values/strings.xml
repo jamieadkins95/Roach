@@ -66,8 +66,17 @@
     <string name="crowd_sourcing">Help Crowd Source Card Data</string>
     <string name="crowd_sourcing_summary">Help Roach get up to date quickly when a new Gwent patch is released by answering questions about cards that have been updated.</string>
 
+    <string name="pref_images">Card Images</string>
+    <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
+    <string name="low_data">Low Data Mode</string>
+    <string name="low_data_summary">Use lower resolution card images to reduce data usage.</string>
+
+    <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.crowd.show.images</string>
+    <string name="show_images_in_list">Show Images in Card List</string>
+    <string name="show_images_in_list_summary">When viewing cards in a list, show the card images.</string>
+
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
-    <string name="in_collection">%d in collection</string>
+    <string name="in_collection">Variation #%1$d: \t %2$d</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
     <string name="no_card_art">No art available.</string>

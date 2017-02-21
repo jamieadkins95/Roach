@@ -7,8 +7,8 @@ android {
         applicationId "com.jamieadkins.gwent"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 14
-        versionName "v1.0.2"
+        versionCode 19
+        versionName "v1.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,6 +22,16 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+
+    productFlavors {
+        beta {
+            buildConfigField "boolean", "BETA", "true"
+        }
+        production {
+            buildConfigField "boolean", "BETA", "false"
+        }
+    }
+
     dexOptions {
         jumboMode true
     }

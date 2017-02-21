@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.data.Collection;
 
@@ -31,16 +32,18 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         mAdapter = new CollectionRecyclerViewAdapter(
                 new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
-                    public void addCard(String cardId) {
-                        mPresenter.addCard(cardId);
+                    public void addCard(String cardId, String variationId) {
+                        mPresenter.addCard(cardId, variationId);
                     }
 
                     @Override
-                    public void removeCard(String cardId) {
-                        mPresenter.removeCard(cardId);
+                    public void removeCard(String cardId, String variationId) {
+                        mPresenter.removeCard(cardId, variationId);
                     }
                 });
         setRecyclerViewAdapter(mAdapter);
+
+        ((CardFilterProvider) getActivity()).getCardFilter().setCollectibleOnly(true);
     }
 
     @Override
@@ -103,8 +106,10 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mPresenter.stop();
+    public void onStop() {
+        super.onStop();
+        if (mPresenter != null) {
+            mPresenter.stop();
+        }
     }
 }

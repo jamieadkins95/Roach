@@ -50,13 +50,13 @@ public class CollectionPresenter implements CollectionContract.Presenter {
     }
 
     @Override
-    public void addCard(String cardId) {
-        mCollectionInteractor.addCardToCollection(cardId);
+    public void addCard(String cardId, String variationId) {
+        mCollectionInteractor.addCardToCollection(cardId, variationId);
     }
 
     @Override
-    public void removeCard(String cardId) {
-        mCollectionInteractor.removeCardFromCollection(cardId);
+    public void removeCard(String cardId, String variationId) {
+        mCollectionInteractor.removeCardFromCollection(cardId, variationId);
     }
 
     @Override

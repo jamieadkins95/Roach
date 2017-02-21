@@ -91,7 +91,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mCardFilters = new HashMap<>();
         mCardFilters.put(R.id.tab_card_db, new CardFilter());
         mCardFilters.put(R.id.tab_collection, new CardFilter());
-
+        
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .build();
@@ -141,7 +141,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         break;
                     case R.id.tab_collection:
                         // Hide this feature in release versions for now.
-                        if (!BuildConfig.DEBUG) {
+                        if (!BuildConfig.DEBUG && !BuildConfig.BETA) {
                             showSnackbar(String.format(
                                     getString(R.string.is_coming_soon),
                                     getString(R.string.my_collection)));
@@ -316,9 +316,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         if (isAuthenticated()) {
             inflater.inflate(R.menu.signed_in, menu);
         } else {
-            if (BuildConfig.DEBUG) {
-                inflater.inflate(R.menu.signed_out, menu);
-            }
+            inflater.inflate(R.menu.signed_out, menu);
         }
 
         return true;
