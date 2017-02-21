@@ -53,9 +53,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements CardFilterProvider {
-    private static final long ACCOUNT_IDENTIFIER = 1000;
-    private static final long SIGN_IN_IDENTIFIER = 1001;
-    private static final long SIGN_OUT_IDENTIFIER = 1002;
+    private static final int ACCOUNT_IDENTIFIER = 1000;
+    private static final int SIGN_IN_IDENTIFIER = 1001;
+    private static final int SIGN_OUT_IDENTIFIER = 1002;
 
     private DecksPresenter mDecksPresenter;
     private DecksPresenter mPublicDecksPresenter;
@@ -99,20 +99,13 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
+                .withEmail(getString(R.string.signed_out))
                 .withNameShown(false);
 
         final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
-                .withIcon(R.drawable.ic_account_circle);
-
-        if (isAuthenticated()) {
-            mProfile.withEmail(getCurrentUser().getEmail());
-            signIn.withIdentifier(SIGN_OUT_IDENTIFIER)
-                    .withName(getString(R.string.sign_out));
-        } else {
-            mProfile.withEmail(getString(R.string.signed_out));
-            signIn.withIdentifier(SIGN_IN_IDENTIFIER)
-                    .withName(getString(R.string.sign_in));
-        }
+                .withIcon(R.drawable.ic_account_circle)
+                .withIdentifier(SIGN_IN_IDENTIFIER)
+                .withName(getString(R.string.sign_in));
 
         mAccountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(R.drawable.header)
@@ -125,17 +118,23 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        if (profile.getIdentifier() == SIGN_IN_IDENTIFIER) {
-                            startSignInProcess();
-                        } else if (profile.getIdentifier() == SIGN_OUT_IDENTIFIER) {
-                            startSignOutProcess();
-                        } else if (profile.getIdentifier() == ACCOUNT_IDENTIFIER) {
-                            // View Account.
+                        switch ((int) profile.getIdentifier()) {
+                            case SIGN_IN_IDENTIFIER:
+                                startSignInProcess();
+                                break;
+                            case SIGN_OUT_IDENTIFIER:
+                                startSignOutProcess();
+                                break;
+                            case ACCOUNT_IDENTIFIER:
+                                // View Account.
+                                break;
                         }
                         return false;
                     }
                 })
                 .build();
+
+        handleDrawerAuthentication();
 
         Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -340,45 +339,49 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         invalidateOptionsMenu();
     }
 
+    private void handleDrawerAuthentication() {
+        if (isAuthenticated()) {
+            mAccountHeader.updateProfile(
+                    mProfile.withEmail(getCurrentUser().getEmail()));
+
+            mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
+            mAccountHeader.addProfiles(
+                    new ProfileSettingDrawerItem()
+                            .withIdentifier(SIGN_OUT_IDENTIFIER)
+                            .withName(getString(R.string.sign_out))
+                            .withIcon(R.drawable.ic_account_circle));
+        } else {
+            mAccountHeader.updateProfile(
+                    mProfile.withEmail(getString(R.string.signed_out)));
+
+            mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
+            mAccountHeader.addProfiles(
+                    new ProfileSettingDrawerItem()
+                            .withIdentifier(SIGN_IN_IDENTIFIER)
+                            .withName(getString(R.string.sign_in))
+                            .withIcon(R.drawable.ic_account_circle));
+
+            // If we are currently in an activity that requires authentication, switch to another.
+            if (mCurrentTab == R.id.tab_collection ||
+                    mCurrentTab == R.id.tab_decks ||
+                    mCurrentTab == R.id.tab_results) {
+                mNavigationDrawer.setSelection(R.id.tab_card_db);
+            }
+        }
+    }
+
     @Override
     protected void onSignedIn() {
         super.onSignedIn();
         invalidateOptionsMenu();
-
-        mAccountHeader.updateProfile(
-                mProfile.withEmail(getCurrentUser().getEmail()));
-
-        mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
-        mAccountHeader.addProfiles(
-                new ProfileSettingDrawerItem()
-                        .withIdentifier(SIGN_OUT_IDENTIFIER)
-                        .withName(getString(R.string.sign_out))
-                        .withIcon(R.drawable.ic_account_circle));
+        handleDrawerAuthentication();
     }
 
     @Override
     protected void onSignedOut() {
         super.onSignedOut();
         invalidateOptionsMenu();
-
-        // If we are currently in an activity that requires authentication, switch to another.
-        if (mCurrentTab == R.id.tab_collection ||
-                mCurrentTab == R.id.tab_decks ||
-                mCurrentTab == R.id.tab_results) {
-            // Have to recreate activity since there is no way to dynamically trigger the bottom
-            // navigation bar.
-            recreate();
-        }
-
-        mAccountHeader.updateProfile(
-                mProfile.withEmail(getString(R.string.signed_out)));
-
-        mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
-        mAccountHeader.addProfiles(
-                new ProfileSettingDrawerItem()
-                        .withIdentifier(SIGN_IN_IDENTIFIER)
-                        .withName(getString(R.string.sign_in))
-                        .withIcon(R.drawable.ic_account_circle));
+        handleDrawerAuthentication();
     }
 
     @Override
