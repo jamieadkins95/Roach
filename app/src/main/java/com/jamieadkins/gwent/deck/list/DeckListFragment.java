@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
         NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
+    private static final String STATE_USER_DECKS = "com.jamieadkins.gwent.user.decks";
     private DecksContract.Presenter mDecksPresenter;
 
     // Set up to show user decks by default.
@@ -41,6 +42,10 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
+
+        if (savedInstanceState != null) {
+            mUserDecks = savedInstanceState.getBoolean(STATE_USER_DECKS);
+        }
 
         if (mUserDecks) {
             getActivity().setTitle(getString(R.string.my_decks));
@@ -96,6 +101,12 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     public void onStop() {
         super.onStop();
         mDecksPresenter.stop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(STATE_USER_DECKS, mUserDecks);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
