@@ -76,6 +76,12 @@ public class Deck {
     }
 
     @Exclude
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Deck && id.equals(((Deck) obj).getId());
+    }
+
+    @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);

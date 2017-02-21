@@ -89,7 +89,6 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onStop() {
         super.onStop();
-        getRecyclerViewAdapter().clear();
         mDecksPresenter.stop();
     }
 
