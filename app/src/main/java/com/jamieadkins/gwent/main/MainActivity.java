@@ -3,8 +3,6 @@ package com.jamieadkins.gwent.main;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -44,18 +42,21 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements CardFilterProvider {
+    private static final long ACCOUNT_IDENTIFIER = 1000;
+    private static final long SIGN_IN_IDENTIFIER = 1001;
+    private static final long SIGN_OUT_IDENTIFIER = 1002;
+
     private DecksPresenter mDecksPresenter;
     private DecksPresenter mPublicDecksPresenter;
     private CardFilterListener mCardFilterListener;
@@ -68,6 +69,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
     private Drawer mNavigationDrawer;
     private AccountHeader mAccountHeader;
+    private ProfileDrawerItem mProfile;
 
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
@@ -95,19 +97,44 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mCardFilters.put(R.id.tab_card_db, new CardFilter());
         mCardFilters.put(R.id.tab_collection, new CardFilter());
 
+        mProfile = new ProfileDrawerItem()
+                .withIdentifier(ACCOUNT_IDENTIFIER)
+                .withNameShown(false);
+
+        final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
+                .withIcon(R.drawable.ic_account_circle);
+
+        if (isAuthenticated()) {
+            mProfile.withEmail(getCurrentUser().getEmail());
+            signIn.withIdentifier(SIGN_OUT_IDENTIFIER)
+                    .withName(getString(R.string.sign_out));
+        } else {
+            mProfile.withEmail(getString(R.string.signed_out));
+            signIn.withIdentifier(SIGN_IN_IDENTIFIER)
+                    .withName(getString(R.string.sign_in));
+        }
+
         mAccountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(R.drawable.header)
                 .withSelectionListEnabledForSingleProfile(true)
                 .addProfiles(
-                        new ProfileDrawerItem()
-                                .withEmail(getString(R.string.signed_out)),
-                        new ProfileSettingDrawerItem()
-                                .withName(getString(R.string.sign_in))
-                                .withIcon(R.drawable.ic_account_circle)
-                )
+                        mProfile,
+                        signIn)
                 .withProfileImagesVisible(false)
                 .withActivity(this)
-
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
+                        if (profile.getIdentifier() == SIGN_IN_IDENTIFIER) {
+                            startSignInProcess();
+                        } else if (profile.getIdentifier() == SIGN_OUT_IDENTIFIER) {
+                            startSignOutProcess();
+                        } else if (profile.getIdentifier() == ACCOUNT_IDENTIFIER) {
+                            // View Account.
+                        }
+                        return false;
+                    }
+                })
                 .build();
 
         Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
@@ -318,10 +345,15 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         super.onSignedIn();
         invalidateOptionsMenu();
 
-        mAccountHeader.addProfiles(new ProfileDrawerItem()
-                .withIdentifier(0)
-                .withName(getCurrentUser().getDisplayName())
-                .withEmail(getCurrentUser().getEmail()));
+        mAccountHeader.updateProfile(
+                mProfile.withEmail(getCurrentUser().getEmail()));
+
+        mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
+        mAccountHeader.addProfiles(
+                new ProfileSettingDrawerItem()
+                        .withIdentifier(SIGN_OUT_IDENTIFIER)
+                        .withName(getString(R.string.sign_out))
+                        .withIcon(R.drawable.ic_account_circle));
     }
 
     @Override
@@ -338,7 +370,15 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             recreate();
         }
 
-        mAccountHeader.removeProfileByIdentifier(0);
+        mAccountHeader.updateProfile(
+                mProfile.withEmail(getString(R.string.signed_out)));
+
+        mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
+        mAccountHeader.addProfiles(
+                new ProfileSettingDrawerItem()
+                        .withIdentifier(SIGN_IN_IDENTIFIER)
+                        .withName(getString(R.string.sign_in))
+                        .withIcon(R.drawable.ic_account_circle));
     }
 
     @Override
@@ -380,12 +420,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             });
 
             inflater.inflate(R.menu.card_filters, menu);
-        }
-
-        if (isAuthenticated()) {
-            inflater.inflate(R.menu.signed_in, menu);
-        } else {
-            inflater.inflate(R.menu.signed_out, menu);
         }
 
         return true;

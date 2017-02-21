@@ -45,27 +45,6 @@ public abstract class AuthenticationActivity extends BaseActivity {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sign_out:
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // User is now signed out.
-                                onSignedOut();
-                            }
-                        });
-                return true;
-            case R.id.action_sign_in:
-                startSignInProcess();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     public boolean isAuthenticated() {
         return mSignedIn;
     }
@@ -78,6 +57,17 @@ public abstract class AuthenticationActivity extends BaseActivity {
     protected void onSignedOut() {
         mSignedIn = false;
         showSnackbar(getString(R.string.sign_out_successful));
+    }
+
+    public void startSignOutProcess() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // User is now signed out.
+                        onSignedOut();
+                    }
+                });
     }
 
     public boolean isPlayServicesAvailable() {
