@@ -22,6 +22,16 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+
+    productFlavors {
+        beta {
+            buildConfigField "boolean", "BETA", "true"
+        }
+        production {
+            buildConfigField "boolean", "BETA", "false"
+        }
+    }
+
     dexOptions {
         jumboMode true
     }

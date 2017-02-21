@@ -128,6 +128,15 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                                 new DecksInteractorFirebase());
                                 break;
                             case R.id.tab_collection:
+                                // Hide this feature in release versions for now.
+                                if (!BuildConfig.DEBUG && !BuildConfig.BETA) {
+                                    showSnackbar(String.format(
+                                            getString(R.string.is_coming_soon),
+                                            getString(R.string.collection)));
+                                    // Don't display the item as the selected item.
+                                    return false;
+                                }
+
                                 // Stop authenticated only tabs from being selected.
                                 if (!isAuthenticated()) {
                                     showSnackbar(
