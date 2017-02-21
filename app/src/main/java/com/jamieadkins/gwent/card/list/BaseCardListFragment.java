@@ -36,7 +36,9 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     @Override
     public void onStart() {
         super.onStart();
-        onLoadData();
+        if (!mDataLoaded) {
+            onLoadData();
+        }
     }
 
     @Override
