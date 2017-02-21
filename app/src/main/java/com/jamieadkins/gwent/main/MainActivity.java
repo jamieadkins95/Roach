@@ -294,6 +294,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar((Toolbar) findViewById(R.id.toolbar))
+                .withShowDrawerOnFirstLaunch(true)
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
                         new SectionDrawerItem()
