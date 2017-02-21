@@ -182,37 +182,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         } else {
             // Need to find out which fragment we have on screen.
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentContainer);
-            switch (fragment.getTag()) {
-                case TAG_CARD_DB:
-                    mCurrentTab = R.id.tab_card_db;
-                    mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                            new CardsInteractorFirebase());
-                    mCardFilterListener = (CardFilterListener) fragment;
-                    break;
-                case TAG_PUBLIC_DECKS:
-                    mCurrentTab = R.id.tab_public_decks;
-                    mPublicDecksPresenter =
-                            new DecksPresenter((DecksContract.View) fragment,
-                                    new DecksInteractorFirebase(true));
-                    break;
-                case TAG_COLLECTION:
-                    mCurrentTab = R.id.tab_collection;
-                    mCollectionPresenter = new CollectionPresenter(
-                            (CollectionContract.View) fragment,
-                            new CollectionInteractorFirebase(),
-                            new CardsInteractorFirebase());
-                    mCardFilterListener = (CardFilterListener) fragment;
-                    break;
-                case TAG_USER_DECKS:
-                    mCurrentTab = R.id.tab_decks;
-                    mDecksPresenter =
-                            new DecksPresenter((DecksContract.View) fragment,
-                                    new DecksInteractorFirebase());
-                    break;
-                case TAG_RESULTS_TRACKER:
-                    mCurrentTab = R.id.tab_results;
-                    break;
-            }
+            setupFragment(fragment, fragment.getTag());
 
             mNavigationDrawer.setSelection(mCurrentTab);
         }
@@ -241,6 +211,40 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withIdentifier(R.id.tab_results)
                 .withName(R.string.results)
                 .withIcon(R.drawable.ic_chart));
+    }
+
+    private void setupFragment(Fragment fragment, String tag) {
+        switch (tag) {
+            case TAG_CARD_DB:
+                mCurrentTab = R.id.tab_card_db;
+                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
+                        new CardsInteractorFirebase());
+                mCardFilterListener = (CardFilterListener) fragment;
+                break;
+            case TAG_PUBLIC_DECKS:
+                mCurrentTab = R.id.tab_public_decks;
+                mPublicDecksPresenter =
+                        new DecksPresenter((DecksContract.View) fragment,
+                                new DecksInteractorFirebase(true));
+                break;
+            case TAG_COLLECTION:
+                mCurrentTab = R.id.tab_collection;
+                mCollectionPresenter = new CollectionPresenter(
+                        (CollectionContract.View) fragment,
+                        new CollectionInteractorFirebase(),
+                        new CardsInteractorFirebase());
+                mCardFilterListener = (CardFilterListener) fragment;
+                break;
+            case TAG_USER_DECKS:
+                mCurrentTab = R.id.tab_decks;
+                mDecksPresenter =
+                        new DecksPresenter((DecksContract.View) fragment,
+                                new DecksInteractorFirebase());
+                break;
+            case TAG_RESULTS_TRACKER:
+                mCurrentTab = R.id.tab_results;
+                break;
+        }
     }
 
     private void launchFragment(Fragment fragment, String tag) {
@@ -464,11 +468,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             case R.id.tab_card_db:
                 fragment = new CardListFragment();
                 tag = TAG_CARD_DB;
-
-                // Create the presenter.
-                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                        new CardsInteractorFirebase());
-                mCardFilterListener = (CardFilterListener) fragment;
                 break;
             case R.id.tab_decks:
                 // Hide this feature in release versions for now.
@@ -476,7 +475,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     showSnackbar(String.format(
                             getString(R.string.is_coming_soon),
                             getString(R.string.my_decks)));
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
@@ -487,19 +485,12 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                     getString(R.string.decks)),
                             getString(R.string.sign_in),
                             signInClickListener);
-
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
                 // Else, if authenticated.
                 fragment = new DeckListFragment();
                 tag = TAG_USER_DECKS;
-
-                // Create the presenter.
-                mDecksPresenter =
-                        new DecksPresenter((DecksContract.View) fragment,
-                                new DecksInteractorFirebase());
                 break;
             case R.id.tab_collection:
                 // Hide this feature in release versions for now.
@@ -507,7 +498,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     showSnackbar(String.format(
                             getString(R.string.is_coming_soon),
                             getString(R.string.my_collection)));
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
@@ -518,20 +508,12 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                     getString(R.string.collection)),
                             getString(R.string.sign_in),
                             signInClickListener);
-
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
                 // Else, if authenticated.
                 fragment = new CollectionFragment();
                 tag = TAG_COLLECTION;
-
-                mCollectionPresenter = new CollectionPresenter(
-                        (CollectionContract.View) fragment,
-                        new CollectionInteractorFirebase(),
-                        new CardsInteractorFirebase());
-                mCardFilterListener = (CardFilterListener) fragment;
                 break;
 
             case R.id.tab_results:
@@ -540,7 +522,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     showSnackbar(String.format(
                             getString(R.string.is_coming_soon),
                             getString(R.string.results)));
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
@@ -551,8 +532,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                     getString(R.string.your_results)),
                             getString(R.string.sign_in),
                             signInClickListener);
-
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
@@ -566,17 +545,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     showSnackbar(String.format(
                             getString(R.string.are_coming_soon),
                             getString(R.string.public_decks)));
-                    // Don't display the item as the selected item.
                     return false;
                 }
 
                 fragment = DeckListFragment.newInstance(false);
                 tag = TAG_PUBLIC_DECKS;
-
-                // Create the presenter.
-                mPublicDecksPresenter =
-                        new DecksPresenter((DecksContract.View) fragment,
-                                new DecksInteractorFirebase(true));
                 break;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
@@ -598,6 +571,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 return false;
         }
 
+        setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         mCurrentTab = (int) drawerItem.getIdentifier();
         return false;
