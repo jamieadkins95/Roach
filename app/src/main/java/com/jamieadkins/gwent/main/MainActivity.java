@@ -63,6 +63,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private static final int ACCOUNT_IDENTIFIER = 1000;
     private static final int SIGN_IN_IDENTIFIER = 1001;
     private static final int SIGN_OUT_IDENTIFIER = 1002;
+    private static final int NO_LAUNCH_ATTEMPT = -1;
 
     private DecksPresenter mDecksPresenter;
     private DecksPresenter mPublicDecksPresenter;
@@ -73,6 +74,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private Map<Integer, CardFilter> mCardFilters;
 
     private int mCurrentTab;
+    private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
 
     private Drawer mNavigationDrawer;
     private AccountHeader mAccountHeader;
@@ -143,6 +145,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 if (mCurrentTab == drawerItem.getIdentifier()) {
                     return false;
                 }
+
+                mAttemptedToLaunchTab = (int) drawerItem.getIdentifier();
 
                 Fragment fragment;
                 String tag;
@@ -401,6 +405,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 R.id.contentContainer, fragment, tag);
         fragmentTransaction.commit();
 
+        mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
+
         // Our options menu will be different for different tabs.
         invalidateOptionsMenu();
     }
@@ -458,6 +464,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         super.onSignedIn();
         invalidateOptionsMenu();
         handleDrawerAuthentication();
+
+        // User tried to access a different tab before they tried to sign in.
+        if (mAttemptedToLaunchTab != NO_LAUNCH_ATTEMPT) {
+            mNavigationDrawer.setSelection(mAttemptedToLaunchTab);
+        }
     }
 
     @Override
