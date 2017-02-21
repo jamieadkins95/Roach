@@ -11,6 +11,10 @@
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/bumptech/glide/blob/master/LICENSE" />
         </Preference>
+        <Preference android:title="@string/pref_material_drawer">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://github.com/mikepenz/MaterialDrawer/blob/develop/LICENSE" />
+        </Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_general">
