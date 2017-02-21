@@ -9,7 +9,7 @@ import time
 from unidecode import unidecode
 
 def saveJson(filename, cardList):
-    filepath = os.path.join("../outputs/" + filename)
+    filepath = os.path.join(xml_folder + "../outputs/" + filename)
     print("Saving %s cards to: %s" % (len(cardList), filepath))
     with open(filepath, "w", encoding="utf-8", newline="\n") as f:
         json.dump(cardList, f, sort_keys=True, indent=2, separators=(',', ': '))
@@ -311,7 +311,7 @@ evaluateInfoData(cardData)
 # We have to do this as well to catch cards like Botchling, that are explicitly named in the Baron's tooltip.
 evaluateTokens(cardData)
 
-saveJson("latest.json", cardData)
+saveJson(str(time.time()) + ".json", cardData)
 
 
 
