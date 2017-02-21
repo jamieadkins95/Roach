@@ -106,8 +106,10 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        mPresenter.stop();
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.stop();
+        }
     }
 }
