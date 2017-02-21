@@ -50,7 +50,7 @@
         <item name="material_drawer_divider">@color/gwentGreenLight</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/gwentGreen</item>
-        <item name="material_drawer_header_selection_text">@color/gwentAccent</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_dark_primary_text</item>
     </style>
 
     <style name="Theme.Gwent.NoActionBar.Full">

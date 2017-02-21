@@ -47,7 +47,9 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.HashMap;
@@ -65,6 +67,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private int mCurrentTab;
 
     private Drawer mNavigationDrawer;
+    private AccountHeader mAccountHeader;
 
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
@@ -91,9 +94,20 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mCardFilters = new HashMap<>();
         mCardFilters.put(R.id.tab_card_db, new CardFilter());
         mCardFilters.put(R.id.tab_collection, new CardFilter());
-        
-        AccountHeader headerResult = new AccountHeaderBuilder()
+
+        mAccountHeader = new AccountHeaderBuilder()
+                .withHeaderBackground(R.drawable.header)
+                .withSelectionListEnabledForSingleProfile(true)
+                .addProfiles(
+                        new ProfileDrawerItem()
+                                .withEmail(getString(R.string.signed_out)),
+                        new ProfileSettingDrawerItem()
+                                .withName(getString(R.string.sign_in))
+                                .withIcon(R.drawable.ic_account_circle)
+                )
+                .withProfileImagesVisible(false)
                 .withActivity(this)
+
                 .build();
 
         Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
@@ -213,6 +227,20 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                 new DecksPresenter((DecksContract.View) fragment,
                                         new DecksInteractorFirebase(true));
                         break;
+                    case R.id.action_about:
+                        Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
+                        about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
+                        about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
+                        startActivity(about);
+                        // Return true to not close the navigation drawer.
+                        return true;
+                    case R.id.action_settings:
+                        Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
+                        settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
+                        settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
+                        startActivity(settings);
+                        // Return true to not close the navigation drawer.
+                        return true;
                     default:
                         showSnackbar(getString(R.string.coming_soon));
                         // Don't display the item as the selected item.
@@ -228,12 +256,48 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar((Toolbar) findViewById(R.id.toolbar))
-                .withAccountHeader(headerResult)
+                .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withIdentifier(R.id.tab_card_db).withName(R.string.card_database).withIcon(R.drawable.ic_database),
-                        new PrimaryDrawerItem().withIdentifier(R.id.tab_decks).withName(R.string.my_decks).withIcon(R.drawable.ic_cards_filled),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withIdentifier(R.id.action_settings).withName(R.string.settings).withIcon(R.drawable.ic_settings))
+                        new SectionDrawerItem()
+                                .withName(R.string.gwent)
+                                .withDivider(false),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.tab_card_db)
+                                .withName(R.string.card_database)
+                                .withIcon(R.drawable.ic_database),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.tab_public_decks)
+                                .withName(R.string.public_decks)
+                                .withIcon(R.drawable.ic_public),
+                        new SectionDrawerItem()
+                                .withName(R.string.my_stuff)
+                                .withDivider(false),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.tab_decks)
+                                .withName(R.string.my_decks)
+                                .withIcon(R.drawable.ic_cards_filled),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.tab_collection)
+                                .withName(R.string.my_collection)
+                                .withIcon(R.drawable.ic_cards_outline),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.tab_results)
+                                .withName(R.string.results)
+                                .withIcon(R.drawable.ic_chart)
+                )
+
+                .addStickyDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.action_settings).
+                                withName(R.string.settings)
+                                .withIcon(R.drawable.ic_settings)
+                                .withSelectable(false),
+                        new PrimaryDrawerItem()
+                                .withIdentifier(R.id.action_about).
+                                withName(R.string.about)
+                                .withIcon(R.drawable.ic_info)
+                                .withSelectable(false)
+                )
                 .withOnDrawerItemClickListener(drawerItemClickListener)
                 .build();
     }
@@ -253,6 +317,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     protected void onSignedIn() {
         super.onSignedIn();
         invalidateOptionsMenu();
+
+        mAccountHeader.addProfiles(new ProfileDrawerItem()
+                .withIdentifier(0)
+                .withName(getCurrentUser().getDisplayName())
+                .withEmail(getCurrentUser().getEmail()));
     }
 
     @Override
@@ -268,6 +337,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             // navigation bar.
             recreate();
         }
+
+        mAccountHeader.removeProfileByIdentifier(0);
     }
 
     @Override
@@ -310,8 +381,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
             inflater.inflate(R.menu.card_filters, menu);
         }
-
-        inflater.inflate(R.menu.base_menu, menu);
 
         if (isAuthenticated()) {
             inflater.inflate(R.menu.signed_in, menu);
@@ -391,18 +460,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                             }
                         });
                 break;
-            case R.id.action_about:
-                Intent about = new Intent(this, BasePreferenceActivity.class);
-                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
-                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
-                startActivity(about);
-                return true;
-            case R.id.action_settings:
-                Intent settings = new Intent(this, SettingsActivity.class);
-                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
-                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
-                startActivity(settings);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
