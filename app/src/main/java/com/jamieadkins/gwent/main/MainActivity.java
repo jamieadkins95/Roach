@@ -70,6 +70,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private Drawer mNavigationDrawer;
     private AccountHeader mAccountHeader;
     private ProfileDrawerItem mProfile;
+    private Map<Integer, PrimaryDrawerItem> mDrawerItems;
 
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
@@ -133,8 +134,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     }
                 })
                 .build();
-
-        handleDrawerAuthentication();
 
         Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -279,6 +278,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             }
         };
 
+        initialiseDrawerItems();
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar((Toolbar) findViewById(R.id.toolbar))
@@ -287,29 +287,14 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         new SectionDrawerItem()
                                 .withName(R.string.gwent)
                                 .withDivider(false),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.tab_card_db)
-                                .withName(R.string.card_database)
-                                .withIcon(R.drawable.ic_database),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.tab_public_decks)
-                                .withName(R.string.public_decks)
-                                .withIcon(R.drawable.ic_public),
+                        mDrawerItems.get(R.id.tab_card_db),
+                        mDrawerItems.get(R.id.tab_public_decks),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
                                 .withDivider(false),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.tab_decks)
-                                .withName(R.string.my_decks)
-                                .withIcon(R.drawable.ic_cards_filled),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.tab_collection)
-                                .withName(R.string.my_collection)
-                                .withIcon(R.drawable.ic_cards_outline),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.tab_results)
-                                .withName(R.string.results)
-                                .withIcon(R.drawable.ic_chart)
+                        mDrawerItems.get(R.id.tab_decks),
+                        mDrawerItems.get(R.id.tab_collection),
+                        mDrawerItems.get(R.id.tab_results)
                 )
 
                 .addStickyDrawerItems(
@@ -326,6 +311,32 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 )
                 .withOnDrawerItemClickListener(drawerItemClickListener)
                 .build();
+
+        handleDrawerAuthentication();
+    }
+
+    private void initialiseDrawerItems() {
+        mDrawerItems = new HashMap<>();
+        mDrawerItems.put(R.id.tab_card_db, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_card_db)
+                .withName(R.string.card_database)
+                .withIcon(R.drawable.ic_database));
+        mDrawerItems.put(R.id.tab_public_decks, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_public_decks)
+                .withName(R.string.public_decks)
+                .withIcon(R.drawable.ic_public));
+        mDrawerItems.put(R.id.tab_decks, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_decks)
+                .withName(R.string.my_decks)
+                .withIcon(R.drawable.ic_cards_filled));
+        mDrawerItems.put(R.id.tab_collection, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_collection)
+                .withName(R.string.my_collection)
+                .withIcon(R.drawable.ic_cards_outline));
+        mDrawerItems.put(R.id.tab_results, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_results)
+                .withName(R.string.results)
+                .withIcon(R.drawable.ic_chart));
     }
 
     private void launchFragment(Fragment fragment) {
@@ -340,16 +351,26 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     }
 
     private void handleDrawerAuthentication() {
+        // Reset by removing both.
+        mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
+        mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
+
         if (isAuthenticated()) {
             mAccountHeader.updateProfile(
                     mProfile.withEmail(getCurrentUser().getEmail()));
 
-            mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
             mAccountHeader.addProfiles(
                     new ProfileSettingDrawerItem()
                             .withIdentifier(SIGN_OUT_IDENTIFIER)
                             .withName(getString(R.string.sign_out))
                             .withIcon(R.drawable.ic_account_circle));
+
+            mDrawerItems.get(R.id.tab_collection).withSelectable(true);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
+            mDrawerItems.get(R.id.tab_decks).withSelectable(BuildConfig.DEBUG);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_decks));
+            mDrawerItems.get(R.id.tab_results).withSelectable(BuildConfig.DEBUG);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_results));
         } else {
             mAccountHeader.updateProfile(
                     mProfile.withEmail(getString(R.string.signed_out)));
@@ -367,6 +388,13 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     mCurrentTab == R.id.tab_results) {
                 mNavigationDrawer.setSelection(R.id.tab_card_db);
             }
+
+            mDrawerItems.get(R.id.tab_collection).withSelectable(false);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
+            mDrawerItems.get(R.id.tab_decks).withSelectable(false);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_decks));
+            mDrawerItems.get(R.id.tab_results).withSelectable(false);
+            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_results));
         }
     }
 
