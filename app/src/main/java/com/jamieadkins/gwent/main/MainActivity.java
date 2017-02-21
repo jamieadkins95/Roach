@@ -52,7 +52,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AuthenticationActivity implements CardFilterProvider {
+public class MainActivity extends AuthenticationActivity implements CardFilterProvider,
+        Drawer.OnDrawerItemClickListener{
     private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
     private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
     private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
@@ -139,161 +140,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 })
                 .build();
 
-        Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                if (mCurrentTab == drawerItem.getIdentifier()) {
-                    return false;
-                }
-
-                mAttemptedToLaunchTab = (int) drawerItem.getIdentifier();
-
-                Fragment fragment;
-                String tag;
-                switch ((int) drawerItem.getIdentifier()) {
-                    case R.id.tab_card_db:
-                        fragment = new CardListFragment();
-                        tag = TAG_CARD_DB;
-
-                        // Create the presenter.
-                        mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                                new CardsInteractorFirebase());
-                        mCardFilterListener = (CardFilterListener) fragment;
-                        break;
-                    case R.id.tab_decks:
-                        // Hide this feature in release versions for now.
-                        if (!BuildConfig.DEBUG) {
-                            showSnackbar(String.format(
-                                    getString(R.string.is_coming_soon),
-                                    getString(R.string.my_decks)));
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Stop authenticated only tabs from being selected.
-                        if (!isAuthenticated()) {
-                            showSnackbar(
-                                    String.format(getString(R.string.sign_in_to_view),
-                                            getString(R.string.decks)),
-                                    getString(R.string.sign_in),
-                                    signInClickListener);
-
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Else, if authenticated.
-                        fragment = new DeckListFragment();
-                        tag = TAG_USER_DECKS;
-
-                        // Create the presenter.
-                        mDecksPresenter =
-                                new DecksPresenter((DecksContract.View) fragment,
-                                        new DecksInteractorFirebase());
-                        break;
-                    case R.id.tab_collection:
-                        // Hide this feature in release versions for now.
-                        if (!BuildConfig.DEBUG && !BuildConfig.BETA) {
-                            showSnackbar(String.format(
-                                    getString(R.string.is_coming_soon),
-                                    getString(R.string.my_collection)));
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Stop authenticated only tabs from being selected.
-                        if (!isAuthenticated()) {
-                            showSnackbar(
-                                    String.format(getString(R.string.sign_in_to_view),
-                                            getString(R.string.collection)),
-                                    getString(R.string.sign_in),
-                                    signInClickListener);
-
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Else, if authenticated.
-                        fragment = new CollectionFragment();
-                        tag = TAG_COLLECTION;
-
-                        mCollectionPresenter = new CollectionPresenter(
-                                (CollectionContract.View) fragment,
-                                new CollectionInteractorFirebase(),
-                                new CardsInteractorFirebase());
-                        mCardFilterListener = (CardFilterListener) fragment;
-                        break;
-
-                    case R.id.tab_results:
-                        // Hide this feature in release versions for now.
-                        if (!BuildConfig.DEBUG) {
-                            showSnackbar(String.format(
-                                    getString(R.string.is_coming_soon),
-                                    getString(R.string.results)));
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Stop authenticated only tabs from being selected.
-                        if (!isAuthenticated()) {
-                            showSnackbar(
-                                    String.format(getString(R.string.sign_in_to_view),
-                                            getString(R.string.your_results)),
-                                    getString(R.string.sign_in),
-                                    signInClickListener);
-
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        // Else, if authenticated.
-                        fragment = new ComingSoonFragment();
-                        tag = TAG_RESULTS_TRACKER;
-                        break;
-                    case R.id.tab_public_decks:
-                        // Hide this feature in release versions for now.
-                        if (!BuildConfig.DEBUG) {
-                            showSnackbar(String.format(
-                                    getString(R.string.are_coming_soon),
-                                    getString(R.string.public_decks)));
-                            // Don't display the item as the selected item.
-                            return false;
-                        }
-
-                        fragment = DeckListFragment.newInstance(false);
-                        tag = TAG_PUBLIC_DECKS;
-
-                        // Create the presenter.
-                        mPublicDecksPresenter =
-                                new DecksPresenter((DecksContract.View) fragment,
-                                        new DecksInteractorFirebase(true));
-                        break;
-                    case R.id.action_about:
-                        Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
-                        about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
-                        about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
-                        startActivity(about);
-                        // Return true to not close the navigation drawer.
-                        return true;
-                    case R.id.action_settings:
-                        Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
-                        settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
-                        settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
-                        startActivity(settings);
-                        // Return true to not close the navigation drawer.
-                        return true;
-                    default:
-                        showSnackbar(getString(R.string.coming_soon));
-                        // Don't display the item as the selected item.
-                        return false;
-                }
-
-                launchFragment(fragment, tag);
-                mCurrentTab = (int) drawerItem.getIdentifier();
-                return false;
-            }
-        };
-
         initialiseDrawerItems();
         mNavigationDrawer = new DrawerBuilder()
                 .withActivity(this)
@@ -313,7 +159,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         mDrawerItems.get(R.id.tab_collection),
                         mDrawerItems.get(R.id.tab_results)
                 )
-
                 .addStickyDrawerItems(
                         new PrimaryDrawerItem()
                                 .withIdentifier(R.id.action_settings).
@@ -326,7 +171,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                 .withIcon(R.drawable.ic_info)
                                 .withSelectable(false)
                 )
-                .withOnDrawerItemClickListener(drawerItemClickListener)
+                .withOnDrawerItemClickListener(this)
                 .build();
 
         handleDrawerAuthentication();
@@ -603,5 +448,158 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     @Override
     public CardFilter getCardFilter() {
         return mCardFilters.get(mCurrentTab);
+    }
+
+    @Override
+    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+        if (mCurrentTab == drawerItem.getIdentifier()) {
+            return false;
+        }
+
+        mAttemptedToLaunchTab = (int) drawerItem.getIdentifier();
+
+        Fragment fragment;
+        String tag;
+        switch ((int) drawerItem.getIdentifier()) {
+            case R.id.tab_card_db:
+                fragment = new CardListFragment();
+                tag = TAG_CARD_DB;
+
+                // Create the presenter.
+                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
+                        new CardsInteractorFirebase());
+                mCardFilterListener = (CardFilterListener) fragment;
+                break;
+            case R.id.tab_decks:
+                // Hide this feature in release versions for now.
+                if (!BuildConfig.DEBUG) {
+                    showSnackbar(String.format(
+                            getString(R.string.is_coming_soon),
+                            getString(R.string.my_decks)));
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Stop authenticated only tabs from being selected.
+                if (!isAuthenticated()) {
+                    showSnackbar(
+                            String.format(getString(R.string.sign_in_to_view),
+                                    getString(R.string.decks)),
+                            getString(R.string.sign_in),
+                            signInClickListener);
+
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Else, if authenticated.
+                fragment = new DeckListFragment();
+                tag = TAG_USER_DECKS;
+
+                // Create the presenter.
+                mDecksPresenter =
+                        new DecksPresenter((DecksContract.View) fragment,
+                                new DecksInteractorFirebase());
+                break;
+            case R.id.tab_collection:
+                // Hide this feature in release versions for now.
+                if (!BuildConfig.DEBUG && !BuildConfig.BETA) {
+                    showSnackbar(String.format(
+                            getString(R.string.is_coming_soon),
+                            getString(R.string.my_collection)));
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Stop authenticated only tabs from being selected.
+                if (!isAuthenticated()) {
+                    showSnackbar(
+                            String.format(getString(R.string.sign_in_to_view),
+                                    getString(R.string.collection)),
+                            getString(R.string.sign_in),
+                            signInClickListener);
+
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Else, if authenticated.
+                fragment = new CollectionFragment();
+                tag = TAG_COLLECTION;
+
+                mCollectionPresenter = new CollectionPresenter(
+                        (CollectionContract.View) fragment,
+                        new CollectionInteractorFirebase(),
+                        new CardsInteractorFirebase());
+                mCardFilterListener = (CardFilterListener) fragment;
+                break;
+
+            case R.id.tab_results:
+                // Hide this feature in release versions for now.
+                if (!BuildConfig.DEBUG) {
+                    showSnackbar(String.format(
+                            getString(R.string.is_coming_soon),
+                            getString(R.string.results)));
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Stop authenticated only tabs from being selected.
+                if (!isAuthenticated()) {
+                    showSnackbar(
+                            String.format(getString(R.string.sign_in_to_view),
+                                    getString(R.string.your_results)),
+                            getString(R.string.sign_in),
+                            signInClickListener);
+
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                // Else, if authenticated.
+                fragment = new ComingSoonFragment();
+                tag = TAG_RESULTS_TRACKER;
+                break;
+            case R.id.tab_public_decks:
+                // Hide this feature in release versions for now.
+                if (!BuildConfig.DEBUG) {
+                    showSnackbar(String.format(
+                            getString(R.string.are_coming_soon),
+                            getString(R.string.public_decks)));
+                    // Don't display the item as the selected item.
+                    return false;
+                }
+
+                fragment = DeckListFragment.newInstance(false);
+                tag = TAG_PUBLIC_DECKS;
+
+                // Create the presenter.
+                mPublicDecksPresenter =
+                        new DecksPresenter((DecksContract.View) fragment,
+                                new DecksInteractorFirebase(true));
+                break;
+            case R.id.action_about:
+                Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
+                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
+                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
+                startActivity(about);
+                // Return true to not close the navigation drawer.
+                return true;
+            case R.id.action_settings:
+                Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
+                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
+                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
+                startActivity(settings);
+                // Return true to not close the navigation drawer.
+                return true;
+            default:
+                showSnackbar(getString(R.string.coming_soon));
+                // Don't display the item as the selected item.
+                return false;
+        }
+
+        launchFragment(fragment, tag);
+        mCurrentTab = (int) drawerItem.getIdentifier();
+        return false;
     }
 }
