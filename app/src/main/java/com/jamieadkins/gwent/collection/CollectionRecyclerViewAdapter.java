@@ -56,7 +56,9 @@ public class CollectionRecyclerViewAdapter extends CardRecyclerViewAdapter {
     }
 
     public void setCollection(Collection collection) {
-        mCollection = collection;
-        notifyDataSetChanged();
+        if (mCollection == null || !mCollection.equals(collection)) {
+            mCollection = collection;
+            notifyDataSetChanged();
+        }
     }
 }
