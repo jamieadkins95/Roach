@@ -29,6 +29,7 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(getString(R.string.my_collection));
         mAdapter = new CollectionRecyclerViewAdapter(
                 new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
