@@ -42,8 +42,6 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                     }
                 });
         setRecyclerViewAdapter(mAdapter);
-
-        ((CardFilterProvider) getActivity()).getCardFilter().setCollectibleOnly(true);
     }
 
     @Override

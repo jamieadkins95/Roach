@@ -53,6 +53,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements CardFilterProvider {
+    private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
+    private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
+    private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
+    private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
+    private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
+
+
     private static final int ACCOUNT_IDENTIFIER = 1000;
     private static final int SIGN_IN_IDENTIFIER = 1001;
     private static final int SIGN_OUT_IDENTIFIER = 1002;
@@ -88,15 +95,10 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Launch Card DB fragment.
-        CardListFragment startingFragment = new CardListFragment();
-        mCardsPresenter = new CardsPresenter(startingFragment, new CardsInteractorFirebase());
-        launchFragment(startingFragment);
-        mCardFilterListener = startingFragment;
-        mCurrentTab = R.id.tab_card_db;
         mCardFilters = new HashMap<>();
         mCardFilters.put(R.id.tab_card_db, new CardFilter());
         mCardFilters.put(R.id.tab_collection, new CardFilter());
+        mCardFilters.get(R.id.tab_collection).setCollectibleOnly(true);
 
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
@@ -138,10 +140,16 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         Drawer.OnDrawerItemClickListener drawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                if (mCurrentTab == drawerItem.getIdentifier()) {
+                    return false;
+                }
+
                 Fragment fragment;
+                String tag;
                 switch ((int) drawerItem.getIdentifier()) {
                     case R.id.tab_card_db:
                         fragment = new CardListFragment();
+                        tag = TAG_CARD_DB;
 
                         // Create the presenter.
                         mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
@@ -172,6 +180,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
                         // Else, if authenticated.
                         fragment = new DeckListFragment();
+                        tag = TAG_USER_DECKS;
 
                         // Create the presenter.
                         mDecksPresenter =
@@ -202,6 +211,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
                         // Else, if authenticated.
                         fragment = new CollectionFragment();
+                        tag = TAG_COLLECTION;
 
                         mCollectionPresenter = new CollectionPresenter(
                                 (CollectionContract.View) fragment,
@@ -234,6 +244,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
                         // Else, if authenticated.
                         fragment = new ComingSoonFragment();
+                        tag = TAG_RESULTS_TRACKER;
                         break;
                     case R.id.tab_public_decks:
                         // Hide this feature in release versions for now.
@@ -246,6 +257,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         }
 
                         fragment = DeckListFragment.newInstance(false);
+                        tag = TAG_PUBLIC_DECKS;
 
                         // Create the presenter.
                         mPublicDecksPresenter =
@@ -272,7 +284,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         return false;
                 }
 
-                launchFragment(fragment);
+                launchFragment(fragment, tag);
                 mCurrentTab = (int) drawerItem.getIdentifier();
                 return false;
             }
@@ -313,6 +325,47 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .build();
 
         handleDrawerAuthentication();
+
+        if (savedInstanceState == null) {
+            // Cold start, launch card db fragment.
+            mNavigationDrawer.setSelection(R.id.tab_card_db);
+        } else {
+            // Need to find out which fragment we have on screen.
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentContainer);
+            switch (fragment.getTag()) {
+                case TAG_CARD_DB:
+                    mCurrentTab = R.id.tab_card_db;
+                    mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
+                            new CardsInteractorFirebase());
+                    mCardFilterListener = (CardFilterListener) fragment;
+                    break;
+                case TAG_PUBLIC_DECKS:
+                    mCurrentTab = R.id.tab_public_decks;
+                    mPublicDecksPresenter =
+                            new DecksPresenter((DecksContract.View) fragment,
+                                    new DecksInteractorFirebase(true));
+                    break;
+                case TAG_COLLECTION:
+                    mCurrentTab = R.id.tab_collection;
+                    mCollectionPresenter = new CollectionPresenter(
+                            (CollectionContract.View) fragment,
+                            new CollectionInteractorFirebase(),
+                            new CardsInteractorFirebase());
+                    mCardFilterListener = (CardFilterListener) fragment;
+                    break;
+                case TAG_USER_DECKS:
+                    mCurrentTab = R.id.tab_decks;
+                    mDecksPresenter =
+                            new DecksPresenter((DecksContract.View) fragment,
+                                    new DecksInteractorFirebase());
+                    break;
+                case TAG_RESULTS_TRACKER:
+                    mCurrentTab = R.id.tab_results;
+                    break;
+            }
+
+            mNavigationDrawer.setSelection(mCurrentTab);
+        }
     }
 
     private void initialiseDrawerItems() {
@@ -324,6 +377,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         mDrawerItems.put(R.id.tab_public_decks, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_public_decks)
                 .withName(R.string.public_decks)
+                .withSelectable(BuildConfig.DEBUG)
                 .withIcon(R.drawable.ic_public));
         mDrawerItems.put(R.id.tab_decks, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_decks)
@@ -339,11 +393,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withIcon(R.drawable.ic_chart));
     }
 
-    private void launchFragment(Fragment fragment) {
+    private void launchFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(
-                R.id.contentContainer, fragment, fragment.getClass().getSimpleName());
+                R.id.contentContainer, fragment, tag);
         fragmentTransaction.commit();
 
         // Our options menu will be different for different tabs.
