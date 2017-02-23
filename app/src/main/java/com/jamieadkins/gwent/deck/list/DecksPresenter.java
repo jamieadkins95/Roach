@@ -30,13 +30,10 @@ public class DecksPresenter implements DecksContract.Presenter {
                           @NonNull CardsInteractor cardsInteractor,
                           @NonNull PatchInteractor patchInteractor) {
         mDecksInteractor = decksInteractor;
-        mDecksInteractor.setPresenter(this);
 
         mPatchInteractor = patchInteractor;
-        mPatchInteractor.setPresenter(this);
 
         mCardsInteractor = cardsInteractor;
-        mCardsInteractor.setPresenter(this);
 
         mDecksView = decksView;
         mDecksView.setPresenter(this);

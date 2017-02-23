@@ -25,10 +25,8 @@ public class CollectionPresenter implements CollectionContract.Presenter {
                                @NonNull CollectionInteractor collectionInteractor,
                                @NonNull CardsInteractor cardsInteractor) {
         mCollectionInteractor = collectionInteractor;
-        mCollectionInteractor.setPresenter(this);
 
         mCardsInteractor = cardsInteractor;
-        mCardsInteractor.setPresenter(this);
 
         mCollectionView = collectionView;
         mCollectionView.setPresenter(this);

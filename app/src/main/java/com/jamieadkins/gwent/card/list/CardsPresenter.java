@@ -22,7 +22,6 @@ public class CardsPresenter implements CardsContract.Presenter {
     public CardsPresenter(@NonNull CardsContract.View decksView,
                           @NonNull CardsInteractor decksInteractor) {
         mCardsInteractor = decksInteractor;
-        mCardsInteractor.setPresenter(this);
 
         mCardsView = decksView;
         mCardsView.setPresenter(this);
