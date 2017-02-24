@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
@@ -45,11 +46,12 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
 
         String transitionName = getView().getContext().getString(R.string.transition_card);
 
+        Pair<View, String> pair = Pair.create(getView(), transitionName);
+
         ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                         (Activity) getView().getContext(),
-                        getView(),
-                        transitionName
+                        pair
                 );
 
         // Show details using transition animation.
