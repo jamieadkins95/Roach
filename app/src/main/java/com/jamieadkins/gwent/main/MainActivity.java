@@ -61,6 +61,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
+    private static final String STATE_FILTER_CARD_DB = "com.jamieadkins.gwent.filter.carddb";
+    private static final String STATE_FILTER_COLLECTION = "com.jamieadkins.gwent.filter.collection";
 
     private static final int ACCOUNT_IDENTIFIER = 1000;
     private static final int SIGN_IN_IDENTIFIER = 1001;
@@ -100,9 +102,13 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         super.onCreate(savedInstanceState);
 
         mCardFilters = new HashMap<>();
-        mCardFilters.put(R.id.tab_card_db, new CardFilter());
-        mCardFilters.put(R.id.tab_collection, new CardFilter());
-        mCardFilters.get(R.id.tab_collection).setCollectibleOnly(true);
+        if (savedInstanceState != null) {
+            mCardFilters.put(R.id.tab_card_db, (CardFilter) savedInstanceState.get(STATE_FILTER_CARD_DB));
+            mCardFilters.put(R.id.tab_collection, (CardFilter) savedInstanceState.get(STATE_FILTER_COLLECTION));
+        } else {
+            mCardFilters.put(R.id.tab_card_db, new CardFilter());
+            mCardFilters.put(R.id.tab_collection, new CardFilter());
+        }
 
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
@@ -226,7 +232,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 mCurrentTab = R.id.tab_card_db;
                 mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
                         new CardsInteractorFirebase());
-                mCardFilterListener = (CardFilterListener) fragment;
                 break;
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
@@ -240,7 +245,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         (CollectionContract.View) fragment,
                         new CollectionInteractorFirebase(),
                         new CardsInteractorFirebase());
-                mCardFilterListener = (CardFilterListener) fragment;
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
@@ -358,7 +362,10 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     }
 
                     mCardFilters.get(mCurrentTab).setSearchQuery(query);
-                    mCardFilterListener.onCardFilterUpdated();
+                    if (mCardFilterListener != null) {
+                        mCardFilterListener.onCardFilterUpdated();
+                    }
+
                     return false;
                 }
             });
@@ -367,10 +374,16 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 @Override
                 public boolean onClose() {
                     mCardFilters.get(mCurrentTab).setSearchQuery(null);
-                    mCardFilterListener.onCardFilterUpdated();
+                    if (mCardFilterListener != null) {
+                        mCardFilterListener.onCardFilterUpdated();
+                    }
                     return false;
                 }
             });
+
+            if (mCardFilters.get(mCurrentTab).getSearchQuery() != null) {
+                searchView.setQuery(mCardFilters.get(mCurrentTab).getSearchQuery(), false);
+            }
 
             inflater.inflate(R.menu.card_filters, menu);
         }
@@ -386,7 +399,9 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 mCardFilters.get(mCurrentTab).clearFilters();
-                mCardFilterListener.onCardFilterUpdated();
+                if (mCardFilterListener != null) {
+                    mCardFilterListener.onCardFilterUpdated();
+                }
                 return true;
             case R.id.filter_faction:
                 boolean[] factions = new boolean[Faction.ALL_FACTIONS.length];
@@ -404,7 +419,10 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
                                 mCardFilters.get(mCurrentTab)
                                         .put(Faction.CONVERT_INT.get(i), selected);
-                                mCardFilterListener.onCardFilterUpdated();
+
+                                if (mCardFilterListener != null) {
+                                    mCardFilterListener.onCardFilterUpdated();
+                                }
                             }
                         });
                 break;
@@ -424,7 +442,9 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
                                 mCardFilters.get(mCurrentTab)
                                         .put(Rarity.CONVERT_INT.get(i), selected);
-                                mCardFilterListener.onCardFilterUpdated();
+                                if (mCardFilterListener != null) {
+                                    mCardFilterListener.onCardFilterUpdated();
+                                }
                             }
                         });
                 break;
@@ -443,7 +463,10 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                             public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
                                 mCardFilters.get(mCurrentTab)
                                         .put(Type.CONVERT_INT.get(i), selected);
-                                mCardFilterListener.onCardFilterUpdated();
+
+                                if (mCardFilterListener != null) {
+                                    mCardFilterListener.onCardFilterUpdated();
+                                }
                             }
                         });
                 break;
@@ -459,6 +482,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     @Override
     public CardFilter getCardFilter() {
         return mCardFilters.get(mCurrentTab);
+    }
+
+    @Override
+    public void registerCardFilterListener(CardFilterListener listener) {
+        mCardFilterListener = listener;
     }
 
     @Override
@@ -596,7 +624,13 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
-        mCurrentTab = (int) drawerItem.getIdentifier();
         return false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_FILTER_CARD_DB, mCardFilters.get(R.id.tab_card_db));
+        outState.putParcelable(STATE_FILTER_COLLECTION, mCardFilters.get(R.id.tab_collection));
+        super.onSaveInstanceState(outState);
     }
 }
