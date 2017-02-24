@@ -97,4 +97,8 @@
     <string name="my_stuff">My Stuff</string>
     <string name="gwent">Gwent</string>
     <string name="signed_out">Signed Out</string>
+    <string name="keg_helper">Card Picker Helper</string>
+    <string name="keg_helper_message">Our friends at Gwentify have built a tool to help you choose between cards you have received in a keg.\n\nBy clicking Go you will be leaving Roach and will be redirected to gwentify.com.</string>
+    <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
+    <string name="go">Go</string>
 </resources>

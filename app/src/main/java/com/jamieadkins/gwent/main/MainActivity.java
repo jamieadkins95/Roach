@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -152,6 +153,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                                 .withDivider(false),
                         mDrawerItems.get(R.id.tab_card_db),
                         mDrawerItems.get(R.id.tab_public_decks),
+                        mDrawerItems.get(R.id.tab_helper),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
                                 .withDivider(false),
@@ -211,6 +213,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withIdentifier(R.id.tab_results)
                 .withName(R.string.results)
                 .withIcon(R.drawable.ic_chart));
+        mDrawerItems.put(R.id.tab_helper, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_helper)
+                .withSelectable(false)
+                .withName(R.string.keg_helper)
+                .withIcon(R.drawable.ic_help));
     }
 
     private void setupFragment(Fragment fragment, String tag) {
@@ -551,6 +558,22 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 fragment = DeckListFragment.newInstance(false);
                 tag = TAG_PUBLIC_DECKS;
                 break;
+            case R.id.tab_helper:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.keg_helper)
+                        .setMessage(R.string.keg_helper_message)
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent gwentify = new Intent(Intent.ACTION_VIEW);
+                                gwentify.setData(Uri.parse(getString(R.string.gwentify_helper)));
+                                startActivity(gwentify);
+                            }
+                        });
+                builder.create().show();
+                // Return true to not close the navigation drawer.
+                return true;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
                 about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
