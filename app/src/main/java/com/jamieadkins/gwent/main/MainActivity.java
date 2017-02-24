@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -345,8 +346,8 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
         if (mCurrentTab == R.id.tab_card_db || mCurrentTab == R.id.tab_collection) {
             inflater.inflate(R.menu.search, menu);
 
-            MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-            SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             searchView.setQueryHint(getString(R.string.search_hint));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
