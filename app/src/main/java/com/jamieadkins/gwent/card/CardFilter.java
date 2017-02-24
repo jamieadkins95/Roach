@@ -130,7 +130,7 @@ public class CardFilter implements Parcelable {
         mSearchQuery = parcel.readString();
         mFilters = (HashMap<String, Boolean>) parcel.readSerializable();
         mCollectibleOnly = (Boolean) parcel.readSerializable();
-        parcel.readStringList(mCardIds);
+        mCardIds = parcel.createStringArrayList();
 
     }
 
