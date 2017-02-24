@@ -2,9 +2,11 @@ package com.jamieadkins.gwent.card.list;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
@@ -54,8 +56,16 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
                         pair
                 );
 
-        // Show details using transition animation.
-        ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
+
+        boolean showAnimation = preferences.getBoolean(
+                getView().getContext().getString(R.string.pref_animations_key), true) ;
+        if (showAnimation) {
+            // Show details using transition animation.
+            ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
+        } else {
+            getView().getContext().startActivity(intent);
+        }
 
         // Log what card has been viewed.
         FirebaseUtils.logAnalytics(getView().getContext(),
