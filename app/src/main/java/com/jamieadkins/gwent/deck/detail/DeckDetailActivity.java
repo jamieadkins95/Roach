@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
@@ -58,7 +59,10 @@ public class DeckDetailActivity extends BaseActivity {
                 .commit();
 
         mDeckDetailsPresenter = new DecksPresenter(
-                fragment, new DecksInteractorFirebase(isPublicDeck));
+                fragment,
+                new DecksInteractorFirebase(isPublicDeck),
+                new CardsInteractorFirebase(),
+                new PatchInteractorFirebase());
     }
 
     @Override

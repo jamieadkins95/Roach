@@ -33,7 +33,6 @@ import io.reactivex.ObservableSource;
 public class DecksInteractorFirebase implements DecksInteractor {
     private static final String PUBLIC_DECKS_PATH = "public-decks/";
 
-    private DecksContract.Presenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mDecksReference;
     private final DatabaseReference mPublicDecksReference;
@@ -59,11 +58,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void setPresenter(DecksContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
     public Observable<RxDatabaseEvent<Deck>> getDecks() {
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
@@ -74,7 +68,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDecksListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                mPresenter.onLoadingComplete();
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),

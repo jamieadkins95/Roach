@@ -25,7 +25,6 @@ import io.reactivex.ObservableSource;
 public class CardsInteractorFirebase implements CardsInteractor {
     private static final String LATEST_PATCH = "v0-8-60-2-images";
 
-    private BasePresenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCardsReference;
 
@@ -45,11 +44,6 @@ public class CardsInteractorFirebase implements CardsInteractor {
         mCardsReference = mDatabase.getReference(databasePath);
         // Keep Cards data in cache at all times.
         mCardsReference.keepSynced(true);
-    }
-
-    @Override
-    public void setPresenter(BasePresenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

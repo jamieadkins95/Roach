@@ -19,6 +19,7 @@ import android.view.View;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
@@ -237,8 +238,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
                 mPublicDecksPresenter =
-                        new DecksPresenter((DecksContract.View) fragment,
-                                new DecksInteractorFirebase(true));
+                        new DecksPresenter(
+                                (DecksContract.View) fragment,
+                                new DecksInteractorFirebase(true),
+                                new CardsInteractorFirebase(),
+                                new PatchInteractorFirebase());
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
@@ -250,8 +254,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
                 mDecksPresenter =
-                        new DecksPresenter((DecksContract.View) fragment,
-                                new DecksInteractorFirebase());
+                        new DecksPresenter(
+                                (DecksContract.View) fragment,
+                                new DecksInteractorFirebase(),
+                                new CardsInteractorFirebase(),
+                                new PatchInteractorFirebase());
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;
