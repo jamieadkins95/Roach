@@ -6,6 +6,9 @@ import android.view.View;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * UI fragment that shows a list of the users decks.
  */
@@ -16,6 +19,14 @@ public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements 
         PublicDeckDetailFragment fragment = new PublicDeckDetailFragment();
         fragment.mDeckId = deckId;
         return fragment;
+    }
+
+    @Override
+    public void onLoadData() {
+        mDecksPresenter.getDeck(mDeckId, true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     @Override

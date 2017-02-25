@@ -25,6 +25,32 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class BaseDeckDetailFragment extends BaseCardListFragment implements DecksContract.View {
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
+    protected Observer<RxDatabaseEvent<Deck>> mObserver = new Observer<RxDatabaseEvent<Deck>>() {
+        @Override
+        public void onSubscribe(Disposable d) {
+
+        }
+
+        @Override
+        public void onNext(RxDatabaseEvent<Deck> value) {
+            getActivity().setTitle(value.getValue().getName());
+
+            getRecyclerViewAdapter().clear();
+            for (String cardId : value.getValue().getCards().keySet()) {
+                getRecyclerViewAdapter().addItem(value.getValue().getCards().get(cardId));
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    };
 
     public BaseDeckDetailFragment() {
     }
@@ -39,39 +65,6 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     public void onStart() {
         super.onStart();
         onLoadData();
-    }
-
-    @Override
-    public void onLoadData() {
-        mDecksPresenter.getDeck(mDeckId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(RxDatabaseEvent<Deck> value) {
-                        getActivity().setTitle(value.getValue().getName());
-
-                        getRecyclerViewAdapter().clear();
-                        for (String cardId : value.getValue().getCards().keySet()) {
-                            getRecyclerViewAdapter().addItem(value.getValue().getCards().get(cardId));
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
     @Override

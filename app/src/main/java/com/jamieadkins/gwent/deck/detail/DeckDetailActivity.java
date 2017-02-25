@@ -30,6 +30,7 @@ public class DeckDetailActivity extends BaseActivity {
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
     private DecksContract.Presenter mDeckDetailsPresenter;
     private String mDeckId;
+    private boolean mIsPublicDeck;
 
     @Override
     public void initialiseContentView() {
@@ -45,9 +46,9 @@ public class DeckDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         BaseDeckDetailFragment fragment;
-        boolean isPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
+        mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
-        if (isPublicDeck) {
+        if (mIsPublicDeck) {
             fragment = PublicDeckDetailFragment.newInstance(mDeckId);
         } else {
             fragment = UserDeckDetailFragment.newInstance(mDeckId);
@@ -58,7 +59,7 @@ public class DeckDetailActivity extends BaseActivity {
                 .commit();
 
         mDeckDetailsPresenter = new DecksPresenter(
-                fragment, new DecksInteractorFirebase(isPublicDeck));
+                fragment, new DecksInteractorFirebase());
     }
 
     @Override
@@ -77,7 +78,7 @@ public class DeckDetailActivity extends BaseActivity {
                 onBackPressed();
                 return true;
             case R.id.action_publish_deck:
-                mDeckDetailsPresenter.getDeck(mDeckId)
+                mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<RxDatabaseEvent<Deck>>() {

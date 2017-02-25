@@ -70,13 +70,23 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDecks() {
-        return mDecksInteractor.getDecks();
+    public Observable<RxDatabaseEvent<Deck>> getUserDecks() {
+        return mDecksInteractor.getUserDecks();
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId) {
-        return mDecksInteractor.getDeck(deckId);
+    public Observable<RxDatabaseEvent<Deck>> getPublicDecks() {
+        return mDecksInteractor.getFeaturedDecks();
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+        return mDecksInteractor.getDeck(deckId, isPublicDeck);
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
+        return mDecksInteractor.getDeckOfTheWeek();
     }
 
     @Override

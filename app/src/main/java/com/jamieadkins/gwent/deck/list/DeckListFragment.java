@@ -13,7 +13,9 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -93,8 +95,13 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onLoadData() {
         super.onLoadData();
-        mDecksPresenter.getDecks()
-                .subscribeOn(Schedulers.io())
+        Observable<RxDatabaseEvent<Deck>> decks;
+        if (mUserDecks) {
+            decks = mDecksPresenter.getUserDecks();
+        } else {
+            decks = mDecksPresenter.getPublicDecks();
+        }
+        decks.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
     }

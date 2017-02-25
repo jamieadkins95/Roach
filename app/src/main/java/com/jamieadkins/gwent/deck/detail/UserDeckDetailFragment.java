@@ -58,7 +58,11 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
 
     @Override
     public void onLoadData() {
-        super.onLoadData();
+        mDecksPresenter.getDeck(mDeckId, false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
+
         CardFilter cardFilter = new CardFilter();
         cardFilter.setCollectibleOnly(true);
         cardFilter.put(Type.LEADER, false);

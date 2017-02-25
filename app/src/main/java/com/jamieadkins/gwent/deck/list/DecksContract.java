@@ -20,9 +20,13 @@ public interface DecksContract {
     }
 
     interface Presenter extends CardsContract.Presenter {
-        Observable<RxDatabaseEvent<Deck>> getDecks();
+        Observable<RxDatabaseEvent<Deck>> getUserDecks();
 
-        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId);
+        Observable<RxDatabaseEvent<Deck>> getPublicDecks();
+
+        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
+
+        Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
 
         void stop();
 

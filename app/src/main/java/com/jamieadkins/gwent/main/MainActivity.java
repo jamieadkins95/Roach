@@ -238,7 +238,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 mCurrentTab = R.id.tab_public_decks;
                 mPublicDecksPresenter =
                         new DecksPresenter((DecksContract.View) fragment,
-                                new DecksInteractorFirebase(true));
+                                new DecksInteractorFirebase());
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
