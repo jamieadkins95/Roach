@@ -19,7 +19,7 @@
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Gwent.NoActionBar">
+            android:theme="@style/Theme.Gwent.NoActionBar.Drawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,12 @@
 
         <activity
             android:name=".card.detail.DetailActivity"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Gwent.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.MainActivity"/>
 
             <!-- Can't open gwentdb links at the moment as we are using data from elsewhere. -->
             <!--<intent-filter>

@@ -5,4 +5,6 @@ package com.jamieadkins.gwent.card;
  */
 public interface CardFilterProvider {
     CardFilter getCardFilter();
+
+    void registerCardFilterListener(CardFilterListener listener);
 }

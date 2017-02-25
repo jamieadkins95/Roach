@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- This menu is not actually inflated, we just use it for the ids. -->
     <item
         android:id="@+id/tab_card_db"
         android:enabled="true"
@@ -29,4 +31,8 @@
         android:icon="@drawable/ic_chart"
         android:title="@string/results"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/tab_helper"
+        android:title="@string/keg_helper" />
 </menu>

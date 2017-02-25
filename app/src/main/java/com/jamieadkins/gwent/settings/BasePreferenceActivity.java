@@ -16,6 +16,8 @@ public class BasePreferenceActivity extends BaseActivity {
     public static final String EXTRA_PREFERENCE_LAYOUT = "com.jamieadkins.gwent.preference";
     public static final String EXTRA_PREFERENCE_TITLE = "com.jamieadkins.gwent.preference.title";
 
+    private int mTitleResource;
+
     @Override
     public void initialiseContentView() {
         setContentView(R.layout.activity_preference);
@@ -26,16 +28,22 @@ public class BasePreferenceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTitle(getIntent().getIntExtra(EXTRA_PREFERENCE_TITLE, -1));
+        if (savedInstanceState == null) {
+            mTitleResource = getIntent().getIntExtra(EXTRA_PREFERENCE_TITLE, R.string.app_name);
 
-        final int layout = getIntent().getIntExtra(EXTRA_PREFERENCE_LAYOUT, -1);
-        PreferenceFragment fragment = PreferenceFragment.newInstance(layout);
+            final int layout = getIntent().getIntExtra(EXTRA_PREFERENCE_LAYOUT, -1);
+            PreferenceFragment fragment = PreferenceFragment.newInstance(layout);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(
-                R.id.contentContainer, fragment, fragment.getClass().getSimpleName());
-        fragmentTransaction.commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(
+                    R.id.contentContainer, fragment, fragment.getClass().getSimpleName());
+            fragmentTransaction.commit();
+        } else {
+            mTitleResource = savedInstanceState.getInt(EXTRA_PREFERENCE_TITLE);
+        }
+
+        setTitle(mTitleResource);
     }
 
     @Override
@@ -48,5 +56,11 @@ public class BasePreferenceActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(EXTRA_PREFERENCE_TITLE, mTitleResource);
+        super.onSaveInstanceState(outState);
     }
 }

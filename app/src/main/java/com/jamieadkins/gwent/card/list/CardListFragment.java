@@ -18,6 +18,7 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
+        getActivity().setTitle(getString(R.string.card_database));
     }
 
     @Override

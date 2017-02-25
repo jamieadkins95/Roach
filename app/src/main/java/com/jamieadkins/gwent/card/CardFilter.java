@@ -1,5 +1,8 @@
 package com.jamieadkins.gwent.card;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Rarity;
@@ -8,15 +11,14 @@ import com.jamieadkins.gwent.data.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Used to filter cards.
  */
 
-public class CardFilter {
+public class CardFilter implements Parcelable {
     private String mSearchQuery;
-    private Map<String, Boolean> mFilters;
+    private HashMap<String, Boolean> mFilters;
     private List<String> mCardIds;
 
     private boolean mCollectibleOnly = false;
@@ -97,5 +99,43 @@ public class CardFilter {
             return get(card.getFaction()) && get(card.getRarity())
                     && get(card.getType()) && card.isReleased() && include;
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mSearchQuery);
+        parcel.writeSerializable(mFilters);
+        parcel.writeSerializable(mCollectibleOnly);
+        parcel.writeStringList(mCardIds);
+    }
+
+
+    public static final Parcelable.Creator<CardFilter> CREATOR
+            = new Parcelable.Creator<CardFilter>() {
+        public CardFilter createFromParcel(Parcel in) {
+            return new CardFilter(in);
+        }
+
+        public CardFilter[] newArray(int size) {
+            return new CardFilter[size];
+        }
+    };
+
+    private CardFilter(Parcel parcel) {
+        mSearchQuery = parcel.readString();
+        mFilters = (HashMap<String, Boolean>) parcel.readSerializable();
+        mCollectibleOnly = (Boolean) parcel.readSerializable();
+        mCardIds = parcel.createStringArrayList();
+
+    }
+
+    @Override
+    public String toString() {
+        return mSearchQuery + "," + mCollectibleOnly + "," + mCardIds + "," + mFilters;
     }
 }

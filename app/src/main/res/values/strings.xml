@@ -55,6 +55,7 @@
     <string name="pref_licenses">Licenses</string>
     <string name="pref_rxjava" translatable="false">Rxjava</string>
     <string name="pref_glide" translatable="false">Glide</string>
+    <string name="pref_material_drawer" translatable="false">Material Drawer</string>
 
     <string name="pref_general">General</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
@@ -65,6 +66,19 @@
     <string name="pref_crowd_sourcing_key" translatable="false">com.jamieadkins.gwent.crowd.sourcing</string>
     <string name="crowd_sourcing">Help Crowd Source Card Data</string>
     <string name="crowd_sourcing_summary">Help Roach get up to date quickly when a new Gwent patch is released by answering questions about cards that have been updated.</string>
+
+    <string name="pref_animations_key" translatable="false">com.jamieadkins.gwent.crowd.animations</string>
+    <string name="animations">Enable Transition Animations</string>
+    <string name="animations_summary">Enable the transition animations that occur when loading card details. Slightly unstable and may cause crashes.</string>
+
+    <string name="pref_images">Card Images</string>
+    <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
+    <string name="low_data">Low Data Mode</string>
+    <string name="low_data_summary">Use lower resolution card images to reduce data usage.</string>
+
+    <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.crowd.show.images</string>
+    <string name="show_images_in_list">Show Images in Card List</string>
+    <string name="show_images_in_list_summary">When viewing cards in a list, show the card images.</string>
 
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="in_collection">Variation #%1$d: \t %2$d</string>
@@ -84,4 +98,11 @@
     <string name="total">Total</string>
     <string name="total_cards">Total Cards: %d</string>
     <string name="publish_deck">Publish Deck</string>
+    <string name="my_stuff">My Stuff</string>
+    <string name="gwent">Gwent</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="keg_helper">Card Picker Helper</string>
+    <string name="keg_helper_message">Our friends at Gwentify have built a tool to help you choose between cards you have received in a keg.\n\nBy clicking Go you will be leaving Roach and will be redirected to gwentify.com.</string>
+    <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
+    <string name="go">Go</string>
 </resources>

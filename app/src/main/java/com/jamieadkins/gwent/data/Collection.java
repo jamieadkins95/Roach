@@ -23,6 +23,40 @@ public class Collection {
     }
 
     @Exclude
+    @Override
+    public boolean equals(Object obj) {
+        boolean equal = true;
+
+        if (!(obj instanceof Collection)) {
+            return false;
+        }
+
+        Collection other = (Collection) obj;
+
+        try {
+            for (String cardId : cards.keySet()) {
+                for (String variationId : cards.get(cardId).keySet()) {
+                    if (!cards.get(cardId).get(variationId).equals(other.getCards().get(cardId).get(variationId))) {
+                        equal = false;
+                    }
+                }
+            }
+
+            for (String cardId : other.getCards().keySet()) {
+                for (String variationId : other.getCards().get(cardId).keySet()) {
+                    if (!cards.get(cardId).get(variationId).equals(other.getCards().get(cardId).get(variationId))) {
+                        equal = false;
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            equal = false;
+        }
+
+        return equal;
+    }
+
+    @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("cards", cards);

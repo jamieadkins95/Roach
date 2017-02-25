@@ -12,6 +12,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.FirebaseUtils;
@@ -40,25 +41,8 @@ public abstract class AuthenticationActivity extends BaseActivity {
         return mUserId;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sign_out:
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // User is now signed out.
-                                onSignedOut();
-                            }
-                        });
-                return true;
-            case R.id.action_sign_in:
-                startSignInProcess();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public boolean isAuthenticated() {
@@ -73,6 +57,17 @@ public abstract class AuthenticationActivity extends BaseActivity {
     protected void onSignedOut() {
         mSignedIn = false;
         showSnackbar(getString(R.string.sign_out_successful));
+    }
+
+    public void startSignOutProcess() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // User is now signed out.
+                        onSignedOut();
+                    }
+                });
     }
 
     public boolean isPlayServicesAvailable() {
