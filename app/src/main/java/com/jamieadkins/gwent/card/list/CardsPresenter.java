@@ -19,11 +19,11 @@ public class CardsPresenter implements CardsContract.Presenter {
     private final CardsInteractor mCardsInteractor;
     private final CardsContract.View mCardsView;
 
-    public CardsPresenter(@NonNull CardsContract.View decksView,
-                          @NonNull CardsInteractor decksInteractor) {
-        mCardsInteractor = decksInteractor;
+    public CardsPresenter(@NonNull CardsContract.View cardsView,
+                          @NonNull CardsInteractor cardsInteractor) {
+        mCardsInteractor = cardsInteractor;
 
-        mCardsView = decksView;
+        mCardsView = cardsView;
         mCardsView.setPresenter(this);
     }
 
