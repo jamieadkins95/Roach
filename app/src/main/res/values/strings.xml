@@ -69,7 +69,7 @@
 
     <string name="pref_animations_key" translatable="false">com.jamieadkins.gwent.crowd.animations</string>
     <string name="animations">Enable Transition Animations</string>
-    <string name="animations_summary">Enable the transition animations that occur when loading card details. If you experiencing crashes, try disabling this.</string>
+    <string name="animations_summary">Enable the transition animations that occur when loading card details. Slightly unstable and may cause crashes.</string>
 
     <string name="pref_images">Card Images</string>
     <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>

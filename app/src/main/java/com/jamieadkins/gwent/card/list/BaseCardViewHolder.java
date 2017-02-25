@@ -59,7 +59,7 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
 
         boolean showAnimation = preferences.getBoolean(
-                getView().getContext().getString(R.string.pref_animations_key), true) ;
+                getView().getContext().getString(R.string.pref_animations_key), false);
         if (showAnimation) {
             // Show details using transition animation.
             ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
