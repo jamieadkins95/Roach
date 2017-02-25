@@ -61,9 +61,4 @@ public class PatchInteractorFirebase implements PatchInteractor {
             }
         });
     }
-
-    @Override
-    public void setPresenter(BasePresenter presenter) {
-        // Do nothing.
-    }
 }

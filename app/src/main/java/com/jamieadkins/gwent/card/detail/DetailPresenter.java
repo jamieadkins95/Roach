@@ -21,7 +21,6 @@ public class DetailPresenter implements DetailContract.Presenter {
     public DetailPresenter(@NonNull DetailContract.View detailView,
                            @NonNull CardsInteractor detailInteractor) {
         mDetailInteractor = detailInteractor;
-        mDetailInteractor.setPresenter(this);
 
         mDetailView = detailView;
         mDetailView.setPresenter(this);

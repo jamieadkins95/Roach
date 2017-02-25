@@ -6,10 +6,8 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.interactor.PatchInteractor;
-import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
@@ -28,12 +26,14 @@ public class DecksPresenter implements DecksContract.Presenter {
     private final DecksContract.View mDecksView;
 
     public DecksPresenter(@NonNull DecksContract.View decksView,
-                          @NonNull DecksInteractor decksInteractor) {
+                          @NonNull DecksInteractor decksInteractor,
+                          @NonNull CardsInteractor cardsInteractor,
+                          @NonNull PatchInteractor patchInteractor) {
         mDecksInteractor = decksInteractor;
-        mDecksInteractor.setPresenter(this);
 
-        mPatchInteractor = new PatchInteractorFirebase();
-        mCardsInteractor = new CardsInteractorFirebase();
+        mPatchInteractor = patchInteractor;
+
+        mCardsInteractor = cardsInteractor;
 
         mDecksView = decksView;
         mDecksView.setPresenter(this);

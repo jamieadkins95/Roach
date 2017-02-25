@@ -28,7 +28,6 @@ import io.reactivex.ObservableSource;
  */
 
 public class CollectionInteractorFirebase implements CollectionInteractor {
-    private CollectionContract.Presenter mPresenter;
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCollectionReference;
     private ValueEventListener mCollectionListener;
@@ -39,11 +38,6 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databasePath = "users/" + userId + "/collection/";
         mCollectionReference = mDatabase.getReference(databasePath);
-    }
-
-    @Override
-    public void setPresenter(CollectionContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override
