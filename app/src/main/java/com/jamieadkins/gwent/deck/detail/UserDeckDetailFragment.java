@@ -58,47 +58,45 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
 
     @Override
     public void onLoadData() {
+        super.onLoadData();
         mDecksPresenter.getDeck(mDeckId, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
+    }
 
-        CardFilter cardFilter = new CardFilter();
-        cardFilter.setCollectibleOnly(true);
-        cardFilter.put(Type.LEADER, false);
-        mDecksPresenter.getCards(cardFilter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+    @Override
+    public Observer<RxDatabaseEvent<CardDetails>> getObserver() {
+        return new Observer<RxDatabaseEvent<CardDetails>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                    }
+            }
 
-                    @Override
-                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                        switch (value.getEventType()) {
-                            case ADDED:
-                                mCardRecyclerViewAdapter.addItem(value.getValue());
-                                break;
-                            case REMOVED:
-                                mCardRecyclerViewAdapter.removeItem(value.getValue());
-                                break;
-                        }
-                    }
+            @Override
+            public void onNext(RxDatabaseEvent<CardDetails> value) {
+                switch (value.getEventType()) {
+                    case ADDED:
+                        mCardRecyclerViewAdapter.addItem(value.getValue());
+                        break;
+                    case REMOVED:
+                        mCardRecyclerViewAdapter.removeItem(value.getValue());
+                        break;
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
+            @Override
+            public void onError(Throwable e) {
 
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
-                        SwipeRefreshLayout refreshLayout =
-                                (SwipeRefreshLayout) getView().findViewById(R.id.cardRefreshContainer);
-                        refreshLayout.setRefreshing(false);
-                        refreshLayout.setEnabled(false);
-                    }
-                });
+            @Override
+            public void onComplete() {
+                SwipeRefreshLayout refreshLayout =
+                        (SwipeRefreshLayout) getView().findViewById(R.id.cardRefreshContainer);
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(false);
+            }
+        };
     }
 }

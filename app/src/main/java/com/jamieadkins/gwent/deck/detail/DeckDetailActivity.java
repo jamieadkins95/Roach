@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.card.CardFilterListener;
+import com.jamieadkins.gwent.card.CardFilterProvider;
+import com.jamieadkins.gwent.card.list.CardsContract;
+import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
@@ -26,12 +31,18 @@ import io.reactivex.schedulers.Schedulers;
  * Shows card image and details.
  */
 
-public class DeckDetailActivity extends BaseActivity {
+public class DeckDetailActivity extends BaseActivity implements CardFilterProvider {
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
+    private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
+    private static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
+
     private DecksContract.Presenter mDeckDetailsPresenter;
     private String mDeckId;
     private boolean mIsPublicDeck;
+
+    private CardFilter mCardFilter;
+    private CardFilterListener mCardFilterListener;
 
     @Override
     public void initialiseContentView() {
@@ -41,23 +52,32 @@ public class DeckDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         BaseDeckDetailFragment fragment;
-        mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
-        if (mIsPublicDeck) {
-            fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+        if (savedInstanceState != null) {
+            mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
+            mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
+            mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
+
+            fragment = (BaseDeckDetailFragment)
+                    getSupportFragmentManager().findFragmentByTag(TAG_DECK_DETAIL);
         } else {
-            fragment = UserDeckDetailFragment.newInstance(mDeckId);
-        }
+            mCardFilter = new CardFilter();
+            mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
+            mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
-                .commit();
+            if (mIsPublicDeck) {
+                fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+            } else {
+                fragment = UserDeckDetailFragment.newInstance(mDeckId);
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentContainer, fragment, TAG_DECK_DETAIL)
+                    .commit();
+        }
 
         mDeckDetailsPresenter = new DecksPresenter(
                 fragment,
@@ -109,5 +129,23 @@ public class DeckDetailActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public CardFilter getCardFilter() {
+        return mCardFilter;
+    }
+
+    @Override
+    public void registerCardFilterListener(CardFilterListener listener) {
+        mCardFilterListener = listener;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_CARD_FILTER, mCardFilter);
+        outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
+        outState.putString(EXTRA_DECK_ID, mDeckId);
+        super.onSaveInstanceState(outState);
     }
 }

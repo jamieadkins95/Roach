@@ -59,6 +59,10 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
+
+        if (savedInstanceState != null) {
+            mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
+        }
     }
 
     @Override
@@ -76,10 +80,17 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     @Override
     public void setPresenter(DecksContract.Presenter presenter) {
         mDecksPresenter = presenter;
+        setCardsPresenter(presenter);
     }
 
     @Override
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
+        super.onSaveInstanceState(outState);
     }
 }
