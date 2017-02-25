@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
@@ -33,22 +34,24 @@ public class CollectionRecyclerViewAdapter extends CardRecyclerViewAdapter {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder<CardDetails> holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         CollectionCardViewHolder collectionCardViewHolder = (CollectionCardViewHolder) holder;
-        if (mCollection != null &&
-                mCollection.getCards().containsKey(getItemAt(position).getIngameId())) {
 
-            for (String variationId : getItemAt(position).getVariations().keySet()) {
-                if (mCollection.getCards().get(getItemAt(position).getIngameId()).containsKey(variationId)) {
-                    final int count = mCollection.getCards().get(getItemAt(position).getIngameId()).get(variationId);
+        CardDetails cardDetails = (CardDetails) getItemAt(position);
+        if (mCollection != null &&
+                mCollection.getCards().containsKey(cardDetails.getIngameId())) {
+
+            for (String variationId : cardDetails.getVariations().keySet()) {
+                if (mCollection.getCards().get(cardDetails.getIngameId()).containsKey(variationId)) {
+                    final int count = mCollection.getCards().get(cardDetails.getIngameId()).get(variationId);
                     collectionCardViewHolder.setItemCount(variationId, count);
                 } else {
                     collectionCardViewHolder.setItemCount(variationId, 0);
                 }
             }
         } else {
-            for (String variationId : getItemAt(position).getVariations().keySet()) {
+            for (String variationId : cardDetails.getVariations().keySet()) {
                 collectionCardViewHolder.setItemCount(variationId, 0);
             }
         }

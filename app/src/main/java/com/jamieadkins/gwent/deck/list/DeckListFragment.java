@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -41,7 +42,8 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
+        DeckRecyclerViewAdapter adapter = new DeckRecyclerViewAdapter();
+        setRecyclerViewAdapter(adapter);
 
         if (savedInstanceState != null) {
             mUserDecks = savedInstanceState.getBoolean(STATE_USER_DECKS);

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
@@ -17,10 +18,10 @@ import io.reactivex.disposables.Disposable;
 /**
  * UI fragment that shows a list of the users decks.
  */
-public abstract class BaseFragment<T> extends Fragment {
+public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
-    private BaseRecyclerViewAdapter<T> mViewAdapter;
+    private BaseRecyclerViewAdapter mViewAdapter;
     private boolean mLoading = false;
 
     private Observer<RxDatabaseEvent<T>> mObserver = new Observer<RxDatabaseEvent<T>>() {
@@ -84,11 +85,11 @@ public abstract class BaseFragment<T> extends Fragment {
         return mLoading;
     }
 
-    public void setRecyclerViewAdapter(BaseRecyclerViewAdapter<T> mViewAdapter) {
+    public void setRecyclerViewAdapter(BaseRecyclerViewAdapter mViewAdapter) {
         this.mViewAdapter = mViewAdapter;
     }
 
-    public BaseRecyclerViewAdapter<T> getRecyclerViewAdapter() {
+    public BaseRecyclerViewAdapter getRecyclerViewAdapter() {
         return mViewAdapter;
     }
 

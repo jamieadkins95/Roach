@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.data;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
+import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Objects;
  * Class that models what a deck is.
  */
 @IgnoreExtraProperties
-public class CardDetails {
+public class CardDetails implements RecyclerViewItem {
     private String ingameId;
     private String name;
     private String info;
@@ -201,5 +203,10 @@ public class CardDetails {
         public String getLowImage() {
             return lowImage;
         }
+    }
+
+    @Override
+    public int getItemType() {
+        return CardRecyclerViewAdapter.TYPE_CARD;
     }
 }

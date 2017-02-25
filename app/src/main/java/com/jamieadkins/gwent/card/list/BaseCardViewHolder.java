@@ -10,6 +10,7 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.SimpleCardView;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -20,8 +21,9 @@ import com.jamieadkins.gwent.card.detail.DetailActivity;
  * ViewHolder for general yearns
  */
 
-public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
+public class BaseCardViewHolder extends BaseViewHolder {
     private final SimpleCardView mSimpleCardView;
+    private CardDetails mCardDetails;
 
     public BaseCardViewHolder(View view) {
         super(view);
@@ -29,9 +31,11 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
     }
 
     @Override
-    public void bindItem(final CardDetails item) {
+    public void bindItem(final RecyclerViewItem item) {
         super.bindItem(item);
-        mSimpleCardView.setCardDetails(item);
+        mCardDetails = (CardDetails) item;
+
+        mSimpleCardView.setCardDetails(mCardDetails);
 
         getView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +47,8 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
 
     public void launchDetailActivity() {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getIngameId());
-        intent.putExtra(DetailActivity.EXTRA_PATCH, getBoundItem().getPatch());
+        intent.putExtra(DetailActivity.EXTRA_CARD_ID, mCardDetails.getIngameId());
+        intent.putExtra(DetailActivity.EXTRA_PATCH, mCardDetails.getPatch());
 
         String transitionName = getView().getContext().getString(R.string.transition_card);
 
@@ -69,6 +73,10 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
 
         // Log what card has been viewed.
         FirebaseUtils.logAnalytics(getView().getContext(),
-                getBoundItem().getIngameId(), getBoundItem().getName(), "View Card");
+                mCardDetails.getIngameId(), mCardDetails.getName(), "View Card");
+    }
+
+    public CardDetails getBoundCardDetails() {
+        return mCardDetails;
     }
 }
