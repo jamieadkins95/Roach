@@ -38,7 +38,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private Query mDeckQuery;
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
-    private ChildEventListener mDecksListener;
+    private ValueEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
 
     public DecksInteractorFirebase() {
@@ -46,6 +46,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mUserReference = mDatabase.getReference("users/" + userId + "/decks/");
+            mUserReference.keepSynced(true);
         }
     }
 
@@ -57,41 +58,18 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDecksListener = new ChildEventListener() {
+                        mDecksListener = new ValueEventListener() {
                             @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.ADDED));
-                            }
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot deckSnapshot : dataSnapshot.getChildren()) {
+                                    emitter.onNext(
+                                            new RxDatabaseEvent<Deck>(
+                                                    deckSnapshot.getKey(),
+                                                    deckSnapshot.getValue(Deck.class),
+                                                    RxDatabaseEvent.EventType.ADDED));
+                                }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.CHANGED));
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.REMOVED));
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.MOVED));
+                                emitter.onComplete();
                             }
 
                             @Override
@@ -100,7 +78,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDecksQuery.addChildEventListener(mDecksListener);
+                        mDecksQuery.addListenerForSingleValueEvent(mDecksListener);
                     }
                 });
             }
@@ -136,6 +114,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                                 dataSnapshot.getKey(),
                                                 dataSnapshot.getValue(Deck.class),
                                                 RxDatabaseEvent.EventType.CHANGED));
+
+                                emitter.onComplete();
                             }
 
                             @Override
@@ -144,7 +124,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDeckQuery.addValueEventListener(mDeckDetailListener);
+                        mDeckQuery.addListenerForSingleValueEvent(mDeckDetailListener);
                     }
                 });
             }
@@ -172,6 +152,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                                 dataSnapshot.getKey(),
                                                 dataSnapshot.getValue(Deck.class),
                                                 RxDatabaseEvent.EventType.CHANGED));
+
+                                emitter.onComplete();
                             }
 
                             @Override
@@ -180,7 +162,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDeckQuery.addValueEventListener(mDeckDetailListener);
+                        mDeckQuery.addListenerForSingleValueEvent(mDeckDetailListener);
                     }
                 });
             }

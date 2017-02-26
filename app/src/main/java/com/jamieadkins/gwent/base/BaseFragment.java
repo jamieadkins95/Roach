@@ -18,7 +18,8 @@ import io.reactivex.disposables.Disposable;
 /**
  * UI fragment that shows a list of the users decks.
  */
-public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment {
+public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private BaseRecyclerViewAdapter mViewAdapter;
@@ -60,6 +61,7 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment 
 
         mRefreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshContainer);
         mRefreshContainer.setColorSchemeResources(R.color.gwentAccent);
+        mRefreshContainer.setOnRefreshListener(this);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -76,9 +78,10 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment 
     public void setLoading(boolean loading) {
         mLoading = loading;
         mRefreshContainer.setRefreshing(loading);
+    }
 
-        // We don't want user's trying to refresh, so only enable the view when we are loading.
-        mRefreshContainer.setEnabled(loading);
+    public void enableRefreshing(boolean enable) {
+        mRefreshContainer.setEnabled(enable);
     }
 
     public boolean isLoading() {
@@ -95,5 +98,11 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment 
 
     public Observer<RxDatabaseEvent<T>> getObserver() {
         return mObserver;
+    }
+
+    @Override
+    public void onRefresh() {
+        getRecyclerViewAdapter().clear();
+        onLoadData();
     }
 }

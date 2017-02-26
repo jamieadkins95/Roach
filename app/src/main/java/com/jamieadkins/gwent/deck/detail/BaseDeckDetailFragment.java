@@ -48,7 +48,7 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
 
         @Override
         public void onComplete() {
-
+            setLoadingIndicator(false);
         }
     };
 

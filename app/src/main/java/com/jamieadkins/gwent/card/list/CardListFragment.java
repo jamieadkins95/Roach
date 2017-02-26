@@ -32,6 +32,14 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
     }
 
     @Override
+    public void setLoading(boolean loading) {
+        super.setLoading(loading);
+
+        // Card Data doesn't need refreshing, so disable swipe up to refresh.
+        enableRefreshing(loading);
+    }
+
+    @Override
     public void setPresenter(CardsContract.Presenter presenter) {
         setCardsPresenter(presenter);
     }

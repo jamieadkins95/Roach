@@ -122,7 +122,6 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
                             getRecyclerViewAdapter().addItem(0, new Header("Deck of the Week", "Week 1"));
                             getRecyclerViewAdapter().addItem(1, value.getValue());
                             getRecyclerViewAdapter().addItem(2, new Header("Featured Decks", "Highest Rated"));
-                            getRecyclerViewAdapter().notifyDataSetChanged();
                         }
 
                         @Override
