@@ -9,11 +9,9 @@ import android.view.View;
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -25,13 +23,7 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
     private BaseRecyclerViewAdapter mViewAdapter;
     private boolean mLoading = false;
 
-    private Observer<RxDatabaseEvent<T>> mObserver = new Observer<RxDatabaseEvent<T>>() {
-
-        @Override
-        public void onSubscribe(Disposable d) {
-
-        }
-
+    private Observer<RxDatabaseEvent<T>> mObserver = new BaseObserver<RxDatabaseEvent<T>>() {
         @Override
         public void onNext(RxDatabaseEvent<T> value) {
             switch (value.getEventType()) {
@@ -42,11 +34,6 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
                     mViewAdapter.removeItem(value.getValue());
                     break;
             }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-
         }
 
         @Override

@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -40,8 +41,8 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
-                                                           final CardDetails leader, String patch) {
+    public Single<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
+                                                       final CardDetails leader, String patch) {
         return mDecksInteractor.createNewDeck(name, faction, leader, patch);
     }
 
@@ -61,12 +62,12 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+    public Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
         return mDecksInteractor.getDeck(deckId, isPublicDeck);
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
+    public Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
         return mDecksInteractor.getDeckOfTheWeek();
     }
 

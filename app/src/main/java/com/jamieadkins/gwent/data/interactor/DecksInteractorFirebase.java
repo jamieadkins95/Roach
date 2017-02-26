@@ -25,6 +25,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 
 /**
  * Deals with firebase.
@@ -98,24 +102,22 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
+    public Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
         mDeckQuery = mPublicReference.child("deck-of-the-week");
-        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
+        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
-            public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
+            public SingleSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                    public void subscribe(final SingleEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                emitter.onNext(
+                                emitter.onSuccess(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
                                                 dataSnapshot.getValue(Deck.class),
                                                 RxDatabaseEvent.EventType.CHANGED));
-
-                                emitter.onComplete();
                             }
 
                             @Override
@@ -132,28 +134,26 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+    public Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
         if (isPublicDeck) {
             mDeckQuery = mPublicReference.child("decks").child(deckId);
         } else {
             mDeckQuery = mUserReference.child(deckId);
         }
-        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
+        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
-            public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
+            public SingleSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                    public void subscribe(final SingleEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                emitter.onNext(
+                                emitter.onSuccess(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
                                                 dataSnapshot.getValue(Deck.class),
                                                 RxDatabaseEvent.EventType.CHANGED));
-
-                                emitter.onComplete();
                             }
 
                             @Override
@@ -180,7 +180,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
+    public Single<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Deck deck = new Deck(key, name, faction, leader, author, patch);

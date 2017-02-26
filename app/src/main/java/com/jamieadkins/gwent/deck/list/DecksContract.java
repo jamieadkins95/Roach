@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -24,13 +25,13 @@ public interface DecksContract {
 
         Observable<RxDatabaseEvent<Deck>> getPublicDecks();
 
-        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
+        Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
-        Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
+        Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
 
         void stop();
 
-        Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+        Single<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 
         void publishDeck(Deck deck);
 

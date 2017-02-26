@@ -23,6 +23,7 @@ import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
 import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -105,24 +106,19 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
                 mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
+                        .subscribe(new SingleObserver<RxDatabaseEvent<Deck>>() {
                             @Override
                             public void onSubscribe(Disposable d) {
 
                             }
 
                             @Override
-                            public void onNext(RxDatabaseEvent<Deck> value) {
+                            public void onSuccess(RxDatabaseEvent<Deck> value) {
                                 mDeckDetailsPresenter.publishDeck(value.getValue());
                             }
 
                             @Override
                             public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
 
                             }
                         });

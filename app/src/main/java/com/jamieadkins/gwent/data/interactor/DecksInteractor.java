@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Deck manipulation class.
@@ -13,7 +14,7 @@ import io.reactivex.Observable;
 
 public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter> {
 
-    Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+    Single<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 
     void addCardToDeck(Deck deck, CardDetails card);
 
@@ -23,11 +24,11 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     Observable<RxDatabaseEvent<Deck>> getUserDecks();
 
-    Observable<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
+    Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
 
     Observable<RxDatabaseEvent<Deck>> getFeaturedDecks();
 
-    Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
+    Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
     void stopData();
 }
