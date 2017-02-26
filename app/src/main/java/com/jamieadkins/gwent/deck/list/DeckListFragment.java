@@ -16,7 +16,9 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -104,6 +106,36 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         decks.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
+
+        mDecksPresenter.getDeckOfTheWeek()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RxDatabaseEvent<Deck> value) {
+                        getRecyclerViewAdapter().addItem(0, new Header("Deck of the Week", "Week 1"));
+                        getRecyclerViewAdapter().addItem(1, value.getValue());
+                        getRecyclerViewAdapter().addItem(2, new Header("Featured Decks", "Highest Rated"));
+                        getRecyclerViewAdapter().notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
     }
 
     @Override
