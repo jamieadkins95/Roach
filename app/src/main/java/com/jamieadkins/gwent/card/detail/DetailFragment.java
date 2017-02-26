@@ -20,12 +20,15 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -43,17 +46,10 @@ public class DetailFragment extends Fragment implements DetailContract.View {
 
     private boolean mUseLowData = false;
 
-    private Observer<RxDatabaseEvent<CardDetails>> mObserver = new Observer<RxDatabaseEvent<CardDetails>>() {
-
-        @Override
-        public void onSubscribe(Disposable d) {
-
-        }
-
-        @Override
-        public void onNext(RxDatabaseEvent<CardDetails> value) {
-            switch (value.getEventType()) {
-                case ADDED:
+    private SingleObserver<RxDatabaseEvent<CardDetails>> mObserver =
+            new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
+                @Override
+                public void onSuccess(RxDatabaseEvent<CardDetails> value) {
                     CardDetails card = value.getValue();
 
                     // Update UI with card details.
@@ -78,20 +74,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                     }
 
                     mLargeCardView.setCardDetails(card);
-                    break;
-            }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-
-        }
-
-        @Override
-        public void onComplete() {
-            setLoadingIndicator(false);
-        }
-    };
+                }
+            };
 
     @Nullable
     @Override

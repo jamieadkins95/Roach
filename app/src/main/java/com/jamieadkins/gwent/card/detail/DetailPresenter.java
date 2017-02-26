@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -27,7 +28,7 @@ public class DetailPresenter implements DetailContract.Presenter {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<CardDetails>> getCard(String cardId) {
+    public Single<RxDatabaseEvent<CardDetails>> getCard(String cardId) {
         return mDetailInteractor.getCard(cardId);
     }
 

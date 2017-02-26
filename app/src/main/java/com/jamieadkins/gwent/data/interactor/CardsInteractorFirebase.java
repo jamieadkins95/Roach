@@ -19,6 +19,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 
 /**
  * Deals with firebase.
@@ -120,13 +124,13 @@ public class CardsInteractorFirebase implements CardsInteractor {
      * @param id id of the card to retrieve
      */
     @Override
-    public Observable<RxDatabaseEvent<CardDetails>> getCard(final String id) {
-        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
+    public Single<RxDatabaseEvent<CardDetails>> getCard(final String id) {
+        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
-            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+            public SingleSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<CardDetails>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
+                    public void subscribe(final SingleEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
                         mCardsQuery = mCardsReference.child(id);
 
                         mCardListener = new ValueEventListener() {
@@ -135,14 +139,12 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                 CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
                                 cardDetails.setPatch(mPatch);
 
-                                emitter.onNext(
+                                emitter.onSuccess(
                                         new RxDatabaseEvent<CardDetails>(
                                                 dataSnapshot.getKey(),
                                                 cardDetails,
                                                 RxDatabaseEvent.EventType.ADDED
                                         ));
-
-                                emitter.onComplete();
                             }
 
                             @Override

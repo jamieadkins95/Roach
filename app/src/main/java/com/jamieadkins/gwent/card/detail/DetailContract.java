@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -19,7 +20,7 @@ public interface DetailContract {
 
     interface Presenter extends BasePresenter {
 
-        Observable<RxDatabaseEvent<CardDetails>> getCard(String cardId);
+        Single<RxDatabaseEvent<CardDetails>> getCard(String cardId);
 
         void setCardId(String id);
 
