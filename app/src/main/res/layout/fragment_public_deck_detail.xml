@@ -6,7 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/recycler_view_loading" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="250px">
+
+        <include layout="@layout/recycler_view_loading" />
+    </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet"

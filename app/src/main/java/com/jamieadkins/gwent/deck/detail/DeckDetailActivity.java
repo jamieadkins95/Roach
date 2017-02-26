@@ -15,6 +15,7 @@ import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -67,6 +68,9 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
                     getSupportFragmentManager().findFragmentByTag(TAG_DECK_DETAIL);
         } else {
             mCardFilter = new CardFilter();
+            mCardFilter.put(Type.LEADER, false);
+            mCardFilter.setCollectibleOnly(true);
+
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 

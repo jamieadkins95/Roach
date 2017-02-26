@@ -2,24 +2,29 @@ package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.base.BaseSingleObserver;
-import com.jamieadkins.gwent.card.list.BaseCardListFragment;
+import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseDeckDetailFragment extends BaseCardListFragment implements DecksContract.View {
+public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> implements DecksContract.View {
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
@@ -46,6 +51,22 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(getLayoutId(), container, false);
+        setupViews(rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        onLoadData();
+    }
+
+    protected abstract int getLayoutId();
+
     protected void onDeckLoaded(Deck deck) {
         mDeck = deck;
         getActivity().setTitle(mDeck.getName());
@@ -69,7 +90,6 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     @Override
     public void setPresenter(DecksContract.Presenter presenter) {
         mDecksPresenter = presenter;
-        setCardsPresenter(presenter);
     }
 
     @Override

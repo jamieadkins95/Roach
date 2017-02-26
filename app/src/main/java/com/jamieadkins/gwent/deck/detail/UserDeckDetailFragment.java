@@ -10,9 +10,12 @@ import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.card.CardFilterListener;
+import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
@@ -26,7 +29,8 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class UserDeckDetailFragment extends BaseDeckDetailFragment implements DecksContract.View {
+public class UserDeckDetailFragment extends BaseDeckDetailFragment
+        implements DecksContract.View, CardFilterListener {
     DeckDetailRecyclerViewAdapter mCardRecyclerViewAdapter;
     DeckDetailRecyclerViewAdapter mDeckRecyclerViewAdapter;
     DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
@@ -88,11 +92,38 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
                 .subscribe(mObserver);
     }
 
+    public void onLoadCardData() {
+        CardFilterProvider cardFilterProvider = (CardFilterProvider) getActivity();
+        cardFilterProvider.registerCardFilterListener(this);
+        CardFilter cardFilter = cardFilterProvider.getCardFilter();
+        mDecksPresenter.getCards(cardFilter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getObserver());
+    }
+
+    @Override
+    public void onCardFilterUpdated() {
+        getRecyclerViewAdapter().clear();
+        onLoadData();
+    }
+
     @Override
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
         mCardRecyclerViewAdapter.setCardCounts(deck.getCardCount());
         mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
+
+        for (String faction : Faction.ALL_FACTIONS) {
+            if (!faction.equals(deck.getFactionId())) {
+                ((CardFilterProvider) getActivity()).getCardFilter().put(faction, false);
+            }
+        }
+
+        ((CardFilterProvider) getActivity()).getCardFilter().put(deck.getFactionId(), true);
+        ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL, true);
+
+        onLoadCardData();
     }
 
     @Override
