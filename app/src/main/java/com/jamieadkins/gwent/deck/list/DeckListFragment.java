@@ -28,18 +28,18 @@ import io.reactivex.schedulers.Schedulers;
 public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
         NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
-    private static final String STATE_USER_DECKS = "com.jamieadkins.gwent.user.decks";
+    private static final String STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks";
     private DecksContract.Presenter mDecksPresenter;
 
     // Set up to show user decks by default.
-    private boolean mUserDecks = true;
+    private boolean mPublicDecks = false;
 
     public DeckListFragment() {
     }
 
     public static DeckListFragment newInstance(boolean userDecks) {
         DeckListFragment fragment = new DeckListFragment();
-        fragment.mUserDecks = userDecks;
+        fragment.mPublicDecks = userDecks;
         return fragment;
     }
 
@@ -50,10 +50,10 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         setRecyclerViewAdapter(adapter);
 
         if (savedInstanceState != null) {
-            mUserDecks = savedInstanceState.getBoolean(STATE_USER_DECKS);
+            mPublicDecks = savedInstanceState.getBoolean(STATE_PUBLIC_DECKS);
         }
 
-        if (mUserDecks) {
+        if (!mPublicDecks) {
             getActivity().setTitle(getString(R.string.my_decks));
         } else {
             getActivity().setTitle(getString(R.string.public_decks));
@@ -70,7 +70,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         FloatingActionButton buttonNewDeck =
                 (FloatingActionButton) rootView.findViewById(R.id.new_deck);
 
-        if (mUserDecks) {
+        if (!mPublicDecks) {
             buttonNewDeck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -98,7 +98,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     public void onLoadData() {
         super.onLoadData();
         Observable<RxDatabaseEvent<Deck>> decks;
-        if (mUserDecks) {
+        if (!mPublicDecks) {
             decks = mDecksPresenter.getUserDecks();
         } else {
             decks = mDecksPresenter.getPublicDecks();
@@ -107,35 +107,35 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
 
-        mDecksPresenter.getDeckOfTheWeek()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        if (mPublicDecks) {
+            mDecksPresenter.getDeckOfTheWeek()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(RxDatabaseEvent<Deck> value) {
-                        getRecyclerViewAdapter().addItem(0, new Header("Deck of the Week", "Week 1"));
-                        getRecyclerViewAdapter().addItem(1, value.getValue());
-                        getRecyclerViewAdapter().addItem(2, new Header("Featured Decks", "Highest Rated"));
-                        getRecyclerViewAdapter().notifyDataSetChanged();
-                    }
+                        @Override
+                        public void onNext(RxDatabaseEvent<Deck> value) {
+                            getRecyclerViewAdapter().addItem(0, new Header("Deck of the Week", "Week 1"));
+                            getRecyclerViewAdapter().addItem(1, value.getValue());
+                            getRecyclerViewAdapter().addItem(2, new Header("Featured Decks", "Highest Rated"));
+                            getRecyclerViewAdapter().notifyDataSetChanged();
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-                    }
-                });
-
-
+                        }
+                    });
+        }
     }
 
     @Override
@@ -146,7 +146,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(STATE_USER_DECKS, mUserDecks);
+        outState.putBoolean(STATE_PUBLIC_DECKS, mPublicDecks);
         super.onSaveInstanceState(outState);
     }
 

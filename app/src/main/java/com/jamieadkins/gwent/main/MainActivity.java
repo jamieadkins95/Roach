@@ -592,7 +592,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     return false;
                 }
 
-                fragment = DeckListFragment.newInstance(false);
+                fragment = DeckListFragment.newInstance(true);
                 tag = TAG_PUBLIC_DECKS;
                 break;
             case R.id.tab_helper:
