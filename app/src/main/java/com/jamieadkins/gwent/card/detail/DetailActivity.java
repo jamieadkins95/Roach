@@ -49,9 +49,9 @@ public class DetailActivity extends BaseActivity {
         CardsInteractor cardsInteractor;
 
         if (patch != null) {
-            cardsInteractor = new CardsInteractorFirebase(patch);
+            cardsInteractor = CardsInteractorFirebase.getInstance(patch);
         } else {
-            cardsInteractor = new CardsInteractorFirebase();
+            cardsInteractor = CardsInteractorFirebase.getInstance();
         }
 
         mDetailsPresenter = new DetailPresenter(

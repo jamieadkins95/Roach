@@ -19,6 +19,7 @@ import android.view.View;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
@@ -233,7 +234,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;
                 mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                        new CardsInteractorFirebase());
+                        CardsInteractorFirebase.getInstance());
                 break;
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
@@ -241,7 +242,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                new CardsInteractorFirebase(),
+                                CardsInteractorFirebase.getInstance(),
                                 new PatchInteractorFirebase());
                 break;
             case TAG_COLLECTION:
@@ -249,7 +250,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 mCollectionPresenter = new CollectionPresenter(
                         (CollectionContract.View) fragment,
                         new CollectionInteractorFirebase(),
-                        new CardsInteractorFirebase());
+                        CardsInteractorFirebase.getInstance());
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
@@ -257,7 +258,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                new CardsInteractorFirebase(),
+                                CardsInteractorFirebase.getInstance(),
                                 new PatchInteractorFirebase());
                 break;
             case TAG_RESULTS_TRACKER:

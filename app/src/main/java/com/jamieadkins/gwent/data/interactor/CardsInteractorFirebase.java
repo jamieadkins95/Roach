@@ -11,6 +11,8 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -33,12 +35,26 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private ValueEventListener mCardListener;
     private String mPatch;
 
-    public CardsInteractorFirebase() {
-        // No patch specified, use latest.
-        this(LATEST_PATCH);
+    private static Map<String, CardsInteractorFirebase> mInstances;
+
+    public static CardsInteractorFirebase getInstance() {
+        return getInstance(LATEST_PATCH);
     }
 
-    public CardsInteractorFirebase(String patch) {
+    public static CardsInteractorFirebase getInstance(String patch) {
+        if (mInstances == null) {
+            mInstances = new HashMap<>();
+        }
+
+        if (mInstances.keySet().contains(patch)) {
+            return mInstances.get(patch);
+        } else {
+            mInstances.put(patch, new CardsInteractorFirebase(patch));
+            return mInstances.get(patch);
+        }
+    }
+
+    private CardsInteractorFirebase(String patch) {
         mPatch = patch;
         databasePath = "card-data/" + mPatch;
         mCardsReference = mDatabase.getReference(databasePath);

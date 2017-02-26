@@ -82,7 +82,7 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
         mDeckDetailsPresenter = new DecksPresenter(
                 fragment,
                 new DecksInteractorFirebase(),
-                new CardsInteractorFirebase(),
+                CardsInteractorFirebase.getInstance(),
                 new PatchInteractorFirebase());
     }
 
