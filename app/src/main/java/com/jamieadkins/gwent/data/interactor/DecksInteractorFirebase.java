@@ -180,7 +180,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void createNewDeck(String name, String faction, CardDetails leader, String patch) {
+    public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Deck deck = new Deck(key, name, faction, leader, author, patch);
@@ -190,6 +190,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
         firebaseUpdates.put(key, deckValues);
 
         mUserReference.updateChildren(firebaseUpdates);
+
+        return getDeck(key, false);
     }
 
     @Override

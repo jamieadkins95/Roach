@@ -30,7 +30,7 @@ public interface DecksContract {
 
         void stop();
 
-        void createNewDeck(String name, String faction, CardDetails leader);
+        Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 
         void publishDeck(Deck deck);
 

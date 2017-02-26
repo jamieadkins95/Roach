@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +14,9 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -156,7 +159,38 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
 
     @Override
     public void createNewDeck(String name, String faction, CardDetails leader) {
-        mDecksPresenter.createNewDeck(name, faction, leader);
+        mDecksPresenter.createNewDeck(name, faction, leader, "v0-8-60-2-images")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RxDatabaseEvent<Deck> value) {
+                        Deck deck = value.getValue();
+
+                        Intent intent = new Intent(getActivity(), DeckDetailActivity.class);
+                        intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, deck.getId());
+                        intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
+                        getView().getContext().startActivity(intent);
+
+                        FirebaseUtils.logAnalytics(getView().getContext(),
+                                deck.getFactionId(), deck.getName(), "Create Deck");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });;
     }
 
     @Override

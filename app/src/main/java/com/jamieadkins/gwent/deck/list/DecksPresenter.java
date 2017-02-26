@@ -40,28 +40,9 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public void createNewDeck(final String name, final String faction, final CardDetails leader) {
-        mPatchInteractor.getLatestPatch().subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(String patch) {
-                mDecksInteractor.createNewDeck(name, faction, leader, patch);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+    public Observable<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
+                                                           final CardDetails leader, String patch) {
+        return mDecksInteractor.createNewDeck(name, faction, leader, patch);
     }
 
     @Override

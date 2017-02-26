@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 
 public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter> {
 
-    void createNewDeck(String name, String faction, CardDetails leader, String patch);
+    Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 
     void addCardToDeck(Deck deck, CardDetails card);
 
