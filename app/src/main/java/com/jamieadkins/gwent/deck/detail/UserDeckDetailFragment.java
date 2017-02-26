@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.deck.detail;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
@@ -24,7 +27,20 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserDeckDetailFragment extends BaseDeckDetailFragment implements DecksContract.View {
-    CardRecyclerViewAdapter mCardRecyclerViewAdapter;
+    DeckDetailRecyclerViewAdapter mCardRecyclerViewAdapter;
+    DeckDetailRecyclerViewAdapter mDeckRecyclerViewAdapter;
+    DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
+            new DeckDetailCardViewHolder.DeckDetailButtonListener() {
+                @Override
+                public void addCard(CardDetails card) {
+                    mDecksPresenter.addCardToDeck(mDeck, card);
+                }
+
+                @Override
+                public void removeCard(CardDetails card) {
+                    mDecksPresenter.removeCardFromDeck(mDeck, card);
+                }
+            };
 
     public UserDeckDetailFragment() {
     }
@@ -33,6 +49,13 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
         UserDeckDetailFragment fragment = new UserDeckDetailFragment();
         fragment.mDeckId = deckId;
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDeckRecyclerViewAdapter = new DeckDetailRecyclerViewAdapter(mButtonListener);
+        setRecyclerViewAdapter(mDeckRecyclerViewAdapter);
     }
 
     @Override
@@ -52,7 +75,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
         final LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        mCardRecyclerViewAdapter = new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE);
+        mCardRecyclerViewAdapter = new DeckDetailRecyclerViewAdapter(mButtonListener);
         recyclerView.setAdapter(mCardRecyclerViewAdapter);
     }
 
@@ -63,6 +86,13 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment implements De
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
+    }
+
+    @Override
+    protected void onDeckLoaded(Deck deck) {
+        super.onDeckLoaded(deck);
+        mCardRecyclerViewAdapter.setCardCounts(deck.getCardCount());
+        mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
     }
 
     @Override

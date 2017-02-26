@@ -87,6 +87,16 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public void addCardToDeck(Deck deck, CardDetails card) {
+        mDecksInteractor.addCardToDeck(deck, card);
+    }
+
+    @Override
+    public void removeCardFromDeck(Deck deck, CardDetails card) {
+        mDecksInteractor.removeCardFromDeck(deck, card);
+    }
+
+    @Override
     public void onLoadingComplete() {
         mDecksView.setLoadingIndicator(false);
     }

@@ -20,18 +20,12 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseDeckDetailFragment extends BaseCardListFragment implements DecksContract.View {
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
+    protected Deck mDeck;
     protected SingleObserver<RxDatabaseEvent<Deck>> mObserver =
             new BaseSingleObserver<RxDatabaseEvent<Deck>>() {
                 @Override
                 public void onSuccess(RxDatabaseEvent<Deck> value) {
-                    getActivity().setTitle(value.getValue().getName());
-
-                    getRecyclerViewAdapter().clear();
-                    for (String cardId : value.getValue().getCards().keySet()) {
-                        getRecyclerViewAdapter().addItem(value.getValue().getCards().get(cardId));
-                    }
-
-                    setLoadingIndicator(false);
+                    onDeckLoaded(value.getValue());
                 }
             };
 
@@ -43,6 +37,20 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
         }
+    }
+
+    protected void onDeckLoaded(Deck deck) {
+        mDeck = deck;
+        getActivity().setTitle(mDeck.getName());
+
+        getRecyclerViewAdapter().clear();
+        for (String cardId : mDeck.getCards().keySet()) {
+            if (mDeck.getCardCount().get(cardId) > 0) {
+                getRecyclerViewAdapter().addItem(mDeck.getCards().get(cardId));
+            }
+        }
+
+        setLoadingIndicator(false);
     }
 
     @Override

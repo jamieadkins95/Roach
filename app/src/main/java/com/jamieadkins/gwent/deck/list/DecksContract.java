@@ -36,5 +36,9 @@ public interface DecksContract {
         void publishDeck(Deck deck);
 
         void onLoadingComplete();
+
+        void addCardToDeck(Deck deck, CardDetails card);
+
+        void removeCardFromDeck(Deck deck, CardDetails card);
     }
 }
