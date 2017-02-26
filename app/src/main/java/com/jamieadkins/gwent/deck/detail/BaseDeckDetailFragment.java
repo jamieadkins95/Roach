@@ -66,12 +66,6 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        onLoadData();
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         mDecksPresenter.stop();
