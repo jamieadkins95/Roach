@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;
@@ -106,19 +107,14 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
                 mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new SingleObserver<RxDatabaseEvent<Deck>>() {
+                        .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
                             @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onSuccess(RxDatabaseEvent<Deck> value) {
+                            public void onNext(RxDatabaseEvent<Deck> value) {
                                 mDeckDetailsPresenter.publishDeck(value.getValue());
                             }
 
                             @Override
-                            public void onError(Throwable e) {
+                            public void onComplete() {
 
                             }
                         });

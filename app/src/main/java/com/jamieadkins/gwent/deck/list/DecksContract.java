@@ -25,13 +25,13 @@ public interface DecksContract {
 
         Observable<RxDatabaseEvent<Deck>> getPublicDecks();
 
-        Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
+        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
         Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
 
         void stop();
 
-        Single<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+        Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 
         void publishDeck(Deck deck);
 

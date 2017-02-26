@@ -41,7 +41,7 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Single<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
+    public Observable<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
                                                        final CardDetails leader, String patch) {
         return mDecksInteractor.createNewDeck(name, faction, leader, patch);
     }
@@ -62,7 +62,7 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
         return mDecksInteractor.getDeck(deckId, isPublicDeck);
     }
 

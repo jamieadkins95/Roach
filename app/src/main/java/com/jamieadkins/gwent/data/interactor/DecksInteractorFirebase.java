@@ -134,22 +134,22 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Single<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
         if (isPublicDeck) {
             mDeckQuery = mPublicReference.child("decks").child(deckId);
         } else {
             mDeckQuery = mUserReference.child(deckId);
         }
-        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<Deck>>>() {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
-            public SingleSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
-                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<Deck>>() {
+            public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
-                    public void subscribe(final SingleEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                emitter.onSuccess(
+                                emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
                                                 dataSnapshot.getValue(Deck.class),
@@ -162,7 +162,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDeckQuery.addListenerForSingleValueEvent(mDeckDetailListener);
+                        mDeckQuery.addValueEventListener(mDeckDetailListener);
                     }
                 });
             }
@@ -180,7 +180,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Single<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
+    public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Deck deck = new Deck(key, name, faction, leader, author, patch);

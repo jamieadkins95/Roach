@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.deck.detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
@@ -10,6 +11,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
+import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
@@ -21,11 +23,16 @@ public abstract class BaseDeckDetailFragment extends BaseCardListFragment implem
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
-    protected SingleObserver<RxDatabaseEvent<Deck>> mObserver =
-            new BaseSingleObserver<RxDatabaseEvent<Deck>>() {
+    protected Observer<RxDatabaseEvent<Deck>> mObserver =
+            new BaseObserver<RxDatabaseEvent<Deck>>() {
                 @Override
-                public void onSuccess(RxDatabaseEvent<Deck> value) {
+                public void onNext(RxDatabaseEvent<Deck> value) {
                     onDeckLoaded(value.getValue());
+                }
+
+                @Override
+                public void onComplete() {
+
                 }
             };
 

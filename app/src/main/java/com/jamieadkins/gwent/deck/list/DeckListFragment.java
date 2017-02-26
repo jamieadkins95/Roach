@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
@@ -148,9 +149,9 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         mDecksPresenter.createNewDeck(name, faction, leader, "v0-8-60-2-images")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSingleObserver<RxDatabaseEvent<Deck>>() {
+                .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
                     @Override
-                    public void onSuccess(RxDatabaseEvent<Deck> value) {
+                    public void onNext(RxDatabaseEvent<Deck> value) {
                         Deck deck = value.getValue();
 
                         Intent intent = new Intent(getActivity(), DeckDetailActivity.class);
@@ -160,6 +161,11 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
 
                         FirebaseUtils.logAnalytics(getView().getContext(),
                                 deck.getFactionId(), deck.getName(), "Create Deck");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
