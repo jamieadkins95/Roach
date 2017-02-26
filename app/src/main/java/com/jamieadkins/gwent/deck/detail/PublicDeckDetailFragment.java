@@ -31,6 +31,11 @@ public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements 
     }
 
     @Override
+    public void onLoadCardData() {
+        // Don't load general card data.
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_public_deck_detail;
     }

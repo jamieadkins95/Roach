@@ -48,6 +48,11 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     @Override
     public void onLoadData() {
         super.onLoadData();
+        onLoadCardData();
+        mDataLoaded = true;
+    }
+
+    public void onLoadCardData() {
         CardFilterProvider cardFilterProvider = (CardFilterProvider) getActivity();
         cardFilterProvider.registerCardFilterListener(this);
         CardFilter cardFilter = cardFilterProvider.getCardFilter();
@@ -55,7 +60,6 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
-        mDataLoaded = true;
     }
 
     public void setCardsPresenter(CardsContract.Presenter cardsPresenter) {
