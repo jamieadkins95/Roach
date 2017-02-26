@@ -212,7 +212,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void publishDeck(Deck deck) {
-        String key = mPublicReference.push().getKey();
+        String key = mPublicReference.child("decks").push().getKey();
 
         Map<String, Object> deckValues = deck.toMap();
         deckValues.put("id", key);
@@ -221,7 +221,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
         Map<String, Object> firebaseUpdates = new HashMap<>();
         firebaseUpdates.put(key, deckValues);
 
-        mPublicReference.updateChildren(firebaseUpdates);
+        mPublicReference.child("decks").updateChildren(firebaseUpdates);
     }
 
     @Override
