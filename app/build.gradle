@@ -23,6 +23,10 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        variant.resValue "string", "versionName", variant.versionName
+    }
+
     productFlavors {
         beta {
             buildConfigField "boolean", "BETA", "true"
