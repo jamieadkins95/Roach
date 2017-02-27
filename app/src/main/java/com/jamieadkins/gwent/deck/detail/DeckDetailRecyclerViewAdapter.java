@@ -41,16 +41,18 @@ public class DeckDetailRecyclerViewAdapter extends CardRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        DeckDetailCardViewHolder deckDetailCardViewHolder = (DeckDetailCardViewHolder) holder;
 
-        CardDetails cardDetails = (CardDetails) getItemAt(position);
-        if (mCardCounts != null &&
-                mCardCounts.containsKey(cardDetails.getIngameId())) {
-            deckDetailCardViewHolder.setItemCount(mCardCounts.get(cardDetails.getIngameId()));
-        } else {
-            deckDetailCardViewHolder.setItemCount(0);
+        if (holder instanceof DeckDetailCardViewHolder) {
+            DeckDetailCardViewHolder deckDetailCardViewHolder = (DeckDetailCardViewHolder) holder;
+
+            CardDetails cardDetails = (CardDetails) getItemAt(position);
+            if (mCardCounts != null &&
+                    mCardCounts.containsKey(cardDetails.getIngameId())) {
+                deckDetailCardViewHolder.setItemCount(mCardCounts.get(cardDetails.getIngameId()));
+            } else {
+                deckDetailCardViewHolder.setItemCount(0);
+            }
         }
-
     }
 
     public void setCardCounts(Map<String, Integer> cardCounts) {

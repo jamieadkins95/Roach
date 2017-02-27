@@ -102,4 +102,9 @@
     <string name="keg_helper_message">Our friends at Gwentify have built a tool to help you choose between cards you have received in a keg.\n\nBy clicking Go you will be leaving Roach and will be redirected to gwentify.com.</string>
     <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
     <string name="go">Go</string>
+    <string name="strength">Strength: %d</string>
+    <string name="event_cards">Event Cards</string>
+    <string name="gold_units">Gold Units</string>
+    <string name="silver_units">Silver Units</string>
+    <string name="bronze_units">Bronze Units</string>
 </resources>

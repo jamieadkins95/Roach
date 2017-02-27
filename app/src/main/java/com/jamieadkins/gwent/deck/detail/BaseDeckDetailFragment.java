@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.ui.Header;
+import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -13,8 +15,13 @@ import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Position;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,6 +48,8 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
                 }
             };
 
+    private Map<String, Header> mRowHeaders = new HashMap<>();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +57,13 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
+
         }
+        mRowHeaders.put(getString(R.string.leader), new Header(getString(R.string.leader), null));
+        mRowHeaders.put(getString(R.string.gold_units), new Header(getString(R.string.gold_units), null));
+        mRowHeaders.put(getString(R.string.silver_units), new Header(getString(R.string.silver_units), null));
+        mRowHeaders.put(getString(R.string.bronze_units), new Header(getString(R.string.bronze_units), null));
+        mRowHeaders.put(getString(R.string.event_cards), new Header(getString(R.string.event_cards), null));
     }
 
     @Override
@@ -71,10 +86,38 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
         mDeck = deck;
         getActivity().setTitle(mDeck.getName());
 
-        getRecyclerViewAdapter().clear();
+        // Add the sub headers.
+        getRecyclerViewAdapter().addItem(0, mRowHeaders.get(getString(R.string.leader)));
+        getRecyclerViewAdapter().addItem(1, mDeck.getLeader());
+        getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.gold_units)));
+        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.silver_units)));
+        getRecyclerViewAdapter().addItem(4, mRowHeaders.get(getString(R.string.bronze_units)));
+        getRecyclerViewAdapter().addItem(5, mRowHeaders.get(getString(R.string.event_cards)));
+
         for (String cardId : mDeck.getCards().keySet()) {
+            CardDetails card = mDeck.getCards().get(cardId);
             if (mDeck.getCardCount().get(cardId) > 0) {
-                getRecyclerViewAdapter().addItem(mDeck.getCards().get(cardId));
+                if (card.getLane().contains(Position.EVENT)) {
+                    getRecyclerViewAdapter().addItem(card);
+                } else {
+                    switch (card.getType()) {
+                        case Type.BRONZE:
+                            int eventIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.event_cards)));
+                            getRecyclerViewAdapter().addItem(eventIndex, card);
+                            break;
+                        case Type.SILVER:
+                            int bronzeIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.bronze_units)));
+                            getRecyclerViewAdapter().addItem(bronzeIndex, card);
+                            break;
+                        case Type.GOLD:
+                            int silverIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.silver_units)));
+                            getRecyclerViewAdapter().addItem(silverIndex, card);
+                            break;
+                    }
+                }
+            } else {
+                // Remove the card from the list.
+                getRecyclerViewAdapter().removeItem(card);
             }
         }
 
