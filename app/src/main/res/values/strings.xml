@@ -52,7 +52,7 @@
     <string name="loading">Loading</string>
     <string name="about">About</string>
 
-    <string name="pref_licenses">Licenses</string>
+    <string name="pref_licenses">Open Source Licenses</string>
     <string name="pref_rxjava" translatable="false">Rxjava</string>
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
