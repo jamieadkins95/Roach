@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.Header;
+import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -119,9 +120,9 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
                     .subscribe(new BaseSingleObserver<RxDatabaseEvent<Deck>>() {
                         @Override
                         public void onSuccess(RxDatabaseEvent<Deck> value) {
-                            getRecyclerViewAdapter().addItem(0, new Header("Deck of the Week", "Week 1"));
+                            getRecyclerViewAdapter().addItem(0, new SubHeader("Deck of the Week"));
                             getRecyclerViewAdapter().addItem(1, value.getValue());
-                            getRecyclerViewAdapter().addItem(2, new Header("Featured Decks", "Highest Rated"));
+                            getRecyclerViewAdapter().addItem(2, new SubHeader("Featured Decks"));
                         }
                     });
         }
