@@ -57,6 +57,10 @@
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
 
+    <string name="pref_attributions">Attributions</string>
+    <string name="cook" translatable="false">Michael Cook</string>
+    <string name="icon">Iconography</string>
+
     <string name="pref_general">General</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="analytics">Anonymous Analytics</string>
