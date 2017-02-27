@@ -67,10 +67,6 @@
     <string name="crowd_sourcing">Help Crowd Source Card Data</string>
     <string name="crowd_sourcing_summary">Help Roach get up to date quickly when a new Gwent patch is released by answering questions about cards that have been updated.</string>
 
-    <string name="pref_animations_key" translatable="false">com.jamieadkins.gwent.crowd.animations</string>
-    <string name="animations">Enable Transition Animations</string>
-    <string name="animations_summary">Enable the transition animations that occur when loading card details. Slightly unstable and may cause crashes.</string>
-
     <string name="pref_images">Card Images</string>
     <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
     <string name="low_data">Low Data Mode</string>

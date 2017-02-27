@@ -12,11 +12,6 @@
             android:title="@string/crowd_sourcing"
             android:summary="@string/crowd_sourcing_summary"
             android:defaultValue="false" />
-
-        <CheckBoxPreference android:key="@string/pref_animations_key"
-            android:title="@string/animations"
-            android:summary="@string/animations_summary"
-            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
