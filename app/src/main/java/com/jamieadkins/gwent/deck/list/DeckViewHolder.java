@@ -13,6 +13,8 @@ import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
+import com.jamieadkins.gwent.deck.detail.PublicDeckDetailActivity;
+import com.jamieadkins.gwent.deck.detail.UserDeckDetailActivity;
 
 /**
  * Holds much more detail about a card.
@@ -47,7 +49,12 @@ public class DeckViewHolder extends BaseViewHolder {
         getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getView().getContext(), DeckDetailActivity.class);
+                Intent intent;
+                if (mDeck.isPublicDeck()) {
+                    intent = new Intent(getView().getContext(), PublicDeckDetailActivity.class);
+                } else {
+                    intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
+                }
                 intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, mDeck.getId());
                 intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, mDeck.isPublicDeck());
                 getView().getContext().startActivity(intent);

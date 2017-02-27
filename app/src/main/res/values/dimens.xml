@@ -16,4 +16,8 @@
 
     <dimen name="card_image_pixel_negation_vertical">-25px</dimen>
     <dimen name="card_image_pixel_negation_horizontal">-150px</dimen>
+
+    <dimen name="tablayout_height">48dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_and_tabs_height">104dp</dimen>
 </resources>

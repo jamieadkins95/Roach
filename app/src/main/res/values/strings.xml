@@ -107,4 +107,6 @@
     <string name="gold_units">Gold Units</string>
     <string name="silver_units">Silver Units</string>
     <string name="bronze_units">Bronze Units</string>
+
+    <string name="this_deck">This Deck</string>
 </resources>

@@ -38,10 +38,10 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
-    private static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
+    protected static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
 
-    private DecksContract.Presenter mDeckDetailsPresenter;
-    private String mDeckId;
+    protected DecksContract.Presenter mDeckDetailsPresenter;
+    protected String mDeckId;
     private boolean mIsPublicDeck;
 
     private CardFilter mCardFilter;
@@ -57,15 +57,10 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        BaseDeckDetailFragment fragment;
-
         if (savedInstanceState != null) {
             mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
-
-            fragment = (BaseDeckDetailFragment)
-                    getSupportFragmentManager().findFragmentByTag(TAG_DECK_DETAIL);
         } else {
             mCardFilter = new CardFilter();
             mCardFilter.put(Type.LEADER, false);
@@ -73,23 +68,7 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
 
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
-
-            if (mIsPublicDeck) {
-                fragment = PublicDeckDetailFragment.newInstance(mDeckId);
-            } else {
-                fragment = UserDeckDetailFragment.newInstance(mDeckId);
-            }
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contentContainer, fragment, TAG_DECK_DETAIL)
-                    .commit();
         }
-
-        mDeckDetailsPresenter = new DecksPresenter(
-                fragment,
-                new DecksInteractorFirebase(),
-                CardsInteractorFirebase.getInstance(),
-                new PatchInteractorFirebase());
     }
 
     @Override
@@ -135,6 +114,10 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
     @Override
     public void registerCardFilterListener(CardFilterListener listener) {
         mCardFilterListener = listener;
+    }
+
+    protected CardFilterListener getCardFilterListener() {
+        return mCardFilterListener;
     }
 
     @Override
