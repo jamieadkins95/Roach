@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.Header;
+import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -48,7 +49,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
                 }
             };
 
-    private Map<String, Header> mRowHeaders = new HashMap<>();
+    private Map<String, SubHeader> mRowHeaders = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,11 +60,11 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
 
         }
-        mRowHeaders.put(getString(R.string.leader), new Header(getString(R.string.leader), null));
-        mRowHeaders.put(getString(R.string.gold_units), new Header(getString(R.string.gold_units), null));
-        mRowHeaders.put(getString(R.string.silver_units), new Header(getString(R.string.silver_units), null));
-        mRowHeaders.put(getString(R.string.bronze_units), new Header(getString(R.string.bronze_units), null));
-        mRowHeaders.put(getString(R.string.event_cards), new Header(getString(R.string.event_cards), null));
+        mRowHeaders.put(getString(R.string.leader), new SubHeader(getString(R.string.leader)));
+        mRowHeaders.put(getString(R.string.gold_units), new SubHeader(getString(R.string.gold_units)));
+        mRowHeaders.put(getString(R.string.silver_units), new SubHeader(getString(R.string.silver_units)));
+        mRowHeaders.put(getString(R.string.bronze_units), new SubHeader(getString(R.string.bronze_units)));
+        mRowHeaders.put(getString(R.string.event_cards), new SubHeader(getString(R.string.event_cards)));
     }
 
     @Override
