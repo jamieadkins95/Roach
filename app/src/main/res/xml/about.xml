@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_general">
+        <Preference android:title="@string/contact">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:jamieadkins95+gwent@gmail.com" >
+                <extra
+                    android:name="android.intent.extra.SUBJECT"
+                    android:value="@string/email_subject" />
+            </intent>
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_attributions">
+
+        <Preference
+            android:title="@string/hubert"
+            android:summary="@string/polish_translation">
+        </Preference>
+        <Preference android:title="@string/cook"
+            android:summary="@string/icon">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://cookicons.co/" />
+        </Preference>
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_licenses">
 
@@ -14,18 +40,6 @@
         <Preference android:title="@string/pref_material_drawer">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/mikepenz/MaterialDrawer/blob/develop/LICENSE" />
-        </Preference>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/pref_general">
-        <Preference android:title="@string/contact">
-            <intent
-                android:action="android.intent.action.SENDTO"
-                android:data="mailto:jamieadkins95+gwent@gmail.com" >
-                <extra
-                    android:name="android.intent.extra.SUBJECT"
-                    android:value="@string/email_subject" />
-            </intent>
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
