@@ -45,27 +45,7 @@ public class BaseCardViewHolder extends BaseViewHolder<CardDetails> {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_CARD_ID, getBoundItem().getIngameId());
         intent.putExtra(DetailActivity.EXTRA_PATCH, getBoundItem().getPatch());
-
-        String transitionName = getView().getContext().getString(R.string.transition_card);
-
-        Pair<View, String> pair = Pair.create(getView(), transitionName);
-
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        (Activity) getView().getContext(),
-                        pair
-                );
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
-
-        boolean showAnimation = preferences.getBoolean(
-                getView().getContext().getString(R.string.pref_animations_key), false);
-        if (showAnimation) {
-            // Show details using transition animation.
-            ActivityCompat.startActivity(getView().getContext(), intent, options.toBundle());
-        } else {
-            getView().getContext().startActivity(intent);
-        }
+        getView().getContext().startActivity(intent);
 
         // Log what card has been viewed.
         FirebaseUtils.logAnalytics(getView().getContext(),
