@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gwent">Gwent</string>
+
+    <string name="faction">Faction</string>
+    <string name="northern_realms">Northern Realms</string>
+    <string name="monster">Monsters</string>
+    <string name="skellige">Skellige</string>
+    <string name="scoiatael">Scoia\'tael</string>
+    <string name="neutral">Neutral</string>
+    <string name="nilfgaard">Nilfgaard</string>
+
+    <string name="type">Type</string>
+    <string name="bronze">Bronze</string>
+    <string name="silver">Silver</string>
+    <string name="gold">Gold</string>
+    <string name="leader">Leader</string>
+
+    <string name="rarity">Rarity</string>
+    <string name="common">Common</string>
+    <string name="rare">Rare</string>
+    <string name="epic">Epic</string>
+    <string name="legendary">Legendary</string>
+
+    <string name="melee">Melee</string>
+    <string name="siege">Siege</string>
+    <string name="ranged">Ranged</string>
+</resources>
