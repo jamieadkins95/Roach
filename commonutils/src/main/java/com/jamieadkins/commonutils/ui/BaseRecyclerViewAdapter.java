@@ -45,6 +45,9 @@ public abstract class BaseRecyclerViewAdapter
             case Header.TYPE_HEADER:
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_header, parent, false));
+            case SubHeader.TYPE_SUB_HEADER:
+                return new SubHeaderViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_subheader, parent, false));
             default:
                 throw new RuntimeException("Detail level has not been implemented.");
         }

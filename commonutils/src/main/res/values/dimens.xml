@@ -3,4 +3,8 @@
     <dimen name="header_margin_left">24dp</dimen>
     <dimen name="header_margin_top">24dp</dimen>
     <dimen name="header_margin_bottom">16dp</dimen>
+
+    <dimen name="subheader_height">48dp</dimen>
+    <dimen name="subheader_padding">16dp</dimen>
+    <dimen name="subheader_text_size">14sp</dimen>
 </resources>
