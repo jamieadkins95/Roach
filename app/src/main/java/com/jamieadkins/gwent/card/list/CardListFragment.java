@@ -3,13 +3,17 @@ package com.jamieadkins.gwent.card.list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
+import com.jamieadkins.gwent.InteractorContainer;
+import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public class CardListFragment extends BaseCardListFragment implements CardsContract.View {
+public class CardListFragment extends BaseCardListFragment implements CardsContract.View,
+        PresenterFactory<CardsContract.Presenter> {
 
     public CardListFragment() {
     }
@@ -19,6 +23,7 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
         super.onCreate(savedInstanceState);
         setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
         getActivity().setTitle(getString(R.string.card_database));
+        setCardsPresenter(createPresenter());
     }
 
     @Override
@@ -37,6 +42,13 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
 
         // Card Data doesn't need refreshing, so disable swipe up to refresh.
         enableRefreshing(loading);
+    }
+
+    @Override
+    public CardsContract.Presenter createPresenter() {
+        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
+        return new CardsPresenter(this,
+                interactorContainer.getCardsInteractor());
     }
 
     @Override

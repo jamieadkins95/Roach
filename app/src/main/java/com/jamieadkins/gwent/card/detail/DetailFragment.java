@@ -19,6 +19,9 @@ import com.bumptech.glide.request.target.Target;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
+import com.jamieadkins.gwent.InteractorContainer;
+import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.LargeCardView;
@@ -37,7 +40,8 @@ import io.reactivex.schedulers.Schedulers;
  * Shows picture and details of a card.
  */
 
-public class DetailFragment extends Fragment implements DetailContract.View {
+public class DetailFragment extends Fragment implements DetailContract.View,
+        PresenterFactory<DetailContract.Presenter> {
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
@@ -99,6 +103,12 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDetailPresenter = createPresenter();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mDetailPresenter.getCard(mDetailPresenter.getCardId())
@@ -121,5 +131,11 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     @Override
     public void setPresenter(DetailContract.Presenter presenter) {
         mDetailPresenter = presenter;
+    }
+
+    @Override
+    public DetailContract.Presenter createPresenter() {
+        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
+        return new DetailPresenter(this, interactorContainer.getCardsInteractor());
     }
 }

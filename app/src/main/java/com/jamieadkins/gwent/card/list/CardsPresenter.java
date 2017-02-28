@@ -24,7 +24,6 @@ public class CardsPresenter implements CardsContract.Presenter {
         mCardsInteractor = cardsInteractor;
 
         mCardsView = cardsView;
-        mCardsView.setPresenter(this);
     }
 
     @Override

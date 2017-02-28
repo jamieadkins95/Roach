@@ -5,9 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
+import com.jamieadkins.gwent.InteractorContainer;
+import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
+import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Collection;
 
 import io.reactivex.Observer;
@@ -19,7 +23,8 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
+public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View,
+        PresenterFactory<CollectionContract.Presenter> {
     CollectionContract.Presenter mPresenter;
     CollectionRecyclerViewAdapter mAdapter;
 
@@ -43,6 +48,7 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                     }
                 });
         setRecyclerViewAdapter(mAdapter);
+        mPresenter = createPresenter();
     }
 
     @Override
@@ -110,5 +116,16 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         if (mPresenter != null) {
             mPresenter.stop();
         }
+    }
+
+    @Override
+    public CollectionContract.Presenter createPresenter() {
+        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
+        CollectionContract.Presenter presenter = new CollectionPresenter(
+                this,
+                interactorContainer.getCollectionInteractor(),
+                interactorContainer.getCardsInteractor());
+        setCardsPresenter(presenter);
+        return presenter;
     }
 }
