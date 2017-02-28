@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail;
+package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

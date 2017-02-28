@@ -1,7 +1,6 @@
-package com.jamieadkins.gwent.deck.detail;
+package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
@@ -11,8 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 /**
  * Created by jamiea on 27/02/17.

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail;
+package com.jamieadkins.gwent.deck.detail.user;
 
 import android.content.Context;
 import android.util.AttributeSet;

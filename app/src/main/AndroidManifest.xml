@@ -60,7 +60,7 @@
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
         <activity
-            android:name=".deck.detail.UserDeckDetailActivity"
+            android:name=".deck.detail.user.UserDeckDetailActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
         <activity

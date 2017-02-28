@@ -14,7 +14,7 @@ import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.PublicDeckDetailActivity;
-import com.jamieadkins.gwent.deck.detail.UserDeckDetailActivity;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
 
 /**
  * Holds much more detail about a card.

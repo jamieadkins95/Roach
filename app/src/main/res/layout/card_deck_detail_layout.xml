@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jamieadkins.gwent.deck.detail.DeckDetailCardView xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.jamieadkins.gwent.deck.detail.user.DeckDetailCardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:transitionName="@string/transition_card"
     android:id="@+id/card_details"

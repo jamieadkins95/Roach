@@ -1,6 +1,5 @@
-package com.jamieadkins.gwent.deck.detail;
+package com.jamieadkins.gwent.deck.detail.user;
 
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -11,6 +10,7 @@ import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 

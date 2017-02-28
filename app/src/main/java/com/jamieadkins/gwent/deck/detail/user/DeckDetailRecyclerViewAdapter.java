@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail;
+package com.jamieadkins.gwent.deck.detail.user;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,9 +6,8 @@ import android.view.ViewGroup;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
-import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Collection;
+import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 
 import java.util.Map;
 
