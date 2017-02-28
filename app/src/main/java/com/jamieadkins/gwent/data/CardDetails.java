@@ -205,6 +205,10 @@ public class CardDetails implements RecyclerViewItem {
 
     @Override
     public int getItemType() {
-        return GwentRecyclerViewAdapter.TYPE_CARD;
+        if (type.equals(Type.LEADER)) {
+            return GwentRecyclerViewAdapter.TYPE_CARD_LEADER;
+        } else {
+            return GwentRecyclerViewAdapter.TYPE_CARD;
+        }
     }
 }

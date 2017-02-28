@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.gwent.deck.list.DeckRecyclerViewAdapter;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -132,6 +132,6 @@ public class Deck implements RecyclerViewItem {
 
     @Override
     public int getItemType() {
-        return DeckRecyclerViewAdapter.TYPE_DECK;
+        return GwentRecyclerViewAdapter.TYPE_DECK;
     }
 }

@@ -18,6 +18,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
@@ -55,7 +56,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DeckRecyclerViewAdapter adapter = new DeckRecyclerViewAdapter();
+        GwentRecyclerViewAdapter adapter = new GwentRecyclerViewAdapter();
         setRecyclerViewAdapter(adapter);
 
         if (savedInstanceState != null) {
