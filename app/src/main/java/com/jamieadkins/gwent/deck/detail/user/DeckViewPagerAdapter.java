@@ -42,10 +42,12 @@ public class DeckViewPagerAdapter extends FragmentStatePagerAdapter {
                         new PatchInteractorFirebase());
                 break;
             case CARD_DB_INDEX:
-                fragment = new CardListFragment();
-                new CardsPresenter(
-                        (CardsContract.View) fragment,
-                        CardsInteractorFirebase.getInstance());
+                fragment = UserDeckCardListFragment.newInstance(mDeckId);
+                new DecksPresenter(
+                        (DecksContract.View) fragment,
+                        new DecksInteractorFirebase(),
+                        CardsInteractorFirebase.getInstance(),
+                        new PatchInteractorFirebase());
                 break;
             default:
                 throw new RuntimeException("Fragment " + position + " not implemented");
