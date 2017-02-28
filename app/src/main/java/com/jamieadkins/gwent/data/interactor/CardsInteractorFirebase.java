@@ -88,6 +88,13 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
+
+                                    if (cardDetails == null) {
+                                        emitter.onError(new Throwable("Card doesn't exist."));
+                                        emitter.onComplete();
+                                        return;
+                                    }
+
                                     cardDetails.setPatch(mPatch);
 
                                     // Only add card if the card meets all the filters.
@@ -137,6 +144,12 @@ public class CardsInteractorFirebase implements CardsInteractor {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
+
+                                if (cardDetails == null) {
+                                    emitter.onError(new Throwable("Card doesn't exist."));
+                                    return;
+                                }
+
                                 cardDetails.setPatch(mPatch);
 
                                 emitter.onSuccess(

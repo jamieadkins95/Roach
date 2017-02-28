@@ -66,6 +66,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot deckSnapshot : dataSnapshot.getChildren()) {
+                                    Deck deck = dataSnapshot.getValue(Deck.class);
+
+                                    if (deck == null) {
+                                        emitter.onError(new Throwable("Deck doesn't exist"));
+                                        emitter.onComplete();
+                                        return;
+                                    }
+
                                     emitter.onNext(
                                             new RxDatabaseEvent<Deck>(
                                                     deckSnapshot.getKey(),
@@ -113,10 +121,17 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Deck deck = dataSnapshot.getValue(Deck.class);
+
+                                if (deck == null) {
+                                    emitter.onError(new Throwable("Deck doesn't exist"));
+                                    return;
+                                }
+
                                 emitter.onSuccess(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
+                                                deck,
                                                 RxDatabaseEvent.EventType.CHANGED));
                             }
 
@@ -149,10 +164,18 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Deck deck = dataSnapshot.getValue(Deck.class);
+
+                                if (deck == null) {
+                                    emitter.onError(new Throwable("Deck doesn't exist"));
+                                    emitter.onComplete();
+                                    return;
+                                }
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
+                                                deck,
                                                 RxDatabaseEvent.EventType.CHANGED));
                             }
 
