@@ -13,8 +13,8 @@ import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CardListFragment extends BaseCardListFragment implements CardsContract.View,
-        PresenterFactory<CardsContract.Presenter> {
+public class CardListFragment extends BaseCardListFragment<CardsContract.Presenter>
+        implements CardsContract.View {
 
     public CardListFragment() {
     }
@@ -23,12 +23,6 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.card_database));
-        setCardsPresenter(createPresenter());
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_card_list;
     }
 
     @Override
@@ -50,5 +44,4 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
         return new CardsPresenter(this,
                 interactorContainer.getCardsInteractor());
     }
-
 }

@@ -24,6 +24,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -154,9 +155,9 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
                     public void onNext(RxDatabaseEvent<Deck> value) {
                         Deck deck = value.getValue();
 
-                        Intent intent = new Intent(getActivity(), DeckDetailActivity.class);
-                        intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, deck.getId());
-                        intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
+                        Intent intent = new Intent(getActivity(), UserDeckDetailActivity.class);
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deck.getId());
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
                         getView().getContext().startActivity(intent);
 
                         FirebaseUtils.logAnalytics(getView().getContext(),

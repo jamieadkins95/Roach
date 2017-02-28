@@ -24,8 +24,8 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View,
-        PresenterFactory<CollectionContract.Presenter> {
+public class CollectionFragment extends BaseCardListFragment<CollectionContract.Presenter>
+        implements CollectionContract.View {
     CollectionContract.Presenter mPresenter;
 
     public CollectionFragment() {
@@ -124,7 +124,6 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                 this,
                 interactorContainer.getCollectionInteractor(),
                 interactorContainer.getCardsInteractor());
-        setCardsPresenter(presenter);
         return presenter;
     }
 }

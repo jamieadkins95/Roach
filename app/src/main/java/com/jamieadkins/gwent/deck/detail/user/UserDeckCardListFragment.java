@@ -28,8 +28,8 @@ import io.reactivex.schedulers.Schedulers;
  * Created by jamiea on 28/02/17.
  */
 
-public class UserDeckCardListFragment extends BaseCardListFragment implements DecksContract.View,
-        PresenterFactory<DecksContract.Presenter> {
+public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract.Presenter>
+        implements DecksContract.View {
 
     DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
@@ -73,11 +73,6 @@ public class UserDeckCardListFragment extends BaseCardListFragment implements De
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_card_list;
-    }
-
-    @Override
     public void onLoadData() {
         super.onLoadData();
         mDecksPresenter.getDeck(mDeckId, false)
@@ -100,8 +95,6 @@ public class UserDeckCardListFragment extends BaseCardListFragment implements De
                 interactorContainer.getDecksInteractor(),
                 interactorContainer.getCardsInteractor(),
                 interactorContainer.getPatchInteractor());
-
-        setCardsPresenter(mDecksPresenter);
 
         return mDecksPresenter;
     }

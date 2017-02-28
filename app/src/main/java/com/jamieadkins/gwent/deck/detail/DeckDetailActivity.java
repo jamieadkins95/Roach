@@ -34,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
  * Shows card image and details.
  */
 
-public class DeckDetailActivity extends BaseActivity implements CardFilterProvider {
+public abstract class DeckDetailActivity extends BaseActivity implements CardFilterProvider {
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";

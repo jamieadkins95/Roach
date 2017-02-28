@@ -1,10 +1,13 @@
 package com.jamieadkins.gwent.card.list;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
+import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -19,9 +22,15 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseCardListFragment extends BaseFragment
-        implements CardFilterListener {
+public abstract class BaseCardListFragment<T extends CardsContract.Presenter> extends BaseFragment
+        implements CardFilterListener, CardsContract.View, PresenterFactory<T> {
     private CardsContract.Presenter mCardsPresenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCardsPresenter = createPresenter();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +40,9 @@ public abstract class BaseCardListFragment extends BaseFragment
         return rootView;
     }
 
-    public abstract int getLayoutId();
+    public int getLayoutId() {
+        return R.layout.fragment_card_list;
+    }
 
     @Override
     public void onStart() {
@@ -59,9 +70,5 @@ public abstract class BaseCardListFragment extends BaseFragment
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
-    }
-
-    public void setCardsPresenter(CardsContract.Presenter cardsPresenter) {
-        mCardsPresenter = cardsPresenter;
     }
 }
