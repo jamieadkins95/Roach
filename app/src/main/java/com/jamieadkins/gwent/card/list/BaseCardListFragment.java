@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;

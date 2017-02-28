@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
@@ -20,7 +21,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserDeckDetailFragment extends BaseDeckDetailFragment
         implements DecksContract.View {
-    DeckDetailRecyclerViewAdapter mDeckRecyclerViewAdapter;
     DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
                 @Override
@@ -44,15 +44,16 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mDeckRecyclerViewAdapter = new DeckDetailRecyclerViewAdapter(mButtonListener);
-        setRecyclerViewAdapter(mDeckRecyclerViewAdapter);
+    public int getLayoutId() {
+        return R.layout.fragment_card_list;
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_card_list;
+    public GwentRecyclerViewAdapter onBuildRecyclerView() {
+        return new GwentRecyclerViewAdapter.Builder()
+                .withControls(GwentRecyclerViewAdapter.Controls.DECK)
+                .withDeckButtonListener(mButtonListener)
+                .build();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     @Override
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
-        mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
+        getRecyclerViewAdapter().setDeck(deck);
 
         for (String faction : Faction.ALL_FACTIONS) {
             if (!faction.equals(deck.getFactionId())) {

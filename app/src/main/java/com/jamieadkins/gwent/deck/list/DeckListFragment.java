@@ -56,8 +56,6 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GwentRecyclerViewAdapter adapter = new GwentRecyclerViewAdapter();
-        setRecyclerViewAdapter(adapter);
 
         if (savedInstanceState != null) {
             mPublicDecks = savedInstanceState.getBoolean(STATE_PUBLIC_DECKS);

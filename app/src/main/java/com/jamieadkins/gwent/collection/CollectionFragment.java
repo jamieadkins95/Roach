@@ -9,6 +9,7 @@ import com.jamieadkins.commonutils.mvp.PresenterFactory;
 import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
@@ -26,7 +27,6 @@ import io.reactivex.schedulers.Schedulers;
 public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View,
         PresenterFactory<CollectionContract.Presenter> {
     CollectionContract.Presenter mPresenter;
-    CollectionRecyclerViewAdapter mAdapter;
 
     public CollectionFragment() {
     }
@@ -35,19 +35,6 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
-        mAdapter = new CollectionRecyclerViewAdapter(
-                new CollectionCardViewHolder.CollectionButtonListener() {
-                    @Override
-                    public void addCard(String cardId, String variationId) {
-                        mPresenter.addCard(cardId, variationId);
-                    }
-
-                    @Override
-                    public void removeCard(String cardId, String variationId) {
-                        mPresenter.removeCard(cardId, variationId);
-                    }
-                });
-        setRecyclerViewAdapter(mAdapter);
         mPresenter = createPresenter();
     }
 
@@ -84,7 +71,7 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
 
                     @Override
                     public void onNext(Collection value) {
-                        mAdapter.setCollection(value);
+                        getRecyclerViewAdapter().setCardCollection(value);
                     }
 
                     @Override
@@ -116,6 +103,24 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         if (mPresenter != null) {
             mPresenter.stop();
         }
+    }
+
+    @Override
+    public GwentRecyclerViewAdapter onBuildRecyclerView() {
+        return new GwentRecyclerViewAdapter.Builder()
+                .withControls(GwentRecyclerViewAdapter.Controls.COLLECTION)
+                .withCollectionButtonListener(new CollectionCardViewHolder.CollectionButtonListener() {
+                    @Override
+                    public void addCard(String cardId, String variationId) {
+                        mPresenter.addCard(cardId, variationId);
+                    }
+
+                    @Override
+                    public void removeCard(String cardId, String variationId) {
+                        mPresenter.removeCard(cardId, variationId);
+                    }
+                })
+                .build();
     }
 
     @Override

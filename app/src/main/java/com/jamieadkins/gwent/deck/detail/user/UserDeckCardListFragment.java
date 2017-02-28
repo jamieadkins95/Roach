@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardListFragment;
@@ -31,7 +32,6 @@ public class UserDeckCardListFragment extends BaseCardListFragment implements De
         PresenterFactory<DecksContract.Presenter> {
 
     DecksContract.Presenter mDecksPresenter;
-    DeckDetailRecyclerViewAdapter mDeckRecyclerViewAdapter;
     protected String mDeckId;
     protected Deck mDeck;
     protected Observer<RxDatabaseEvent<Deck>> mObserver =
@@ -69,8 +69,6 @@ public class UserDeckCardListFragment extends BaseCardListFragment implements De
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDeckRecyclerViewAdapter = new DeckDetailRecyclerViewAdapter(mButtonListener);
-        setRecyclerViewAdapter(mDeckRecyclerViewAdapter);
         createPresenter();
     }
 
@@ -118,9 +116,17 @@ public class UserDeckCardListFragment extends BaseCardListFragment implements De
 
     }
 
+    @Override
+    public GwentRecyclerViewAdapter onBuildRecyclerView() {
+        return new GwentRecyclerViewAdapter.Builder()
+                .withControls(GwentRecyclerViewAdapter.Controls.DECK)
+                .withDeckButtonListener(mButtonListener)
+                .build();
+    }
+
     protected void onDeckLoaded(Deck deck) {
         mDeck = deck;
-        mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
+        getRecyclerViewAdapter().setDeck(deck);
 
         for (String faction : Faction.ALL_FACTIONS) {
             if (!faction.equals(deck.getFactionId())) {

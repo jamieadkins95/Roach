@@ -20,7 +20,7 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
-    private BaseRecyclerViewAdapter mViewAdapter;
+    private GwentRecyclerViewAdapter mAdapter;
     private boolean mLoading = false;
 
     private Observer<RxDatabaseEvent<T>> mObserver = new BaseObserver<RxDatabaseEvent<T>>() {
@@ -28,10 +28,10 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         public void onNext(RxDatabaseEvent<T> value) {
             switch (value.getEventType()) {
                 case ADDED:
-                    mViewAdapter.addItem(value.getValue());
+                    mAdapter.addItem(value.getValue());
                     break;
                 case REMOVED:
-                    mViewAdapter.removeItem(value.getValue());
+                    mAdapter.removeItem(value.getValue());
                     break;
             }
         }
@@ -55,7 +55,8 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         final LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(mViewAdapter);
+        mAdapter = onBuildRecyclerView();
+        recyclerView.setAdapter(mAdapter);
     }
 
     public void onLoadData() {
@@ -75,12 +76,14 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         return mLoading;
     }
 
-    public void setRecyclerViewAdapter(BaseRecyclerViewAdapter mViewAdapter) {
-        this.mViewAdapter = mViewAdapter;
+    public GwentRecyclerViewAdapter onBuildRecyclerView() {
+        return new GwentRecyclerViewAdapter.Builder()
+                .withControls(GwentRecyclerViewAdapter.Controls.NONE)
+                .build();
     }
 
-    public BaseRecyclerViewAdapter getRecyclerViewAdapter() {
-        return mViewAdapter;
+    public GwentRecyclerViewAdapter getRecyclerViewAdapter() {
+        return mAdapter;
     }
 
     public Observer<RxDatabaseEvent<T>> getObserver() {

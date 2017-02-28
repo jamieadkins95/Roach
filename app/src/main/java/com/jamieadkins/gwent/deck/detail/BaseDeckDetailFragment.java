@@ -54,7 +54,6 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new GwentRecyclerViewAdapter());
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);

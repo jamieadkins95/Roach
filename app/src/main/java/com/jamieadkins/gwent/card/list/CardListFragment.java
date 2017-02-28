@@ -22,7 +22,6 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new GwentRecyclerViewAdapter());
         getActivity().setTitle(getString(R.string.card_database));
         setCardsPresenter(createPresenter());
     }
