@@ -42,11 +42,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailFragment extends Fragment implements DetailContract.View,
         PresenterFactory<DetailContract.Presenter> {
+    private static final String STATE_CARD_ID = "com.jamieadkins.gwent.cardid";
+    private static final String STATE_PATCH = "com.jamieadkins.gwent.patch";
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
     private ViewPager mViewPager;
     private CardImagePagerAdapter mAdapter;
+
+    private String mCardId;
+    private String mPatch;
 
     private boolean mUseLowData = false;
 
@@ -81,6 +86,23 @@ public class DetailFragment extends Fragment implements DetailContract.View,
                 }
             };
 
+    protected static DetailFragment newInstance(String cardId, String patch) {
+        DetailFragment fragment = new DetailFragment();
+        fragment.mCardId = cardId;
+        fragment.mPatch = patch;
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mCardId = savedInstanceState.getString(STATE_CARD_ID);
+            mPatch = savedInstanceState.getString(STATE_PATCH);
+        }
+        mDetailPresenter = createPresenter();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -103,15 +125,9 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mDetailPresenter = createPresenter();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        mDetailPresenter.getCard(mDetailPresenter.getCardId())
+        mDetailPresenter.getCard(mCardId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
@@ -121,6 +137,13 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     public void onStop() {
         super.onStop();
         mDetailPresenter.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(STATE_CARD_ID, mCardId);
+        outState.putString(STATE_PATCH, mPatch);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -136,6 +159,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     @Override
     public DetailContract.Presenter createPresenter() {
         InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
-        return new DetailPresenter(this, interactorContainer.getCardsInteractor());
+        return new DetailPresenter(this, interactorContainer.getCardsInteractor(mPatch));
     }
 }

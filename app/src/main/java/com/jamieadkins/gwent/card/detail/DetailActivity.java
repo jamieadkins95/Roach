@@ -2,6 +2,9 @@ package com.jamieadkins.gwent.card.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
@@ -23,7 +26,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -46,19 +49,13 @@ public class DetailActivity extends BaseActivity {
 
         String patch = getIntent().getStringExtra(EXTRA_PATCH);
 
-        CardsInteractor cardsInteractor;
+        if (savedInstanceState == null) {
+            Fragment fragment =  DetailFragment.newInstance(mCardId, patch);
 
-        if (patch != null) {
-            cardsInteractor = CardsInteractorFirebase.getInstance(patch);
-        } else {
-            cardsInteractor = CardsInteractorFirebase.getInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
+                    .commit();
         }
-
-        mDetailsPresenter = new DetailPresenter(
-                (DetailContract.View) getSupportFragmentManager().findFragmentById(R.id.fragment),
-                cardsInteractor);
-
-        mDetailsPresenter.setCardId(mCardId);
     }
 
     @Override
