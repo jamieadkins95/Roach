@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
 import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.commonutils.ui.SubHeader;
+import com.jamieadkins.gwent.InteractorContainer;
+import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -20,6 +23,7 @@ import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +36,8 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> implements DecksContract.View {
+public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
+        implements DecksContract.View, PresenterFactory<DecksContract.Presenter> {
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
@@ -65,6 +70,8 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
         mRowHeaders.put(getString(R.string.silver_units), new SubHeader(getString(R.string.silver_units)));
         mRowHeaders.put(getString(R.string.bronze_units), new SubHeader(getString(R.string.bronze_units)));
         mRowHeaders.put(getString(R.string.event_cards), new SubHeader(getString(R.string.event_cards)));
+
+        mDecksPresenter = createPresenter();
     }
 
     @Override
@@ -123,6 +130,16 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails> i
         }
 
         setLoadingIndicator(false);
+    }
+
+    @Override
+    public DecksContract.Presenter createPresenter() {
+        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
+        return new DecksPresenter(
+                this,
+                interactorContainer.getDecksInteractor(),
+                interactorContainer.getCardsInteractor(),
+                interactorContainer.getPatchInteractor());
     }
 
     @Override

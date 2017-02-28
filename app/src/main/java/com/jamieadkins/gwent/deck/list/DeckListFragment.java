@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.mvp.PresenterFactory;
 import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.commonutils.ui.SubHeader;
+import com.jamieadkins.gwent.InteractorContainer;
+import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -32,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
-        NewDeckDialog.NewDeckDialogListener {
+        PresenterFactory<DecksContract.Presenter>, NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
     private static final String STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks";
     private DecksContract.Presenter mDecksPresenter;
@@ -64,6 +67,8 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         } else {
             getActivity().setTitle(getString(R.string.public_decks));
         }
+
+        mDecksPresenter = createPresenter();
     }
 
     @Override
@@ -174,5 +179,15 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
+    }
+
+    @Override
+    public DecksContract.Presenter createPresenter() {
+        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
+        return new DecksPresenter(
+                this,
+                interactorContainer.getDecksInteractor(),
+                interactorContainer.getCardsInteractor(),
+                interactorContainer.getPatchInteractor());
     }
 }
