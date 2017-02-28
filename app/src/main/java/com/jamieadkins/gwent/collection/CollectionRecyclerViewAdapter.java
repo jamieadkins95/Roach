@@ -4,10 +4,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
-import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
-import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Collection;
 
@@ -15,7 +14,7 @@ import com.jamieadkins.gwent.data.Collection;
  * RecyclerViewAdapter that shows a list of cards.
  */
 
-public class CollectionRecyclerViewAdapter extends CardRecyclerViewAdapter {
+public class CollectionRecyclerViewAdapter extends GwentRecyclerViewAdapter {
     private CollectionCardViewHolder.CollectionButtonListener mCollectionButtonListener;
     private Collection mCollection;
 

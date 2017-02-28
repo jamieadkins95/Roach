@@ -7,6 +7,7 @@ import com.jamieadkins.commonutils.mvp.PresenterFactory;
 import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -21,7 +22,7 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
+        setRecyclerViewAdapter(new GwentRecyclerViewAdapter());
         getActivity().setTitle(getString(R.string.card_database));
         setCardsPresenter(createPresenter());
     }

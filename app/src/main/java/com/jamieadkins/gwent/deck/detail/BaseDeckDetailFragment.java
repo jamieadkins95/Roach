@@ -7,16 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.mvp.PresenterFactory;
-import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterProvider;
-import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Position;
@@ -29,8 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -59,7 +54,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new CardRecyclerViewAdapter(CardRecyclerViewAdapter.Detail.LARGE));
+        setRecyclerViewAdapter(new GwentRecyclerViewAdapter());
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);

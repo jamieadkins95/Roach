@@ -5,9 +5,8 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import java.util.Map;
  * RecyclerViewAdapter that shows a list of cards.
  */
 
-public class DeckDetailRecyclerViewAdapter extends CardRecyclerViewAdapter {
+public class DeckDetailRecyclerViewAdapter extends GwentRecyclerViewAdapter {
     private DeckDetailCardViewHolder.DeckDetailButtonListener mDeckDetailButtonListener;
     private Map<String, Integer> mCardCounts;
 
@@ -28,7 +27,7 @@ public class DeckDetailRecyclerViewAdapter extends CardRecyclerViewAdapter {
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case CardRecyclerViewAdapter.TYPE_CARD:
+            case GwentRecyclerViewAdapter.TYPE_CARD:
                 return new DeckDetailCardViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_deck_detail_layout, parent, false),
                         mDeckDetailButtonListener);

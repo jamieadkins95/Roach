@@ -3,12 +3,10 @@ package com.jamieadkins.gwent.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Class that models what a deck is.
@@ -207,6 +205,6 @@ public class CardDetails implements RecyclerViewItem {
 
     @Override
     public int getItemType() {
-        return CardRecyclerViewAdapter.TYPE_CARD;
+        return GwentRecyclerViewAdapter.TYPE_CARD;
     }
 }
