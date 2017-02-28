@@ -11,7 +11,7 @@ import io.reactivex.Observable;
  */
 
 public interface CollectionContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
     }

@@ -13,7 +13,7 @@ import io.reactivex.Single;
  */
 
 public interface DetailContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
     }

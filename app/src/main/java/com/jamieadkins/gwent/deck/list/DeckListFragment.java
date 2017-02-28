@@ -145,11 +145,6 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
     }
 
     @Override
-    public void setPresenter(DecksContract.Presenter presenter) {
-        mDecksPresenter = presenter;
-    }
-
-    @Override
     public void createNewDeck(String name, String faction, CardDetails leader) {
         mDecksPresenter.createNewDeck(name, faction, leader, "v0-8-60-2-images")
                 .subscribeOn(Schedulers.io())

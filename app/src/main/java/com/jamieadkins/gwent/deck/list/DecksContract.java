@@ -15,7 +15,7 @@ import io.reactivex.Single;
  */
 
 public interface DecksContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
     }

@@ -51,8 +51,4 @@ public class CardListFragment extends BaseCardListFragment implements CardsContr
                 interactorContainer.getCardsInteractor());
     }
 
-    @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        setCardsPresenter(presenter);
-    }
 }
