@@ -13,8 +13,6 @@ public interface InteractorContainer {
 
     CardsInteractor getCardsInteractor();
 
-    CardsInteractor getCardsInteractor(String patch);
-
     DecksInteractor getDecksInteractor();
 
     CollectionInteractor getCollectionInteractor();

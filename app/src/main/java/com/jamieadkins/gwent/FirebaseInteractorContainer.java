@@ -20,11 +20,6 @@ public class FirebaseInteractorContainer implements InteractorContainer {
     }
 
     @Override
-    public CardsInteractor getCardsInteractor(String patch) {
-        return CardsInteractorFirebase.getInstance(patch);
-    }
-
-    @Override
     public DecksInteractor getDecksInteractor() {
         return new DecksInteractorFirebase();
     }

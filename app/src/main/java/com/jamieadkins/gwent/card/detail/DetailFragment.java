@@ -51,7 +51,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     private CardImagePagerAdapter mAdapter;
 
     private String mCardId;
-    private String mPatch;
 
     private boolean mUseLowData = false;
 
@@ -86,10 +85,9 @@ public class DetailFragment extends Fragment implements DetailContract.View,
                 }
             };
 
-    protected static DetailFragment newInstance(String cardId, String patch) {
+    protected static DetailFragment newInstance(String cardId) {
         DetailFragment fragment = new DetailFragment();
         fragment.mCardId = cardId;
-        fragment.mPatch = patch;
         return fragment;
     }
 
@@ -98,7 +96,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mCardId = savedInstanceState.getString(STATE_CARD_ID);
-            mPatch = savedInstanceState.getString(STATE_PATCH);
         }
         mDetailPresenter = createPresenter();
     }
@@ -142,7 +139,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_CARD_ID, mCardId);
-        outState.putString(STATE_PATCH, mPatch);
         super.onSaveInstanceState(outState);
     }
 
@@ -154,6 +150,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     @Override
     public DetailContract.Presenter createPresenter() {
         InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
-        return new DetailPresenter(this, interactorContainer.getCardsInteractor(mPatch));
+        return new DetailPresenter(this, interactorContainer.getCardsInteractor());
     }
 }
