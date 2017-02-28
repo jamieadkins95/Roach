@@ -2,27 +2,15 @@ package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;
-import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -30,8 +18,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserDeckDetailFragment extends BaseDeckDetailFragment
-        implements DecksContract.View, CardFilterListener {
-    DeckDetailRecyclerViewAdapter mCardRecyclerViewAdapter;
+        implements DecksContract.View {
     DeckDetailRecyclerViewAdapter mDeckRecyclerViewAdapter;
     DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
@@ -64,23 +51,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_user_deck_detail;
-    }
-
-    @Override
-    public void setupViews(View rootView) {
-        super.setupViews(rootView);
-        View bottomSheet = rootView.findViewById(R.id.bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.setPeekHeight(250);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.card_recycler_view);
-        final LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(recyclerView.getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        mCardRecyclerViewAdapter = new DeckDetailRecyclerViewAdapter(mButtonListener);
-        recyclerView.setAdapter(mCardRecyclerViewAdapter);
+        return R.layout.fragment_card_list;
     }
 
     @Override
@@ -92,26 +63,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                 .subscribe(mObserver);
     }
 
-    public void onLoadCardData() {
-        CardFilterProvider cardFilterProvider = (CardFilterProvider) getActivity();
-        cardFilterProvider.registerCardFilterListener(this);
-        CardFilter cardFilter = cardFilterProvider.getCardFilter();
-        mDecksPresenter.getCards(cardFilter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
-    }
-
-    @Override
-    public void onCardFilterUpdated() {
-        getRecyclerViewAdapter().clear();
-        onLoadData();
-    }
-
     @Override
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
-        mCardRecyclerViewAdapter.setCardCounts(deck.getCardCount());
         mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
 
         for (String faction : Faction.ALL_FACTIONS) {
@@ -119,45 +73,5 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                 ((CardFilterProvider) getActivity()).getCardFilter().put(faction, false);
             }
         }
-
-        ((CardFilterProvider) getActivity()).getCardFilter().put(deck.getFactionId(), true);
-        ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL, true);
-
-        onLoadCardData();
-    }
-
-    @Override
-    public Observer<RxDatabaseEvent<CardDetails>> getObserver() {
-        return new Observer<RxDatabaseEvent<CardDetails>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(RxDatabaseEvent<CardDetails> value) {
-                switch (value.getEventType()) {
-                    case ADDED:
-                        mCardRecyclerViewAdapter.addItem(value.getValue());
-                        break;
-                    case REMOVED:
-                        mCardRecyclerViewAdapter.removeItem(value.getValue());
-                        break;
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                SwipeRefreshLayout refreshLayout =
-                        (SwipeRefreshLayout) getView().findViewById(R.id.cardRefreshContainer);
-                refreshLayout.setRefreshing(false);
-                refreshLayout.setEnabled(false);
-            }
-        };
     }
 }
