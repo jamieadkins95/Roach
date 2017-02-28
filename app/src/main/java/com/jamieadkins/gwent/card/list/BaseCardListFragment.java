@@ -22,7 +22,6 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
         implements CardFilterListener {
     private CardsContract.Presenter mCardsPresenter;
-    private boolean mDataLoaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +49,6 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     public void onLoadData() {
         super.onLoadData();
         onLoadCardData();
-        mDataLoaded = true;
     }
 
     public void onLoadCardData() {
