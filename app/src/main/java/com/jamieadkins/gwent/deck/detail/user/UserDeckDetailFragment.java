@@ -57,15 +57,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     @Override
-    public void onLoadData() {
-        super.onLoadData();
-        mDecksPresenter.getDeck(mDeckId, false)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mObserver);
-    }
-
-    @Override
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
         getRecyclerViewAdapter().setDeck(deck);

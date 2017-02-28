@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
@@ -16,24 +15,18 @@ import io.reactivex.Observer;
 /**
  * UI fragment that shows a list of the users decks.
  */
-public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
+public abstract class BaseFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private GwentRecyclerViewAdapter mAdapter;
     private boolean mLoading = false;
 
-    private Observer<RxDatabaseEvent<T>> mObserver = new BaseObserver<RxDatabaseEvent<T>>() {
+    private Observer<RxDatabaseEvent<? extends RecyclerViewItem>> mObserver
+            = new BaseObserver<RxDatabaseEvent<? extends RecyclerViewItem>>() {
         @Override
-        public void onNext(RxDatabaseEvent<T> value) {
-            switch (value.getEventType()) {
-                case ADDED:
-                    mAdapter.addItem(value.getValue());
-                    break;
-                case REMOVED:
-                    mAdapter.removeItem(value.getValue());
-                    break;
-            }
+        public void onNext(RxDatabaseEvent<? extends RecyclerViewItem> value) {
+            onDataEvent(value);
         }
 
         @Override
@@ -57,6 +50,17 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         recyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = onBuildRecyclerView();
         recyclerView.setAdapter(mAdapter);
+    }
+
+    public void onDataEvent(RxDatabaseEvent<? extends RecyclerViewItem> data) {
+        switch (data.getEventType()) {
+            case ADDED:
+                mAdapter.addItem(data.getValue());
+                break;
+            case REMOVED:
+                mAdapter.removeItem(data.getValue());
+                break;
+        }
     }
 
     public void onLoadData() {
@@ -86,7 +90,7 @@ public abstract class BaseFragment<T extends RecyclerViewItem> extends Fragment
         return mAdapter;
     }
 
-    public Observer<RxDatabaseEvent<T>> getObserver() {
+    public Observer<RxDatabaseEvent<? extends RecyclerViewItem>> getObserver() {
         return mObserver;
     }
 

@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
+public class DeckListFragment extends BaseFragment implements DecksContract.View,
         PresenterFactory<DecksContract.Presenter>, NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
     private static final String STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks";

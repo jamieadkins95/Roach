@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
+public abstract class BaseCardListFragment extends BaseFragment
         implements CardFilterListener {
     private CardsContract.Presenter mCardsPresenter;
 

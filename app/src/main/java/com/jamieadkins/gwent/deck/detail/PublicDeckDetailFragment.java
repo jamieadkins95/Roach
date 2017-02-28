@@ -22,15 +22,6 @@ public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements 
     }
 
     @Override
-    public void onLoadData() {
-        super.onLoadData();
-        mDecksPresenter.getDeck(mDeckId, true)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mObserver);
-    }
-
-    @Override
     public int getLayoutId() {
         return R.layout.fragment_public_deck_detail;
     }

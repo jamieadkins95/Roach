@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.mvp.PresenterFactory;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
@@ -26,28 +27,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
+public abstract class BaseDeckDetailFragment extends BaseFragment
         implements DecksContract.View, PresenterFactory<DecksContract.Presenter> {
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
-    protected Observer<RxDatabaseEvent<Deck>> mObserver =
-            new BaseObserver<RxDatabaseEvent<Deck>>() {
-                @Override
-                public void onNext(RxDatabaseEvent<Deck> value) {
-                    onDeckLoaded(value.getValue());
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            };
 
     private Map<String, SubHeader> mRowHeaders = new HashMap<>();
 
@@ -80,6 +71,21 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
     public void onStart() {
         super.onStart();
         onLoadData();
+    }
+
+    @Override
+    public void onLoadData() {
+        super.onLoadData();
+        mDecksPresenter.getDeck(mDeckId, false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getObserver());
+    }
+
+    @Override
+    public void onDataEvent(RxDatabaseEvent<? extends RecyclerViewItem> data) {
+        super.onDataEvent(data);
+        onDeckLoaded((Deck) data.getValue());
     }
 
     protected abstract int getLayoutId();
