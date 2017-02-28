@@ -11,15 +11,94 @@
         <menu>
             <item
                 android:id="@+id/filter_faction"
-                android:title="@string/faction" />
+                android:title="@string/faction">
+                <menu>
+                    <item
+                        android:id="@+id/filter_faction_monsters"
+                        android:title="@string/monster"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_faction_northern_realms"
+                        android:title="@string/northern_realms"
+                        android:checkable="true" />
+
+
+                    <item
+                        android:id="@+id/filter_faction_scoiatael"
+                        android:title="@string/scoiatael"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_faction_skellige"
+                        android:title="@string/skellige"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_faction_nilfgaard"
+                        android:title="@string/nilfgaard"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_faction_neutral"
+                        android:title="@string/neutral"
+                        android:checkable="true" />
+                </menu>
+            </item>
 
             <item
                 android:id="@+id/filter_type"
-                android:title="@string/type" />
+                android:title="@string/type">
+                <menu>
+                    <item
+                        android:id="@+id/filter_type_bronze"
+                        android:title="@string/bronze"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_type_silver"
+                        android:title="@string/silver"
+                        android:checkable="true" />
+
+
+                    <item
+                        android:id="@+id/filter_type_gold"
+                        android:title="@string/gold"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_type_leader"
+                        android:title="@string/leader"
+                        android:checkable="true" />
+                </menu>
+            </item>
 
             <item
                 android:id="@+id/filter_rarity"
-                android:title="@string/rarity" />
+                android:title="@string/rarity">
+                <menu>
+                    <item
+                        android:id="@+id/filter_rarity_common"
+                        android:title="@string/common"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_rarity_rare"
+                        android:title="@string/rare"
+                        android:checkable="true" />
+
+
+                    <item
+                        android:id="@+id/filter_rarity_epic"
+                        android:title="@string/epic"
+                        android:checkable="true" />
+
+                    <item
+                        android:id="@+id/filter_rarity_legendary"
+                        android:title="@string/legendary"
+                        android:checkable="true" />
+                </menu>
+            </item>
 
             <item
                 android:id="@+id/filter_reset"

@@ -402,90 +402,71 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // We may waste this Dialog if it is not a filter item, but it makes for cleaner code.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        boolean closeMenu = false;
+
+        if (item.isCheckable()) {
+            // Invert current checked state;
+            item.setChecked(!item.isChecked());
+        }
 
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 mCardFilters.get(mCurrentTab).clearFilters();
-                if (mCardFilterListener != null) {
-                    mCardFilterListener.onCardFilterUpdated();
-                }
-                return true;
-            case R.id.filter_faction:
-                boolean[] factions = new boolean[Faction.ALL_FACTIONS.length];
-
-                for (String key : Faction.ALL_FACTIONS) {
-                    factions[Faction.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).get(key);
-                }
-
-                builder.setMultiChoiceItems(
-                        R.array.factions_array_with_neutral,
-                        factions,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Faction.CONVERT_INT.get(i), selected);
-
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+                closeMenu = true;
                 break;
-            case R.id.filter_rarity:
-                boolean[] rarities = new boolean[Rarity.ALL_RARITIES.length];
-
-                for (String key : Rarity.ALL_RARITIES) {
-                    rarities[Rarity.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).get(key);
-                }
-
-                builder.setMultiChoiceItems(
-                        R.array.rarity_array,
-                        rarities,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Rarity.CONVERT_INT.get(i), selected);
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+            case R.id.filter_faction_monsters:
+                mCardFilters.get(mCurrentTab).put(Faction.MONSTERS, item.isChecked());
                 break;
-            case R.id.filter_type:
-                boolean[] types = new boolean[Type.ALL_TYPES.length];
+            case R.id.filter_faction_northern_realms:
+                mCardFilters.get(mCurrentTab).put(Faction.NORTHERN_REALMS, item.isChecked());
+                break;
+            case R.id.filter_faction_scoiatael:
+                mCardFilters.get(mCurrentTab).put(Faction.SCOIATAEL, item.isChecked());
+                break;
+            case R.id.filter_faction_skellige:
+                mCardFilters.get(mCurrentTab).put(Faction.SKELLIGE, item.isChecked());
+                break;
+            case R.id.filter_faction_nilfgaard:
+                mCardFilters.get(mCurrentTab).put(Faction.NILFGAARD, item.isChecked());
+                break;
+            case R.id.filter_faction_neutral:
+                mCardFilters.get(mCurrentTab).put(Faction.NEUTRAL, item.isChecked());
+                break;
 
-                for (String key : Type.ALL_TYPES) {
-                    types[Type.CONVERT_STRING.get(key)] = mCardFilters.get(mCurrentTab).get(key);
-                }
+            case R.id.filter_rarity_common:
+                mCardFilters.get(mCurrentTab).put(Rarity.COMMON, item.isChecked());
+                break;
+            case R.id.filter_rarity_rare:
+                mCardFilters.get(mCurrentTab).put(Rarity.RARE, item.isChecked());
+                break;
+            case R.id.filter_rarity_epic:
+                mCardFilters.get(mCurrentTab).put(Rarity.EPIC, item.isChecked());
+                break;
+            case R.id.filter_rarity_legendary:
+                mCardFilters.get(mCurrentTab).put(Rarity.LEGENDARY, item.isChecked());
+                break;
 
-                builder.setMultiChoiceItems(
-                        R.array.types_array,
-                        types,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Type.CONVERT_INT.get(i), selected);
-
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+            case R.id.filter_type_bronze:
+                mCardFilters.get(mCurrentTab).put(Type.BRONZE, item.isChecked());
+                break;
+            case R.id.filter_type_silver:
+                mCardFilters.get(mCurrentTab).put(Type.SILVER, item.isChecked());
+                break;
+            case R.id.filter_type_gold:
+                mCardFilters.get(mCurrentTab).put(Type.GOLD, item.isChecked());
+                break;
+            case R.id.filter_type_leader:
+                mCardFilters.get(mCurrentTab).put(Type.LEADER, item.isChecked());
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        builder.setPositiveButton(R.string.button_done, null);
-        builder.show();
-        return true;
+        if (mCardFilterListener != null) {
+            mCardFilterListener.onCardFilterUpdated();
+        }
+
+        return closeMenu;
     }
 
     @Override
