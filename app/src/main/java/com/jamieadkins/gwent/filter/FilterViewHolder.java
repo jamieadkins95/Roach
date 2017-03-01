@@ -13,7 +13,7 @@ import com.jamieadkins.gwent.filter.FilterableItem;
  * Holds much more detail about a card.
  */
 
-public class FilterViewHolder extends BaseViewHolder {
+public class FilterViewHolder extends BaseViewHolder implements View.OnClickListener {
     private FilterableItem mFilter;
     private TextView mFilterName;
     private CheckBox mCheckbox;
@@ -33,18 +33,21 @@ public class FilterViewHolder extends BaseViewHolder {
 
         // Initially set to provided data.
         mCheckbox.setChecked(mFilter.isChecked());
+        mCheckbox.setOnClickListener(this);
 
         getView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Swap checked state.
+            public void onClick(View v) {
                 mCheckbox.setChecked(!mCheckbox.isChecked());
-
-                mListener.onFilterChanged(mFilter.getId(), mCheckbox.isChecked());
-
+                FilterViewHolder.this.onClick(v);
             }
         });
 
         mFilterName.setText(mFilter.toString());
+    }
+
+    @Override
+    public void onClick(View v) {
+        mListener.onFilterChanged(mFilter.getId(), mCheckbox.isChecked());
     }
 }
