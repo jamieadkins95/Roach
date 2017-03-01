@@ -13,8 +13,6 @@ import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
-import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Position;
@@ -109,15 +107,15 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
                     getRecyclerViewAdapter().addItem(card);
                 } else {
                     switch (card.getType()) {
-                        case Type.BRONZE:
+                        case Type.BRONZE_ID:
                             int eventIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.event_cards)));
                             getRecyclerViewAdapter().addItem(eventIndex, card);
                             break;
-                        case Type.SILVER:
+                        case Type.SILVER_ID:
                             int bronzeIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.bronze_units)));
                             getRecyclerViewAdapter().addItem(bronzeIndex, card);
                             break;
-                        case Type.GOLD:
+                        case Type.GOLD_ID:
                             int silverIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.silver_units)));
                             getRecyclerViewAdapter().addItem(silverIndex, card);
                             break;

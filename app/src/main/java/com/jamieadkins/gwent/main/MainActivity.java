@@ -19,8 +19,11 @@ import android.view.View;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
+import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
+import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
+import com.jamieadkins.gwent.filter.FilterableItem;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
@@ -35,7 +38,6 @@ import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -53,17 +55,20 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements CardFilterProvider,
-        Drawer.OnDrawerItemClickListener{
+        Drawer.OnDrawerItemClickListener, FilterBottomSheetDialogFragment.FilterUiListener {
     private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
     private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
     private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
+    private static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
     private static final String STATE_FILTER_CARD_DB = "com.jamieadkins.gwent.filter.carddb";
     private static final String STATE_FILTER_COLLECTION = "com.jamieadkins.gwent.filter.collection";
 
@@ -79,6 +84,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private CollectionPresenter mCollectionPresenter;
 
     private Map<Integer, CardFilter> mCardFilters;
+    private FilterBottomSheetDialogFragment mFilterMenu;
 
     private int mCurrentTab;
     private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
@@ -402,9 +408,9 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // We may waste this Dialog if it is not a filter item, but it makes for cleaner code.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+        List<FilterableItem> filterableItems = new ArrayList<>();
+        String filteringOn;
+        Filterable[] filterItems;
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 mCardFilters.get(mCurrentTab).clearFilters();
@@ -413,79 +419,41 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 }
                 return true;
             case R.id.filter_faction:
-                boolean[] factions = new boolean[Faction.ALL_FACTIONS.length];
-
-                for (String key : Faction.ALL_FACTIONS) {
-                    factions[Faction.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).get(key);
-                }
-
-                builder.setMultiChoiceItems(
-                        R.array.factions_array_with_neutral,
-                        factions,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Faction.CONVERT_INT.get(i), selected);
-
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+                filteringOn = getString(R.string.faction);
+                filterItems = Faction.ALL_FACTIONS;
                 break;
             case R.id.filter_rarity:
-                boolean[] rarities = new boolean[Rarity.ALL_RARITIES.length];
-
-                for (String key : Rarity.ALL_RARITIES) {
-                    rarities[Rarity.CONVERT_STRING.get(key)] =
-                            mCardFilters.get(mCurrentTab).get(key);
-                }
-
-                builder.setMultiChoiceItems(
-                        R.array.rarity_array,
-                        rarities,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Rarity.CONVERT_INT.get(i), selected);
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+                filteringOn = getString(R.string.rarity);
+                filterItems = Rarity.ALL_RARITIES;
                 break;
             case R.id.filter_type:
-                boolean[] types = new boolean[Type.ALL_TYPES.length];
-
-                for (String key : Type.ALL_TYPES) {
-                    types[Type.CONVERT_STRING.get(key)] = mCardFilters.get(mCurrentTab).get(key);
-                }
-
-                builder.setMultiChoiceItems(
-                        R.array.types_array,
-                        types,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i, boolean selected) {
-                                mCardFilters.get(mCurrentTab)
-                                        .put(Type.CONVERT_INT.get(i), selected);
-
-                                if (mCardFilterListener != null) {
-                                    mCardFilterListener.onCardFilterUpdated();
-                                }
-                            }
-                        });
+                filteringOn = getString(R.string.type);
+                filterItems = Type.ALL_TYPES;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        builder.setPositiveButton(R.string.button_done, null);
-        builder.show();
+        for (Filterable filterable : filterItems) {
+            filterableItems.add(new FilterableItem(
+                    filterable.getId(),
+                    getString(filterable.getName()),
+                    getCardFilter().get(filterable.getId())));
+        }
+
+        mFilterMenu = FilterBottomSheetDialogFragment
+                .newInstance(filteringOn, filterableItems, this);
+        mFilterMenu.show(getSupportFragmentManager(), TAG_FILTER_MENU);
+
         return true;
+    }
+
+    @Override
+    public void onFilterChanged(String key, boolean checked) {
+        mCardFilters.get(mCurrentTab).put(key, checked);
+        if (mCardFilterListener != null) {
+            mCardFilterListener.onCardFilterUpdated();
+        }
     }
 
     @Override
@@ -640,6 +608,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_FILTER_CARD_DB, mCardFilters.get(R.id.tab_card_db));
         outState.putParcelable(STATE_FILTER_COLLECTION, mCardFilters.get(R.id.tab_collection));
+
+        if (mFilterMenu != null) {
+            mFilterMenu.dismiss();
+        }
+
         super.onSaveInstanceState(outState);
     }
 }

@@ -16,6 +16,7 @@ import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
@@ -116,12 +117,12 @@ public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract
         mDeck = deck;
         getRecyclerViewAdapter().setDeck(deck);
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            if (!faction.equals(deck.getFactionId())) {
-                ((CardFilterProvider) getActivity()).getCardFilter().put(faction, false);
+        for (Filterable faction : Faction.ALL_FACTIONS) {
+            if (!faction.getId().equals(deck.getFactionId())) {
+                ((CardFilterProvider) getActivity()).getCardFilter().put(faction.getId(), false);
             }
         }
 
-        ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL, true);
+        ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL.getId(), true);
     }
 }

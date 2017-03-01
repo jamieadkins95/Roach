@@ -9,6 +9,7 @@ import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
@@ -61,9 +62,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         super.onDeckLoaded(deck);
         getRecyclerViewAdapter().setDeck(deck);
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            if (!faction.equals(deck.getFactionId())) {
-                ((CardFilterProvider) getActivity()).getCardFilter().put(faction, false);
+        for (Filterable faction : Faction.ALL_FACTIONS) {
+            if (!faction.getId().equals(deck.getFactionId())) {
+                ((CardFilterProvider) getActivity()).getCardFilter().put(faction.getId(), false);
             }
         }
     }

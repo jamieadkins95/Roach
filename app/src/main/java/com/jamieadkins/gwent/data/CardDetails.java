@@ -117,7 +117,7 @@ public class CardDetails implements RecyclerViewItem {
             return variations.get(key).getRarity();
         }
 
-        return Rarity.COMMON;
+        return Rarity.COMMON_ID;
     }
 
     public List<String> getCategory() {

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 
@@ -28,16 +29,16 @@ public class CardFilter implements Parcelable {
         mFilters = new HashMap<>();
         mCardIds = null;
 
-        for (String rarity : Rarity.ALL_RARITIES) {
-            mFilters.put(rarity, true);
+        for (Filterable rarity : Rarity.ALL_RARITIES) {
+            mFilters.put(rarity.getId(), true);
         }
 
-        for (String type : Type.ALL_TYPES) {
-            mFilters.put(type, true);
+        for (Filterable type : Type.ALL_TYPES) {
+            mFilters.put(type.getId(), true);
         }
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            mFilters.put(faction, true);
+        for (Filterable faction : Faction.ALL_FACTIONS) {
+            mFilters.put(faction.getId(), true);
         }
     }
 

@@ -101,16 +101,16 @@ public class LargeCardView extends SimpleCardView {
 
         int typeColor;
         switch (type) {
-            case Type.BRONZE:
+            case Type.BRONZE_ID:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.bronze);
                 break;
-            case Type.SILVER:
+            case Type.SILVER_ID:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.silver);
                 break;
-            case Type.GOLD:
+            case Type.GOLD_ID:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.gold);
                 break;
-            case Type.LEADER:
+            case Type.LEADER_ID:
                 typeColor = ContextCompat.getColor(mCardType.getContext(), R.color.gold);
                 break;
             default:
@@ -141,16 +141,16 @@ public class LargeCardView extends SimpleCardView {
 
         int rarityColor;
         switch (rarity) {
-            case Rarity.COMMON:
+            case Rarity.COMMON_ID:
                 rarityColor = ContextCompat.getColor(mCardRarity.getContext(), R.color.common);
                 break;
-            case Rarity.RARE:
+            case Rarity.RARE_ID:
                 rarityColor = ContextCompat.getColor(mCardRarity.getContext(), R.color.rare);
                 break;
-            case Rarity.EPIC:
+            case Rarity.EPIC_ID:
                 rarityColor = ContextCompat.getColor(mCardRarity.getContext(), R.color.epic);
                 break;
-            case Rarity.LEGENDARY:
+            case Rarity.LEGENDARY_ID:
                 rarityColor = ContextCompat.getColor(mCardRarity.getContext(), R.color.legendary);
                 break;
             default:
@@ -165,22 +165,22 @@ public class LargeCardView extends SimpleCardView {
 
         int factionColor;
         switch (faction) {
-            case Faction.MONSTERS:
+            case Faction.MONSTERS_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.monsters);
                 break;
-            case Faction.NORTHERN_REALMS:
+            case Faction.NORTHERN_REALMS_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.northernRealms);
                 break;
-            case Faction.SCOIATAEL:
+            case Faction.SCOIATAEL_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.scoiatael);
                 break;
-            case Faction.SKELLIGE:
+            case Faction.SKELLIGE_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.skellige);
                 break;
-            case Faction.NEUTRAL:
+            case Faction.NEUTRAL_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.neutral);
                 break;
-            case Faction.NILFGAARD:
+            case Faction.NILFGAARD_ID:
                 factionColor = ContextCompat.getColor(mCardFaction.getContext(), R.color.nilfgaard);
                 break;
             default:
