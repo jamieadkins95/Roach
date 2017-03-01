@@ -86,9 +86,9 @@ public class NewDeckDialog extends DialogFragment {
                 cardFilter.put("Bronze", false);
                 cardFilter.put("Silver", false);
                 cardFilter.put("Gold", false);
-                for (String faction : Faction.ALL_FACTIONS) {
-                    if (!faction.equals(Faction.ALL_FACTIONS[i])) {
-                        cardFilter.put(faction, false);
+                for (Faction faction : Faction.ALL_FACTIONS) {
+                    if (!faction.getId().equals(Faction.ALL_FACTIONS[i].getId())) {
+                        cardFilter.put(faction.getId(), false);
                     }
                 }
 
@@ -137,7 +137,7 @@ public class NewDeckDialog extends DialogFragment {
                         Spinner faction = (Spinner) rootView.findViewById(R.id.factions);
                         mListener.createNewDeck(
                                 deckName.getText().toString(),
-                                Faction.ALL_FACTIONS[faction.getSelectedItemPosition()],
+                                Faction.ALL_FACTIONS[faction.getSelectedItemPosition()].getId(),
                                 (CardDetails) leaderSpinner.getSelectedItem());
                     }
                 })

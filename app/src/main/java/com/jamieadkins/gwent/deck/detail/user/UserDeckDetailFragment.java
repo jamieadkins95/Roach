@@ -69,9 +69,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         super.onDeckLoaded(deck);
         mDeckRecyclerViewAdapter.setCardCounts(deck.getCardCount());
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            if (!faction.equals(deck.getFactionId())) {
-                ((CardFilterProvider) getActivity()).getCardFilter().put(faction, false);
+        for (Faction faction : Faction.ALL_FACTIONS) {
+            if (!faction.getId().equals(deck.getFactionId())) {
+                ((CardFilterProvider) getActivity()).getCardFilter().put(faction.getId(), false);
             }
         }
     }

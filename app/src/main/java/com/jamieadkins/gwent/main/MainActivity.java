@@ -15,12 +15,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
+import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
+import com.jamieadkins.gwent.filter.FilterableItem;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
@@ -53,11 +56,13 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements CardFilterProvider,
-        Drawer.OnDrawerItemClickListener{
+        Drawer.OnDrawerItemClickListener, FilterBottomSheetDialogFragment.FilterUiListener {
     private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
     private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
     private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
@@ -402,71 +407,51 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean closeMenu = false;
-
-        if (item.isCheckable()) {
-            // Invert current checked state;
-            item.setChecked(!item.isChecked());
-        }
-
+        List<FilterableItem> filterableItems = new ArrayList<>();
+        String filteringOn;
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 mCardFilters.get(mCurrentTab).clearFilters();
-                closeMenu = true;
+                return true;
+            case R.id.filter_faction:
+                filteringOn = getString(R.string.faction);
+                for (Faction faction : Faction.ALL_FACTIONS) {
+                    filterableItems.add(new FilterableItem(
+                            faction.getId(),
+                            getString(faction.getName()),
+                            getCardFilter().get(faction.getId())));
+                }
                 break;
-            case R.id.filter_faction_monsters:
-                mCardFilters.get(mCurrentTab).put(Faction.MONSTERS, item.isChecked());
+            case R.id.filter_rarity:
+                filteringOn = getString(R.string.rarity);
+                filterableItems.add(new FilterableItem(
+                        Rarity.COMMON,
+                        getString(R.string.common),
+                        getCardFilter().get(Rarity.COMMON)));
                 break;
-            case R.id.filter_faction_northern_realms:
-                mCardFilters.get(mCurrentTab).put(Faction.NORTHERN_REALMS, item.isChecked());
-                break;
-            case R.id.filter_faction_scoiatael:
-                mCardFilters.get(mCurrentTab).put(Faction.SCOIATAEL, item.isChecked());
-                break;
-            case R.id.filter_faction_skellige:
-                mCardFilters.get(mCurrentTab).put(Faction.SKELLIGE, item.isChecked());
-                break;
-            case R.id.filter_faction_nilfgaard:
-                mCardFilters.get(mCurrentTab).put(Faction.NILFGAARD, item.isChecked());
-                break;
-            case R.id.filter_faction_neutral:
-                mCardFilters.get(mCurrentTab).put(Faction.NEUTRAL, item.isChecked());
-                break;
-
-            case R.id.filter_rarity_common:
-                mCardFilters.get(mCurrentTab).put(Rarity.COMMON, item.isChecked());
-                break;
-            case R.id.filter_rarity_rare:
-                mCardFilters.get(mCurrentTab).put(Rarity.RARE, item.isChecked());
-                break;
-            case R.id.filter_rarity_epic:
-                mCardFilters.get(mCurrentTab).put(Rarity.EPIC, item.isChecked());
-                break;
-            case R.id.filter_rarity_legendary:
-                mCardFilters.get(mCurrentTab).put(Rarity.LEGENDARY, item.isChecked());
-                break;
-
-            case R.id.filter_type_bronze:
-                mCardFilters.get(mCurrentTab).put(Type.BRONZE, item.isChecked());
-                break;
-            case R.id.filter_type_silver:
-                mCardFilters.get(mCurrentTab).put(Type.SILVER, item.isChecked());
-                break;
-            case R.id.filter_type_gold:
-                mCardFilters.get(mCurrentTab).put(Type.GOLD, item.isChecked());
-                break;
-            case R.id.filter_type_leader:
-                mCardFilters.get(mCurrentTab).put(Type.LEADER, item.isChecked());
+            case R.id.filter_type:
+                filteringOn = getString(R.string.type);
+                filterableItems.add(new FilterableItem(
+                        Type.BRONZE,
+                        getString(R.string.bronze),
+                        getCardFilter().get(Type.BRONZE)));
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+        FilterBottomSheetDialogFragment.newInstance(filteringOn, filterableItems, this)
+                .show(getSupportFragmentManager(), "Filter");
+
+        return true;
+    }
+
+    @Override
+    public void onFilterChanged(String key, boolean checked) {
+        mCardFilters.get(mCurrentTab).put(key, checked);
         if (mCardFilterListener != null) {
             mCardFilterListener.onCardFilterUpdated();
         }
-
-        return closeMenu;
     }
 
     @Override

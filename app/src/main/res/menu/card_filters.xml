@@ -11,40 +11,7 @@
         <menu>
             <item
                 android:id="@+id/filter_faction"
-                android:title="@string/faction">
-                <menu>
-                    <item
-                        android:id="@+id/filter_faction_monsters"
-                        android:title="@string/monster"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_faction_northern_realms"
-                        android:title="@string/northern_realms"
-                        android:checkable="true" />
-
-
-                    <item
-                        android:id="@+id/filter_faction_scoiatael"
-                        android:title="@string/scoiatael"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_faction_skellige"
-                        android:title="@string/skellige"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_faction_nilfgaard"
-                        android:title="@string/nilfgaard"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_faction_neutral"
-                        android:title="@string/neutral"
-                        android:checkable="true" />
-                </menu>
-            </item>
+                android:title="@string/faction" />
 
             <item
                 android:id="@+id/filter_type"

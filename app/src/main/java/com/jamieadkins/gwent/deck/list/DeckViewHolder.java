@@ -83,19 +83,19 @@ public class DeckViewHolder extends BaseViewHolder {
 
         int color;
         switch (mDeck.getFactionId()) {
-            case Faction.MONSTERS:
+            case Faction.MONSTERS_ID:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.monsters);
                 break;
-            case Faction.NORTHERN_REALMS:
+            case Faction.NORTHERN_REALMS_ID:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.northernRealms);
                 break;
-            case Faction.SCOIATAEL:
+            case Faction.SCOIATAEL_ID:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.scoiatael);
                 break;
-            case Faction.SKELLIGE:
+            case Faction.SKELLIGE_ID:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
                 break;
-            case Faction.NILFGAARD:
+            case Faction.NILFGAARD_ID:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.nilfgaard);
                 break;
             default:

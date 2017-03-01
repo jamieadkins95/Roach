@@ -36,8 +36,8 @@ public class CardFilter implements Parcelable {
             mFilters.put(type, true);
         }
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            mFilters.put(faction, true);
+        for (Faction faction : Faction.ALL_FACTIONS) {
+            mFilters.put(faction.getId(), true);
         }
     }
 
