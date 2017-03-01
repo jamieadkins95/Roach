@@ -16,6 +16,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+import com.twitter.sdk.android.core.models.Card;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot deckSnapshot : dataSnapshot.getChildren()) {
-                                    Deck deck = dataSnapshot.getValue(Deck.class);
+                                    Deck deck = deckSnapshot.getValue(Deck.class);
 
                                     if (deck == null) {
                                         emitter.onError(new Throwable("Deck doesn't exist"));
@@ -74,10 +75,15 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                         return;
                                     }
 
+                                    deck.getLeader().setPatch(deck.getPatch());
+                                    for (String cardId : deck.getCards().keySet()) {
+                                        deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                    }
+
                                     emitter.onNext(
                                             new RxDatabaseEvent<Deck>(
                                                     deckSnapshot.getKey(),
-                                                    deckSnapshot.getValue(Deck.class),
+                                                    deck,
                                                     RxDatabaseEvent.EventType.ADDED));
                                 }
 
@@ -128,6 +134,11 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                     return;
                                 }
 
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                }
+
                                 emitter.onSuccess(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
@@ -149,7 +160,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck) {
+    public Observable<RxDatabaseEvent<Deck>> getDeck(final String deckId, boolean isPublicDeck) {
         if (isPublicDeck) {
             mDeckQuery = mPublicReference.child("decks").child(deckId);
         } else {
@@ -170,6 +181,11 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                     emitter.onError(new Throwable("Deck doesn't exist"));
                                     emitter.onComplete();
                                     return;
+                                }
+
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
                                 }
 
                                 emitter.onNext(
