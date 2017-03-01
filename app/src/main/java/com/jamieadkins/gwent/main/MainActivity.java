@@ -68,6 +68,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
+    private static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
     private static final String STATE_FILTER_CARD_DB = "com.jamieadkins.gwent.filter.carddb";
     private static final String STATE_FILTER_COLLECTION = "com.jamieadkins.gwent.filter.collection";
 
@@ -83,6 +84,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private CollectionPresenter mCollectionPresenter;
 
     private Map<Integer, CardFilter> mCardFilters;
+    private FilterBottomSheetDialogFragment mFilterMenu;
 
     private int mCurrentTab;
     private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
@@ -439,8 +441,9 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                     getCardFilter().get(filterable.getId())));
         }
 
-        FilterBottomSheetDialogFragment.newInstance(filteringOn, filterableItems, this)
-                .show(getSupportFragmentManager(), "Filter");
+        mFilterMenu = FilterBottomSheetDialogFragment
+                .newInstance(filteringOn, filterableItems, this);
+        mFilterMenu.show(getSupportFragmentManager(), TAG_FILTER_MENU);
 
         return true;
     }
@@ -605,6 +608,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_FILTER_CARD_DB, mCardFilters.get(R.id.tab_card_db));
         outState.putParcelable(STATE_FILTER_COLLECTION, mCardFilters.get(R.id.tab_collection));
+
+        if (mFilterMenu != null) {
+            mFilterMenu.dismiss();
+        }
+
         super.onSaveInstanceState(outState);
     }
 }
