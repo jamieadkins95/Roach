@@ -1,12 +1,6 @@
 package com.jamieadkins.gwent.data;
 
-import android.content.Context;
-
 import com.jamieadkins.gwent.R;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Contains all of the possible factions.
@@ -20,29 +14,13 @@ public class Faction {
     public static final String NILFGAARD_ID = "Nilfgaard";
     public static final String MONSTERS_ID = "Monster";
 
-    public static final Faction NORTHERN_REALMS = new Faction(NORTHERN_REALMS_ID, R.string.northern_realms);
-    public static final Faction SKELLIGE = new Faction(SKELLIGE_ID, R.string.skellige);
-    public static final Faction SCOIATAEL = new Faction(SCOIATAEL_ID, R.string.scoiatael);
-    public static final Faction NEUTRAL = new Faction(NEUTRAL_ID, R.string.neutral);
-    public static final Faction NILFGAARD = new Faction(NILFGAARD_ID, R.string.nilfgaard);
-    public static final Faction MONSTERS = new Faction(MONSTERS_ID, R.string.monster);
+    public static final Filterable NORTHERN_REALMS = new Filterable(NORTHERN_REALMS_ID, R.string.northern_realms);
+    public static final Filterable SKELLIGE = new Filterable(SKELLIGE_ID, R.string.skellige);
+    public static final Filterable SCOIATAEL = new Filterable(SCOIATAEL_ID, R.string.scoiatael);
+    public static final Filterable NEUTRAL = new Filterable(NEUTRAL_ID, R.string.neutral);
+    public static final Filterable NILFGAARD = new Filterable(NILFGAARD_ID, R.string.nilfgaard);
+    public static final Filterable MONSTERS = new Filterable(MONSTERS_ID, R.string.monster);
 
-    public static final Faction[] ALL_FACTIONS = new Faction[] {
+    public static final Filterable[] ALL_FACTIONS = new Filterable[] {
             MONSTERS, NORTHERN_REALMS, SCOIATAEL, SKELLIGE, NILFGAARD, NEUTRAL};
-
-    private String mId;
-    private int mName;
-
-    private Faction(String id, int nameResource){
-        mId = id;
-        mName = nameResource;
-    }
-
-    public String getId() {
-        return mId;
-    }
-
-    public int getName() {
-        return mName;
-    }
 }

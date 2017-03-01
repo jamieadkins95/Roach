@@ -5,10 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Class that models what a deck is.
@@ -119,7 +117,7 @@ public class CardDetails implements RecyclerViewItem {
             return variations.get(key).getRarity();
         }
 
-        return Rarity.COMMON;
+        return Rarity.COMMON_ID;
     }
 
     public List<String> getCategory() {

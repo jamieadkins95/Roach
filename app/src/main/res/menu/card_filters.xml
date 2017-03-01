@@ -15,57 +15,11 @@
 
             <item
                 android:id="@+id/filter_type"
-                android:title="@string/type">
-                <menu>
-                    <item
-                        android:id="@+id/filter_type_bronze"
-                        android:title="@string/bronze"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_type_silver"
-                        android:title="@string/silver"
-                        android:checkable="true" />
-
-
-                    <item
-                        android:id="@+id/filter_type_gold"
-                        android:title="@string/gold"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_type_leader"
-                        android:title="@string/leader"
-                        android:checkable="true" />
-                </menu>
-            </item>
+                android:title="@string/type" />
 
             <item
                 android:id="@+id/filter_rarity"
-                android:title="@string/rarity">
-                <menu>
-                    <item
-                        android:id="@+id/filter_rarity_common"
-                        android:title="@string/common"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_rarity_rare"
-                        android:title="@string/rare"
-                        android:checkable="true" />
-
-
-                    <item
-                        android:id="@+id/filter_rarity_epic"
-                        android:title="@string/epic"
-                        android:checkable="true" />
-
-                    <item
-                        android:id="@+id/filter_rarity_legendary"
-                        android:title="@string/legendary"
-                        android:checkable="true" />
-                </menu>
-            </item>
+                android:title="@string/rarity" />
 
             <item
                 android:id="@+id/filter_reset"

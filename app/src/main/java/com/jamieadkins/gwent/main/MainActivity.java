@@ -15,12 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
+import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
@@ -38,7 +38,6 @@ import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -409,35 +408,35 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     public boolean onOptionsItemSelected(MenuItem item) {
         List<FilterableItem> filterableItems = new ArrayList<>();
         String filteringOn;
+        Filterable[] filterItems;
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 mCardFilters.get(mCurrentTab).clearFilters();
+                if (mCardFilterListener != null) {
+                    mCardFilterListener.onCardFilterUpdated();
+                }
                 return true;
             case R.id.filter_faction:
                 filteringOn = getString(R.string.faction);
-                for (Faction faction : Faction.ALL_FACTIONS) {
-                    filterableItems.add(new FilterableItem(
-                            faction.getId(),
-                            getString(faction.getName()),
-                            getCardFilter().get(faction.getId())));
-                }
+                filterItems = Faction.ALL_FACTIONS;
                 break;
             case R.id.filter_rarity:
                 filteringOn = getString(R.string.rarity);
-                filterableItems.add(new FilterableItem(
-                        Rarity.COMMON,
-                        getString(R.string.common),
-                        getCardFilter().get(Rarity.COMMON)));
+                filterItems = Rarity.ALL_RARITIES;
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                filterableItems.add(new FilterableItem(
-                        Type.BRONZE,
-                        getString(R.string.bronze),
-                        getCardFilter().get(Type.BRONZE)));
+                filterItems = Type.ALL_TYPES;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+
+        for (Filterable filterable : filterItems) {
+            filterableItems.add(new FilterableItem(
+                    filterable.getId(),
+                    getString(filterable.getName()),
+                    getCardFilter().get(filterable.getId())));
         }
 
         FilterBottomSheetDialogFragment.newInstance(filteringOn, filterableItems, this)

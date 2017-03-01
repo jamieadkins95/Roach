@@ -12,22 +12,12 @@ import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;
-import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
-import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -63,7 +53,7 @@ public class DeckDetailActivity extends BaseActivity implements CardFilterProvid
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
         } else {
             mCardFilter = new CardFilter();
-            mCardFilter.put(Type.LEADER, false);
+            mCardFilter.put(Type.LEADER_ID, false);
             mCardFilter.setCollectibleOnly(true);
 
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);

@@ -91,10 +91,10 @@ public class CardsInteractorTest {
     public void testGetCardsTypeFilter() throws Exception {
         TestObserver<RxDatabaseEvent<CardDetails>> observer = TestObserver.create();
         cardFilter = new CardFilter();
-        cardFilter.put(Type.LEADER, true);
-        cardFilter.put(Type.GOLD, false);
-        cardFilter.put(Type.SILVER, false);
-        cardFilter.put(Type.BRONZE, false);
+        cardFilter.put(Type.LEADER_ID, true);
+        cardFilter.put(Type.GOLD_ID, false);
+        cardFilter.put(Type.SILVER_ID, false);
+        cardFilter.put(Type.BRONZE_ID, false);
         cardsInteractor.getCards(cardFilter).subscribe(observer);
 
         // Wait until complete.
@@ -105,7 +105,7 @@ public class CardsInteractorTest {
         for (Object object : observer.getEvents().get(0)) {
             RxDatabaseEvent<CardDetails> event = (RxDatabaseEvent<CardDetails>) object;
             CardDetails details = event.getValue();
-            assertTrue(details.getType().equals(Type.LEADER));
+            assertTrue(details.getType().equals(Type.LEADER_ID));
         }
     }
 
@@ -113,10 +113,10 @@ public class CardsInteractorTest {
     public void testGetCardsRarityFilter() throws Exception {
         TestObserver<RxDatabaseEvent<CardDetails>> observer = TestObserver.create();
         cardFilter = new CardFilter();
-        cardFilter.put(Rarity.LEGENDARY, true);
-        cardFilter.put(Rarity.EPIC, false);
-        cardFilter.put(Rarity.RARE, false);
-        cardFilter.put(Rarity.COMMON, false);
+        cardFilter.put(Rarity.LEGENDARY_ID, true);
+        cardFilter.put(Rarity.EPIC_ID, false);
+        cardFilter.put(Rarity.RARE_ID, false);
+        cardFilter.put(Rarity.COMMON_ID, false);
         cardsInteractor.getCards(cardFilter).subscribe(observer);
 
         // Wait until complete.
@@ -127,7 +127,7 @@ public class CardsInteractorTest {
         for (Object object : observer.getEvents().get(0)) {
             RxDatabaseEvent<CardDetails> event = (RxDatabaseEvent<CardDetails>) object;
             CardDetails details = event.getValue();
-            assertTrue(details.getRarity().equals(Rarity.LEGENDARY));
+            assertTrue(details.getRarity().equals(Rarity.LEGENDARY_ID));
         }
     }
 }

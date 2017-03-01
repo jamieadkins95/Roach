@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.data.CardDetails;
 
@@ -86,7 +87,7 @@ public class NewDeckDialog extends DialogFragment {
                 cardFilter.put("Bronze", false);
                 cardFilter.put("Silver", false);
                 cardFilter.put("Gold", false);
-                for (Faction faction : Faction.ALL_FACTIONS) {
+                for (Filterable faction : Faction.ALL_FACTIONS) {
                     if (!faction.getId().equals(Faction.ALL_FACTIONS[i].getId())) {
                         cardFilter.put(faction.getId(), false);
                     }

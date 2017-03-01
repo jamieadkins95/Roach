@@ -7,15 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.mvp.PresenterFactory;
-import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.CardRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
@@ -29,8 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -109,15 +104,15 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<CardDetails>
                     getRecyclerViewAdapter().addItem(card);
                 } else {
                     switch (card.getType()) {
-                        case Type.BRONZE:
+                        case Type.BRONZE_ID:
                             int eventIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.event_cards)));
                             getRecyclerViewAdapter().addItem(eventIndex, card);
                             break;
-                        case Type.SILVER:
+                        case Type.SILVER_ID:
                             int bronzeIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.bronze_units)));
                             getRecyclerViewAdapter().addItem(bronzeIndex, card);
                             break;
-                        case Type.GOLD:
+                        case Type.GOLD_ID:
                             int silverIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.silver_units)));
                             getRecyclerViewAdapter().addItem(silverIndex, card);
                             break;
