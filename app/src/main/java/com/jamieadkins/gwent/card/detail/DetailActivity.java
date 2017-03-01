@@ -50,7 +50,7 @@ public class DetailActivity extends BaseActivity {
         String patch = getIntent().getStringExtra(EXTRA_PATCH);
 
         if (savedInstanceState == null) {
-            Fragment fragment = DetailFragment.newInstance(mCardId);
+            Fragment fragment =  DetailFragment.newInstance(mCardId, patch);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())

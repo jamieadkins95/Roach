@@ -37,7 +37,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private final String databasePath;
     private Query mCardsQuery;
     private ValueEventListener mCardListener;
-    private String mPatch = LATEST_PATCH;
+    private String mPatch;
 
     private static Map<String, CardsInteractorFirebase> mInstances;
 
