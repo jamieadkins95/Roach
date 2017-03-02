@@ -1,7 +1,10 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
@@ -22,6 +25,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserDeckDetailFragment extends BaseDeckDetailFragment
         implements DecksContract.View {
+
+    protected interface DeckBuilderListener {
+        void onDeckBuilderStateChanged(boolean open);
+    }
+
     DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
                 @Override
@@ -35,7 +43,30 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                 }
             };
 
-    public UserDeckDetailFragment() {
+    private DeckBuilderListener mDeckBuilderListener;
+
+    @Override
+    public void setupViews(View rootView) {
+        super.setupViews(rootView);
+        View bottomSheet = rootView.findViewById(R.id.bottom_sheet);
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    mDeckBuilderListener.onDeckBuilderStateChanged(false);
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    mDeckBuilderListener.onDeckBuilderStateChanged(true);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        bottomSheetBehavior.setPeekHeight(250);
     }
 
     public static UserDeckDetailFragment newInstance(String deckId) {
@@ -46,7 +77,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_card_list;
+        return R.layout.fragment_user_deck_detail;
     }
 
     @Override
@@ -61,5 +92,15 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
         getRecyclerViewAdapter().setDeck(deck);
+    }
+
+    protected void setDeckBuilderListener(DeckBuilderListener listener) {
+        mDeckBuilderListener = listener;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mDeckBuilderListener = null;
     }
 }

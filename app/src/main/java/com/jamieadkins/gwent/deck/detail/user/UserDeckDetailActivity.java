@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,56 +29,69 @@ import java.util.List;
  */
 
 public class UserDeckDetailActivity extends DeckDetailActivity
-        implements FilterBottomSheetDialogFragment.FilterUiListener {
+        implements FilterBottomSheetDialogFragment.FilterUiListener,
+        UserDeckDetailFragment.DeckBuilderListener {
 
     private FilterBottomSheetDialogFragment mFilterMenu;
+    private boolean mDeckBuilderOpen = false;
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        UserDeckDetailFragment userDeckDetailFragment = (UserDeckDetailFragment) fragment;
+        userDeckDetailFragment.setDeckBuilderListener(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search, menu);
 
-        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-        searchView.setQueryHint(getString(R.string.search_hint));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String query) {
-                if (query.equals("")) {
-                    // Don't search for everything!
-                    getCardFilter().setSearchQuery(null);
+        if (mDeckBuilderOpen) {
+            inflater.inflate(R.menu.search, menu);
+
+            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+            searchView.setQueryHint(getString(R.string.search_hint));
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
 
-                getCardFilter().setSearchQuery(query);
-                if (getCardFilterListener() != null) {
-                    getCardFilterListener().onCardFilterUpdated();
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    if (query.equals("")) {
+                        // Don't search for everything!
+                        getCardFilter().setSearchQuery(null);
+                        return false;
+                    }
+
+                    getCardFilter().setSearchQuery(query);
+                    if (getCardFilterListener() != null) {
+                        getCardFilterListener().onCardFilterUpdated();
+                    }
+
+                    return false;
                 }
+            });
 
-                return false;
-            }
-        });
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                getCardFilter().setSearchQuery(null);
-                if (getCardFilterListener() != null) {
-                    getCardFilterListener().onCardFilterUpdated();
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    getCardFilter().setSearchQuery(null);
+                    if (getCardFilterListener() != null) {
+                        getCardFilterListener().onCardFilterUpdated();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        if (getCardFilter().getSearchQuery() != null) {
-            searchView.setQuery(getCardFilter().getSearchQuery(), false);
+            if (getCardFilter().getSearchQuery() != null) {
+                searchView.setQuery(getCardFilter().getSearchQuery(), false);
+            }
+
+            inflater.inflate(R.menu.card_filters, menu);
         }
-
-        inflater.inflate(R.menu.card_filters, menu);
         return true;
     }
 
@@ -155,5 +169,11 @@ public class UserDeckDetailActivity extends DeckDetailActivity
             mFilterMenu.dismiss();
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDeckBuilderStateChanged(boolean open) {
+        invalidateOptionsMenu();
+        mDeckBuilderOpen = open;
     }
 }
