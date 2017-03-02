@@ -17,6 +17,9 @@ out/
 .gradle/
 build/
 
+# Git merge leftovers
+*.orig
+
 # Local configuration file (sdk path, etc)
 local.properties
 
