@@ -120,14 +120,6 @@ public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract
     protected void onDeckLoaded(Deck deck) {
         mDeck = deck;
         getRecyclerViewAdapter().setDeck(deck);
-
-        for (Filterable faction : Faction.ALL_FACTIONS) {
-            if (!faction.getId().equals(deck.getFactionId())) {
-                ((CardFilterProvider) getActivity()).getCardFilter().put(faction.getId(), false);
-            }
-        }
-
-        ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL.getId(), true);
     }
 
     @Override
