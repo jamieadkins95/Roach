@@ -184,23 +184,13 @@ public class UserDeckDetailActivity extends DeckDetailActivity
     }
 
     @Override
-    public void setTitle(CharSequence title) {
-        if (!mDeckBuilderOpen) {
-            super.setTitle(title);
-        }
-    }
-
-    @Override
     public void onDeckBuilderStateChanged(boolean open) {
         invalidateOptionsMenu();
         mDeckBuilderOpen = open;
 
         if (mDeckBuilderOpen) {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-            mTitle = String.valueOf(getTitle());
-            setTitle(R.string.add_card);
         } else {
-            setTitle(mTitle);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         }
     }
