@@ -152,6 +152,11 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     }
 
     @Override
+    public void setPresenter(DetailContract.Presenter presenter) {
+        mDetailPresenter = presenter;
+    }
+
+    @Override
     public DetailContract.Presenter createPresenter() {
         InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
         return new DetailPresenter(this, interactorContainer.getCardsInteractor(mPatch));

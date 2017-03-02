@@ -149,6 +149,11 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     }
 
     @Override
+    public void setPresenter(DecksContract.Presenter presenter) {
+        mDecksPresenter = presenter;
+    }
+
+    @Override
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
     }

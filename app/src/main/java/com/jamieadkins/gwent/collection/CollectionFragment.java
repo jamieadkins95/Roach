@@ -92,6 +92,12 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     }
 
     @Override
+    public void setPresenter(CollectionContract.Presenter presenter) {
+        setCardsPresenter(presenter);
+        mPresenter = presenter;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (mPresenter != null) {

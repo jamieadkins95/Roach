@@ -110,6 +110,11 @@ public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract
     }
 
     @Override
+    public void setPresenter(DecksContract.Presenter presenter) {
+
+    }
+
+    @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
                 .withControls(GwentRecyclerViewAdapter.Controls.DECK)
