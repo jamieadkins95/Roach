@@ -61,11 +61,5 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
         getRecyclerViewAdapter().setDeck(deck);
-
-        for (Filterable faction : Faction.ALL_FACTIONS) {
-            if (!faction.getId().equals(deck.getFactionId())) {
-                ((CardFilterProvider) getActivity()).getCardFilter().put(faction.getId(), false);
-            }
-        }
     }
 }

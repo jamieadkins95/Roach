@@ -158,6 +158,7 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
 
                         Intent intent = new Intent(getActivity(), UserDeckDetailActivity.class);
                         intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deck.getId());
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, deck.getFactionId());
                         intent.putExtra(DetailActivity.EXTRA_PATCH, deck.getPatch());
                         intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
                         getView().getContext().startActivity(intent);

@@ -68,7 +68,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
-    private static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
+    public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
     private static final String STATE_FILTER_CARD_DB = "com.jamieadkins.gwent.filter.carddb";
     private static final String STATE_FILTER_COLLECTION = "com.jamieadkins.gwent.filter.collection";
 
