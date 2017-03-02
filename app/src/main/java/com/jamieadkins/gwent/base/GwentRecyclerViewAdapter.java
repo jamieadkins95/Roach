@@ -151,19 +151,16 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
             mAdapter = new GwentRecyclerViewAdapter();
         }
 
-        public Builder withControls(Controls controls) {
-            mAdapter.mControls = controls;
-            return this;
-        }
-
-        public Builder withCollectionButtonListener(
+        public Builder withCollectionControls(
                 CollectionCardViewHolder.CollectionButtonListener listener) {
+            mAdapter.mControls = Controls.COLLECTION;
             mAdapter.mCollectionButtonListener = listener;
             return this;
         }
 
-        public Builder withDeckButtonListener(
+        public Builder withDeckControls(
                 DeckDetailCardViewHolder.DeckDetailButtonListener listener) {
+            mAdapter.mControls = Controls.DECK;
             mAdapter.mDeckButtonListener = listener;
             return this;
         }

@@ -1,9 +1,7 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,8 +16,6 @@ import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
@@ -119,8 +115,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withControls(GwentRecyclerViewAdapter.Controls.DECK)
-                .withDeckButtonListener(mButtonListener)
+                .withDeckControls(mButtonListener)
                 .build();
     }
 

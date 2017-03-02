@@ -7,10 +7,8 @@ import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
-import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Collection;
 
 import io.reactivex.Observer;
@@ -104,8 +102,7 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withControls(GwentRecyclerViewAdapter.Controls.COLLECTION)
-                .withCollectionButtonListener(new CollectionCardViewHolder.CollectionButtonListener() {
+                .withCollectionControls(new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
                     public void addCard(String cardId, String variationId) {
                         mPresenter.addCard(cardId, variationId);

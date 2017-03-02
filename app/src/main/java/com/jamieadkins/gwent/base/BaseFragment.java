@@ -82,7 +82,6 @@ public abstract class BaseFragment extends Fragment
 
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withControls(GwentRecyclerViewAdapter.Controls.NONE)
                 .build();
     }
 
