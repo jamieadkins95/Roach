@@ -114,7 +114,7 @@ public class Deck implements RecyclerViewItem {
         for (String cardId : cards.keySet()) {
             CardDetails card = cards.get(cardId);
             if (card.getLane().contains(position)) {
-                strength += card.getStrength();
+                strength += card.getStrength() * cardCount.get(cardId);
             }
         }
         return strength;
@@ -125,7 +125,7 @@ public class Deck implements RecyclerViewItem {
         int strength = 0;
         for (String cardId : cards.keySet()) {
             CardDetails card = cards.get(cardId);
-            strength += card.getStrength();
+            strength += card.getStrength() * cardCount.get(cardId);
         }
         return strength;
     }
