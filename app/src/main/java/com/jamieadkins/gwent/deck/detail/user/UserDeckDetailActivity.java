@@ -34,12 +34,17 @@ public class UserDeckDetailActivity extends DeckDetailActivity
 
     private FilterBottomSheetDialogFragment mFilterMenu;
     private boolean mDeckBuilderOpen = false;
+    private String mTitle;
+    private UserDeckDetailFragment mFragment;
 
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        UserDeckDetailFragment userDeckDetailFragment = (UserDeckDetailFragment) fragment;
-        userDeckDetailFragment.setDeckBuilderListener(this);
+
+        if (fragment instanceof UserDeckDetailFragment) {
+            mFragment = (UserDeckDetailFragment) fragment;
+            mFragment.setDeckBuilderListener(this);
+        }
     }
 
     @Override
@@ -101,6 +106,13 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         String filteringOn;
         Filterable[] filterItems;
         switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mDeckBuilderOpen) {
+                    mFragment.closeDeckBuilderMenu();
+                    return true;
+                } else {
+                    return super.onOptionsItemSelected(item);
+                }
             case R.id.filter_reset:
                 resetFilters();
                 if (mCardFilterListener != null) {
@@ -135,7 +147,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                filterItems = Type.ALL_TYPES;
+                filterItems = new Filterable[] {Type.BRONZE, Type.SILVER, Type.GOLD};
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -172,8 +184,24 @@ public class UserDeckDetailActivity extends DeckDetailActivity
     }
 
     @Override
+    public void setTitle(CharSequence title) {
+        if (!mDeckBuilderOpen) {
+            super.setTitle(title);
+        }
+    }
+
+    @Override
     public void onDeckBuilderStateChanged(boolean open) {
         invalidateOptionsMenu();
         mDeckBuilderOpen = open;
+
+        if (mDeckBuilderOpen) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+            mTitle = String.valueOf(getTitle());
+            setTitle(R.string.add_card);
+        } else {
+            setTitle(mTitle);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
     }
 }
