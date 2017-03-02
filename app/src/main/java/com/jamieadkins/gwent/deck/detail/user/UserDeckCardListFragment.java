@@ -18,6 +18,7 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
@@ -70,6 +71,9 @@ public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
+        }
         createPresenter();
     }
 
@@ -124,5 +128,11 @@ public class UserDeckCardListFragment extends BaseCardListFragment<DecksContract
         }
 
         ((CardFilterProvider) getActivity()).getCardFilter().put(Faction.NEUTRAL.getId(), true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
+        super.onSaveInstanceState(outState);
     }
 }
