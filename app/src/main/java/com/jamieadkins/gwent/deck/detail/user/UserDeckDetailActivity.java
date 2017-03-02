@@ -31,6 +31,7 @@ import java.util.List;
 public class UserDeckDetailActivity extends DeckDetailActivity
         implements FilterBottomSheetDialogFragment.FilterUiListener,
         UserDeckDetailFragment.DeckBuilderListener {
+    private static final String STATE_DECK_BUILDER_OPEN = "com.jamieadkins.com.gwent.deck.open";
 
     private FilterBottomSheetDialogFragment mFilterMenu;
     private boolean mDeckBuilderOpen = false;
@@ -44,6 +45,14 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         if (fragment instanceof UserDeckDetailFragment) {
             mFragment = (UserDeckDetailFragment) fragment;
             mFragment.setDeckBuilderListener(this);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            onDeckBuilderStateChanged(savedInstanceState.getBoolean(STATE_DECK_BUILDER_OPEN));
         }
     }
 
@@ -180,6 +189,8 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         if (mFilterMenu != null) {
             mFilterMenu.dismiss();
         }
+
+        outState.putBoolean(STATE_DECK_BUILDER_OPEN, mDeckBuilderOpen);
         super.onSaveInstanceState(outState);
     }
 
