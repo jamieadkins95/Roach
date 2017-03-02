@@ -37,6 +37,7 @@ public class DecksPresenter implements DecksContract.Presenter {
         mCardsInteractor = cardsInteractor;
 
         mDecksView = decksView;
+        mDecksView.setPresenter(this);
     }
 
     @Override

@@ -24,6 +24,7 @@ public class DetailPresenter implements DetailContract.Presenter {
         mDetailInteractor = detailInteractor;
 
         mDetailView = detailView;
+        mDetailView.setPresenter(this);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class DeckViewPagerAdapter extends FragmentStatePagerAdapter {
                         new PatchInteractorFirebase());
                 break;
             case CARD_DB_INDEX:
-                fragment = UserDeckCardListFragment.newInstance(mDeckId);
+                fragment = UserDeckDetailFragment.newInstance(mDeckId);
                 new DecksPresenter(
                         (DecksContract.View) fragment,
                         new DecksInteractorFirebase(),

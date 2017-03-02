@@ -12,16 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.jamieadkins.commonutils.mvp.PresenterFactory;
-import com.jamieadkins.gwent.InteractorContainer;
-import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.LargeCardView;
@@ -29,19 +21,15 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
-import io.reactivex.Observer;
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows picture and details of a card.
  */
 
-public class DetailFragment extends Fragment implements DetailContract.View,
-        PresenterFactory<DetailContract.Presenter> {
+public class DetailFragment extends Fragment implements DetailContract.View {
     private static final String STATE_CARD_ID = "com.jamieadkins.gwent.cardid";
     private static final String STATE_PATCH = "com.jamieadkins.gwent.patch";
     private DetailContract.Presenter mDetailPresenter;
@@ -100,7 +88,6 @@ public class DetailFragment extends Fragment implements DetailContract.View,
             mCardId = savedInstanceState.getString(STATE_CARD_ID);
             mPatch = savedInstanceState.getString(STATE_PATCH);
         }
-        mDetailPresenter = createPresenter();
     }
 
     @Nullable
@@ -154,11 +141,5 @@ public class DetailFragment extends Fragment implements DetailContract.View,
     @Override
     public void setPresenter(DetailContract.Presenter presenter) {
         mDetailPresenter = presenter;
-    }
-
-    @Override
-    public DetailContract.Presenter createPresenter() {
-        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
-        return new DetailPresenter(this, interactorContainer.getCardsInteractor(mPatch));
     }
 }

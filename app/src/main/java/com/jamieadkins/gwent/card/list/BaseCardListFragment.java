@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jamieadkins.commonutils.mvp.PresenterFactory;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
@@ -22,14 +21,13 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseCardListFragment<T extends CardsContract.Presenter> extends BaseFragment
-        implements CardFilterListener, CardsContract.View, PresenterFactory<T> {
+public abstract class BaseCardListFragment extends BaseFragment
+        implements CardFilterListener, CardsContract.View {
     private CardsContract.Presenter mCardsPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCardsPresenter = createPresenter();
     }
 
     @Override
@@ -70,5 +68,10 @@ public abstract class BaseCardListFragment<T extends CardsContract.Presenter> ex
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
+    }
+
+    @Override
+    public void setPresenter(CardsContract.Presenter presenter) {
+        mCardsPresenter = presenter;
     }
 }

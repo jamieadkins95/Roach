@@ -5,13 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
-import com.jamieadkins.commonutils.mvp.PresenterFactory;
-import com.jamieadkins.gwent.InteractorContainer;
-import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
+import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.data.Collection;
 
@@ -24,8 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment<CollectionContract.Presenter>
-        implements CollectionContract.View {
+public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
     CollectionContract.Presenter mPresenter;
 
     public CollectionFragment() {
@@ -35,7 +32,6 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
-        mPresenter = createPresenter();
     }
 
     @Override
@@ -92,9 +88,9 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     }
 
     @Override
-    public void setPresenter(CollectionContract.Presenter presenter) {
-        setCardsPresenter(presenter);
-        mPresenter = presenter;
+    public void setPresenter(CardsContract.Presenter presenter) {
+        super.setPresenter(presenter);
+        mPresenter = (CollectionContract.Presenter) presenter;
     }
 
     @Override
@@ -121,15 +117,5 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
                     }
                 })
                 .build();
-    }
-
-    @Override
-    public CollectionContract.Presenter createPresenter() {
-        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
-        CollectionContract.Presenter presenter = new CollectionPresenter(
-                this,
-                interactorContainer.getCollectionInteractor(),
-                interactorContainer.getCardsInteractor());
-        return presenter;
     }
 }

@@ -29,6 +29,7 @@ public class CollectionPresenter implements CollectionContract.Presenter {
         mCardsInteractor = cardsInteractor;
 
         mCollectionView = collectionView;
+        mCollectionView.setPresenter(this);
     }
 
     @Override

@@ -9,28 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jamieadkins.commonutils.mvp.PresenterFactory;
-import com.jamieadkins.commonutils.ui.Header;
 import com.jamieadkins.commonutils.ui.SubHeader;
-import com.jamieadkins.gwent.InteractorContainer;
-import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
-import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -38,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class DeckListFragment extends BaseFragment implements DecksContract.View,
-        PresenterFactory<DecksContract.Presenter>, NewDeckDialog.NewDeckDialogListener {
+        NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
     private static final String STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks";
     private DecksContract.Presenter mDecksPresenter;
@@ -68,8 +60,6 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
         } else {
             getActivity().setTitle(getString(R.string.public_decks));
         }
-
-        mDecksPresenter = createPresenter();
     }
 
     @Override
@@ -182,15 +172,5 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
     @Override
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
-    }
-
-    @Override
-    public DecksContract.Presenter createPresenter() {
-        InteractorContainer interactorContainer = InteractorContainers.getFromApp(getActivity());
-        return new DecksPresenter(
-                this,
-                interactorContainer.getDecksInteractor(),
-                interactorContainer.getCardsInteractor(),
-                interactorContainer.getPatchInteractor());
     }
 }
