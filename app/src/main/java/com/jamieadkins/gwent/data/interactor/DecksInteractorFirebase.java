@@ -261,6 +261,10 @@ public class DecksInteractorFirebase implements DecksInteractor {
                     return Transaction.success(mutableData);
                 }
 
+                if (!storedDeck.canAddCard(card)) {
+                    return Transaction.success(mutableData);
+                }
+
                 if (storedDeck.getCardCount().containsKey(card.getIngameId())) {
                     // If the user already has at least one of these cards in their deck.
                     int currentCardCount = storedDeck.getCardCount().get(card.getIngameId());

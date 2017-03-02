@@ -13,6 +13,15 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Deck implements RecyclerViewItem {
+    private static final int MAX_CARD_COUNT = 40;
+    private static final int MIN_CARD_COUNT = 25;
+    private static final int MAX_SILVER_COUNT = 6;
+    private static final int MAX_GOLD_COUNT = 6;
+
+    private static final int MAX_EACH_BRONZE = 3;
+    private static final int MAX_EACH_SILVER = 1;
+    private static final int MAX_EACH_GOLD = 1;
+
     private boolean publicDeck;
     private String id;
     private String name;
@@ -128,6 +137,32 @@ public class Deck implements RecyclerViewItem {
             count += cardCount.get(cardId);
         }
         return count;
+    }
+
+    @Exclude
+    public boolean canAddCard(CardDetails cardDetails) {
+        if (getTotalCardCount() >= MAX_CARD_COUNT) {
+            return false;
+        }
+
+        if (getCardCount().containsKey(cardDetails.getIngameId())) {
+            // If the user already has at least one of these cards in their deck.
+            int currentCardCount = getCardCount().get(cardDetails.getIngameId());
+            switch (cardDetails.getType()) {
+                case Type.BRONZE_ID:
+                    return currentCardCount < MAX_EACH_BRONZE;
+                case Type.SILVER_ID:
+                    return currentCardCount < MAX_EACH_SILVER;
+                case Type.GOLD_ID:
+                    return currentCardCount < MAX_EACH_GOLD;
+                default:
+                    return false;
+            }
+        } else {
+            // Deck doesn't contain this card yet, can add as long as the card isn't a leader card.
+            return !cardDetails.getType().equals(Type.LEADER_ID);
+        }
+
     }
 
     @Override
