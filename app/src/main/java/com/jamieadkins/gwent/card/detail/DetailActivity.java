@@ -49,13 +49,20 @@ public class DetailActivity extends BaseActivity {
 
         String patch = getIntent().getStringExtra(EXTRA_PATCH);
 
+        Fragment fragment;
         if (savedInstanceState == null) {
-            Fragment fragment =  DetailFragment.newInstance(mCardId, patch);
+            fragment =  DetailFragment.newInstance(mCardId, patch);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
                     .commit();
+        } else {
+            fragment = getSupportFragmentManager().findFragmentByTag(DetailFragment.class.getSimpleName());
         }
+
+        new DetailPresenter(
+                (DetailContract.View) fragment,
+                CardsInteractorFirebase.getInstance(patch));
     }
 
     @Override
