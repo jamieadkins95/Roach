@@ -69,6 +69,27 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
+                            android:text="@string/total_strength"/>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/deck_total_attack"
+                            android:text="87"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:text="@string/melee"/>
 
                         <TextView
@@ -121,6 +142,19 @@
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/type_values"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/deck_values"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="?android:listDivider"
+                    android:dividerPadding="2.5dp"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="0dp"
@@ -132,36 +166,59 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:text="@string/total"/>
+                            android:text="@string/total_cards"/>
 
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:id="@+id/deck_total_attack"
-                            android:text="87"/>
+                            android:id="@+id/deck_total_cards"
+                            android:text="@string/deck_total_cards_value"/>
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_below="@id/deck_values"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="?android:listDivider"
-                    android:dividerPadding="2.5dp"
-                    android:orientation="horizontal"
-                    android:showDividers="middle">
-
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:layout_gravity="center_vertical"
-                        android:id="@+id/deck_total_cards"
-                        android:text="Total cards: 27"/>
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/silver"
+                            android:text="@string/silver"/>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/deck_silver"
+                            android:text="@string/deck_total_cards_value"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/gold"
+                            android:text="@string/gold"/>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/deck_gold"
+                            android:text="@string/deck_total_cards_value"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

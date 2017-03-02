@@ -93,7 +93,7 @@
     <string name="siege">Siege</string>
     <string name="ranged">Ranged</string>
     <string name="total">Total</string>
-    <string name="total_cards">Total Cards: %d</string>
+    <string name="total_cards">Total Cards</string>
     <string name="publish_deck">Publish Deck</string>
     <string name="my_stuff">My Gwent</string>
     <string name="gwent">Gwent</string>
@@ -110,4 +110,7 @@
 
     <string name="this_deck">This Deck</string>
     <string name="add_card">Add Card</string>
+    <string name="deck_summary">Deck Summary</string>
+    <string name="deck_total_cards_value">%1$d/%2$d</string>
+    <string name="total_strength">Total Strength</string>
 </resources>

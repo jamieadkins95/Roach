@@ -13,10 +13,10 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class Deck implements RecyclerViewItem {
-    private static final int MAX_CARD_COUNT = 40;
-    private static final int MIN_CARD_COUNT = 25;
-    private static final int MAX_SILVER_COUNT = 6;
-    private static final int MAX_GOLD_COUNT = 6;
+    public static final int MAX_CARD_COUNT = 40;
+    public static final int MIN_CARD_COUNT = 25;
+    public static final int MAX_SILVER_COUNT = 6;
+    public static final int MAX_GOLD_COUNT = 4;
 
     public static final int MAX_EACH_BRONZE = 3;
     public static final int MAX_EACH_SILVER = 1;
@@ -135,6 +135,27 @@ public class Deck implements RecyclerViewItem {
         int count = 0;
         for (String cardId : cardCount.keySet()) {
             count += cardCount.get(cardId);
+        }
+        return count;
+    }
+
+    @Exclude
+    public int getSilverCardCount() {
+        return getCardCount(Type.SILVER_ID);
+    }
+
+    @Exclude
+    public int getGoldCardCount() {
+        return getCardCount(Type.GOLD_ID);
+    }
+
+    @Exclude
+    private int getCardCount(String type) {
+        int count = 0;
+        for (String cardId : cardCount.keySet()) {
+            if (cards.get(cardId).getType().equals(type)) {
+                count += cardCount.get(cardId);
+            }
         }
         return count;
     }
