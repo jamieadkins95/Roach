@@ -163,9 +163,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withShowDrawerOnFirstLaunch(true)
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
-                        new SectionDrawerItem()
-                                .withName(R.string.gwent)
-                                .withDivider(false),
                         mDrawerItems.get(R.id.tab_card_db),
                         mDrawerItems.get(R.id.tab_public_decks),
                         mDrawerItems.get(R.id.tab_helper),
