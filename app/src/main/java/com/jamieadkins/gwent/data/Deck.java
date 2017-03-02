@@ -18,9 +18,9 @@ public class Deck implements RecyclerViewItem {
     private static final int MAX_SILVER_COUNT = 6;
     private static final int MAX_GOLD_COUNT = 6;
 
-    private static final int MAX_EACH_BRONZE = 3;
-    private static final int MAX_EACH_SILVER = 1;
-    private static final int MAX_EACH_GOLD = 1;
+    public static final int MAX_EACH_BRONZE = 3;
+    public static final int MAX_EACH_SILVER = 1;
+    public static final int MAX_EACH_GOLD = 1;
 
     private boolean publicDeck;
     private String id;

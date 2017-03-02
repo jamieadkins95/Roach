@@ -8,6 +8,7 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Type;
 
 import java.util.HashMap;
@@ -57,12 +58,18 @@ public class DeckDetailCardViewHolder extends BaseCardViewHolder {
             mRemoveButton.setVisibility(View.INVISIBLE);
         }
 
-        // Can have 1 of each Gold and Silver cards.
-        int maxCount = 1;
+        int maxCount = 0;
 
-        // Can have 3 of each Bronze cards.
-        if (getBoundCardDetails().getType().equals(Type.BRONZE_ID)) {
-            maxCount = 3;
+        switch (getBoundCardDetails().getType()) {
+            case Type.BRONZE_ID:
+                maxCount = Deck.MAX_EACH_BRONZE;
+                break;
+            case Type.SILVER_ID:
+                maxCount = Deck.MAX_EACH_SILVER;
+                break;
+            case Type.GOLD_ID:
+                maxCount = Deck.MAX_EACH_GOLD;
+                break;
         }
 
         if (count >= maxCount) {
