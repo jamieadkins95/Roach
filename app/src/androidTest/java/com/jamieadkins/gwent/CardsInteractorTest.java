@@ -67,12 +67,12 @@ public class CardsInteractorTest {
     public void testGetCardsFactionFilter() throws Exception {
         TestObserver<RxDatabaseEvent<CardDetails>> observer = TestObserver.create();
         cardFilter = new CardFilter();
-        cardFilter.put(Faction.MONSTERS, false);
-        cardFilter.put(Faction.NILFGAARD, false);
-        cardFilter.put(Faction.SKELLIGE, false);
-        cardFilter.put(Faction.SCOIATAEL, false);
-        cardFilter.put(Faction.NEUTRAL, false);
-        cardFilter.put(Faction.NORTHERN_REALMS, true);
+        cardFilter.put(Faction.MONSTERS_ID, false);
+        cardFilter.put(Faction.NILFGAARD_ID, false);
+        cardFilter.put(Faction.SKELLIGE_ID, false);
+        cardFilter.put(Faction.SCOIATAEL_ID, false);
+        cardFilter.put(Faction.NEUTRAL_ID, false);
+        cardFilter.put(Faction.NORTHERN_REALMS_ID, true);
         cardsInteractor.getCards(cardFilter).subscribe(observer);
 
         // Wait until complete.
