@@ -25,26 +25,13 @@ public class DeckViewHolder extends BaseViewHolder {
     private Deck mDeck;
     private final TextView mDeckName;
     private final TextView mDeckLeader;
-    private final TextView mDeckMelee;
-    private final TextView mDeckRanged;
-    private final TextView mDeckSiege;
-    private final TextView mDeckTotalCards;
-    private final TextView mDeckTotalAttack;
-
-    private final TextView mDeckSilver;
-    private final TextView mDeckGold;
+    private final DeckSummaryView mDeckSummary;
 
     public DeckViewHolder(View view) {
         super(view);
         mDeckName = (TextView) view.findViewById(R.id.deck_name);
         mDeckLeader = (TextView) view.findViewById(R.id.deck_leader);
-        mDeckMelee = (TextView) view.findViewById(R.id.deck_melee);
-        mDeckRanged = (TextView) view.findViewById(R.id.deck_range);
-        mDeckSiege = (TextView) view.findViewById(R.id.deck_siege);
-        mDeckTotalCards = (TextView) view.findViewById(R.id.deck_total_cards);
-        mDeckTotalAttack = (TextView) view.findViewById(R.id.deck_total_attack);
-        mDeckSilver = (TextView) view.findViewById(R.id.deck_silver);
-        mDeckGold = (TextView) view.findViewById(R.id.deck_gold);
+        mDeckSummary = (DeckSummaryView) view.findViewById(R.id.deck_summary);
     }
 
     @Override
@@ -81,41 +68,8 @@ public class DeckViewHolder extends BaseViewHolder {
 
         mDeckName.setText(mDeck.getName());
         mDeckLeader.setText(mDeck.getLeader().getName());
-        mDeckMelee.setText(String.valueOf(mDeck.getStrengthForPosition(Position.MELEE)));
-        mDeckRanged.setText(String.valueOf(mDeck.getStrengthForPosition(Position.RANGED)));
-        mDeckSiege.setText(String.valueOf(mDeck.getStrengthForPosition(Position.SIEGE)));
-        mDeckTotalAttack.setText(String.valueOf(mDeck.getTotalStrength()));
 
-        int totalCardCount = mDeck.getTotalCardCount();
-        int invalidColour = ContextCompat.getColor(getView().getContext(), R.color.monsters);
-        int defaultColour = ContextCompat.getColor(getView().getContext(), R.color.textSecondary);
-
-        mDeckTotalCards.setText(String.format(
-                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
-                totalCardCount, Deck.MAX_CARD_COUNT));
-        if (totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT) {
-            mDeckTotalCards.setTextColor(invalidColour);
-        }
-
-        int silverCardCount = mDeck.getSilverCardCount();
-        mDeckSilver.setText(String.format(
-                getView().getContext().getString(R.string.deck_total_cards_value),
-                silverCardCount, Deck.MAX_SILVER_COUNT));
-        if (silverCardCount > Deck.MAX_SILVER_COUNT) {
-            mDeckSilver.setTextColor(invalidColour);
-        } else {
-            mDeckSilver.setTextColor(defaultColour);
-        }
-
-        int goldCardCount = mDeck.getGoldCardCount();
-        mDeckGold.setText(String.format(
-                getView().getContext().getString(R.string.deck_total_cards_value),
-                goldCardCount, Deck.MAX_GOLD_COUNT));
-        if (goldCardCount > Deck.MAX_GOLD_COUNT) {
-            mDeckGold.setTextColor(invalidColour);
-        } else {
-            mDeckGold.setTextColor(defaultColour);
-        }
+        mDeckSummary.setDeck(mDeck);
 
         int color;
         switch (mDeck.getFactionId()) {
