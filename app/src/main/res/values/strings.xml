@@ -95,7 +95,7 @@
     <string name="total">Total</string>
     <string name="total_cards">Total Cards: %d</string>
     <string name="publish_deck">Publish Deck</string>
-    <string name="my_stuff">My Stuff</string>
+    <string name="my_stuff">My Gwent</string>
     <string name="gwent">Gwent</string>
     <string name="signed_out">Signed Out</string>
     <string name="keg_helper">Card Picker Helper</string>
