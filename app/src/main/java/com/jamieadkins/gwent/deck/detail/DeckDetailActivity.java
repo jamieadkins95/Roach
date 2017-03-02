@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +18,13 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -33,6 +39,8 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
     protected static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
+
+    private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
 
     protected DecksContract.Presenter mDeckDetailsPresenter;
     protected String mDeckId;
@@ -53,12 +61,16 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Fragment fragment;
+
         if (savedInstanceState != null) {
             mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
             mFactionId = savedInstanceState.getString(EXTRA_FACTION_ID);
             mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
+
+            fragment = getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         } else {
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
             mFactionId = getIntent().getStringExtra(EXTRA_FACTION_ID);
@@ -67,7 +79,24 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
 
             mCardFilter = new CardFilter();
             resetFilters();
+
+            if (mIsPublicDeck) {
+                fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+            } else {
+                fragment = UserDeckDetailFragment.newInstance(mDeckId);
+            }
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.contentContainer, fragment, TAG_FRAGMENT)
+                    .commit();
         }
+
+        new DecksPresenter(
+                (DecksContract.View) fragment,
+                new DecksInteractorFirebase(),
+                CardsInteractorFirebase.getInstance(mPatch),
+                new PatchInteractorFirebase());
     }
 
     protected void resetFilters() {

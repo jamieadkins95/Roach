@@ -30,29 +30,7 @@ import java.util.List;
 public class UserDeckDetailActivity extends DeckDetailActivity
         implements FilterBottomSheetDialogFragment.FilterUiListener {
 
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
     private FilterBottomSheetDialogFragment mFilterMenu;
-
-    @Override
-    public void initialiseContentView() {
-        setContentView(R.layout.activity_user_deck);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.view_pager);
-        mPagerAdapter = new DeckViewPagerAdapter(getSupportFragmentManager(), mDeckId, mPatch);
-        mPager.setAdapter(mPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.this_deck)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.card_database)));
-        tabLayout.setupWithViewPager(mPager);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
