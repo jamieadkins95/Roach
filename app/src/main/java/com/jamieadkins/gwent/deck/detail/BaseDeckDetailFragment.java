@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.InteractorContainer;
 import com.jamieadkins.gwent.InteractorContainers;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Position;
@@ -37,6 +38,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
+    private String mPatch;
 
     private Map<String, SubHeader> mRowHeaders = new HashMap<>();
 
@@ -46,7 +48,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
-
+            mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
         }
         mRowHeaders.put(getString(R.string.leader), new SubHeader(getString(R.string.leader)));
         mRowHeaders.put(getString(R.string.gold_units), new SubHeader(getString(R.string.gold_units)));
@@ -154,6 +156,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
+        outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
         super.onSaveInstanceState(outState);
     }
 }

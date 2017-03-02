@@ -23,10 +23,12 @@ public class DeckViewPagerAdapter extends FragmentStatePagerAdapter {
     private static final int DECK_INDEX = 0;
     private static final int CARD_DB_INDEX = 1;
     private final String mDeckId;
+    private final String mPatch;
 
-    public DeckViewPagerAdapter(FragmentManager fragmentManager, String deckId) {
+    public DeckViewPagerAdapter(FragmentManager fragmentManager, String deckId, String patch) {
         super(fragmentManager);
         mDeckId = deckId;
+        mPatch = patch;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class DeckViewPagerAdapter extends FragmentStatePagerAdapter {
                 new DecksPresenter(
                         (DecksContract.View) fragment,
                         new DecksInteractorFirebase(),
-                        CardsInteractorFirebase.getInstance(),
+                        CardsInteractorFirebase.getInstance(mPatch),
                         new PatchInteractorFirebase());
                 break;
             case CARD_DB_INDEX:
@@ -46,7 +48,7 @@ public class DeckViewPagerAdapter extends FragmentStatePagerAdapter {
                 new DecksPresenter(
                         (DecksContract.View) fragment,
                         new DecksInteractorFirebase(),
-                        CardsInteractorFirebase.getInstance(),
+                        CardsInteractorFirebase.getInstance(mPatch),
                         new PatchInteractorFirebase());
                 break;
             default:

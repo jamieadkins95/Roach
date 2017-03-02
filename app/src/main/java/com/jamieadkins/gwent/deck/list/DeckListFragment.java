@@ -19,6 +19,7 @@ import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
@@ -157,6 +158,7 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
 
                         Intent intent = new Intent(getActivity(), UserDeckDetailActivity.class);
                         intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deck.getId());
+                        intent.putExtra(DetailActivity.EXTRA_PATCH, deck.getPatch());
                         intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
                         getView().getContext().startActivity(intent);
 

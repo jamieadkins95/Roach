@@ -33,7 +33,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.view_pager);
-        mPagerAdapter = new DeckViewPagerAdapter(getSupportFragmentManager(), mDeckId);
+        mPagerAdapter = new DeckViewPagerAdapter(getSupportFragmentManager(), mDeckId, mPatch);
         mPager.setAdapter(mPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);

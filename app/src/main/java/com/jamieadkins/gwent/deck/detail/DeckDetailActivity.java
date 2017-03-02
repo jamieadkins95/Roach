@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.card.CardFilterProvider;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
@@ -32,6 +33,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
 
     protected DecksContract.Presenter mDeckDetailsPresenter;
     protected String mDeckId;
+    protected String mPatch;
     private boolean mIsPublicDeck;
 
     private CardFilter mCardFilter;
@@ -50,6 +52,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
         if (savedInstanceState != null) {
             mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
+            mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
         } else {
             mCardFilter = new CardFilter();
@@ -57,6 +60,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
             mCardFilter.setCollectibleOnly(true);
 
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
+            mPatch = getIntent().getStringExtra(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
         }
     }
@@ -115,6 +119,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
         outState.putParcelable(STATE_CARD_FILTER, mCardFilter);
         outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
         outState.putString(EXTRA_DECK_ID, mDeckId);
+        outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
         super.onSaveInstanceState(outState);
     }
 }
