@@ -213,21 +213,23 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         getRecyclerViewAdapter().setDeck(deck);
         mCardDatabaseAdapter.setDeck(deck);
 
-        mPotentialLeaders = new ArrayList<>();
-        mDecksPresenter.getLeadersForFaction(deck.getFactionId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                        mPotentialLeaders.add(value.getValue());
-                    }
+        if (mPotentialLeaders == null) {
+            mPotentialLeaders = new ArrayList<>();
+            mDecksPresenter.getLeadersForFaction(deck.getFactionId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
+                        @Override
+                        public void onNext(RxDatabaseEvent<CardDetails> value) {
+                            mPotentialLeaders.add(value.getValue());
+                        }
 
-                    @Override
-                    public void onComplete() {
-                        getActivity().invalidateOptionsMenu();
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+                            getActivity().invalidateOptionsMenu();
+                        }
+                    });
+        }
     }
 
     protected void setDeckBuilderListener(DeckBuilderListener listener) {
