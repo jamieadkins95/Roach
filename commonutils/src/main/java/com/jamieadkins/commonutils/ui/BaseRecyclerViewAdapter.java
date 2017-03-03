@@ -48,6 +48,9 @@ public abstract class BaseRecyclerViewAdapter
             case SubHeader.TYPE_SUB_HEADER:
                 return new SubHeaderViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_subheader, parent, false));
+            case GoogleNowSubHeader.TYPE_GOOGLE_NOW_SUB_HEADER:
+                return new GoogleNowSubHeaderViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_google_subheader, parent, false));
             default:
                 throw new RuntimeException("Detail level has not been implemented.");
         }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.ui.GoogleNowSubHeader;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
@@ -46,9 +47,9 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
             mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
         }
         mRowHeaders.put(getString(R.string.leader), new SubHeader(getString(R.string.leader)));
-        mRowHeaders.put(getString(R.string.gold), new SubHeader(getString(R.string.gold)));
-        mRowHeaders.put(getString(R.string.silver), new SubHeader(getString(R.string.silver)));
-        mRowHeaders.put(getString(R.string.bronze), new SubHeader(getString(R.string.bronze)));
+        mRowHeaders.put(getString(R.string.gold), new GoogleNowSubHeader(getString(R.string.gold), R.color.gold));
+        mRowHeaders.put(getString(R.string.silver), new GoogleNowSubHeader(getString(R.string.silver), R.color.silver));
+        mRowHeaders.put(getString(R.string.bronze), new GoogleNowSubHeader(getString(R.string.bronze), R.color.bronze));
     }
 
     @Override
