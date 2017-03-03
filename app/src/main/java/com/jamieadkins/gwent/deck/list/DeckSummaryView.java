@@ -70,28 +70,20 @@ public class DeckSummaryView extends LinearLayout {
         mDeckTotalCards.setText(String.format(
                 mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
                 totalCardCount, Deck.MAX_CARD_COUNT));
-        if (totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT) {
-            mDeckTotalCards.setTextColor(invalidColour);
-        }
+        mDeckTotalCards.setTextColor(
+                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
+                        ? invalidColour : defaultColour);
 
         int silverCardCount = deck.getSilverCardCount();
         mDeckSilver.setText(String.format(
                 getContext().getString(R.string.deck_total_cards_value),
                 silverCardCount, Deck.MAX_SILVER_COUNT));
-        if (silverCardCount > Deck.MAX_SILVER_COUNT) {
-            mDeckSilver.setTextColor(invalidColour);
-        } else {
-            mDeckSilver.setTextColor(defaultColour);
-        }
+        mDeckSilver.setTextColor(silverCardCount > Deck.MAX_SILVER_COUNT ? invalidColour : defaultColour);
 
         int goldCardCount = deck.getGoldCardCount();
         mDeckGold.setText(String.format(
                 getContext().getString(R.string.deck_total_cards_value),
                 goldCardCount, Deck.MAX_GOLD_COUNT));
-        if (goldCardCount > Deck.MAX_GOLD_COUNT) {
-            mDeckGold.setTextColor(invalidColour);
-        } else {
-            mDeckGold.setTextColor(defaultColour);
-        }
+        mDeckGold.setTextColor(goldCardCount > Deck.MAX_GOLD_COUNT ? invalidColour : defaultColour);
     }
 }
