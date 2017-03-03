@@ -28,6 +28,9 @@ public abstract class BaseFragment extends Fragment
             = new BaseObserver<RxDatabaseEvent<? extends RecyclerViewItem>>() {
         @Override
         public void onNext(RxDatabaseEvent<? extends RecyclerViewItem> value) {
+            if (getActivity() == null) {
+                return;
+            }
             onDataEvent(value);
         }
 
