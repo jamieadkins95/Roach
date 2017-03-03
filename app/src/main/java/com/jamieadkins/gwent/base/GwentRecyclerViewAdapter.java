@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Collection;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
+import com.jamieadkins.gwent.deck.list.DeckSummaryViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckViewHolder;
 
 import java.util.Map;
@@ -76,8 +77,8 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
                         return new BaseCardViewHolder(LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.card_detail_layout, parent, false));
                     case TYPE_DECK:
-                        return new DeckViewHolder(LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.item_deck, parent, false));
+                        return new DeckSummaryViewHolder(LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.item_deck_summary, parent, false));
                     default:
                         return super.onCreateViewHolder(parent, viewType);
                 }

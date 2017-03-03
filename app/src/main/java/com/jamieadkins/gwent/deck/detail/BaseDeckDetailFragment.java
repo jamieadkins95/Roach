@@ -31,7 +31,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseDeckDetailFragment extends BaseFragment
         implements DecksContract.View {
-    private static final int LEADER_INDEX = 0;
+    private static final int LEADER_INDEX = 2;
+    private static final int DECK_SUMMARY_INDEX = 0;
     protected DecksContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
@@ -47,6 +48,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
             mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
         }
+        mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
         mRowHeaders.put(getString(R.string.gold), new GoogleNowSubHeader(getString(R.string.gold), R.color.gold));
         mRowHeaders.put(getString(R.string.silver), new GoogleNowSubHeader(getString(R.string.silver), R.color.silver));
         mRowHeaders.put(getString(R.string.bronze), new GoogleNowSubHeader(getString(R.string.bronze), R.color.bronze));
@@ -88,13 +90,18 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
         getActivity().setTitle(mDeck.getName());
 
         // Add the sub headers.
+        if (getRecyclerViewAdapter().isAnItemAt(DECK_SUMMARY_INDEX)) {
+            getRecyclerViewAdapter().removeItem(DECK_SUMMARY_INDEX);
+        }
         if (getRecyclerViewAdapter().isAnItemAt(LEADER_INDEX)) {
             getRecyclerViewAdapter().removeItem(LEADER_INDEX);
         }
+        getRecyclerViewAdapter().addItem(DECK_SUMMARY_INDEX, mDeck);
+        getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.leader)));
         getRecyclerViewAdapter().addItem(LEADER_INDEX, mDeck.getLeader());
-        getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.gold)));
-        getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.silver)));
-        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.bronze)));
+        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.gold)));
+        getRecyclerViewAdapter().addItem(4, mRowHeaders.get(getString(R.string.silver)));
+        getRecyclerViewAdapter().addItem(5, mRowHeaders.get(getString(R.string.bronze)));
 
         for (String cardId : mDeck.getCards().keySet()) {
             CardDetails card = mDeck.getCards().get(cardId);
