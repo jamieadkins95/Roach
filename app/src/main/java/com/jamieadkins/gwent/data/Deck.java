@@ -186,6 +186,7 @@ public class Deck implements RecyclerViewItem {
 
     }
 
+    @Exclude
     @Override
     public int getItemType() {
         return GwentRecyclerViewAdapter.TYPE_DECK;
