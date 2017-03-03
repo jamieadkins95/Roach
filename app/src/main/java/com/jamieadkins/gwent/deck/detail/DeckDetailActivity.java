@@ -53,7 +53,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_preference);
+        setContentView(R.layout.activity_with_fragment);
     }
 
     @Override

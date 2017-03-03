@@ -20,7 +20,7 @@ public class BasePreferenceActivity extends BaseActivity {
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_preference);
+        setContentView(R.layout.activity_with_fragment);
     }
 
     @Override
