@@ -36,7 +36,7 @@
 
     <!-- Types -->
     <color name="bronze">#795548</color>
-    <color name="silver">#9E9E9E</color>
+    <color name="silver">#C0C0C0</color>
     <color name="gold">#FFC107</color>
 
 </resources>
