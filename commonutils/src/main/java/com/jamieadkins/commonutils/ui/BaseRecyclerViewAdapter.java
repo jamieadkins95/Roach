@@ -80,6 +80,15 @@ public abstract class BaseRecyclerViewAdapter
         notifyDataSetChanged();
     }
 
+    public void removeItem(int index) {
+        mItems.remove(index);
+        notifyDataSetChanged();
+    }
+
+    public boolean isAnItemAt(int index) {
+        return mItems.size() > index;
+    }
+
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
