@@ -502,14 +502,6 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 tag = TAG_USER_DECKS;
                 break;
             case R.id.tab_collection:
-                // Hide this feature in release versions for now.
-                if (!BuildConfig.DEBUG && !BuildConfig.BETA) {
-                    showSnackbar(String.format(
-                            getString(R.string.is_coming_soon),
-                            getString(R.string.my_collection)));
-                    return false;
-                }
-
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
                     showSnackbar(
