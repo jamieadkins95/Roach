@@ -23,6 +23,7 @@ import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
+import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
@@ -51,15 +52,19 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
     protected CardFilter mCardFilter;
     protected CardFilterListener mCardFilterListener;
 
+    private DeckBriefSummaryView mSummaryView;
+
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_with_fragment);
+        setContentView(R.layout.activity_deck_detail);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mSummaryView = (DeckBriefSummaryView) findViewById(R.id.deck_summary_brief);
 
         Fragment fragment;
 
@@ -92,7 +97,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
                     .commit();
         }
 
-        new DecksPresenter(
+        mDeckDetailsPresenter = new DecksPresenter(
                 (DecksContract.View) fragment,
                 new DecksInteractorFirebase(),
                 CardsInteractorFirebase.getInstance(mPatch),
@@ -118,6 +123,25 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
             inflater.inflate(R.menu.deck_detail, menu);
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void onNext(RxDatabaseEvent<Deck> value) {
+                        mSummaryView.setDeck(value.getValue());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
