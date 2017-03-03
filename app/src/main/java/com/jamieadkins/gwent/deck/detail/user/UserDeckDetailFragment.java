@@ -1,12 +1,17 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
@@ -19,6 +24,9 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -55,10 +63,18 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     private GwentRecyclerViewAdapter mCardDatabaseAdapter;
     private FloatingActionButton mAddCardButton;
 
+    private List<CardDetails> mPotentialLeaders;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         ((CardFilterProvider) context).registerCardFilterListener(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -126,6 +142,34 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (mPotentialLeaders != null && mPotentialLeaders.size() == 3) {
+            inflater.inflate(R.menu.deck_builder, menu);
+            menu.findItem(R.id.action_leader_1).setTitle(mPotentialLeaders.get(0).getName());
+            menu.findItem(R.id.action_leader_2).setTitle(mPotentialLeaders.get(1).getName());
+            menu.findItem(R.id.action_leader_3).setTitle(mPotentialLeaders.get(2).getName());
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_leader_1:
+                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(0));
+                return true;
+            case R.id.action_leader_2:
+                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(1));
+                return true;
+            case R.id.action_leader_3:
+                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(2));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onCardFilterUpdated() {
         mCardDatabaseAdapter.clear();
         loadCardData();
@@ -168,6 +212,22 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         super.onDeckLoaded(deck);
         getRecyclerViewAdapter().setDeck(deck);
         mCardDatabaseAdapter.setDeck(deck);
+
+        mPotentialLeaders = new ArrayList<>();
+        mDecksPresenter.getLeadersForFaction(deck.getFactionId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
+                    @Override
+                    public void onNext(RxDatabaseEvent<CardDetails> value) {
+                        mPotentialLeaders.add(value.getValue());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        getActivity().invalidateOptionsMenu();
+                    }
+                });
     }
 
     protected void setDeckBuilderListener(DeckBuilderListener listener) {

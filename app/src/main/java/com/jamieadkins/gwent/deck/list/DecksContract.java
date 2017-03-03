@@ -27,6 +27,8 @@ public interface DecksContract {
 
         Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
+        Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId);
+
         Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
 
         void stop();
@@ -40,5 +42,7 @@ public interface DecksContract {
         void addCardToDeck(Deck deck, CardDetails card);
 
         void removeCardFromDeck(Deck deck, CardDetails card);
+
+        void setLeader(Deck deck, CardDetails leader);
     }
 }

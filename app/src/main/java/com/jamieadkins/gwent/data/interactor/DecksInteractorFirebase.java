@@ -248,6 +248,36 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
+    public void setLeader(Deck deck, final CardDetails leader) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setLeader(leader);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
     public void addCardToDeck(Deck deck, final CardDetails card) {
         DatabaseReference deckReference = mUserReference.child(deck.getId());
 

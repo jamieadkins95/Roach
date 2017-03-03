@@ -88,6 +88,9 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
         getActivity().setTitle(mDeck.getName());
 
         // Add the sub headers.
+        if (getRecyclerViewAdapter().isAnItemAt(LEADER_INDEX)) {
+            getRecyclerViewAdapter().removeItem(LEADER_INDEX);
+        }
         getRecyclerViewAdapter().addItem(LEADER_INDEX, mDeck.getLeader());
         getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.gold)));
         getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.silver)));

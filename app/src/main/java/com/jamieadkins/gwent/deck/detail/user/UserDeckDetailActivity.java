@@ -58,6 +58,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
 
         if (mDeckBuilderOpen) {

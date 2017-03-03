@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.interactor.PatchInteractor;
@@ -87,6 +90,23 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId) {
+        CardFilter cardFilter = new CardFilter();
+
+        // Set filter to leaders of this faction only.
+        for (Filterable filterable : Faction.ALL_FACTIONS) {
+            if (!filterable.getId().equals(factionId)) {
+                cardFilter.put(filterable.getId(), false);
+            }
+        }
+        cardFilter.put(Type.BRONZE_ID, false);
+        cardFilter.put(Type.SILVER_ID, false);
+        cardFilter.put(Type.GOLD_ID, false);
+
+        return mCardsInteractor.getCards(cardFilter);
+    }
+
+    @Override
     public void addCardToDeck(Deck deck, CardDetails card) {
         mDecksInteractor.addCardToDeck(deck, card);
     }
@@ -94,6 +114,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void removeCardFromDeck(Deck deck, CardDetails card) {
         mDecksInteractor.removeCardFromDeck(deck, card);
+    }
+
+    @Override
+    public void setLeader(Deck deck, CardDetails leader) {
+        mDecksInteractor.setLeader(deck, leader);
     }
 
     @Override

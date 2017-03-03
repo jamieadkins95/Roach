@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.base;
 
+import android.content.Context;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
