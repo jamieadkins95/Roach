@@ -43,7 +43,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private Query mDeckQuery;
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
-    private ValueEventListener mDecksListener;
+    private ChildEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
 
     public DecksInteractorFirebase() {
@@ -63,31 +63,10 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDecksListener = new ValueEventListener() {
+                        ValueEventListener initialCountListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot deckSnapshot : dataSnapshot.getChildren()) {
-                                    Deck deck = deckSnapshot.getValue(Deck.class);
-
-                                    if (deck == null) {
-                                        emitter.onError(new Throwable("Deck doesn't exist"));
-                                        emitter.onComplete();
-                                        return;
-                                    }
-
-                                    deck.getLeader().setPatch(deck.getPatch());
-                                    for (String cardId : deck.getCards().keySet()) {
-                                        deck.getCards().get(cardId).setPatch(deck.getPatch());
-                                    }
-
-                                    emitter.onNext(
-                                            new RxDatabaseEvent<Deck>(
-                                                    deckSnapshot.getKey(),
-                                                    deck,
-                                                    RxDatabaseEvent.EventType.ADDED));
-                                }
-
-                                emitter.onComplete();
+                                emitter.onNext(RxDatabaseEvent.INITIAL_LOAD_COMPLETE);
                             }
 
                             @Override
@@ -96,7 +75,62 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDecksQuery.addListenerForSingleValueEvent(mDecksListener);
+                        mDecksListener = new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot deckSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.ADDED));
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot deckSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.CHANGED));
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot deckSnapshot) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.REMOVED));
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot deckSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.MOVED));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+
+                            private Deck initialiseDeck(DataSnapshot deckSnapshot) {
+                                Deck deck = deckSnapshot.getValue(Deck.class);
+
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                }
+
+                                return deck;
+                            }
+                        };
+
+                        mDecksQuery.addChildEventListener(mDecksListener);
+                        mDecksQuery.addListenerForSingleValueEvent(initialCountListener);
                     }
                 });
             }
@@ -143,7 +177,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
                                                 deck,
-                                                RxDatabaseEvent.EventType.CHANGED));
+                                                RxDatabaseEvent.EventType.ADDED));
                             }
 
                             @Override
@@ -192,7 +226,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
                                                 deck,
-                                                RxDatabaseEvent.EventType.CHANGED));
+                                                RxDatabaseEvent.EventType.ADDED));
                             }
 
                             @Override

@@ -65,6 +65,12 @@ public abstract class BaseFragment extends Fragment
             case REMOVED:
                 mAdapter.removeItem(data.getValue());
                 break;
+            case CHANGED:
+                mAdapter.updateItem(data.getValue());
+                break;
+            case COMPLETE:
+                setLoading(false);
+                break;
         }
     }
 
@@ -75,6 +81,7 @@ public abstract class BaseFragment extends Fragment
     public void setLoading(boolean loading) {
         mLoading = loading;
         mRefreshContainer.setRefreshing(loading);
+        enableRefreshing(loading);
     }
 
     public void enableRefreshing(boolean enable) {

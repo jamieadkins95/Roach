@@ -25,12 +25,4 @@ public class CardListFragment extends BaseCardListFragment {
     public void setLoadingIndicator(boolean active) {
         setLoading(active);
     }
-
-    @Override
-    public void setLoading(boolean loading) {
-        super.setLoading(loading);
-
-        // Card Data doesn't need refreshing, so disable swipe up to refresh.
-        enableRefreshing(loading);
-    }
 }
