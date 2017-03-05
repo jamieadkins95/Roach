@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
@@ -22,9 +23,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
     CollectionContract.Presenter mPresenter;
-
-    public CollectionFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,20 +55,10 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         mPresenter.getCollection()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Collection>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+                .subscribe(new BaseObserver<Collection>() {
                     @Override
                     public void onNext(Collection value) {
                         getRecyclerViewAdapter().setCardCollection(value);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
                     }
 
                     @Override
