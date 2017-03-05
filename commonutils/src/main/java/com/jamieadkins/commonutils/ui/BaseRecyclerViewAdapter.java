@@ -64,25 +64,32 @@ public abstract class BaseRecyclerViewAdapter
     public void addItem(RecyclerViewItem item) {
         if (!mItems.contains(item)) {
             mItems.add(item);
-            notifyDataSetChanged();
+            notifyItemInserted(mItems.size() - 1);
         }
     }
 
     public void addItem(int position, RecyclerViewItem item) {
         if (!mItems.contains(item)) {
             mItems.add(position, item);
-            notifyDataSetChanged();
+            notifyItemInserted(position);
         }
     }
 
+    public void replaceItem(int position, RecyclerViewItem newItem) {
+        mItems.set(position, newItem);
+        notifyItemChanged(position);
+    }
+
     public void removeItem(RecyclerViewItem itemToRemove) {
-        mItems.remove(itemToRemove);
-        notifyDataSetChanged();
+        if (mItems.contains(itemToRemove)) {
+            int index = mItems.indexOf(itemToRemove);
+            removeItem(index);
+        }
     }
 
     public void removeItem(int index) {
         mItems.remove(index);
-        notifyDataSetChanged();
+        notifyItemRemoved(index);
     }
 
     public boolean isAnItemAt(int index) {
