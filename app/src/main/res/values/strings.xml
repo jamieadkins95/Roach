@@ -116,4 +116,7 @@
     <string name="change_leader">Change Leader</string>
     <string name="deck_builder">Deck Builder</string>
     <string name="collection_manager">Collection Manager</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="new_name">New name</string>
 </resources>

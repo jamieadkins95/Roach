@@ -20,6 +20,8 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     void setLeader(Deck deck, CardDetails leader);
 
+    void renameDeck(Deck deck, String newName);
+
     void removeCardFromDeck(Deck deck, CardDetails card);
 
     void publishDeck(Deck deck);

@@ -54,6 +54,10 @@ public class Deck implements RecyclerViewItem {
         this.leader = leader;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CardDetails getLeader() {
         return leader;
     }

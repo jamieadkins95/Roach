@@ -1,18 +1,22 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -163,6 +167,27 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                 return true;
             case R.id.action_leader_3:
                 mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(2));
+                return true;
+            case R.id.action_rename:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.rename);
+
+                final EditText input = new EditText(getActivity());
+                input.setHint(R.string.new_name);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                builder.setView(input);
+
+                builder.setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDecksPresenter.renameDeck(mDeck, input.getText().toString());
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, null);
+                builder.create().show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

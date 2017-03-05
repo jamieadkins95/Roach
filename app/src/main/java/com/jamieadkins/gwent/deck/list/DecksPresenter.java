@@ -117,6 +117,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public void renameDeck(Deck deck, String name) {
+        mDecksInteractor.renameDeck(deck, name);
+    }
+
+    @Override
     public void setLeader(Deck deck, CardDetails leader) {
         mDecksInteractor.setLeader(deck, leader);
     }

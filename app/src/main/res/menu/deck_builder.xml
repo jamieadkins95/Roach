@@ -20,4 +20,12 @@
         </menu>
 
     </item>
+
+    <item android:id="@+id/action_rename"
+        app:showAsAction="never"
+        android:title="@string/rename" />
+
+    <item android:id="@+id/action_delete"
+        app:showAsAction="never"
+        android:title="@string/delete" />
 </menu>
