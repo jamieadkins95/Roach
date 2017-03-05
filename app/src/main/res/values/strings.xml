@@ -114,4 +114,6 @@
     <string name="deck_total_cards_value">%1$d/%2$d</string>
     <string name="total_strength">Total Strength</string>
     <string name="change_leader">Change Leader</string>
+    <string name="deck_builder">Deck Builder</string>
+    <string name="collection_manager">Collection Manager</string>
 </resources>

@@ -215,11 +215,11 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
                 .withIcon(R.drawable.ic_public));
         mDrawerItems.put(R.id.tab_decks, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_decks)
-                .withName(R.string.my_decks)
+                .withName(R.string.deck_builder)
                 .withIcon(R.drawable.ic_cards_filled));
         mDrawerItems.put(R.id.tab_collection, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_collection)
-                .withName(R.string.my_collection)
+                .withName(R.string.collection_manager)
                 .withIcon(R.drawable.ic_cards_outline));
         mDrawerItems.put(R.id.tab_results, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_results)
