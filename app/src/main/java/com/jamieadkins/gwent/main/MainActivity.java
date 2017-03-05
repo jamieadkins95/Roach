@@ -300,7 +300,7 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
 
             mDrawerItems.get(R.id.tab_collection).withSelectable(true);
             mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
-            mDrawerItems.get(R.id.tab_decks).withSelectable(BuildConfig.DEBUG);
+            mDrawerItems.get(R.id.tab_decks).withSelectable(true);
             mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_decks));
             mDrawerItems.get(R.id.tab_results).withSelectable(BuildConfig.DEBUG);
             mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_results));
