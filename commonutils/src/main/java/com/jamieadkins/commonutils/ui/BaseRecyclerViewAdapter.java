@@ -65,6 +65,8 @@ public abstract class BaseRecyclerViewAdapter
         if (!mItems.contains(item)) {
             mItems.add(item);
             notifyItemInserted(mItems.size() - 1);
+        } else {
+            updateItem(item);
         }
     }
 
@@ -78,6 +80,10 @@ public abstract class BaseRecyclerViewAdapter
     public void replaceItem(int position, RecyclerViewItem newItem) {
         mItems.set(position, newItem);
         notifyItemChanged(position);
+    }
+
+    public void updateItem(RecyclerViewItem updatedItem) {
+        replaceItem(mItems.indexOf(updatedItem), updatedItem);
     }
 
     public void removeItem(RecyclerViewItem itemToRemove) {
