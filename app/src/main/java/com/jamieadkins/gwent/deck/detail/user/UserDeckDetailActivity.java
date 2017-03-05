@@ -196,6 +196,15 @@ public class UserDeckDetailActivity extends DeckDetailActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (mDeckBuilderOpen) {
+            mFragment.closeDeckBuilderMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onDeckBuilderStateChanged(boolean open) {
         invalidateOptionsMenu();
         mDeckBuilderOpen = open;
