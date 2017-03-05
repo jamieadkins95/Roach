@@ -16,8 +16,7 @@ import io.reactivex.Observable;
 
 public interface CardsContract {
     interface View extends BaseView<Presenter> {
-
-        void setLoadingIndicator(boolean active);
+        // No additional methods required.
     }
 
     interface Presenter extends BasePresenter {

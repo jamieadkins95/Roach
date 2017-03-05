@@ -20,9 +20,4 @@ public class CardListFragment extends BaseCardListFragment {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.card_database));
     }
-
-    @Override
-    public void setLoadingIndicator(boolean active) {
-        setLoading(active);
-    }
 }

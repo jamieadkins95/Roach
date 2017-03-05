@@ -81,11 +81,6 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
-        setLoading(active);
-    }
-
-    @Override
     public void setPresenter(CardsContract.Presenter presenter) {
         super.setPresenter(presenter);
         mPresenter = (CollectionContract.Presenter) presenter;
