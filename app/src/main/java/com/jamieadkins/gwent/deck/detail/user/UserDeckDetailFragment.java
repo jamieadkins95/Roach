@@ -174,6 +174,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.dialog_edit_text, null);
                 final EditText input = (EditText) view.findViewById(R.id.edit_text);
+                input.setText(mDeck.getName());
                 builder.setView(view)
                         .setTitle(R.string.rename)
                         .setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
