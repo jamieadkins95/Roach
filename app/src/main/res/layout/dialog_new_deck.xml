@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    android:paddingLeft="@dimen/dialog_padding_horizontal"
+    android:paddingRight="@dimen/dialog_padding_horizontal">
 
     <EditText
         android:layout_width="match_parent"
@@ -13,15 +13,13 @@
         android:hint="@string/deck_name" />
 
     <android.support.v7.widget.AppCompatSpinner
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/menu_item_height"
         android:id="@+id/factions"/>
 
     <android.support.v7.widget.AppCompatSpinner
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/menu_item_height"
         android:id="@+id/leaders"/>
 
 </LinearLayout>
