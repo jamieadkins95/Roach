@@ -46,5 +46,7 @@ public interface DecksContract {
         void setLeader(Deck deck, CardDetails leader);
 
         void renameDeck(Deck deck, String name);
+
+        void deleteDeck(Deck deck);
     }
 }

@@ -78,20 +78,34 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDecksListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
+                                Deck deck = initialiseDeck(deckSnapshot);
+
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
+                                if (deck.isDeleted()) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 deckSnapshot.getKey(),
-                                                initialiseDeck(deckSnapshot),
-                                                RxDatabaseEvent.EventType.ADDED));
+                                                deck,
+                                                eventType));
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
+                                Deck deck = initialiseDeck(deckSnapshot);
+
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.CHANGED;
+                                if (deck.isDeleted()) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 deckSnapshot.getKey(),
-                                                initialiseDeck(deckSnapshot),
-                                                RxDatabaseEvent.EventType.CHANGED));
+                                                deck,
+                                                eventType));
                             }
 
                             @Override
@@ -326,6 +340,36 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 }
 
                 storedDeck.setName(newName);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void deleteDeck(Deck deck) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setDeleted(true);
 
                 // Set value and report transaction success.
                 mutableData.setValue(storedDeck);

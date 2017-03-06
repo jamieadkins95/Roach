@@ -33,6 +33,8 @@ public class Deck implements RecyclerViewItem {
     private Map<String, Integer> cardCount;
     private Map<String, CardDetails> cards;
 
+    private boolean deleted = false;
+
     public Deck() {
         // Required empty constructor for Firebase.
         this.cards = new HashMap<>();
@@ -48,6 +50,7 @@ public class Deck implements RecyclerViewItem {
         this.author = author;
         this.patch = patch;
         this.publicDeck = false;
+        this.deleted = false;
     }
 
     public void setLeader(CardDetails leader) {
@@ -90,6 +93,14 @@ public class Deck implements RecyclerViewItem {
         return publicDeck;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Exclude
     @Override
     public boolean equals(Object obj) {
@@ -108,6 +119,7 @@ public class Deck implements RecyclerViewItem {
         result.put("leader", leader);
         result.put("patch", patch);
         result.put("publicDeck", publicDeck);
+        result.put("deleted", deleted);
 
         return result;
     }

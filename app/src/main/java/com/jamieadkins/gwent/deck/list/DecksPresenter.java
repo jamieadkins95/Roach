@@ -80,6 +80,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public void deleteDeck(Deck deck) {
+        mDecksInteractor.deleteDeck(deck);
+    }
+
+    @Override
     public void stop() {
         mDecksInteractor.stopData();
     }

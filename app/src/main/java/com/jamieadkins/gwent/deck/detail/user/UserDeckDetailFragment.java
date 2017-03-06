@@ -186,6 +186,20 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                         .create()
                         .show();
                 return true;
+            case R.id.action_delete:
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.confirm_delete)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mDecksPresenter.deleteDeck(mDeck);
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create()
+                        .show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
