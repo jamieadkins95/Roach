@@ -60,6 +60,7 @@
     <string name="pref_general">General</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="analytics">Anonymous Analytics</string>
+    <string name="analytics_title">Enable Anonymous Analytics?</string>
     <string name="analytics_message" formatted="false">Roach would like to collect anonymous information about how you use the app. This information is used by the developer to learn which features to focus development on. The information is not shared with any 3rd party and is not used to identify or contact you.\n\nYou can opt in or out at anytime in the Settings.\n\nWould you like to opt in?</string>
     <string name="analytics_summary">Allow Roach to collect anonymous statistics to help future development of the app.</string>
 
