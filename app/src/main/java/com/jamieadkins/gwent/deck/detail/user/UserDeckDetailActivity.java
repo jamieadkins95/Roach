@@ -124,7 +124,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity
                     return super.onOptionsItemSelected(item);
                 }
             case R.id.filter_reset:
-                resetFilters();
+                mCardFilter.clearFilters();
                 if (mCardFilterListener != null) {
                     mCardFilterListener.onCardFilterUpdated();
                 }

@@ -114,6 +114,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
             }
         }
         mCardFilter.put(Faction.NEUTRAL_ID, true);
+        mCardFilter.setCurrentFilterAsBase();
     }
 
     @Override

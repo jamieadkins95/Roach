@@ -24,6 +24,8 @@ public class CardFilter implements Parcelable {
 
     private boolean mCollectibleOnly = false;
 
+    private CardFilter mBaseFilter;
+
     public CardFilter() {
         mSearchQuery = null;
         mFilters = new HashMap<>();
@@ -59,9 +61,24 @@ public class CardFilter implements Parcelable {
     }
 
     public void clearFilters() {
-        for (String faction : mFilters.keySet()) {
-            mFilters.put(faction, true);
+        if (mBaseFilter != null) {
+            for (String filter : mBaseFilter.mFilters.keySet()) {
+                mFilters.put(filter, mBaseFilter.mFilters.get(filter));
+            }
+            mCollectibleOnly = mBaseFilter.mCollectibleOnly;
+        } else {
+            for (String faction : mFilters.keySet()) {
+                mFilters.put(faction, true);
+            }
         }
+    }
+
+    public void setCurrentFilterAsBase() {
+        mBaseFilter = new CardFilter();
+        for (String filter : this.mFilters.keySet()) {
+            mBaseFilter.put(filter, mFilters.get(filter));
+        }
+        mBaseFilter.setCollectibleOnly(mCollectibleOnly);
     }
 
     public boolean get(String key) {

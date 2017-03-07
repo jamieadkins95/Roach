@@ -116,7 +116,10 @@ public class MainActivity extends AuthenticationActivity implements CardFilterPr
             mCardFilters.put(R.id.tab_collection, (CardFilter) savedInstanceState.get(STATE_FILTER_COLLECTION));
         } else {
             mCardFilters.put(R.id.tab_card_db, new CardFilter());
-            mCardFilters.put(R.id.tab_collection, new CardFilter());
+            CardFilter collectionFilter = new CardFilter();
+            collectionFilter.setCollectibleOnly(true);
+            collectionFilter.setCurrentFilterAsBase();
+            mCardFilters.put(R.id.tab_collection, collectionFilter);
         }
 
         mProfile = new ProfileDrawerItem()
