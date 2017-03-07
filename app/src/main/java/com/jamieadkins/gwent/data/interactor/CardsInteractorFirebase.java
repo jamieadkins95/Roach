@@ -77,10 +77,15 @@ public class CardsInteractorFirebase implements CardsInteractor {
                         mCardsQuery = mCardsReference.orderByChild("name");
 
                         if (filter.getSearchQuery() != null) {
+                            String query = filter.getSearchQuery();
+                            int charValue = query.charAt(query.length() - 1);
+                            String endQuery = query.substring(0, query.length() - 1);
+                            endQuery += (char) (charValue + 1);
+
                             mCardsQuery = mCardsQuery.
-                                    startAt(filter.getSearchQuery())
+                                    startAt(query)
                                     // No 'contains' query so have to fudge it.
-                                    .endAt(filter.getSearchQuery() + "zzzz");
+                                    .endAt(endQuery);
                         }
 
                         mCardListener = new ValueEventListener() {
