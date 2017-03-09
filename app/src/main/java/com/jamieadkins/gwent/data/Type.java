@@ -1,37 +1,22 @@
 package com.jamieadkins.gwent.data;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.jamieadkins.gwent.R;
 
 /**
  * Contains all of the possible groups.
  */
 
 public class Type {
-    public static final String BRONZE = "Bronze";
-    public static final String SILVER = "Silver";
-    public static final String GOLD = "Gold";
-    public static final String LEADER = "Leader";
+    public static final String BRONZE_ID = "Bronze";
+    public static final String SILVER_ID = "Silver";
+    public static final String GOLD_ID = "Gold";
+    public static final String LEADER_ID = "Leader";
 
-    public static final String[] ALL_TYPES = new String[] {BRONZE, SILVER, GOLD, LEADER};
+    public static final Filterable BRONZE = new Filterable(BRONZE_ID, R.string.bronze);
+    public static final Filterable SILVER = new Filterable(SILVER_ID, R.string.silver);
+    public static final Filterable GOLD = new Filterable(GOLD_ID, R.string.gold);
+    public static final Filterable LEADER = new Filterable(LEADER_ID, R.string.leader);
 
-    public static final Map<Integer, String> CONVERT_INT;
-    public static final Map<String, Integer> CONVERT_STRING;
+    public static final Filterable[] ALL_TYPES = new Filterable[]{BRONZE, SILVER, GOLD, LEADER};
 
-    static {
-        Map<Integer, String> intToString = new HashMap<>();
-        intToString.put(0, BRONZE);
-        intToString.put(1, SILVER);
-        intToString.put(2, GOLD);
-        intToString.put(3, LEADER);
-        CONVERT_INT = Collections.unmodifiableMap(intToString);
-
-        Map<String, Integer> stringToInt = new HashMap<>();
-        stringToInt.put(BRONZE, 0);
-        stringToInt.put(SILVER, 1);
-        stringToInt.put(GOLD, 2);
-        stringToInt.put(LEADER, 3);
-        CONVERT_STRING = Collections.unmodifiableMap(stringToInt);
-    }
 }

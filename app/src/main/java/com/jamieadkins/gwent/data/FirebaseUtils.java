@@ -42,7 +42,7 @@ public class FirebaseUtils {
             // Analytics are off by default.
             onAnalyticsResponse(context, false);
 
-            builder.setTitle(R.string.analytics)
+            builder.setTitle(R.string.analytics_title)
                     .setMessage(R.string.analytics_message)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override

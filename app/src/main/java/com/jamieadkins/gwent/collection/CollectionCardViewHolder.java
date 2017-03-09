@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -23,6 +24,7 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
 
     public interface CollectionButtonListener {
         void addCard(String cardId, String variationId);
+
         void removeCard(String cardId, String variationId);
     }
 
@@ -35,12 +37,12 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void bindItem(final CardDetails item) {
+    public void bindItem(final RecyclerViewItem item) {
         super.bindItem(item);
 
         resetViews();
 
-        for (final String variationId : item.getVariations().keySet()) {
+        for (final String variationId : getBoundCardDetails().getVariations().keySet()) {
             int variationNumber = CardDetails.Variation.getVariationNumber(variationId);
             switch (variationNumber) {
                 case 1:
@@ -67,7 +69,7 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
                 @Override
                 public void onClick(View view) {
                     if (mListener != null) {
-                        mListener.addCard(item.getIngameId(), variationId);
+                        mListener.addCard(getBoundCardDetails().getIngameId(), variationId);
                     }
                 }
             });
@@ -75,7 +77,7 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
                 @Override
                 public void onClick(View view) {
                     if (mListener != null) {
-                        mListener.removeCard(getBoundItem().getIngameId(), variationId);
+                        mListener.removeCard(getBoundCardDetails().getIngameId(), variationId);
                     }
                 }
             });

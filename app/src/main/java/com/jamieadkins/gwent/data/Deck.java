@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.data;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,16 @@ import java.util.Map;
  * Class that models what a deck is.
  */
 @IgnoreExtraProperties
-public class Deck {
+public class Deck implements RecyclerViewItem {
+    public static final int MAX_CARD_COUNT = 40;
+    public static final int MIN_CARD_COUNT = 25;
+    public static final int MAX_SILVER_COUNT = 6;
+    public static final int MAX_GOLD_COUNT = 4;
+
+    public static final int MAX_EACH_BRONZE = 3;
+    public static final int MAX_EACH_SILVER = 1;
+    public static final int MAX_EACH_GOLD = 1;
+
     private boolean publicDeck;
     private String id;
     private String name;
@@ -21,6 +32,8 @@ public class Deck {
     // Map of card ids to card count.
     private Map<String, Integer> cardCount;
     private Map<String, CardDetails> cards;
+
+    private boolean deleted = false;
 
     public Deck() {
         // Required empty constructor for Firebase.
@@ -37,10 +50,15 @@ public class Deck {
         this.author = author;
         this.patch = patch;
         this.publicDeck = false;
+        this.deleted = false;
     }
 
     public void setLeader(CardDetails leader) {
         this.leader = leader;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CardDetails getLeader() {
@@ -75,6 +93,14 @@ public class Deck {
         return publicDeck;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Exclude
     @Override
     public boolean equals(Object obj) {
@@ -93,6 +119,7 @@ public class Deck {
         result.put("leader", leader);
         result.put("patch", patch);
         result.put("publicDeck", publicDeck);
+        result.put("deleted", deleted);
 
         return result;
     }
@@ -103,7 +130,7 @@ public class Deck {
         for (String cardId : cards.keySet()) {
             CardDetails card = cards.get(cardId);
             if (card.getLane().contains(position)) {
-                strength += card.getStrength();
+                strength += card.getStrength() * cardCount.get(cardId);
             }
         }
         return strength;
@@ -114,7 +141,7 @@ public class Deck {
         int strength = 0;
         for (String cardId : cards.keySet()) {
             CardDetails card = cards.get(cardId);
-            strength += card.getStrength();
+            strength += card.getStrength() * cardCount.get(cardId);
         }
         return strength;
     }
@@ -126,5 +153,58 @@ public class Deck {
             count += cardCount.get(cardId);
         }
         return count;
+    }
+
+    @Exclude
+    public int getSilverCardCount() {
+        return getCardCount(Type.SILVER_ID);
+    }
+
+    @Exclude
+    public int getGoldCardCount() {
+        return getCardCount(Type.GOLD_ID);
+    }
+
+    @Exclude
+    private int getCardCount(String type) {
+        int count = 0;
+        for (String cardId : cardCount.keySet()) {
+            if (cards.get(cardId).getType().equals(type)) {
+                count += cardCount.get(cardId);
+            }
+        }
+        return count;
+    }
+
+    @Exclude
+    public boolean canAddCard(CardDetails cardDetails) {
+        if (getTotalCardCount() >= MAX_CARD_COUNT) {
+            return false;
+        }
+
+        if (getCardCount().containsKey(cardDetails.getIngameId())) {
+            // If the user already has at least one of these cards in their deck.
+            int currentCardCount = getCardCount().get(cardDetails.getIngameId());
+            switch (cardDetails.getType()) {
+                case Type.BRONZE_ID:
+                    return currentCardCount < MAX_EACH_BRONZE;
+                case Type.SILVER_ID:
+                    return currentCardCount < MAX_EACH_SILVER;
+                case Type.GOLD_ID:
+                    return currentCardCount < MAX_EACH_GOLD;
+                default:
+                    return false;
+            }
+        } else {
+            // Deck doesn't contain this card yet, can add as long as the card isn't a leader card.
+            return !cardDetails.getType().equals(Type.LEADER_ID);
+        }
+
+    }
+
+    @Exclude
+    @Override
+    public int getItemType() {
+        return GwentRecyclerViewAdapter.TYPE_DECK;
     }
 }

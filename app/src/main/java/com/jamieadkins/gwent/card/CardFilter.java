@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 
@@ -23,21 +24,23 @@ public class CardFilter implements Parcelable {
 
     private boolean mCollectibleOnly = false;
 
+    private CardFilter mBaseFilter;
+
     public CardFilter() {
         mSearchQuery = null;
         mFilters = new HashMap<>();
         mCardIds = null;
 
-        for (String rarity : Rarity.ALL_RARITIES) {
-            mFilters.put(rarity, true);
+        for (Filterable rarity : Rarity.ALL_RARITIES) {
+            mFilters.put(rarity.getId(), true);
         }
 
-        for (String type : Type.ALL_TYPES) {
-            mFilters.put(type, true);
+        for (Filterable type : Type.ALL_TYPES) {
+            mFilters.put(type.getId(), true);
         }
 
-        for (String faction : Faction.ALL_FACTIONS) {
-            mFilters.put(faction, true);
+        for (Filterable faction : Faction.ALL_FACTIONS) {
+            mFilters.put(faction.getId(), true);
         }
     }
 
@@ -58,9 +61,24 @@ public class CardFilter implements Parcelable {
     }
 
     public void clearFilters() {
-        for (String faction : mFilters.keySet()) {
-            mFilters.put(faction, true);
+        if (mBaseFilter != null) {
+            for (String filter : mBaseFilter.mFilters.keySet()) {
+                mFilters.put(filter, mBaseFilter.mFilters.get(filter));
+            }
+            mCollectibleOnly = mBaseFilter.mCollectibleOnly;
+        } else {
+            for (String faction : mFilters.keySet()) {
+                mFilters.put(faction, true);
+            }
         }
+    }
+
+    public void setCurrentFilterAsBase() {
+        mBaseFilter = new CardFilter();
+        for (String filter : this.mFilters.keySet()) {
+            mBaseFilter.put(filter, mFilters.get(filter));
+        }
+        mBaseFilter.setCollectibleOnly(mCollectibleOnly);
     }
 
     public boolean get(String key) {

@@ -1,18 +1,26 @@
 package com.jamieadkins.gwent.deck.list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.base.BaseSingleObserver;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -20,34 +28,33 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class DeckListFragment extends BaseFragment<Deck> implements DecksContract.View,
+public class DeckListFragment extends BaseFragment implements DecksContract.View,
         NewDeckDialog.NewDeckDialogListener {
     private static final int REQUEST_CODE = 3414;
-    private static final String STATE_USER_DECKS = "com.jamieadkins.gwent.user.decks";
+    private static final String STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks";
     private DecksContract.Presenter mDecksPresenter;
 
     // Set up to show user decks by default.
-    private boolean mUserDecks = true;
+    private boolean mPublicDecks = false;
 
     public DeckListFragment() {
     }
 
     public static DeckListFragment newInstance(boolean userDecks) {
         DeckListFragment fragment = new DeckListFragment();
-        fragment.mUserDecks = userDecks;
+        fragment.mPublicDecks = userDecks;
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRecyclerViewAdapter(new DeckRecyclerViewAdapter());
 
         if (savedInstanceState != null) {
-            mUserDecks = savedInstanceState.getBoolean(STATE_USER_DECKS);
+            mPublicDecks = savedInstanceState.getBoolean(STATE_PUBLIC_DECKS);
         }
 
-        if (mUserDecks) {
+        if (!mPublicDecks) {
             getActivity().setTitle(getString(R.string.my_decks));
         } else {
             getActivity().setTitle(getString(R.string.public_decks));
@@ -64,11 +71,20 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
         FloatingActionButton buttonNewDeck =
                 (FloatingActionButton) rootView.findViewById(R.id.new_deck);
 
-        if (mUserDecks) {
+        if (savedInstanceState != null) {
+            NewDeckDialog dialog = (NewDeckDialog) getActivity().getSupportFragmentManager()
+                    .findFragmentByTag(NewDeckDialog.class.getSimpleName());
+            if (dialog != null) {
+                dialog.setPresenter(mDecksPresenter);
+            }
+        }
+
+        if (!mPublicDecks) {
             buttonNewDeck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment newFragment =  NewDeckDialog.newInstance(mDecksPresenter);
+                    NewDeckDialog newFragment = new NewDeckDialog();
+                    newFragment.setPresenter(mDecksPresenter);
                     newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
                     newFragment.show(getActivity().getSupportFragmentManager(),
                             newFragment.getClass().getSimpleName());
@@ -91,10 +107,29 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
     @Override
     public void onLoadData() {
         super.onLoadData();
-        mDecksPresenter.getDecks()
-                .subscribeOn(Schedulers.io())
+        Observable<RxDatabaseEvent<Deck>> decks;
+        if (!mPublicDecks) {
+            decks = mDecksPresenter.getUserDecks();
+        } else {
+            decks = mDecksPresenter.getPublicDecks();
+        }
+        decks.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
+
+        if (mPublicDecks) {
+            mDecksPresenter.getDeckOfTheWeek()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new BaseSingleObserver<RxDatabaseEvent<Deck>>() {
+                        @Override
+                        public void onSuccess(RxDatabaseEvent<Deck> value) {
+                            getRecyclerViewAdapter().addItem(0, new SubHeader("Deck of the Week"));
+                            getRecyclerViewAdapter().addItem(1, value.getValue());
+                            getRecyclerViewAdapter().addItem(2, new SubHeader("Featured Decks"));
+                        }
+                    });
+        }
     }
 
     @Override
@@ -105,7 +140,7 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(STATE_USER_DECKS, mUserDecks);
+        outState.putBoolean(STATE_PUBLIC_DECKS, mPublicDecks);
         super.onSaveInstanceState(outState);
     }
 
@@ -116,7 +151,30 @@ public class DeckListFragment extends BaseFragment<Deck> implements DecksContrac
 
     @Override
     public void createNewDeck(String name, String faction, CardDetails leader) {
-        mDecksPresenter.createNewDeck(name, faction, leader);
+        mDecksPresenter.createNewDeck(name, faction, leader, "v0-8-60-2-images")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void onNext(RxDatabaseEvent<Deck> value) {
+                        Deck deck = value.getValue();
+
+                        Intent intent = new Intent(getActivity(), UserDeckDetailActivity.class);
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deck.getId());
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, deck.getFactionId());
+                        intent.putExtra(DetailActivity.EXTRA_PATCH, deck.getPatch());
+                        intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck());
+                        getView().getContext().startActivity(intent);
+
+                        FirebaseUtils.logAnalytics(getView().getContext(),
+                                deck.getFactionId(), deck.getName(), "Create Deck");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

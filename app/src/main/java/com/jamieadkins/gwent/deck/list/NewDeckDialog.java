@@ -16,9 +16,10 @@ import android.widget.Spinner;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,10 +39,8 @@ public class NewDeckDialog extends DialogFragment {
     NewDeckDialogListener mListener;
     DecksContract.Presenter mDeckPresenter;
 
-    public static NewDeckDialog newInstance(DecksContract.Presenter deckPresenter) {
-        NewDeckDialog dialog = new NewDeckDialog();
-        dialog.mDeckPresenter = deckPresenter;
-        return dialog;
+    public void setPresenter(DecksContract.Presenter deckPresenter) {
+        mDeckPresenter = deckPresenter;
     }
 
     @Override
@@ -86,9 +85,9 @@ public class NewDeckDialog extends DialogFragment {
                 cardFilter.put("Bronze", false);
                 cardFilter.put("Silver", false);
                 cardFilter.put("Gold", false);
-                for (String faction : Faction.ALL_FACTIONS) {
-                    if (!faction.equals(Faction.ALL_FACTIONS[i])) {
-                        cardFilter.put(faction, false);
+                for (Filterable faction : Faction.ALL_FACTIONS) {
+                    if (!faction.getId().equals(Faction.ALL_FACTIONS[i].getId())) {
+                        cardFilter.put(faction.getId(), false);
                     }
                 }
 
@@ -137,7 +136,7 @@ public class NewDeckDialog extends DialogFragment {
                         Spinner faction = (Spinner) rootView.findViewById(R.id.factions);
                         mListener.createNewDeck(
                                 deckName.getText().toString(),
-                                Faction.ALL_FACTIONS[faction.getSelectedItemPosition()],
+                                Faction.ALL_FACTIONS[faction.getSelectedItemPosition()].getId(),
                                 (CardDetails) leaderSpinner.getSelectedItem());
                     }
                 })

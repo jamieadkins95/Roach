@@ -7,20 +7,20 @@ import android.view.View;
  * Holds base logic for recycler view holders.
  */
 
-public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
     private final View mView;
-    private T mBoundItem;
+    private RecyclerViewItem mBoundItem;
 
     public BaseViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
     }
 
-    public void bindItem(T item) {
+    public void bindItem(RecyclerViewItem item) {
         mBoundItem = item;
     }
 
-    public T getBoundItem() {
+    public RecyclerViewItem getBoundItem() {
         return mBoundItem;
     }
 

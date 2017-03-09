@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.collection;
 
-import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
 
@@ -11,9 +10,8 @@ import io.reactivex.Observable;
  */
 
 public interface CollectionContract {
-    interface View extends BaseView<Presenter> {
-
-        void setLoadingIndicator(boolean active);
+    interface View extends CardsContract.View {
+        // Don't need any additional methods.
     }
 
     interface Presenter extends CardsContract.Presenter {

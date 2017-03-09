@@ -1,15 +1,16 @@
 package com.jamieadkins.gwent.card.list;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterListener;
-import com.jamieadkins.gwent.card.CardFilterProvider;
-import com.jamieadkins.gwent.data.CardDetails;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -18,10 +19,14 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
-        implements CardFilterListener {
+public abstract class BaseCardListFragment extends BaseFragment
+        implements CardsContract.View {
     private CardsContract.Presenter mCardsPresenter;
-    private boolean mDataLoaded = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +36,15 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
         return rootView;
     }
 
-    public abstract int getLayoutId();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        setupFilterMenu(menu, inflater);
+    }
+
+    public int getLayoutId() {
+        return R.layout.fragment_card_list;
+    }
 
     @Override
     public void onStart() {
@@ -48,17 +61,19 @@ public abstract class BaseCardListFragment extends BaseFragment<CardDetails>
     @Override
     public void onLoadData() {
         super.onLoadData();
-        CardFilterProvider cardFilterProvider = (CardFilterProvider) getActivity();
-        cardFilterProvider.registerCardFilterListener(this);
-        CardFilter cardFilter = cardFilterProvider.getCardFilter();
+        onLoadCardData();
+    }
+
+    public void onLoadCardData() {
+        CardFilter cardFilter = getCardFilter();
         mCardsPresenter.getCards(cardFilter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
-        mDataLoaded = true;
     }
 
-    public void setCardsPresenter(CardsContract.Presenter cardsPresenter) {
-        mCardsPresenter = cardsPresenter;
+    @Override
+    public void setPresenter(CardsContract.Presenter presenter) {
+        mCardsPresenter = presenter;
     }
 }

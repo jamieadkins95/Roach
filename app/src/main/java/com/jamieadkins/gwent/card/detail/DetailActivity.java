@@ -2,11 +2,11 @@ package com.jamieadkins.gwent.card.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
 
@@ -23,7 +23,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -46,19 +46,20 @@ public class DetailActivity extends BaseActivity {
 
         String patch = getIntent().getStringExtra(EXTRA_PATCH);
 
-        CardsInteractor cardsInteractor;
+        Fragment fragment;
+        if (savedInstanceState == null) {
+            fragment = DetailFragment.newInstance(mCardId, patch);
 
-        if (patch != null) {
-            cardsInteractor = new CardsInteractorFirebase(patch);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
+                    .commit();
         } else {
-            cardsInteractor = new CardsInteractorFirebase();
+            fragment = getSupportFragmentManager().findFragmentByTag(DetailFragment.class.getSimpleName());
         }
 
-        mDetailsPresenter = new DetailPresenter(
-                (DetailContract.View) getSupportFragmentManager().findFragmentById(R.id.fragment),
-                cardsInteractor);
-
-        mDetailsPresenter.setCardId(mCardId);
+        new DetailPresenter(
+                (DetailContract.View) fragment,
+                CardsInteractorFirebase.getInstance(patch));
     }
 
     @Override

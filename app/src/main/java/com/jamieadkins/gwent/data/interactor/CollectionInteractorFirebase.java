@@ -10,7 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.data.Collection;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 

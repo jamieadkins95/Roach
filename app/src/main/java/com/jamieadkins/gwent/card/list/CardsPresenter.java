@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.card.list;
 import android.support.annotation.NonNull;
 
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
@@ -19,11 +18,11 @@ public class CardsPresenter implements CardsContract.Presenter {
     private final CardsInteractor mCardsInteractor;
     private final CardsContract.View mCardsView;
 
-    public CardsPresenter(@NonNull CardsContract.View decksView,
-                          @NonNull CardsInteractor decksInteractor) {
-        mCardsInteractor = decksInteractor;
+    public CardsPresenter(@NonNull CardsContract.View cardsView,
+                          @NonNull CardsInteractor cardsInteractor) {
+        mCardsInteractor = cardsInteractor;
 
-        mCardsView = decksView;
+        mCardsView = cardsView;
         mCardsView.setPresenter(this);
     }
 

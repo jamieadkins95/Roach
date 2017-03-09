@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -8,60 +9,85 @@ import android.view.MenuItem;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
+import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows card image and details.
  */
 
-public class DeckDetailActivity extends BaseActivity {
+public abstract class DeckDetailActivity extends BaseActivity {
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
+    public static final String EXTRA_FACTION_ID = "com.jamieadkins.gwent.faction";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
-    private DecksContract.Presenter mDeckDetailsPresenter;
-    private String mDeckId;
+    protected static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
+
+    private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
+
+    protected DecksContract.Presenter mDeckDetailsPresenter;
+    protected String mDeckId;
+    protected String mPatch;
+    protected String mFactionId;
+    private boolean mIsPublicDeck;
+
+    private DeckBriefSummaryView mSummaryView;
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_preference);
+        setContentView(R.layout.activity_deck_detail);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        BaseDeckDetailFragment fragment;
-        boolean isPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
+        mSummaryView = (DeckBriefSummaryView) findViewById(R.id.deck_summary_brief);
 
-        if (isPublicDeck) {
-            fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+        Fragment fragment;
+
+        if (savedInstanceState != null) {
+
+            mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
+            mFactionId = savedInstanceState.getString(EXTRA_FACTION_ID);
+            mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
+            mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
+
+            fragment = getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         } else {
-            fragment = UserDeckDetailFragment.newInstance(mDeckId);
+            mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
+            mFactionId = getIntent().getStringExtra(EXTRA_FACTION_ID);
+            mPatch = getIntent().getStringExtra(DetailActivity.EXTRA_PATCH);
+            mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
+
+            if (mIsPublicDeck) {
+                fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+            } else {
+                fragment = UserDeckDetailFragment.newInstance(mDeckId, mFactionId);
+            }
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.contentContainer, fragment, TAG_FRAGMENT)
+                    .commit();
         }
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
-                .commit();
-
         mDeckDetailsPresenter = new DecksPresenter(
-                fragment,
-                new DecksInteractorFirebase(isPublicDeck),
-                new CardsInteractorFirebase(),
+                (DecksContract.View) fragment,
+                new DecksInteractorFirebase(),
+                CardsInteractorFirebase.getInstance(mPatch),
                 new PatchInteractorFirebase());
     }
 
@@ -75,29 +101,38 @@ public class DeckDetailActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void onNext(RxDatabaseEvent<Deck> value) {
+                        mSummaryView.setDeck(value.getValue());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.action_publish_deck:
-                mDeckDetailsPresenter.getDeck(mDeckId)
+                mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<RxDatabaseEvent<Deck>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
+                        .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
                             @Override
                             public void onNext(RxDatabaseEvent<Deck> value) {
                                 mDeckDetailsPresenter.publishDeck(value.getValue());
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
                             }
 
                             @Override
@@ -108,5 +143,15 @@ public class DeckDetailActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
+        outState.putString(EXTRA_DECK_ID, mDeckId);
+        outState.putString(EXTRA_FACTION_ID, mFactionId);
+        outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
+        super.onSaveInstanceState(outState);
     }
 }

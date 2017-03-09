@@ -6,13 +6,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.CardFilterProvider;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
+import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -21,28 +22,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
     CollectionContract.Presenter mPresenter;
-    CollectionRecyclerViewAdapter mAdapter;
-
-    public CollectionFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
-        mAdapter = new CollectionRecyclerViewAdapter(
-                new CollectionCardViewHolder.CollectionButtonListener() {
-                    @Override
-                    public void addCard(String cardId, String variationId) {
-                        mPresenter.addCard(cardId, variationId);
-                    }
+    }
 
-                    @Override
-                    public void removeCard(String cardId, String variationId) {
-                        mPresenter.removeCard(cardId, variationId);
-                    }
-                });
-        setRecyclerViewAdapter(mAdapter);
+    @Override
+    public CardFilter initialiseCardFilter() {
+        CardFilter filter = new CardFilter();
+        filter.setCollectibleOnly(true);
+        filter.setCurrentFilterAsBase();
+        return filter;
     }
 
     @Override
@@ -70,20 +62,10 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         mPresenter.getCollection()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Collection>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+                .subscribe(new BaseObserver<Collection>() {
                     @Override
                     public void onNext(Collection value) {
-                        mAdapter.setCollection(value);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
+                        getRecyclerViewAdapter().setCardCollection(value);
                     }
 
                     @Override
@@ -94,14 +76,9 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
-        setLoading(active);
-    }
-
-    @Override
-    public void setPresenter(CollectionContract.Presenter presenter) {
-        setCardsPresenter(presenter);
-        mPresenter = presenter;
+    public void setPresenter(CardsContract.Presenter presenter) {
+        super.setPresenter(presenter);
+        mPresenter = (CollectionContract.Presenter) presenter;
     }
 
     @Override
@@ -110,5 +87,22 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         if (mPresenter != null) {
             mPresenter.stop();
         }
+    }
+
+    @Override
+    public GwentRecyclerViewAdapter onBuildRecyclerView() {
+        return new GwentRecyclerViewAdapter.Builder()
+                .withCollectionControls(new CollectionCardViewHolder.CollectionButtonListener() {
+                    @Override
+                    public void addCard(String cardId, String variationId) {
+                        mPresenter.addCard(cardId, variationId);
+                    }
+
+                    @Override
+                    public void removeCard(String cardId, String variationId) {
+                        mPresenter.removeCard(cardId, variationId);
+                    }
+                })
+                .build();
     }
 }

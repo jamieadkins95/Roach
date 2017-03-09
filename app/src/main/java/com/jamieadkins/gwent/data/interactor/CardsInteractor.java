@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Card manipulation class.
@@ -15,7 +16,7 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
 
     Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter filter);
 
-    Observable<RxDatabaseEvent<CardDetails>> getCard(String id);
+    Single<RxDatabaseEvent<CardDetails>> getCard(String id);
 
     void removeListeners();
 }

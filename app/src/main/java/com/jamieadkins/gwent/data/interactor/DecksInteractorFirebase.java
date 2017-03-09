@@ -15,7 +15,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +24,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 
 /**
  * Deals with firebase.
@@ -34,72 +37,34 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private static final String PUBLIC_DECKS_PATH = "public-decks/";
 
     private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
-    private final DatabaseReference mDecksReference;
-    private final DatabaseReference mPublicDecksReference;
-    private final Query mDecksQuery;
+    private Query mDecksQuery;
     private Query mDeckQuery;
+    private final DatabaseReference mPublicReference;
+    private DatabaseReference mUserReference;
     private ChildEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
 
     public DecksInteractorFirebase() {
-        this(false);
-    }
-
-    public DecksInteractorFirebase(boolean publicDecks) {
-        mPublicDecksReference = mDatabase.getReference(PUBLIC_DECKS_PATH);
-        if (publicDecks) {
-            mDecksReference = mPublicDecksReference;
-            mDecksQuery = mDecksReference.orderByChild("week");
-        } else {
+        mPublicReference = mDatabase.getReference(PUBLIC_DECKS_PATH);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            mDecksReference = mDatabase.getReference("users/" + userId + "/decks/");
-            mDecksQuery = mDecksReference.orderByChild("name");
+            mUserReference = mDatabase.getReference("users/" + userId + "/decks/");
+            mUserReference.keepSynced(true);
         }
     }
 
-    @Override
-    public Observable<RxDatabaseEvent<Deck>> getDecks() {
+    private Observable<RxDatabaseEvent<Deck>> getDecks(Query query) {
+        mDecksQuery = query;
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
             public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDecksListener = new ChildEventListener() {
+                        ValueEventListener initialCountListener = new ValueEventListener() {
                             @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.ADDED));
-                            }
-
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.CHANGED));
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.REMOVED));
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.MOVED));
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                emitter.onNext(RxDatabaseEvent.INITIAL_LOAD_COMPLETE);
                             }
 
                             @Override
@@ -108,7 +73,76 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
+                        mDecksListener = new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot deckSnapshot, String s) {
+                                Deck deck = initialiseDeck(deckSnapshot);
+
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
+                                if (deck.isDeleted()) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                deck,
+                                                eventType));
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot deckSnapshot, String s) {
+                                Deck deck = initialiseDeck(deckSnapshot);
+
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.CHANGED;
+                                if (deck.isDeleted()) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                deck,
+                                                eventType));
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot deckSnapshot) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.REMOVED));
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot deckSnapshot, String s) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<Deck>(
+                                                deckSnapshot.getKey(),
+                                                initialiseDeck(deckSnapshot),
+                                                RxDatabaseEvent.EventType.MOVED));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+
+                            private Deck initialiseDeck(DataSnapshot deckSnapshot) {
+                                Deck deck = deckSnapshot.getValue(Deck.class);
+
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                }
+
+                                return deck;
+                            }
+                        };
+
                         mDecksQuery.addChildEventListener(mDecksListener);
+                        mDecksQuery.addListenerForSingleValueEvent(initialCountListener);
                     }
                 });
             }
@@ -116,8 +150,68 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> getDeck(String deckId) {
-        mDeckQuery = mDecksReference.child(deckId);
+    public Observable<RxDatabaseEvent<Deck>> getFeaturedDecks() {
+        Query query = mPublicReference.child("decks").orderByChild("week");
+        return getDecks(query);
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getUserDecks() {
+        Query query = mUserReference.orderByChild("name");
+        return getDecks(query);
+    }
+
+    @Override
+    public Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
+        mDeckQuery = mPublicReference.child("deck-of-the-week");
+        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<Deck>>>() {
+            @Override
+            public SingleSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<Deck>>() {
+                    @Override
+                    public void subscribe(final SingleEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
+                        mDeckDetailListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Deck deck = dataSnapshot.getValue(Deck.class);
+
+                                if (deck == null) {
+                                    emitter.onError(new Throwable("Deck doesn't exist"));
+                                    return;
+                                }
+
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                }
+
+                                emitter.onSuccess(
+                                        new RxDatabaseEvent<Deck>(
+                                                dataSnapshot.getKey(),
+                                                deck,
+                                                RxDatabaseEvent.EventType.ADDED));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        mDeckQuery.addListenerForSingleValueEvent(mDeckDetailListener);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeck(final String deckId, boolean isPublicDeck) {
+        if (isPublicDeck) {
+            mDeckQuery = mPublicReference.child("decks").child(deckId);
+        } else {
+            mDeckQuery = mUserReference.child(deckId);
+        }
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Deck>>>() {
             @Override
             public ObservableSource<? extends RxDatabaseEvent<Deck>> call() throws Exception {
@@ -127,11 +221,24 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Deck deck = dataSnapshot.getValue(Deck.class);
+
+                                if (deck == null) {
+                                    emitter.onError(new Throwable("Deck doesn't exist"));
+                                    emitter.onComplete();
+                                    return;
+                                }
+
+                                deck.getLeader().setPatch(deck.getPatch());
+                                for (String cardId : deck.getCards().keySet()) {
+                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
+                                }
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
                                                 dataSnapshot.getKey(),
-                                                dataSnapshot.getValue(Deck.class),
-                                                RxDatabaseEvent.EventType.CHANGED));
+                                                deck,
+                                                RxDatabaseEvent.EventType.ADDED));
                             }
 
                             @Override
@@ -158,8 +265,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void createNewDeck(String name, String faction, CardDetails leader, String patch) {
-        String key = mDecksReference.push().getKey();
+    public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
+        String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Deck deck = new Deck(key, name, faction, leader, author, patch);
         Map<String, Object> deckValues = deck.toMap();
@@ -167,12 +274,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
         Map<String, Object> firebaseUpdates = new HashMap<>();
         firebaseUpdates.put(key, deckValues);
 
-        mDecksReference.updateChildren(firebaseUpdates);
+        mUserReference.updateChildren(firebaseUpdates);
+
+        return getDeck(key, false);
     }
 
     @Override
     public void publishDeck(Deck deck) {
-        String key = mPublicDecksReference.push().getKey();
+        String key = mPublicReference.child("decks").push().getKey();
 
         Map<String, Object> deckValues = deck.toMap();
         deckValues.put("id", key);
@@ -181,12 +290,12 @@ public class DecksInteractorFirebase implements DecksInteractor {
         Map<String, Object> firebaseUpdates = new HashMap<>();
         firebaseUpdates.put(key, deckValues);
 
-        mPublicDecksReference.updateChildren(firebaseUpdates);
+        mPublicReference.child("decks").updateChildren(firebaseUpdates);
     }
 
     @Override
-    public void addCardToDeck(Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mDecksReference.child(deck.getId());
+    public void setLeader(Deck deck, final CardDetails leader) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
@@ -195,6 +304,100 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 Deck storedDeck = mutableData.getValue(Deck.class);
                 if (storedDeck == null) {
                     // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setLeader(leader);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void renameDeck(Deck deck, final String newName) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setName(newName);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void deleteDeck(Deck deck) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setDeleted(true);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void addCardToDeck(Deck deck, final CardDetails card) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                if (!storedDeck.canAddCard(card)) {
                     return Transaction.success(mutableData);
                 }
 
@@ -225,7 +428,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void removeCardFromDeck(Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mDecksReference.child(deck.getId());
+        DatabaseReference deckReference = mUserReference.child(deck.getId());
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {

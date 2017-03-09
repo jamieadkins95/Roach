@@ -3,7 +3,6 @@
 
     <PreferenceCategory
         android:title="@string/pref_general">
-
         <Preference android:title="@string/contact">
             <intent
                 android:action="android.intent.action.SENDTO"
@@ -13,17 +12,9 @@
                     android:value="@string/email_subject" />
             </intent>
         </Preference>
-        <Preference
-            android:title="@string/version"
-            android:summary="@string/versionName">
-
-            <intent android:action="android.intent.action.VIEW"
-                android:data="market://details?id=com.jamieadkins.gwent" />
-        </Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_attributions">
-
         <Preference
             android:title="@string/hubert"
             android:summary="@string/polish_translation">

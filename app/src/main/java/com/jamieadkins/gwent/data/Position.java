@@ -5,9 +5,8 @@ package com.jamieadkins.gwent.data;
  */
 
 public class Position {
-    public static final String EVENT = "event";
-    public static final String MELEE = "melee";
-    public static final String RANGED = "ranged";
-    public static final String SIEGE = "siege";
-    public static final String MULTIPLE = "multiple";
+    public static final String EVENT = "Event";
+    public static final String MELEE = "Melee";
+    public static final String RANGED = "Ranged";
+    public static final String SIEGE = "Siege";
 }

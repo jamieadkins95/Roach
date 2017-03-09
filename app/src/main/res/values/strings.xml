@@ -57,16 +57,18 @@
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
 
-    <string name="pref_attributions">Attributions</string>
     <string name="hubert" translatable="false">Hubert Maciejewicz</string>
     <string name="polish_translation">Polish translation</string>
+    <string name="version">App Version</string>
+
+    <string name="pref_attributions">Attributions</string>
     <string name="cook" translatable="false">Michael Cook</string>
     <string name="icon">Iconography</string>
-    <string name="version">App Version</string>
 
     <string name="pref_general">General</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="analytics">Anonymous Analytics</string>
+    <string name="analytics_title">Enable Anonymous Analytics?</string>
     <string name="analytics_message" formatted="false">Roach would like to collect anonymous information about how you use the app. This information is used by the developer to learn which features to focus development on. The information is not shared with any 3rd party and is not used to identify or contact you.\n\nYou can opt in or out at anytime in the Settings.\n\nWould you like to opt in?</string>
     <string name="analytics_summary">Allow Roach to collect anonymous statistics to help future development of the app.</string>
 
@@ -85,6 +87,7 @@
 
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="in_collection">Variation #%1$d: \t %2$d</string>
+    <string name="in_deck">%d in deck</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
     <string name="no_card_art">No art available.</string>
@@ -99,13 +102,31 @@
     <string name="siege">Siege</string>
     <string name="ranged">Ranged</string>
     <string name="total">Total</string>
-    <string name="total_cards">Total Cards: %d</string>
+    <string name="total_cards">Total Cards</string>
     <string name="publish_deck">Publish Deck</string>
-    <string name="my_stuff">My Stuff</string>
+    <string name="my_stuff">My Gwent</string>
     <string name="gwent">Gwent</string>
     <string name="signed_out">Signed Out</string>
     <string name="keg_helper">Card Picker Helper</string>
     <string name="keg_helper_message">Our friends at Gwentify have built a tool to help you choose between cards you have received in a keg.\n\nBy clicking Go you will be leaving Roach and will be redirected to gwentify.com.</string>
     <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
     <string name="go">Go</string>
+    <string name="strength">Strength: %d</string>
+    <string name="event_cards">Event Cards</string>
+    <string name="gold_units">Gold Units</string>
+    <string name="silver_units">Silver Units</string>
+    <string name="bronze_units">Bronze Units</string>
+
+    <string name="this_deck">This Deck</string>
+    <string name="add_card">Add Card</string>
+    <string name="deck_summary">Deck Summary</string>
+    <string name="deck_total_cards_value">%1$d/%2$d</string>
+    <string name="total_strength">Total Strength</string>
+    <string name="change_leader">Change Leader</string>
+    <string name="deck_builder">Deck Builder</string>
+    <string name="collection_manager">Collection Manager</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="new_name">New name</string>
+    <string name="confirm_delete">Delete deck?</string>
 </resources>
