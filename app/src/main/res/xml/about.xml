@@ -15,16 +15,35 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_attributions">
-        <Preference
-            android:title="@string/hubert"
-            android:summary="@string/polish_translation">
-        </Preference>
         <Preference android:title="@string/cook"
             android:summary="@string/icon">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://cookicons.co/" />
         </Preference>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/translations">
+        <Preference
+            android:title="@string/hubert"
+            android:summary="@string/polish" />
+        <Preference
+            android:title="@string/xlubec"
+            android:summary="@string/polish" />
+        <Preference
+            android:title="@string/robert"
+            android:summary="@string/german" />
+        <Preference
+            android:title="@string/blank_space"
+            android:summary="@string/russian" />
+        <Preference
+            android:title="@string/jaime"
+            android:summary="@string/spanish" />
+        <Preference
+            android:title="@string/joao"
+            android:summary="@string/portuguese" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory
         android:title="@string/pref_licenses">
 

@@ -57,10 +57,6 @@
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
 
-    <string name="hubert" translatable="false">Hubert Maciejewicz</string>
-    <string name="polish_translation">Polish translation</string>
-    <string name="version">App Version</string>
-
     <string name="pref_attributions">Attributions</string>
     <string name="cook" translatable="false">Michael Cook</string>
     <string name="icon">Iconography</string>
@@ -129,4 +125,18 @@
     <string name="delete">Delete</string>
     <string name="new_name">New name</string>
     <string name="confirm_delete">Delete deck?</string>
+
+    <string name="version">App Version</string>
+    <string name="translations">Translations</string>
+    <string name="polish">Polish</string>
+    <string name="hubert" translatable="false">Hubert Maciejewicz</string>
+    <string name="xlubec" translatable="false">xlubec</string>
+    <string name="german">German</string>
+    <string name="robert" translatable="false">Robert Schierl</string>
+    <string name="russian">Russian</string>
+    <string name="blank_space" translatable="false">Blank Space</string>
+    <string name="spanish">Spanish</string>
+    <string name="jaime" translatable="false">Jaime Torres</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="joao" translatable="false">João Alexandre</string>
 </resources>
