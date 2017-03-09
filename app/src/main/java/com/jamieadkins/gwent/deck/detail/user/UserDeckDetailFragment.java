@@ -263,7 +263,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
 
                         @Override
                         public void onComplete() {
-                            getActivity().invalidateOptionsMenu();
+                            if (getActivity() != null) {
+                                getActivity().invalidateOptionsMenu();
+                            }
                         }
                     });
         }
