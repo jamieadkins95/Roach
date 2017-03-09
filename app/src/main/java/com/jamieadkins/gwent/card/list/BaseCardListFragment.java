@@ -3,16 +3,14 @@ package com.jamieadkins.gwent.card.list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterListener;
-import com.jamieadkins.gwent.card.CardFilterProvider;
-import com.jamieadkins.gwent.data.CardDetails;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -22,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public abstract class BaseCardListFragment extends BaseFragment
-        implements CardFilterListener, CardsContract.View {
+        implements CardsContract.View {
     private CardsContract.Presenter mCardsPresenter;
 
     @Override
@@ -36,6 +34,12 @@ public abstract class BaseCardListFragment extends BaseFragment
         View rootView = inflater.inflate(getLayoutId(), container, false);
         setupViews(rootView);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        setupFilterMenu(menu, inflater);
     }
 
     public int getLayoutId() {
@@ -61,9 +65,7 @@ public abstract class BaseCardListFragment extends BaseFragment
     }
 
     public void onLoadCardData() {
-        CardFilterProvider cardFilterProvider = (CardFilterProvider) getActivity();
-        cardFilterProvider.registerCardFilterListener(this);
-        CardFilter cardFilter = cardFilterProvider.getCardFilter();
+        CardFilter cardFilter = getCardFilter();
         mCardsPresenter.getCards(cardFilter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

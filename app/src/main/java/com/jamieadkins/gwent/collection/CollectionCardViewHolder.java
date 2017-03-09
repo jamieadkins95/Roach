@@ -24,6 +24,7 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
 
     public interface CollectionButtonListener {
         void addCard(String cardId, String variationId);
+
         void removeCard(String cardId, String variationId);
     }
 

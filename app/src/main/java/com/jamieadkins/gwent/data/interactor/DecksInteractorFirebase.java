@@ -15,8 +15,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.twitter.sdk.android.core.models.Card;
 
 import java.util.HashMap;
 import java.util.Map;

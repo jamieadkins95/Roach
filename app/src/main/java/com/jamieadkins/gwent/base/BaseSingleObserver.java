@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.jamieadkins.gwent.BuildConfig;
 
-import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 

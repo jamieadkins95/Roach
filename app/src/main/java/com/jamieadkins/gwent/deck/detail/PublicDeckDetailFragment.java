@@ -6,9 +6,6 @@ import android.view.View;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * UI fragment that shows a list of the users decks.
  */

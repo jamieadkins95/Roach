@@ -17,6 +17,6 @@ public class Rarity {
     public static final Filterable EPIC = new Filterable(EPIC_ID, R.string.epic);
     public static final Filterable LEGENDARY = new Filterable(LEGENDARY_ID, R.string.legendary);
 
-    public static final Filterable[] ALL_RARITIES = new Filterable[] {COMMON, RARE, EPIC, LEGENDARY};
+    public static final Filterable[] ALL_RARITIES = new Filterable[]{COMMON, RARE, EPIC, LEGENDARY};
 
 }

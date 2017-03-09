@@ -12,7 +12,6 @@ import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.PublicDeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;

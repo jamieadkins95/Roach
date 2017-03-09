@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Position;
 
 /**
  * Wrapper for our card detail view.

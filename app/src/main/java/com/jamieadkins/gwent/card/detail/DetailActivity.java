@@ -3,13 +3,10 @@ package com.jamieadkins.gwent.card.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
 
@@ -51,7 +48,7 @@ public class DetailActivity extends BaseActivity {
 
         Fragment fragment;
         if (savedInstanceState == null) {
-            fragment =  DetailFragment.newInstance(mCardId, patch);
+            fragment = DetailFragment.newInstance(mCardId, patch);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())

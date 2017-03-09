@@ -8,7 +8,7 @@ public class Filterable {
     private String mId;
     private int mName;
 
-    protected Filterable(String id, int nameResource){
+    protected Filterable(String id, int nameResource) {
         mId = id;
         mName = nameResource;
     }

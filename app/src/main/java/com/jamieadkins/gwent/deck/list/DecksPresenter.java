@@ -14,9 +14,7 @@ import com.jamieadkins.gwent.data.interactor.PatchInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -45,7 +43,7 @@ public class DecksPresenter implements DecksContract.Presenter {
 
     @Override
     public Observable<RxDatabaseEvent<Deck>> createNewDeck(final String name, final String faction,
-                                                       final CardDetails leader, String patch) {
+                                                           final CardDetails leader, String patch) {
         return mDecksInteractor.createNewDeck(name, faction, leader, patch);
     }
 

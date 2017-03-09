@@ -17,6 +17,6 @@ public class Type {
     public static final Filterable GOLD = new Filterable(GOLD_ID, R.string.gold);
     public static final Filterable LEADER = new Filterable(LEADER_ID, R.string.leader);
 
-    public static final Filterable[] ALL_TYPES = new Filterable[] {BRONZE, SILVER, GOLD, LEADER};
+    public static final Filterable[] ALL_TYPES = new Filterable[]{BRONZE, SILVER, GOLD, LEADER};
 
 }

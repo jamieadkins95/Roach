@@ -16,10 +16,10 @@ import android.widget.Spinner;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
-import com.jamieadkins.gwent.data.CardDetails;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

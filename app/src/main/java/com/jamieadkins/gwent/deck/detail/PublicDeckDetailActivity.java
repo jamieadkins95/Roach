@@ -1,15 +1,6 @@
 package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;

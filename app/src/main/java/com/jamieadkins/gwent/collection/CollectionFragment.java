@@ -8,13 +8,12 @@ import android.view.View;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -28,6 +27,14 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
+    }
+
+    @Override
+    public CardFilter initialiseCardFilter() {
+        CardFilter filter = new CardFilter();
+        filter.setCollectibleOnly(true);
+        filter.setCurrentFilterAsBase();
+        return filter;
     }
 
     @Override

@@ -17,8 +17,8 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.Rarity;
+import com.jamieadkins.gwent.data.Type;
 
 /**
  * Wrapper for our card detail view.

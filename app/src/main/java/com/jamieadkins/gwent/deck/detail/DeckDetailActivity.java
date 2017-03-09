@@ -10,14 +10,8 @@ import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterListener;
-import com.jamieadkins.gwent.card.CardFilterProvider;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
@@ -34,11 +28,10 @@ import io.reactivex.schedulers.Schedulers;
  * Shows card image and details.
  */
 
-public abstract class DeckDetailActivity extends BaseActivity implements CardFilterProvider {
+public abstract class DeckDetailActivity extends BaseActivity {
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
     public static final String EXTRA_FACTION_ID = "com.jamieadkins.gwent.faction";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
-    private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
     protected static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
 
     private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
@@ -48,9 +41,6 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
     protected String mPatch;
     protected String mFactionId;
     private boolean mIsPublicDeck;
-
-    protected CardFilter mCardFilter;
-    protected CardFilterListener mCardFilterListener;
 
     private DeckBriefSummaryView mSummaryView;
 
@@ -69,7 +59,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
         Fragment fragment;
 
         if (savedInstanceState != null) {
-            mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
+
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
             mFactionId = savedInstanceState.getString(EXTRA_FACTION_ID);
             mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
@@ -82,13 +72,10 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
             mPatch = getIntent().getStringExtra(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
-            mCardFilter = new CardFilter();
-            resetFilters();
-
             if (mIsPublicDeck) {
                 fragment = PublicDeckDetailFragment.newInstance(mDeckId);
             } else {
-                fragment = UserDeckDetailFragment.newInstance(mDeckId);
+                fragment = UserDeckDetailFragment.newInstance(mDeckId, mFactionId);
             }
 
             getSupportFragmentManager()
@@ -102,19 +89,6 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
                 new DecksInteractorFirebase(),
                 CardsInteractorFirebase.getInstance(mPatch),
                 new PatchInteractorFirebase());
-    }
-
-    protected void resetFilters() {
-        mCardFilter.clearFilters();
-        mCardFilter.put(Type.LEADER_ID, false);
-        mCardFilter.setCollectibleOnly(true);
-        for (Filterable faction : Faction.ALL_FACTIONS) {
-            if (!faction.getId().equals(mFactionId)) {
-                mCardFilter.put(faction.getId(), false);
-            }
-        }
-        mCardFilter.put(Faction.NEUTRAL_ID, true);
-        mCardFilter.setCurrentFilterAsBase();
     }
 
     @Override
@@ -172,22 +146,8 @@ public abstract class DeckDetailActivity extends BaseActivity implements CardFil
     }
 
     @Override
-    public CardFilter getCardFilter() {
-        return mCardFilter;
-    }
-
-    @Override
-    public void registerCardFilterListener(CardFilterListener listener) {
-        mCardFilterListener = listener;
-    }
-
-    protected CardFilterListener getCardFilterListener() {
-        return mCardFilterListener;
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(STATE_CARD_FILTER, mCardFilter);
+
         outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
         outState.putString(EXTRA_DECK_ID, mDeckId);
         outState.putString(EXTRA_FACTION_ID, mFactionId);

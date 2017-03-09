@@ -1,21 +1,14 @@
 package com.jamieadkins.gwent.card.list;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.SimpleCardView;
+import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.card.detail.DetailActivity;
 
 /**
  * ViewHolder for general yearns

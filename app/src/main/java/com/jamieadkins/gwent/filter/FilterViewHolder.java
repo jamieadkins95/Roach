@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.filter.FilterableItem;
 
 /**
  * Holds much more detail about a card.

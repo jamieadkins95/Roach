@@ -1,7 +1,5 @@
 package com.jamieadkins.gwent.deck.detail;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,11 +14,8 @@ import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
-import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
-import com.jamieadkins.gwent.deck.list.DeckSummaryView;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.HashMap;
@@ -40,6 +35,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     protected String mDeckId;
     protected Deck mDeck;
     private String mPatch;
+    protected String mFactionId;
 
     private Map<String, SubHeader> mRowHeaders = new HashMap<>();
 
@@ -50,6 +46,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
             mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
+            mFactionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
         }
         mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
         mRowHeaders.put(getString(R.string.gold), new GoogleNowSubHeader(getString(R.string.gold), R.color.gold));
@@ -78,6 +75,11 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
+    }
+
+    @Override
+    public void onCardFilterUpdated() {
+        // Do nothing.
     }
 
     @Override
@@ -148,6 +150,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
         outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
+        outState.putString(DeckDetailActivity.EXTRA_FACTION_ID, mFactionId);
         super.onSaveInstanceState(outState);
     }
 }

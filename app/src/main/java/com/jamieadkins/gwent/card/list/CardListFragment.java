@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 /**
  * UI fragment that shows a list of the users decks.

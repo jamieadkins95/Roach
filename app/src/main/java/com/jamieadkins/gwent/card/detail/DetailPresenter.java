@@ -6,7 +6,6 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**

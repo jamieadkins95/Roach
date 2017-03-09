@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.MenuItem;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ui.ResultCodes;
@@ -16,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.jgaw.GwentApiClient;
 
 import java.util.ArrayList;
 

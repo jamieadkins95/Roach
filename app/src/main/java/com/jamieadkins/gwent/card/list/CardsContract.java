@@ -6,8 +6,6 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 
 /**

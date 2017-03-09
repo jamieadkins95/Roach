@@ -21,6 +21,6 @@ public class Faction {
     public static final Filterable NILFGAARD = new Filterable(NILFGAARD_ID, R.string.nilfgaard);
     public static final Filterable MONSTERS = new Filterable(MONSTERS_ID, R.string.monster);
 
-    public static final Filterable[] ALL_FACTIONS = new Filterable[] {
+    public static final Filterable[] ALL_FACTIONS = new Filterable[]{
             MONSTERS, NORTHERN_REALMS, SCOIATAEL, SKELLIGE, NILFGAARD, NEUTRAL};
 }

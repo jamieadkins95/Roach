@@ -6,7 +6,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
@@ -91,7 +90,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
                         mCardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
+                                for (DataSnapshot cardSnapshot : dataSnapshot.getChildren()) {
                                     CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
                                     if (cardDetails == null) {
@@ -133,6 +132,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     /**
      * We have a separate method for getting one card as it is significantly quicker than using a
      * card filter.
+     *
      * @param id id of the card to retrieve
      */
     @Override

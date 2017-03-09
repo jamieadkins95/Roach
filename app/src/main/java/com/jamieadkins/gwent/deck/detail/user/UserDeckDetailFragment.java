@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,18 +16,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
-import com.jamieadkins.gwent.card.CardFilterListener;
-import com.jamieadkins.gwent.card.CardFilterProvider;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Rarity;
+import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
+import com.jamieadkins.gwent.filter.FilterableItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UserDeckDetailFragment extends BaseDeckDetailFragment
-        implements DecksContract.View, CardFilterListener {
+        implements DecksContract.View {
 
     protected interface DeckBuilderListener {
         void onDeckBuilderStateChanged(boolean open);
@@ -69,12 +71,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     private FloatingActionButton mAddCardButton;
 
     private List<CardDetails> mPotentialLeaders;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((CardFilterProvider) context).registerCardFilterListener(this);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -122,9 +118,10 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         mCardDatabaseRecyclerView.setAdapter(mCardDatabaseAdapter);
     }
 
-    public static UserDeckDetailFragment newInstance(String deckId) {
+    public static UserDeckDetailFragment newInstance(String deckId, String factionId) {
         UserDeckDetailFragment fragment = new UserDeckDetailFragment();
         fragment.mDeckId = deckId;
+        fragment.mFactionId = factionId;
         return fragment;
     }
 
@@ -141,6 +138,21 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     @Override
+    public CardFilter initialiseCardFilter() {
+        CardFilter filter = new CardFilter();
+        filter.put(Type.LEADER_ID, false);
+        filter.setCollectibleOnly(true);
+        for (Filterable faction : Faction.ALL_FACTIONS) {
+            if (!faction.getId().equals(mFactionId)) {
+                filter.put(faction.getId(), false);
+            }
+        }
+        filter.put(Faction.NEUTRAL_ID, true);
+        filter.setCurrentFilterAsBase();
+        return filter;
+    }
+
+    @Override
     public void onLoadData() {
         super.onLoadData();
         loadCardData();
@@ -149,6 +161,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        if (mBottomSheet.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            setupFilterMenu(menu, inflater);
+        }
         if (mPotentialLeaders != null && mPotentialLeaders.size() == 3) {
             inflater.inflate(R.menu.deck_builder, menu);
             menu.findItem(R.id.action_leader_1).setTitle(mPotentialLeaders.get(0).getName());
@@ -159,7 +174,45 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        List<FilterableItem> filterableItems = new ArrayList<>();
+        String filteringOn;
+        Filterable[] filterItems;
+
         switch (item.getItemId()) {
+            case R.id.filter_reset:
+                getCardFilter().clearFilters();
+                onCardFilterUpdated();
+                return true;
+            case R.id.filter_faction:
+                filteringOn = getString(R.string.faction);
+                Filterable faction = Faction.NORTHERN_REALMS;
+                switch (mFactionId) {
+                    case Faction.MONSTERS_ID:
+                    faction = Faction.MONSTERS;
+                    break;
+                case Faction.NORTHERN_REALMS_ID:
+                    faction = Faction.NORTHERN_REALMS;
+                    break;
+                case Faction.SCOIATAEL_ID:
+                    faction = Faction.SCOIATAEL;
+                    break;
+                case Faction.SKELLIGE_ID:
+                    faction = Faction.SKELLIGE;
+                    break;
+                case Faction.NILFGAARD_ID:
+                    faction = Faction.NILFGAARD;
+                    break;
+                }
+                filterItems = new Filterable[] {faction, Faction.NEUTRAL};
+                break;
+            case R.id.filter_rarity:
+                filteringOn = getString(R.string.rarity);
+                filterItems = Rarity.ALL_RARITIES;
+                break;
+            case R.id.filter_type:
+                filteringOn = getString(R.string.type);
+                filterItems = new Filterable[] {Type.BRONZE, Type.SILVER, Type.GOLD};
+                break;
             case R.id.action_leader_1:
                 mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(0));
                 return true;
@@ -204,6 +257,16 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        for (Filterable filterable : filterItems) {
+            filterableItems.add(new FilterableItem(
+                    filterable.getId(),
+                    getString(filterable.getName()),
+                    getCardFilter().get(filterable.getId())));
+        }
+
+        showFilterMenu(filteringOn, filterableItems);
+        return true;
     }
 
     @Override
@@ -213,7 +276,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     private void loadCardData() {
-        mDecksPresenter.getCards(((CardFilterProvider) getActivity()).getCardFilter())
+        mDecksPresenter.getCards(getCardFilter())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
