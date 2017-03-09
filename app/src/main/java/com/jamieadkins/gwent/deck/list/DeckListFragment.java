@@ -72,11 +72,18 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
         FloatingActionButton buttonNewDeck =
                 (FloatingActionButton) rootView.findViewById(R.id.new_deck);
 
+        if (savedInstanceState != null) {
+            NewDeckDialog dialog = (NewDeckDialog) getActivity().getSupportFragmentManager()
+                    .findFragmentByTag(NewDeckDialog.class.getSimpleName());
+            dialog.setPresenter(mDecksPresenter);
+        }
+
         if (!mPublicDecks) {
             buttonNewDeck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment newFragment =  NewDeckDialog.newInstance(mDecksPresenter);
+                    NewDeckDialog newFragment = new NewDeckDialog();
+                    newFragment.setPresenter(mDecksPresenter);
                     newFragment.setTargetFragment(DeckListFragment.this, REQUEST_CODE);
                     newFragment.show(getActivity().getSupportFragmentManager(),
                             newFragment.getClass().getSimpleName());

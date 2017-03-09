@@ -39,10 +39,8 @@ public class NewDeckDialog extends DialogFragment {
     NewDeckDialogListener mListener;
     DecksContract.Presenter mDeckPresenter;
 
-    public static NewDeckDialog newInstance(DecksContract.Presenter deckPresenter) {
-        NewDeckDialog dialog = new NewDeckDialog();
-        dialog.mDeckPresenter = deckPresenter;
-        return dialog;
+    public void setPresenter(DecksContract.Presenter deckPresenter) {
+        mDeckPresenter = deckPresenter;
     }
 
     @Override
