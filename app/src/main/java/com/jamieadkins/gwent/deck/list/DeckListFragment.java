@@ -75,7 +75,9 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
         if (savedInstanceState != null) {
             NewDeckDialog dialog = (NewDeckDialog) getActivity().getSupportFragmentManager()
                     .findFragmentByTag(NewDeckDialog.class.getSimpleName());
-            dialog.setPresenter(mDecksPresenter);
+            if (dialog != null) {
+                dialog.setPresenter(mDecksPresenter);
+            }
         }
 
         if (!mPublicDecks) {
