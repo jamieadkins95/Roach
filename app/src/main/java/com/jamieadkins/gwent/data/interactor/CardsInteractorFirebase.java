@@ -30,7 +30,7 @@ import io.reactivex.SingleSource;
 public class CardsInteractorFirebase implements CardsInteractor {
     private static final String LATEST_PATCH = "v0-8-60-2-images";
 
-    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mCardsReference;
 
     private final String databasePath;

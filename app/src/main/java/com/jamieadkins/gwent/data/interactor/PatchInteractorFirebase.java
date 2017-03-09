@@ -21,7 +21,7 @@ import io.reactivex.ObservableSource;
 public class PatchInteractorFirebase implements PatchInteractor {
     private static final String PATH = "card-data/latest-patch";
 
-    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mPatchReference;
 
     public PatchInteractorFirebase() {
