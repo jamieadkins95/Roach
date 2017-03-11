@@ -10,7 +10,7 @@
     <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
-    <string name="email_subject">Roach for Android</string>
+    <string name="email_subject" translatable="false">Roach for Android</string>
     <string name="email_template" translatable="false">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
     <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
 
