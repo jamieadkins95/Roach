@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">Roach</string>
+    <string name="settings">Ajustes</string>
+    <string name="my_decks">Mis Barajas</string>
+    <string name="my_collection">Mi Colección</string>
+    <string name="public_decks">Barajas Públicas</string>
+    <string name="card_database">Base Informativa de Tarjetas</string>
+    <string name="news">Noticias</string>
+    <string name="details">Detalles</string>
+    <string name="out_of_date">La base informativa de las tarjetas está anticuado!</string>
+    <string name="sign_in_cancelled">Iniciar sesión cancelado!</string>
+    <string name="no_internet_connection">No hay conexión a internet :(</string>
+    <string name="sign_in_failed">Fallo a Iniciar sesión :(</string>
+    <string name="sign_out">Terminar la sesión</string>
+    <string name="sign_in_to_view">Iniciar sesión para ver tus %!</string>
+    <string name="sign_in_successful">Iniciar sesión con éxito!</string>
+    <string name="sign_out_successful">Terminar la sesión con éxito!</string>
+    <string name="coming_soon">¡Próximamente!</string>
+    <string name="is_coming_soon">Grabadora de resultados próximamente!</string>
+    <string name="are_coming_soon">Bajaras Públicas próximamente!</string>
+    <string name="decks">Barajas</string>
+    <string name="collection">Colección</string>
+    <string name="search">Buscar</string>
+    <string name="search_hint">Nombre de tarjeta - distingue mayúsculas y minúsculas!
+</string>
+    <string name="results">Grabadora de resultados</string>
+    <string name="your_results">Resultados</string>
+    <string name="deck_name">Nombre de Baraja</string>
+    <string name="create">Crear</string>
+    <string name="new_deck">Baraja Nueva</string>
+    <string name="filter">Filtro</string>
+    <string name="reset_filters">Limpar los filtros</string>
+    <string name="faction">Facción</string>
+    <string name="northern_realms">Reinos del Norte</string>
+    <string name="monster">Monstruos</string>
+    <string name="skellige">Skelligie</string>
+    <string name="scoiatael">Scoia\'tael</string>
+    <string name="neutral">Neutral</string>
+    <string name="nilfgaard">Nilfgaard</string>
+    <string name="type">Tipo</string>
+    <string name="bronze">Bronce</string>
+    <string name="silver">Plata</string>
+    <string name="gold">Oro</string>
+    <string name="leader">Líder</string>
+    <string name="rarity">Raridad</string>
+    <string name="common">Común</string>
+    <string name="rare">Raro</string>
+    <string name="epic">Épico</string>
+    <string name="legendary">Legendario</string>
+    <string name="loading">Cargando / Inicializando</string>
+    <string name="about">Sobre</string>
+    <string name="pref_licenses">Licencias</string>
+    <string name="pref_general">General</string>
+    <string name="deck_total_cards_value">%1$d/%2$d</string>
+</resources>
