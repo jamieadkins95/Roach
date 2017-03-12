@@ -125,4 +125,6 @@
     <string name="delete">Delete</string>
     <string name="new_name">New name</string>
     <string name="confirm_delete">Delete deck?</string>
+    <string name="flag_error">Flag Incorrect Data</string>
+    <string name="related_cards">Related Cards</string>
 </resources>
