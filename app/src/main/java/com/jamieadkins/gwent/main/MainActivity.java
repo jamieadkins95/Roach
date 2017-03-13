@@ -429,12 +429,7 @@ public class MainActivity extends AuthenticationActivity implements
                                 String url = getString(R.string.gwentify_helper);
                                 FirebaseUtils.logAnalytics(MainActivity.this, url,
                                         "Gwentify", "external");
-                                new CustomTabsIntent.Builder()
-                                        .setToolbarColor(ContextCompat.getColor(MainActivity.this,
-                                                R.color.gwentGreen))
-                                        .build()
-                                        .launchUrl(MainActivity.this,
-                                                Uri.parse(url));
+                                showChromeCustomTab(url);
                             }
                         });
                 builder.create().show();
@@ -443,10 +438,7 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_news:
                 String url = getString(R.string.news_url);
                 FirebaseUtils.logAnalytics(this, url, "News", "external");
-                new CustomTabsIntent.Builder()
-                        .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
-                        .build()
-                        .launchUrl(this, Uri.parse(url));
+                showChromeCustomTab(url);
                 return true;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
@@ -471,5 +463,12 @@ public class MainActivity extends AuthenticationActivity implements
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         return false;
+    }
+
+    private void showChromeCustomTab(String url) {
+        new CustomTabsIntent.Builder()
+                .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+                .build()
+                .launchUrl(this, Uri.parse(url));
     }
 }
