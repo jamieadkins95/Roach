@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_related"
         android:icon="@drawable/ic_copy"
+        android:visible="false"
         app:showAsAction="ifRoom"
         android:title="@string/related_cards"/>
     <item

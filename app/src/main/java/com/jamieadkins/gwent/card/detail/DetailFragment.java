@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.LargeCardView;
@@ -137,9 +138,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
             return;
         }
 
-        if (mCard.getRelated() != null) {
-            inflater.inflate(R.menu.card_detail, menu);
-        }
+        inflater.inflate(R.menu.card_detail, menu);
+        menu.findItem(R.id.action_related).setVisible(mCard.getRelated() != null && BuildConfig.DEBUG);
     }
 
     @Override
