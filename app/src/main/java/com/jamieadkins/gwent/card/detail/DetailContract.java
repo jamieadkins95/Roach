@@ -25,5 +25,7 @@ public interface DetailContract {
         void setCardId(String id);
 
         String getCardId();
+
+        void reportMistake(String cardId, String description);
     }
 }

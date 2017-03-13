@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.card.detail;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -149,6 +152,26 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                         CardListBottomSheetFragment.newInstance(relatedCards);
                 fragment.setPresenter(mDetailPresenter);
                 fragment.show(getChildFragmentManager(), "related");
+                return true;
+            case R.id.action_flag_error:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_edit_text, null);
+                final EditText input = (EditText) view.findViewById(R.id.edit_text);
+                input.setHint(R.string.error_description);
+                builder.setView(view)
+                        .setTitle(R.string.flag_error_title)
+                        .setMessage(R.string.flag_error_message)
+                        .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mDetailPresenter.reportMistake(mCardId, input.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create()
+                        .show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

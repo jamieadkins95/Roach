@@ -18,5 +18,7 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
 
     Single<RxDatabaseEvent<CardDetails>> getCard(String id);
 
+    void reportMistake(String cardid, String description);
+
     void removeListeners();
 }
