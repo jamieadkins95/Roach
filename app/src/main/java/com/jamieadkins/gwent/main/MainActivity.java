@@ -56,6 +56,8 @@ public class MainActivity extends AuthenticationActivity implements
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
+    private static final String LAUNCH_EXTERNAL = "external";
+
     private static final int ACCOUNT_IDENTIFIER = 1000;
     private static final int SIGN_IN_IDENTIFIER = 1001;
     private static final int SIGN_OUT_IDENTIFIER = 1002;
@@ -428,7 +430,7 @@ public class MainActivity extends AuthenticationActivity implements
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String url = getString(R.string.gwentify_helper);
                                 FirebaseUtils.logAnalytics(MainActivity.this, url,
-                                        "Gwentify", "external");
+                                        "Gwentify", LAUNCH_EXTERNAL);
                                 showChromeCustomTab(url);
                             }
                         });
@@ -437,7 +439,7 @@ public class MainActivity extends AuthenticationActivity implements
                 return true;
             case R.id.tab_news:
                 String url = getString(R.string.news_url);
-                FirebaseUtils.logAnalytics(this, url, "News", "external");
+                FirebaseUtils.logAnalytics(this, url, "News", LAUNCH_EXTERNAL);
                 showChromeCustomTab(url);
                 return true;
             case R.id.action_about:
