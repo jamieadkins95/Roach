@@ -24,6 +24,7 @@ import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -425,22 +426,27 @@ public class MainActivity extends AuthenticationActivity implements
                         .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                String url = getString(R.string.gwentify_helper);
+                                FirebaseUtils.logAnalytics(MainActivity.this, url,
+                                        "Gwentify", "external");
                                 new CustomTabsIntent.Builder()
                                         .setToolbarColor(ContextCompat.getColor(MainActivity.this,
                                                 R.color.gwentGreen))
                                         .build()
                                         .launchUrl(MainActivity.this,
-                                                Uri.parse(getString(R.string.gwentify_helper)));
+                                                Uri.parse(url));
                             }
                         });
                 builder.create().show();
                 // Return true to not close the navigation drawer.
                 return true;
             case R.id.tab_news:
+                String url = getString(R.string.news_url);
+                FirebaseUtils.logAnalytics(this, url, "News", "external");
                 new CustomTabsIntent.Builder()
                         .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
                         .build()
-                        .launchUrl(this, Uri.parse(getString(R.string.news_url)));
+                        .launchUrl(this, Uri.parse(url));
                 return true;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
