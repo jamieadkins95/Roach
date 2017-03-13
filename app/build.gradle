@@ -30,6 +30,10 @@ android {
     dexOptions {
         jumboMode true
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
