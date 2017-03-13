@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
+import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -52,6 +55,8 @@ public class MainActivity extends AuthenticationActivity implements
     private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
+
+    private static final String LAUNCH_EXTERNAL = "external";
 
     private static final int ACCOUNT_IDENTIFIER = 1000;
     private static final int SIGN_IN_IDENTIFIER = 1001;
@@ -143,6 +148,7 @@ public class MainActivity extends AuthenticationActivity implements
                 .addDrawerItems(
                         mDrawerItems.get(R.id.tab_card_db),
                         mDrawerItems.get(R.id.tab_public_decks),
+                        mDrawerItems.get(R.id.tab_news),
                         mDrawerItems.get(R.id.tab_helper),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
@@ -208,6 +214,11 @@ public class MainActivity extends AuthenticationActivity implements
                 .withSelectable(false)
                 .withName(R.string.keg_helper)
                 .withIcon(R.drawable.ic_help));
+        mDrawerItems.put(R.id.tab_news, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_news)
+                .withSelectable(false)
+                .withName(R.string.news)
+                .withIcon(R.drawable.ic_news));
     }
 
     private void setupFragment(Fragment fragment, String tag) {
@@ -417,13 +428,19 @@ public class MainActivity extends AuthenticationActivity implements
                         .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent gwentify = new Intent(Intent.ACTION_VIEW);
-                                gwentify.setData(Uri.parse(getString(R.string.gwentify_helper)));
-                                startActivity(gwentify);
+                                String url = getString(R.string.gwentify_helper);
+                                FirebaseUtils.logAnalytics(MainActivity.this, url,
+                                        "Gwentify", LAUNCH_EXTERNAL);
+                                showChromeCustomTab(url);
                             }
                         });
                 builder.create().show();
                 // Return true to not close the navigation drawer.
+                return true;
+            case R.id.tab_news:
+                String url = getString(R.string.news_url);
+                FirebaseUtils.logAnalytics(this, url, "News", LAUNCH_EXTERNAL);
+                showChromeCustomTab(url);
                 return true;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
@@ -448,5 +465,12 @@ public class MainActivity extends AuthenticationActivity implements
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         return false;
+    }
+
+    private void showChromeCustomTab(String url) {
+        new CustomTabsIntent.Builder()
+                .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+                .build()
+                .launchUrl(this, Uri.parse(url));
     }
 }
