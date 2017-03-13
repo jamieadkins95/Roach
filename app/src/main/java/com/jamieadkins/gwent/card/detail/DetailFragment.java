@@ -24,6 +24,8 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import java.util.ArrayList;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -44,13 +46,17 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private String mCardId;
     private String mPatch;
 
+    private CardDetails mCard;
+
     private boolean mUseLowData = false;
 
     private SingleObserver<RxDatabaseEvent<CardDetails>> mObserver =
             new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
                 @Override
                 public void onSuccess(RxDatabaseEvent<CardDetails> value) {
+                    getActivity().invalidateOptionsMenu();
                     CardDetails card = value.getValue();
+                    mCard = card;
 
                     // Update UI with card details.
                     getActivity().setTitle(card.getName());
@@ -123,12 +129,26 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.card_detail, menu);
+
+        if (mCard == null) {
+            return;
+        }
+
+        if (mCard.getRelated() != null) {
+            inflater.inflate(R.menu.card_detail, menu);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_related:
+                ArrayList<String> relatedCards = new ArrayList<>();
+                relatedCards.addAll(mCard.getRelated());
+                CardListBottomSheetFragment fragment =
+                        CardListBottomSheetFragment.newInstance(relatedCards);
+                fragment.setPresenter(mDetailPresenter);
+                fragment.show(getChildFragmentManager(), "related");
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -146,7 +166,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     @Override
     public void onStop() {
         super.onStop();
-        mDetailPresenter.onStop();
+        mDetailPresenter.stop();
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.R;
  * Holds much more detail about a card.
  */
 
-public class FilterViewHolder extends BaseViewHolder implements View.OnClickListener {
+public class    FilterViewHolder extends BaseViewHolder implements View.OnClickListener {
     private FilterableItem mFilter;
     private TextView mFilterName;
     private CheckBox mCheckbox;

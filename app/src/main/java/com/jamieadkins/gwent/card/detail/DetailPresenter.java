@@ -2,10 +2,12 @@ package com.jamieadkins.gwent.card.detail;
 
 import android.support.annotation.NonNull;
 
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -47,7 +49,12 @@ public class DetailPresenter implements DetailContract.Presenter {
     }
 
     @Override
-    public void onStop() {
+    public void stop() {
         mDetailInteractor.removeListeners();
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
+        return mDetailInteractor.getCards(cardFilter);
     }
 }
