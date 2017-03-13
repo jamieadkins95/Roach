@@ -425,9 +425,12 @@ public class MainActivity extends AuthenticationActivity implements
                         .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent gwentify = new Intent(Intent.ACTION_VIEW);
-                                gwentify.setData(Uri.parse(getString(R.string.gwentify_helper)));
-                                startActivity(gwentify);
+                                new CustomTabsIntent.Builder()
+                                        .setToolbarColor(ContextCompat.getColor(MainActivity.this,
+                                                R.color.gwentGreen))
+                                        .build()
+                                        .launchUrl(MainActivity.this,
+                                                Uri.parse(getString(R.string.gwentify_helper)));
                             }
                         });
                 builder.create().show();
