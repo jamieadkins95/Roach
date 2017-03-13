@@ -35,4 +35,8 @@
     <item
         android:id="@+id/tab_helper"
         android:title="@string/keg_helper" />
+
+    <item
+        android:id="@+id/tab_news"
+        android:title="@string/news" />
 </menu>

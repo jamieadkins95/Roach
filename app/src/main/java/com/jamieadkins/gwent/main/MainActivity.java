@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -143,6 +145,7 @@ public class MainActivity extends AuthenticationActivity implements
                 .addDrawerItems(
                         mDrawerItems.get(R.id.tab_card_db),
                         mDrawerItems.get(R.id.tab_public_decks),
+                        mDrawerItems.get(R.id.tab_news),
                         mDrawerItems.get(R.id.tab_helper),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
@@ -208,6 +211,11 @@ public class MainActivity extends AuthenticationActivity implements
                 .withSelectable(false)
                 .withName(R.string.keg_helper)
                 .withIcon(R.drawable.ic_help));
+        mDrawerItems.put(R.id.tab_news, new PrimaryDrawerItem()
+                .withIdentifier(R.id.tab_news)
+                .withSelectable(false)
+                .withName(R.string.news)
+                .withIcon(R.drawable.ic_news));
     }
 
     private void setupFragment(Fragment fragment, String tag) {
@@ -424,6 +432,12 @@ public class MainActivity extends AuthenticationActivity implements
                         });
                 builder.create().show();
                 // Return true to not close the navigation drawer.
+                return true;
+            case R.id.tab_news:
+                new CustomTabsIntent.Builder()
+                        .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+                        .build()
+                        .launchUrl(this, Uri.parse(getString(R.string.news_url)));
                 return true;
             case R.id.action_about:
                 Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
