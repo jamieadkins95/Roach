@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.card.detail;
 
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
+import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
@@ -17,7 +18,7 @@ public interface DetailContract {
         void setLoadingIndicator(boolean active);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends CardsContract.Presenter {
 
         Single<RxDatabaseEvent<CardDetails>> getCard(String cardId);
 
@@ -25,6 +26,6 @@ public interface DetailContract {
 
         String getCardId();
 
-        void onStop();
+        void reportMistake(String cardId, String description);
     }
 }

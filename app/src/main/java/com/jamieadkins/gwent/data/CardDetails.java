@@ -25,6 +25,7 @@ public class CardDetails implements RecyclerViewItem {
     private boolean released;
     private Map<String, Variation> variations;
     private List<String> category;
+    private List<String> related;
 
     private String patch;
 
@@ -74,6 +75,10 @@ public class CardDetails implements RecyclerViewItem {
 
     public Map<String, Variation> getVariations() {
         return variations;
+    }
+
+    public List<String> getRelated() {
+        return related;
     }
 
     @Exclude

@@ -36,7 +36,7 @@ import io.reactivex.SingleSource;
 public class DecksInteractorFirebase implements DecksInteractor {
     private static final String PUBLIC_DECKS_PATH = "public-decks/";
 
-    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private Query mDecksQuery;
     private Query mDeckQuery;
     private final DatabaseReference mPublicReference;

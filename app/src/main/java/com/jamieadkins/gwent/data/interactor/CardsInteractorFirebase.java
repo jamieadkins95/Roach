@@ -30,8 +30,9 @@ import io.reactivex.SingleSource;
 public class CardsInteractorFirebase implements CardsInteractor {
     private static final String LATEST_PATCH = "v0-8-60-2-images";
 
-    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mCardsReference;
+    private final DatabaseReference mMistakesReference;
 
     private final String databasePath;
     private Query mCardsQuery;
@@ -61,6 +62,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
         mPatch = patch;
         databasePath = "card-data/" + mPatch;
         mCardsReference = mDatabase.getReference(databasePath);
+        mMistakesReference = mDatabase.getReference("reported-mistakes");
         // Keep Cards data in cache at all times.
         mCardsReference.keepSynced(true);
     }
@@ -176,6 +178,20 @@ public class CardsInteractorFirebase implements CardsInteractor {
                 });
             }
         });
+    }
+
+    @Override
+    public void reportMistake(String cardid, String description) {
+        String key = mMistakesReference.push().getKey();
+        Map<String, Object> values = new HashMap<>();
+        values.put("cardId", cardid);
+        values.put("description", description);
+        values.put("fixed", false);
+
+        Map<String, Object> firebaseUpdates = new HashMap<>();
+        firebaseUpdates.put(key, values);
+
+        mMistakesReference.updateChildren(firebaseUpdates);
     }
 
     @Override

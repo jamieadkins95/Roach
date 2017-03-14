@@ -109,4 +109,12 @@
     <string name="russian">Russian</string>
     <string name="spanish">Spanish</string>
     <string name="portuguese">Portuguese</string>
+
+    <string name="flag_error">Report Mistake</string>
+    <string name="related_cards">Related Cards</string>
+    <string name="news_url" translatable="false">https://playgwent.com/news</string>
+    <string name="error_description">Description of mistake</string>
+    <string name="send">Send</string>
+    <string name="flag_error_title">Found a mistake?</string>
+    <string name="flag_error_message">If there is a mistake in the card data, please provide a description of what is wrong so we can fix it as soon as possible!</string>
 </resources>
