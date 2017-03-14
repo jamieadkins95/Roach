@@ -84,7 +84,6 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
 
     @Override
     public void onDataEvent(RxDatabaseEvent<? extends RecyclerViewItem> data) {
-        super.onDataEvent(data);
         onDeckLoaded((Deck) data.getValue());
     }
 
