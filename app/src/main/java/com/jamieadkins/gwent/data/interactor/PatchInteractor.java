@@ -4,6 +4,7 @@ import com.jamieadkins.commonutils.mvp.BaseInteractor;
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Card manipulation class.
@@ -11,5 +12,5 @@ import io.reactivex.Observable;
 
 public interface PatchInteractor extends BaseInteractor<BasePresenter> {
 
-    Observable<String> getLatestPatch();
+    Single<String> getLatestPatch();
 }

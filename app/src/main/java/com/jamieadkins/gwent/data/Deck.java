@@ -53,6 +53,10 @@ public class Deck implements RecyclerViewItem {
         this.deleted = false;
     }
 
+    public void setPatch(String patch) {
+        this.patch = patch;
+    }
+
     public void setLeader(CardDetails leader) {
         this.leader = leader;
     }

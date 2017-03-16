@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,7 @@ import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
@@ -117,6 +119,25 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
                     }
                 });
+        mDeckDetailsPresenter.getLatestPatch()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<String>() {
+                    @Override
+                    public void onSuccess(String patch) {
+                        if (!patch.equals(mPatch)) {
+                            showPatchOutOfDateSnackbar(patch);
+                        }
+                    }
+                });
+    }
+
+    protected void showPatchOutOfDateSnackbar(String latest) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.coordinator_layout),
+                getString(R.string.old_patch),
+                Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @Override

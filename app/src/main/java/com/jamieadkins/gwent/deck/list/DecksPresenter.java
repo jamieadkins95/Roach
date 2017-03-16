@@ -133,4 +133,14 @@ public class DecksPresenter implements DecksContract.Presenter {
     public void onLoadingComplete() {
         mDecksView.setLoadingIndicator(false);
     }
+
+    @Override
+    public Single<String> getLatestPatch() {
+        return mPatchInteractor.getLatestPatch();
+    }
+
+    @Override
+    public void upgradeDeckToPatch(String deckId, String newPatch) {
+        mDecksInteractor.upgradeDeckToPatch(deckId, newPatch);
+    }
 }

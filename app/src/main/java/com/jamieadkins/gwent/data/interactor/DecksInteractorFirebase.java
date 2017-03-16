@@ -12,9 +12,13 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.base.BaseSingleObserver;
+import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.Type;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -411,6 +415,61 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 }
 
                 storedDeck.getCards().put(card.getIngameId(), card);
+
+                // Set value and report transaction success.
+                mutableData.setValue(storedDeck);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void upgradeDeckToPatch(String deckId, final String patch) {
+        final DatabaseReference deckReference = mUserReference.child(deckId);
+
+        // Transactions will ensure concurrency errors don't occur.
+        deckReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData mutableData) {
+                final Deck storedDeck = mutableData.getValue(Deck.class);
+                if (storedDeck == null) {
+                    // No deck with that id, this shouldn't occur.
+                    return Transaction.success(mutableData);
+                }
+
+                storedDeck.setPatch(patch);
+                CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance(patch);
+                CardFilter cardFilter = new CardFilter();
+                cardFilter.addCardId(storedDeck.getLeader().getIngameId());
+                for (String cardId : storedDeck.getCardCount().keySet()) {
+                    cardFilter.addCardId(cardId);
+                }
+
+                cardsInteractor.getCards(cardFilter)
+                        .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
+                            @Override
+                            public void onNext(RxDatabaseEvent<CardDetails> value) {
+                                CardDetails cardDetails = value.getValue();
+                                if (cardDetails.getType().equals(Type.LEADER_ID)) {
+                                    storedDeck.setLeader(cardDetails);
+                                } else {
+                                    storedDeck.getCards().put(cardDetails.getIngameId(), cardDetails);
+                                }
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                deckReference.setValue(storedDeck);
+                            }
+                        });
+
 
                 // Set value and report transaction success.
                 mutableData.setValue(storedDeck);

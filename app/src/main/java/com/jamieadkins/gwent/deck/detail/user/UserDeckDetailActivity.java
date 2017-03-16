@@ -1,10 +1,12 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Faction;
@@ -46,6 +48,21 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         if (savedInstanceState != null) {
             onDeckBuilderStateChanged(savedInstanceState.getBoolean(STATE_DECK_BUILDER_OPEN));
         }
+    }
+
+    @Override
+    protected void showPatchOutOfDateSnackbar(final String latest) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.coordinator_layout),
+                getString(R.string.old_patch),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.update_patch, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDeckDetailsPresenter.upgradeDeckToPatch(mDeckId, latest);
+            }
+        });
+        snackbar.show();
     }
 
     @Override

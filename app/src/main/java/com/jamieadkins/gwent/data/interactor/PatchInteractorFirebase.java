@@ -13,6 +13,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 
 /**
  * Deals with firebase.
@@ -31,18 +35,17 @@ public class PatchInteractorFirebase implements PatchInteractor {
     }
 
     @Override
-    public Observable<String> getLatestPatch() {
-        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
+    public Single<String> getLatestPatch() {
+        return Single.defer(new Callable<SingleSource<? extends String>>() {
             @Override
-            public ObservableSource<? extends String> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<String>() {
+            public SingleSource<? extends String> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<String>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
+                    public void subscribe(final SingleEmitter<String> emitter) throws Exception {
                         ValueEventListener patchListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                emitter.onNext(dataSnapshot.getValue(String.class));
-                                emitter.onComplete();
+                                emitter.onSuccess(dataSnapshot.getValue(String.class));
                             }
 
                             @Override

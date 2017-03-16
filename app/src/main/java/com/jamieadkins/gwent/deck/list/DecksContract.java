@@ -47,5 +47,9 @@ public interface DecksContract {
         void renameDeck(Deck deck, String name);
 
         void deleteDeck(Deck deck);
+
+        Single<String> getLatestPatch();
+
+        void upgradeDeckToPatch(String deckId, String newPatch);
     }
 }
