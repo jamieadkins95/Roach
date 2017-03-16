@@ -8,7 +8,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -167,14 +166,9 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         }
         if (mPotentialLeaders != null && mPotentialLeaders.size() == 3) {
             inflater.inflate(R.menu.deck_builder, menu);
-
-            String localeKey = getContext().getString(R.string.locale_key);
-            String defaultLocale = getResources().getConfiguration().locale.toString().replace("_", "-");
-            String locale = PreferenceManager.getDefaultSharedPreferences(
-                    getContext()).getString(localeKey, defaultLocale);
-            menu.findItem(R.id.action_leader_1).setTitle(mPotentialLeaders.get(0).getName(locale));
-            menu.findItem(R.id.action_leader_2).setTitle(mPotentialLeaders.get(1).getName(locale));
-            menu.findItem(R.id.action_leader_3).setTitle(mPotentialLeaders.get(2).getName(locale));
+            menu.findItem(R.id.action_leader_1).setTitle(mPotentialLeaders.get(0).getName());
+            menu.findItem(R.id.action_leader_2).setTitle(mPotentialLeaders.get(1).getName());
+            menu.findItem(R.id.action_leader_3).setTitle(mPotentialLeaders.get(2).getName());
         }
     }
 

@@ -29,7 +29,6 @@ import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,7 +49,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
 
     private String mCardId;
     private String mPatch;
-    private String mLocale;
 
     private CardDetails mCard;
 
@@ -65,7 +63,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                     mCard = card;
 
                     // Update UI with card details.
-                    getActivity().setTitle(card.getName(mLocale));
+                    getActivity().setTitle(card.getName());
 
                     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -109,9 +107,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
             mCardId = savedInstanceState.getString(STATE_CARD_ID);
             mPatch = savedInstanceState.getString(STATE_PATCH);
         }
-        String key = getString(R.string.locale_key);
-        mLocale = PreferenceManager
-                .getDefaultSharedPreferences(getContext()).getString(key, Locale.US.toString());
     }
 
     @Nullable

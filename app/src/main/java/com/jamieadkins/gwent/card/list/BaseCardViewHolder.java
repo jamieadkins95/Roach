@@ -10,8 +10,6 @@ import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 
-import java.util.Locale;
-
 /**
  * ViewHolder for general yearns
  */
@@ -48,7 +46,7 @@ public class BaseCardViewHolder extends BaseViewHolder {
 
         // Log what card has been viewed.
         FirebaseUtils.logAnalytics(getView().getContext(),
-                mCardDetails.getIngameId(), mCardDetails.getName(Locale.US.toString()), "View Card");
+                mCardDetails.getIngameId(), mCardDetails.getName(), "View Card");
     }
 
     public CardDetails getBoundCardDetails() {

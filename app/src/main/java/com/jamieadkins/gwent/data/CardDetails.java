@@ -6,7 +6,6 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -15,14 +14,14 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class CardDetails implements RecyclerViewItem {
     private String ingameId;
-    private Map<String, String> name;
-    private Map<String, String> info;
+    private String name;
+    private String info;
     private String faction;
     private List<String> lane;
     private String type;
     private List<String> loyalty;
     private int strength;
-    private Map<String, String> flavor;
+    private String flavor;
     private boolean released;
     private Map<String, Variation> variations;
     private List<String> category;
@@ -34,7 +33,7 @@ public class CardDetails implements RecyclerViewItem {
         // Required empty constructor for Firebase.
     }
 
-    public Map<String, String> getName() {
+    public String getName() {
         return name;
     }
 
@@ -46,7 +45,7 @@ public class CardDetails implements RecyclerViewItem {
         return ingameId;
     }
 
-    public Map<String, String> getInfo() {
+    public String getInfo() {
         return info;
     }
 
@@ -66,7 +65,7 @@ public class CardDetails implements RecyclerViewItem {
         return lane;
     }
 
-    public Map<String, String> getFlavor() {
+    public String getFlavor() {
         return flavor;
     }
 
@@ -95,22 +94,7 @@ public class CardDetails implements RecyclerViewItem {
     @Exclude
     @Override
     public String toString() {
-        return getName(Locale.US.toString());
-    }
-
-    @Exclude
-    public String getName(String locale) {
-        return name.get(locale);
-    }
-
-    @Exclude
-    public String getInfo(String locale) {
-        return info.get(locale);
-    }
-
-    @Exclude
-    public String getFlavor(String locale) {
-        return flavor.get(locale);
+        return name;
     }
 
     @Exclude
