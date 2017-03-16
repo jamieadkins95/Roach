@@ -22,4 +22,5 @@
     <string name="blank_space" translatable="false">Blank Space</string>
     <string name="jaime" translatable="false">Jaime Torres</string>
     <string name="joao" translatable="false">João Alexandre</string>
+    <string name="locale_key" translatable="false">com.jamieadkins.gwent.locale</string>
 </resources>
