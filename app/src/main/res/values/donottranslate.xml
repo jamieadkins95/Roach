@@ -24,7 +24,7 @@
     <string name="jaime" translatable="false">Jaime Torres</string>
     <string name="joao" translatable="false">João Alexandre</string>
 
-    <array name="locales">
+    <array translatable="false" name="locales">
         <item>en-US</item>
         <item>de-DE</item>
         <item>es-ES</item>
@@ -39,6 +39,7 @@
         <item>xh-TW</item>
     </array>
 
-    <string name="default_locale">en-US</string>
-    <string name="shown_language">com.jamieadkins.gwent.shown.language</string>
+    <string translatable="false" name="default_locale">en-US</string>
+    <string translatable="false" name="shown_language">com.jamieadkins.gwent.shown.language</string>
+    <string name="news_url" translatable="false">https://playgwent.com/news</string>
 </resources>
