@@ -1,7 +1,9 @@
 package com.jamieadkins.gwent.deck.list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,11 +28,18 @@ public class DeckViewHolder extends BaseViewHolder {
     private final TextView mDeckLeader;
     private final DeckSummaryView mDeckSummary;
 
+    private String mLocale;
+
     public DeckViewHolder(View view) {
         super(view);
         mDeckName = (TextView) view.findViewById(R.id.deck_name);
         mDeckLeader = (TextView) view.findViewById(R.id.deck_leader);
         mDeckSummary = (DeckSummaryView) view.findViewById(R.id.deck_summary);
+
+        Context context = view.getContext();
+        String key = context.getString(R.string.pref_locale_key);
+        mLocale = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(key, context.getString(R.string.default_locale));
     }
 
     @Override
@@ -66,7 +75,7 @@ public class DeckViewHolder extends BaseViewHolder {
         });
 
         mDeckName.setText(mDeck.getName());
-        mDeckLeader.setText(mDeck.getLeader().getName());
+        mDeckLeader.setText(mDeck.getLeader().getName(mLocale));
 
         mDeckSummary.setDeck(mDeck);
 

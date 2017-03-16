@@ -66,7 +66,7 @@ public class LargeCardView extends SimpleCardView {
     @Override
     public void setCardDetails(CardDetails cardDetails) {
         super.setCardDetails(cardDetails);
-        setDescription(cardDetails.getInfo());
+        setDescription(cardDetails.getInfo(getLocale()));
         setFaction(cardDetails.getFaction());
         setRarity(cardDetails.getRarity());
         if (cardDetails.getLoyalty() != null) {

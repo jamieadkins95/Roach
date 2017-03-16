@@ -50,6 +50,8 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private String mCardId;
     private String mPatch;
 
+    private String mLocale;
+
     private CardDetails mCard;
 
     private boolean mUseLowData = false;
@@ -63,7 +65,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                     mCard = card;
 
                     // Update UI with card details.
-                    getActivity().setTitle(card.getName());
+                    getActivity().setTitle(card.getName(mLocale));
 
                     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -107,6 +109,10 @@ public class DetailFragment extends Fragment implements DetailContract.View {
             mCardId = savedInstanceState.getString(STATE_CARD_ID);
             mPatch = savedInstanceState.getString(STATE_PATCH);
         }
+
+        String key = getString(R.string.pref_locale_key);
+        mLocale = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(key, getString(R.string.default_locale));
     }
 
     @Nullable

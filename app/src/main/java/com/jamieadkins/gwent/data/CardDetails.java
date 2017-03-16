@@ -26,6 +26,7 @@ public class CardDetails implements RecyclerViewItem {
     private Map<String, Variation> variations;
     private List<String> category;
     private List<String> related;
+    private LocalisedData localisedData;
 
     private String patch;
 
@@ -35,6 +36,37 @@ public class CardDetails implements RecyclerViewItem {
 
     public String getName() {
         return name;
+    }
+
+    @Exclude
+    public String getName(String locale) {
+        if (localisedData != null) {
+            return localisedData.getName().get(locale);
+        } else {
+            return name;
+        }
+    }
+
+    @Exclude
+    public String getInfo(String locale) {
+        if (localisedData != null) {
+            return localisedData.getInfo().get(locale);
+        } else {
+            return info;
+        }
+    }
+
+    @Exclude
+    public String getFlavor(String locale) {
+        if (localisedData != null) {
+            return localisedData.getFlavor().get(locale);
+        } else {
+            return flavor;
+        }
+    }
+
+    public LocalisedData getLocalisedData() {
+        return localisedData;
     }
 
     public String getFaction() {
@@ -127,6 +159,28 @@ public class CardDetails implements RecyclerViewItem {
 
     public List<String> getCategory() {
         return category;
+    }
+
+    public static class LocalisedData {
+        private Map<String, String> name;
+        private Map<String, String> info;
+        private Map<String, String> flavor;
+
+        public LocalisedData() {
+            // Required for firebase.
+        }
+
+        public Map<String, String> getName() {
+            return name;
+        }
+
+        public Map<String, String> getInfo() {
+            return info;
+        }
+
+        public Map<String, String> getFlavor() {
+            return flavor;
+        }
     }
 
     public static class Variation {

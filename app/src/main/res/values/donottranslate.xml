@@ -6,6 +6,7 @@
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="pref_crowd_sourcing_key" translatable="false">com.jamieadkins.gwent.crowd.sourcing</string>
+    <string name="pref_locale_key" translatable="false">com.jamieadkins.gwent.crowd.locale</string>
     <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.crowd.show.images</string>
     <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
@@ -22,4 +23,21 @@
     <string name="blank_space" translatable="false">Blank Space</string>
     <string name="jaime" translatable="false">Jaime Torres</string>
     <string name="joao" translatable="false">João Alexandre</string>
+
+    <array name="locales">
+        <item>en-US</item>
+        <item>de-DE</item>
+        <item>es-ES</item>
+        <item>es-MX</item>
+        <item>fr-FR</item>
+        <item>it-IT</item>
+        <item>jp-JP</item>
+        <item>pl-PL</item>
+        <item>pt-BR</item>
+        <item>ru-RU</item>
+        <item>zh-CN</item>
+        <item>xh-TW</item>
+    </array>
+
+    <string name="default_locale">en-US</string>
 </resources>
