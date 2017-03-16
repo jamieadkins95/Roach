@@ -112,6 +112,7 @@
 
     <string name="pref_locale">Card Data Language</string>
     <string name="pref_locale_summary">Language to display card data in.</string>
+    <string name="change_language">Change card data language in the settings</string>
 
     <string name="flag_error">Report Mistake</string>
     <string name="related_cards">Related Cards</string>

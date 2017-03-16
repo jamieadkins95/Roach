@@ -40,4 +40,5 @@
     </array>
 
     <string name="default_locale">en-US</string>
+    <string name="shown_language">com.jamieadkins.gwent.shown.language</string>
 </resources>

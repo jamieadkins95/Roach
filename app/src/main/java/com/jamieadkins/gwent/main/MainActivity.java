@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
@@ -9,7 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -46,6 +49,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AuthenticationActivity implements
@@ -102,6 +106,7 @@ public class MainActivity extends AuthenticationActivity implements
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setPersistance();
+        checkLanguage();
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
                 .withEmail(getString(R.string.signed_out))
@@ -183,6 +188,27 @@ public class MainActivity extends AuthenticationActivity implements
             setupFragment(fragment, fragment.getTag());
 
             mNavigationDrawer.setSelection(mCurrentTab);
+        }
+    }
+
+    private void checkLanguage() {
+        String language = getResources().getConfiguration().locale.getLanguage();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!language.equals(Locale.ENGLISH.getLanguage())
+                && !preferences.contains(getString(R.string.shown_language))) {
+            showSnackbar(
+                    getString(R.string.change_language),
+                    getString(R.string.settings),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
+                            settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
+                            settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
+                            startActivity(settings);
+                        }
+                    });
+            preferences.edit().putBoolean(getString(R.string.shown_language), true).apply();
         }
     }
 
