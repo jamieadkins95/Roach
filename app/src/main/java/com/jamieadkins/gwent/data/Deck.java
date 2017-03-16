@@ -28,6 +28,7 @@ public class Deck implements RecyclerViewItem {
     private String author;
     private String factionId;
     private CardDetails leader;
+    private String leaderId;
     private String patch = "v0-8-60-2";
     // Map of card ids to card count.
     private Map<String, Integer> cardCount;
@@ -41,12 +42,12 @@ public class Deck implements RecyclerViewItem {
         this.cardCount = new HashMap<>();
     }
 
-    public Deck(String id, String name, String factionId, CardDetails leader,
+    public Deck(String id, String name, String factionId, String leader,
                 String author, String patch) {
         this.id = id;
         this.name = name;
         this.factionId = factionId;
-        this.leader = leader;
+        this.leaderId = leader;
         this.author = author;
         this.patch = patch;
         this.publicDeck = false;
@@ -57,10 +58,15 @@ public class Deck implements RecyclerViewItem {
         this.leader = leader;
     }
 
+    public void setLeaderId(String leaderId) {
+        this.leaderId = leaderId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    @Exclude
     public CardDetails getLeader() {
         return leader;
     }
@@ -77,10 +83,15 @@ public class Deck implements RecyclerViewItem {
         return factionId;
     }
 
+    public String getLeaderId() {
+        return leaderId;
+    }
+
     public String getId() {
         return id;
     }
 
+    @Exclude
     public Map<String, CardDetails> getCards() {
         return cards;
     }
@@ -114,9 +125,8 @@ public class Deck implements RecyclerViewItem {
         result.put("name", name);
         result.put("author", author);
         result.put("factionId", factionId);
-        result.put("cards", cards);
         result.put("cardCount", cardCount);
-        result.put("leader", leader);
+        result.put("leaderId", leaderId);
         result.put("patch", patch);
         result.put("publicDeck", publicDeck);
         result.put("deleted", deleted);
