@@ -299,22 +299,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void setLeader(Deck deck, final CardDetails leader) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId());
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("leader");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
-                    return Transaction.success(mutableData);
-                }
-
-                storedDeck.setLeader(leader);
-
                 // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+                mutableData.setValue(leader);
                 return Transaction.success(mutableData);
             }
 
@@ -329,22 +321,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void renameDeck(Deck deck, final String newName) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId());
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("name");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
-                    return Transaction.success(mutableData);
-                }
-
-                storedDeck.setName(newName);
-
                 // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+                mutableData.setValue(newName);
                 return Transaction.success(mutableData);
             }
 
@@ -359,22 +343,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void deleteDeck(Deck deck) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId());
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("deleted");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
-                    return Transaction.success(mutableData);
-                }
-
-                storedDeck.setDeleted(true);
-
                 // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+                mutableData.setValue(true);
                 return Transaction.success(mutableData);
             }
 
@@ -432,23 +408,23 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void upgradeDeckToPatch(String deckId, final String patch) {
-        final DatabaseReference deckReference = mUserReference.child(deckId);
+        final DatabaseReference patchReference = mUserReference.child(deckId).child("patch");
+        final DatabaseReference cardsReference = mUserReference.child(deckId).child("cards");
+        final DatabaseReference leaderReference = mUserReference.child(deckId).child("leader");
 
         // Transactions will ensure concurrency errors don't occur.
-        deckReference.runTransaction(new Transaction.Handler() {
+        cardsReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(final MutableData mutableData) {
-                final Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
+                final Map<String, CardDetails> cards = (Map<String, CardDetails>) mutableData.getValue();
+                if (cards == null) {
+                    // No cards in this deck. Nothing to upgrade.
                     return Transaction.success(mutableData);
                 }
 
-                storedDeck.setPatch(patch);
                 CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance(patch);
                 CardFilter cardFilter = new CardFilter();
-                cardFilter.addCardId(storedDeck.getLeader().getIngameId());
-                for (String cardId : storedDeck.getCardCount().keySet()) {
+                for (String cardId : cards.keySet()) {
                     cardFilter.addCardId(cardId);
                 }
 
@@ -457,22 +433,58 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onNext(RxDatabaseEvent<CardDetails> value) {
                                 CardDetails cardDetails = value.getValue();
-                                if (cardDetails.getType().equals(Type.LEADER_ID)) {
-                                    storedDeck.setLeader(cardDetails);
-                                } else {
-                                    storedDeck.getCards().put(cardDetails.getIngameId(), cardDetails);
-                                }
+                                cards.put(cardDetails.getIngameId(), cardDetails);
                             }
 
                             @Override
                             public void onComplete() {
-                                deckReference.setValue(storedDeck);
+                                cardsReference.setValue(cards);
                             }
                         });
 
+                return Transaction.success(mutableData);
+            }
 
-                // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+        leaderReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData mutableData) {
+                final CardDetails leader = mutableData.getValue(CardDetails.class);
+                if (leader == null) {
+                    // No leader in this deck. Nothing to upgrade.
+                    return Transaction.success(mutableData);
+                }
+
+                CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance(patch);
+                cardsInteractor.getCard(leader.getIngameId())
+                        .subscribe(new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
+                            @Override
+                            public void onSuccess(RxDatabaseEvent<CardDetails> value) {
+                                leaderReference.setValue(value.getValue());
+                            }
+                        });
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+            }
+        });
+        patchReference.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData mutableData) {
+                mutableData.setValue(patch);
+
                 return Transaction.success(mutableData);
             }
 

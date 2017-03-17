@@ -43,6 +43,7 @@ public class Deck implements RecyclerViewItem {
 
     public Deck(String id, String name, String factionId, CardDetails leader,
                 String author, String patch) {
+        this();
         this.id = id;
         this.name = name;
         this.factionId = factionId;
