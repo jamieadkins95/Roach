@@ -439,82 +439,11 @@ public class DecksInteractorFirebase implements DecksInteractor {
     @Override
     public void upgradeDeckToPatch(String deckId, final String patch) {
         final DatabaseReference patchReference = mUserReference.child(deckId).child("patch");
-        final DatabaseReference cardsReference = mUserReference.child(deckId).child("cards");
-        final DatabaseReference leaderReference = mUserReference.child(deckId).child("leader");
 
-        // Transactions will ensure concurrency errors don't occur.
-        cardsReference.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(final MutableData mutableData) {
-                final Map<String, CardDetails> cards = (Map<String, CardDetails>) mutableData.getValue();
-                if (cards == null) {
-                    // No cards in this deck. Nothing to upgrade.
-                    return Transaction.success(mutableData);
-                }
-
-                CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance(patch);
-                CardFilter cardFilter = new CardFilter();
-                for (String cardId : cards.keySet()) {
-                    cardFilter.addCardId(cardId);
-                }
-
-                cardsInteractor.getCards(cardFilter)
-                        .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                            @Override
-                            public void onNext(RxDatabaseEvent<CardDetails> value) {
-                                CardDetails cardDetails = value.getValue();
-                                cards.put(cardDetails.getIngameId(), cardDetails);
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                cardsReference.setValue(cards);
-                            }
-                        });
-
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
-            }
-        });
-        leaderReference.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(final MutableData mutableData) {
-                final CardDetails leader = mutableData.getValue(CardDetails.class);
-                if (leader == null) {
-                    // No leader in this deck. Nothing to upgrade.
-                    return Transaction.success(mutableData);
-                }
-
-                CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance(patch);
-                cardsInteractor.getCard(leader.getIngameId())
-                        .subscribe(new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
-                            @Override
-                            public void onSuccess(RxDatabaseEvent<CardDetails> value) {
-                                leaderReference.setValue(value.getValue());
-                            }
-                        });
-
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
-            }
-        });
         patchReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(final MutableData mutableData) {
                 mutableData.setValue(patch);
-
                 return Transaction.success(mutableData);
             }
 
