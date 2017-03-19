@@ -48,7 +48,6 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
-            mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
             mFactionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
         }
         mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
@@ -161,7 +160,6 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
-        outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
         outState.putString(DeckDetailActivity.EXTRA_FACTION_ID, mFactionId);
         super.onSaveInstanceState(outState);
     }

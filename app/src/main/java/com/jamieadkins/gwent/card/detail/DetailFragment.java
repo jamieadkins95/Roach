@@ -40,7 +40,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailFragment extends Fragment implements DetailContract.View {
     private static final String STATE_CARD_ID = "com.jamieadkins.gwent.cardid";
-    private static final String STATE_PATCH = "com.jamieadkins.gwent.patch";
     private DetailContract.Presenter mDetailPresenter;
     private ImageView mCardPicture;
     private LargeCardView mLargeCardView;
@@ -48,7 +47,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     private CardImagePagerAdapter mAdapter;
 
     private String mCardId;
-    private String mPatch;
 
     private String mLocale;
 
@@ -89,10 +87,9 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                 }
             };
 
-    protected static DetailFragment newInstance(String cardId, String patch) {
+    protected static DetailFragment newInstance(String cardId) {
         DetailFragment fragment = new DetailFragment();
         fragment.mCardId = cardId;
-        fragment.mPatch = patch;
         return fragment;
     }
 
@@ -107,7 +104,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mCardId = savedInstanceState.getString(STATE_CARD_ID);
-            mPatch = savedInstanceState.getString(STATE_PATCH);
         }
 
         String key = getString(R.string.pref_locale_key);
@@ -201,7 +197,6 @@ public class DetailFragment extends Fragment implements DetailContract.View {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_CARD_ID, mCardId);
-        outState.putString(STATE_PATCH, mPatch);
         super.onSaveInstanceState(outState);
     }
 

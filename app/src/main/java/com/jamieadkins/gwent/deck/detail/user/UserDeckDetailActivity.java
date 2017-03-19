@@ -51,21 +51,6 @@ public class UserDeckDetailActivity extends DeckDetailActivity
     }
 
     @Override
-    protected void showPatchOutOfDateSnackbar(final String latest) {
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.coordinator_layout),
-                getString(R.string.old_patch),
-                Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.update_patch, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDeckDetailsPresenter.upgradeDeckToPatch(mDeckId, latest);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

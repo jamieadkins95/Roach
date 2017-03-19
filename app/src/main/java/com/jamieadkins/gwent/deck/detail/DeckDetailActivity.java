@@ -41,7 +41,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
     protected DecksContract.Presenter mDeckDetailsPresenter;
     protected String mDeckId;
-    protected String mPatch;
     protected String mFactionId;
     private boolean mIsPublicDeck;
 
@@ -65,14 +64,12 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
             mFactionId = savedInstanceState.getString(EXTRA_FACTION_ID);
-            mPatch = savedInstanceState.getString(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
 
             fragment = getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         } else {
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
             mFactionId = getIntent().getStringExtra(EXTRA_FACTION_ID);
-            mPatch = getIntent().getStringExtra(DetailActivity.EXTRA_PATCH);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
             if (mIsPublicDeck) {
@@ -90,7 +87,7 @@ public abstract class DeckDetailActivity extends BaseActivity {
         mDeckDetailsPresenter = new DecksPresenter(
                 (DecksContract.View) fragment,
                 new DecksInteractorFirebase(),
-                CardsInteractorFirebase.getInstance(mPatch),
+                CardsInteractorFirebase.getInstance(),
                 new PatchInteractorFirebase());
     }
 
@@ -129,25 +126,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
                     }
                 });
-        mDeckDetailsPresenter.getLatestPatch()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSingleObserver<String>() {
-                    @Override
-                    public void onSuccess(String patch) {
-                        if (!patch.equals(mPatch)) {
-                            showPatchOutOfDateSnackbar(patch);
-                        }
-                    }
-                });
-    }
-
-    protected void showPatchOutOfDateSnackbar(String latest) {
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.coordinator_layout),
-                getString(R.string.old_patch),
-                Snackbar.LENGTH_LONG);
-        snackbar.show();
     }
 
     @Override
@@ -182,7 +160,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
         outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
         outState.putString(EXTRA_DECK_ID, mDeckId);
         outState.putString(EXTRA_FACTION_ID, mFactionId);
-        outState.putString(DetailActivity.EXTRA_PATCH, mPatch);
         super.onSaveInstanceState(outState);
     }
 }

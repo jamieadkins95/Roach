@@ -41,7 +41,6 @@ public class BaseCardViewHolder extends BaseViewHolder {
     public void launchDetailActivity() {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_CARD_ID, mCardDetails.getIngameId());
-        intent.putExtra(DetailActivity.EXTRA_PATCH, mCardDetails.getPatch());
         getView().getContext().startActivity(intent);
 
         // Log what card has been viewed.

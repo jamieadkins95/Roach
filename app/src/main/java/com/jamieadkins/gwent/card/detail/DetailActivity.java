@@ -16,7 +16,6 @@ import com.jamieadkins.gwent.main.MainActivity;
 
 public class DetailActivity extends BaseActivity {
     public static final String EXTRA_CARD_ID = "com.jamieadkins.gwent.cardid";
-    public static final String EXTRA_PATCH = "com.jamieadkins.gwent.patch";
     private DetailContract.Presenter mDetailsPresenter;
     private String mCardId;
     private boolean mFromUrl = false;
@@ -44,11 +43,9 @@ public class DetailActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String patch = getIntent().getStringExtra(EXTRA_PATCH);
-
         Fragment fragment;
         if (savedInstanceState == null) {
-            fragment = DetailFragment.newInstance(mCardId, patch);
+            fragment = DetailFragment.newInstance(mCardId);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
@@ -59,7 +56,7 @@ public class DetailActivity extends BaseActivity {
 
         new DetailPresenter(
                 (DetailContract.View) fragment,
-                CardsInteractorFirebase.getInstance(patch));
+                CardsInteractorFirebase.getInstance());
     }
 
     @Override

@@ -39,23 +39,14 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private ValueEventListener mCardListener;
     private String mPatch;
 
-    private static Map<String, CardsInteractorFirebase> mInstances;
+    private static CardsInteractorFirebase mInstance;
 
     public static CardsInteractorFirebase getInstance() {
-        return getInstance(LATEST_PATCH);
-    }
-
-    public static CardsInteractorFirebase getInstance(String patch) {
-        if (mInstances == null) {
-            mInstances = new HashMap<>();
+        if (mInstance == null) {
+            mInstance = new CardsInteractorFirebase(LATEST_PATCH);
         }
 
-        if (mInstances.keySet().contains(patch)) {
-            return mInstances.get(patch);
-        } else {
-            mInstances.put(patch, new CardsInteractorFirebase(patch));
-            return mInstances.get(patch);
-        }
+        return mInstance;
     }
 
     private CardsInteractorFirebase(String patch) {
