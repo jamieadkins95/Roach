@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
@@ -129,6 +131,28 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
                             getRecyclerViewAdapter().addItem(2, new SubHeader("Featured Decks"));
                         }
                     });
+        }
+    }
+
+    @Override
+    public void onDataEvent(final RxDatabaseEvent<? extends RecyclerViewItem> data) {
+        if (data.getValue() instanceof Deck) {
+            final Deck deck = (Deck) data.getValue();
+            deck.evaluateDeck(mDecksPresenter)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new BaseCompletableObserver() {
+                        @Override
+                        public void onComplete() {
+                            DeckListFragment.super.onDataEvent(
+                                    new RxDatabaseEvent<RecyclerViewItem>(
+                                            data.getKey(),
+                                            deck,
+                                            data.getEventType()));
+                        }
+                    });
+        } else {
+            super.onDataEvent(data);
         }
     }
 

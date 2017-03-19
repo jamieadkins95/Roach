@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
@@ -111,7 +112,16 @@ public abstract class DeckDetailActivity extends BaseActivity {
                 .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void onNext(RxDatabaseEvent<Deck> value) {
-                        mSummaryView.setDeck(value.getValue());
+                        final Deck deck = value.getValue();
+                        deck.evaluateDeck(mDeckDetailsPresenter)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new BaseCompletableObserver() {
+                                    @Override
+                                    public void onComplete() {
+                                        mSummaryView.setDeck(deck);
+                                    }
+                                });
                     }
 
                     @Override

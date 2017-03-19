@@ -20,7 +20,9 @@ import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Type;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -32,6 +34,11 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+
+import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
+import static com.jamieadkins.gwent.data.Deck.MAX_EACH_BRONZE;
+import static com.jamieadkins.gwent.data.Deck.MAX_EACH_GOLD;
+import static com.jamieadkins.gwent.data.Deck.MAX_EACH_SILVER;
 
 /**
  * Deals with firebase.
@@ -48,6 +55,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private ChildEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
 
+    private CardsInteractor mCardsInteractor;
+
     public DecksInteractorFirebase() {
         mPublicReference = mDatabase.getReference(PUBLIC_DECKS_PATH);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -55,6 +64,16 @@ public class DecksInteractorFirebase implements DecksInteractor {
             mUserReference = mDatabase.getReference("users/" + userId + "/decks/");
             mUserReference.keepSynced(true);
         }
+    }
+
+    private Deck checkLegacy(DataSnapshot deckSnapshot) {
+        Deck deck = deckSnapshot.getValue(Deck.class);
+
+        if (!deckSnapshot.hasChild("leaderId") && deckSnapshot.hasChild("leader")) {
+            deck.setLeaderId(deckSnapshot.child("leader").child("ingameId").getValue(String.class));
+        }
+
+        return deck;
     }
 
     private Observable<RxDatabaseEvent<Deck>> getDecks(Query query) {
@@ -80,7 +99,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDecksListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
-                                Deck deck = initialiseDeck(deckSnapshot);
+                                Deck deck = checkLegacy(deckSnapshot);
 
                                 RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
                                 if (deck.isDeleted()) {
@@ -96,7 +115,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
                             @Override
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
-                                Deck deck = initialiseDeck(deckSnapshot);
+                                Deck deck = checkLegacy(deckSnapshot);
 
                                 RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.CHANGED;
                                 if (deck.isDeleted()) {
@@ -105,43 +124,36 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
-                                                deckSnapshot.getKey(),
+                                                deck.getId(),
                                                 deck,
                                                 eventType));
                             }
 
                             @Override
                             public void onChildRemoved(DataSnapshot deckSnapshot) {
+                                Deck deck = checkLegacy(deckSnapshot);
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
-                                                deckSnapshot.getKey(),
-                                                initialiseDeck(deckSnapshot),
+                                                deck.getId(),
+                                                deck,
                                                 RxDatabaseEvent.EventType.REMOVED));
                             }
 
                             @Override
                             public void onChildMoved(DataSnapshot deckSnapshot, String s) {
+                                Deck deck = checkLegacy(deckSnapshot);
+
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
-                                                deckSnapshot.getKey(),
-                                                initialiseDeck(deckSnapshot),
+                                                deck.getId(),
+                                                deck,
                                                 RxDatabaseEvent.EventType.MOVED));
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
-                            }
-
-                            private Deck initialiseDeck(DataSnapshot deckSnapshot) {
-                                Deck deck = deckSnapshot.getValue(Deck.class);
-
-                                deck.getLeader().setPatch(deck.getPatch());
-                                for (String cardId : deck.getCards().keySet()) {
-                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
-                                }
-
-                                return deck;
                             }
                         };
 
@@ -177,16 +189,11 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Deck deck = dataSnapshot.getValue(Deck.class);
+                                Deck deck = checkLegacy(dataSnapshot);
 
                                 if (deck == null) {
                                     emitter.onError(new Throwable("Deck doesn't exist"));
                                     return;
-                                }
-
-                                deck.getLeader().setPatch(deck.getPatch());
-                                for (String cardId : deck.getCards().keySet()) {
-                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
                                 }
 
                                 emitter.onSuccess(
@@ -225,7 +232,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Deck deck = dataSnapshot.getValue(Deck.class);
+                                Deck deck = checkLegacy(dataSnapshot);
 
                                 if (deck == null) {
                                     emitter.onError(new Throwable("Deck doesn't exist"));
@@ -233,14 +240,9 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                     return;
                                 }
 
-                                deck.getLeader().setPatch(deck.getPatch());
-                                for (String cardId : deck.getCards().keySet()) {
-                                    deck.getCards().get(cardId).setPatch(deck.getPatch());
-                                }
-
                                 emitter.onNext(
                                         new RxDatabaseEvent<Deck>(
-                                                dataSnapshot.getKey(),
+                                                deck.getId(),
                                                 deck,
                                                 RxDatabaseEvent.EventType.ADDED));
                             }
@@ -272,7 +274,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Deck deck = new Deck(key, name, faction, leader, author, patch);
+        Deck deck = new Deck(key, name, faction, leader.getIngameId(), author, patch);
         Map<String, Object> deckValues = deck.toMap();
 
         Map<String, Object> firebaseUpdates = new HashMap<>();
@@ -299,14 +301,14 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void setLeader(Deck deck, final CardDetails leader) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("leader");
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("leaderId");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 // Set value and report transaction success.
-                mutableData.setValue(leader);
+                mutableData.setValue(leader.getIngameId());
                 return Transaction.success(mutableData);
             }
 
@@ -364,36 +366,34 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId());
+    public void addCardToDeck(final Deck deck, final CardDetails card) {
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
+                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
+
+                if (cards == null) {
+                    cards = new HashMap<String, Long>();
+                }
+
+                if (!canAddCard(cards, card)) {
                     return Transaction.success(mutableData);
                 }
 
-                if (!storedDeck.canAddCard(card)) {
-                    return Transaction.success(mutableData);
-                }
-
-                if (storedDeck.getCardCount().containsKey(card.getIngameId())) {
+                if (cards.containsKey(card.getIngameId())) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCardCount().get(card.getIngameId());
-                    storedDeck.getCardCount().put(card.getIngameId(), currentCardCount + 1);
+                    long currentCardCount = cards.get(card.getIngameId());
+                    cards.put(card.getIngameId(), currentCardCount + 1);
                 } else {
                     // Else add one card to the deck.
-                    storedDeck.getCardCount().put(card.getIngameId(), 1);
+                    cards.put(card.getIngameId(), 1L);
                 }
 
-                storedDeck.getCards().put(card.getIngameId(), card);
-
                 // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+                mutableData.setValue(cards);
                 return Transaction.success(mutableData);
             }
 
@@ -404,6 +404,36 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
             }
         });
+    }
+
+    public boolean canAddCard(Map<String, Long> cards, CardDetails cardDetails) {
+        int count = 0;
+        for (String cardId : cards.keySet()) {
+            count += cards.get(cardId);
+        }
+
+        if (count >= MAX_CARD_COUNT) {
+            return false;
+        }
+
+        if (cards.containsKey(cardDetails.getIngameId())) {
+            // If the user already has at least one of these cards in their deck.
+            long currentCardCount = cards.get(cardDetails.getIngameId());
+            switch (cardDetails.getType()) {
+                case Type.BRONZE_ID:
+                    return currentCardCount < MAX_EACH_BRONZE;
+                case Type.SILVER_ID:
+                    return currentCardCount < MAX_EACH_SILVER;
+                case Type.GOLD_ID:
+                    return currentCardCount < MAX_EACH_GOLD;
+                default:
+                    return false;
+            }
+        } else {
+            // Deck doesn't contain this card yet, can add as long as the card isn't a leader card.
+            return !cardDetails.getType().equals(Type.LEADER_ID);
+        }
+
     }
 
     @Override
@@ -499,32 +529,24 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void removeCardFromDeck(Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId());
+        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Deck storedDeck = mutableData.getValue(Deck.class);
-                if (storedDeck == null) {
-                    // No deck with that id, this shouldn't occur.
-                    return Transaction.success(mutableData);
-                }
+                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
 
-                if (storedDeck.getCardCount().containsKey(card.getIngameId())) {
+                if (cards.containsKey(card.getIngameId())) {
                     // If the user already has at least one of these cards in their deck.
-                    int currentCardCount = storedDeck.getCardCount().get(card.getIngameId());
-                    storedDeck.getCardCount().put(card.getIngameId(), currentCardCount - 1);
-
-                    if (currentCardCount == 0) {
-                        storedDeck.getCards().put(card.getIngameId(), null);
-                    }
+                    long currentCardCount = cards.get(card.getIngameId());
+                    cards.put(card.getIngameId(), currentCardCount - 1);
                 } else {
                     // This deck doesn't have that card in it.
                 }
 
                 // Set value and report transaction success.
-                mutableData.setValue(storedDeck);
+                mutableData.setValue(cards);
                 return Transaction.success(mutableData);
             }
 

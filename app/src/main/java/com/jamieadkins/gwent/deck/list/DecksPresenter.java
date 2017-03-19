@@ -93,6 +93,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public Single<RxDatabaseEvent<CardDetails>> getCard(String cardId) {
+        return mCardsInteractor.getCard(cardId);
+    }
+
+    @Override
     public Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId) {
         CardFilter cardFilter = new CardFilter();
 

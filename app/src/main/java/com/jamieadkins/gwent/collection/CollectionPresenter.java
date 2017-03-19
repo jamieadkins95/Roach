@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.data.interactor.CollectionInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -40,6 +41,11 @@ public class CollectionPresenter implements CollectionContract.Presenter {
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
         return mCardsInteractor.getCards(cardFilter);
+    }
+
+    @Override
+    public Single<RxDatabaseEvent<CardDetails>> getCard(String cardId) {
+        return mCardsInteractor.getCard(cardId);
     }
 
     @Override
