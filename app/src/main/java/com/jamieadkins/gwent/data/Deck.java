@@ -169,6 +169,7 @@ public class Deck implements RecyclerViewItem {
                                     @Override
                                     public void onSuccess(RxDatabaseEvent<CardDetails> value) {
                                         leader = value.getValue();
+                                        leader.setPatch(patch);
                                         if (cards.keySet().size() == cardCount.keySet().size()) {
                                             emitter.onComplete();
                                         }
@@ -187,7 +188,9 @@ public class Deck implements RecyclerViewItem {
                                 new BaseObserver<RxDatabaseEvent<CardDetails>>() {
                                     @Override
                                     public void onNext(RxDatabaseEvent<CardDetails> value) {
-                                        cards.put(value.getKey(), value.getValue());
+                                        CardDetails cardDetails = value.getValue();
+                                        cardDetails.setPatch(patch);
+                                        cards.put(value.getKey(), cardDetails);
                                     }
 
                                     @Override
