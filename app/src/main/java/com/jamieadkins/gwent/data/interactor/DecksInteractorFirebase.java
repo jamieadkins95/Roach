@@ -235,27 +235,19 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 int count = dataSnapshot.getValue(Integer.class);
-                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
-                                if (count == 0) {
-                                    eventType = RxDatabaseEvent.EventType.REMOVED;
-                                }
                                 emitter.onNext(new RxDatabaseEvent<Integer>(
                                         dataSnapshot.getKey(),
                                         count,
-                                        eventType));
+                                        RxDatabaseEvent.EventType.ADDED));
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                                 int count = dataSnapshot.getValue(Integer.class);
-                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
-                                if (count == 0) {
-                                    eventType = RxDatabaseEvent.EventType.REMOVED;
-                                }
                                 emitter.onNext(new RxDatabaseEvent<Integer>(
                                         dataSnapshot.getKey(),
                                         count,
-                                        eventType));
+                                        RxDatabaseEvent.EventType.CHANGED));
                             }
 
                             @Override
@@ -657,7 +649,13 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                 if (cards.containsKey(card.getIngameId())) {
                                     // If the user already has at least one of these cards in their deck.
                                     long currentCardCount = cards.get(card.getIngameId());
-                                    cards.put(card.getIngameId(), currentCardCount - 1);
+                                    long newCount = currentCardCount - 1;
+
+                                    if (newCount == 0) {
+                                        cards.remove(card.getIngameId());
+                                    } else {
+                                        cards.put(card.getIngameId(), newCount);
+                                    }
                                 } else {
                                     // This deck doesn't have that card in it.
                                 }

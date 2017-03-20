@@ -357,6 +357,12 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
         if (data.getEventType() != RxDatabaseEvent.EventType.COMPLETE) {
             mCardDatabaseAdapter.updateCardCount(data.getKey(), data.getValue());
         }
+
+        switch (data.getEventType()) {
+            case REMOVED:
+                mCardDatabaseAdapter.updateCardCount(data.getKey(), 0);
+                break;
+        }
     }
 
     protected void setDeckBuilderListener(DeckBuilderListener listener) {
