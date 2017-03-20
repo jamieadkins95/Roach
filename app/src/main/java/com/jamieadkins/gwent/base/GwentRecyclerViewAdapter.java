@@ -18,6 +18,14 @@ import com.jamieadkins.gwent.deck.list.DeckViewHolder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Is able to contain different Gwent elements in a list (cards, decks, etc.).
@@ -112,30 +120,54 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     public void updateCardCount(String cardId, int newCount) {
         mDeckCardCounts.put(cardId, newCount);
 
-        int index = getIndexOfCard(cardId);
-        if (index != -1) {
-            notifyItemChanged(index);
-        }
+        getIndexOfCard(cardId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer value) {
+                        if (value != -1) {
+                            notifyItemChanged(value);
+                        }
+                    }
+                });
     }
 
-    private int getIndexOfCard(String cardId) {
-        for (int i = 0; i < getItems().size(); i++ ){
-            if (getItems().get(i) instanceof CardDetails) {
-                CardDetails cardDetails = (CardDetails) getItems().get(i);
-                if (cardDetails.getIngameId().equals(cardId)) {
-                    return i;
-                }
-            }
-        }
+    private Single<Integer> getIndexOfCard(final String cardId) {
+        return Single.defer(new Callable<SingleSource<? extends Integer>>() {
+            @Override
+            public SingleSource<? extends Integer> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(SingleEmitter<Integer> emitter) throws Exception {
+                        for (int i = 0; i < getItems().size(); i++ ){
+                            if (getItems().get(i) instanceof CardDetails) {
+                                CardDetails cardDetails = (CardDetails) getItems().get(i);
+                                if (cardDetails.getIngameId().equals(cardId)) {
+                                    emitter.onSuccess(i);
+                                }
+                            }
+                        }
 
-        return -1;
+                        emitter.onSuccess(-1);
+                    }
+                });
+            }
+        });
     }
 
     public void removeCard(String cardId) {
-        int index = getIndexOfCard(cardId);
-        if (index != -1) {
-            removeItem(index);
-        }
+        getIndexOfCard(cardId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer value) {
+                        if (value != -1) {
+                            removeItem(value);
+                        }
+                    }
+                });
     }
 
     private void bindDeckCardCounts(DeckDetailCardViewHolder holder, int position) {
