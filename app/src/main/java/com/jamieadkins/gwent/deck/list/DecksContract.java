@@ -28,6 +28,8 @@ public interface DecksContract {
 
         Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck, boolean evaluate);
 
+        Observable<RxDatabaseEvent<Integer>> subscribeToCardCountUpdates(String deckId);
+
         Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId);
 
         Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();

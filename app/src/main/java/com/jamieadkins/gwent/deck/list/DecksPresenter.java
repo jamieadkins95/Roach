@@ -73,6 +73,11 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
+    public Observable<RxDatabaseEvent<Integer>> subscribeToCardCountUpdates(String deckId) {
+        return mDecksInteractor.subscribeToCardCountUpdates(deckId);
+    }
+
+    @Override
     public Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek() {
         return mDecksInteractor.getDeckOfTheWeek();
     }

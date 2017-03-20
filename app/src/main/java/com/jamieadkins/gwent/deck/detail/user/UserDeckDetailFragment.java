@@ -317,8 +317,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     @Override
     protected void onDeckLoaded(Deck deck) {
         super.onDeckLoaded(deck);
-        getRecyclerViewAdapter().setDeck(deck);
-        mCardDatabaseAdapter.setDeck(deck);
 
         if (mPotentialLeaders == null) {
             mPotentialLeaders = new ArrayList<>();
@@ -338,6 +336,14 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                             }
                         }
                     });
+        }
+    }
+
+    @Override
+    protected void onDeckCardCountsChanged(RxDatabaseEvent<Integer> data) {
+        super.onDeckCardCountsChanged(data);
+        if (data.getEventType() != RxDatabaseEvent.EventType.COMPLETE) {
+            mCardDatabaseAdapter.updateCardCount(data.getKey(), data.getValue());
         }
     }
 

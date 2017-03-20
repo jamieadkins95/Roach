@@ -58,10 +58,12 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private Query mDecksQuery;
     private Query mDeckQuery;
+    private Query mCardCountQuery;
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
     private ChildEventListener mDecksListener;
     private ValueEventListener mDeckDetailListener;
+    private ChildEventListener mCardCountListener;
 
     private CardsInteractor mCardsInteractor;
 
@@ -206,6 +208,87 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
+    public Observable<RxDatabaseEvent<Integer>> subscribeToCardCountUpdates(String deckId) {
+        mCardCountQuery = mUserReference.child(deckId).child("cardCount");
+        mCardCountQuery.keepSynced(true);
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Integer>>>() {
+            @Override
+            public ObservableSource<? extends RxDatabaseEvent<Integer>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Integer>>() {
+                    @Override
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Integer>> emitter) throws Exception {
+                        ValueEventListener initialCountListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                emitter.onNext(RxDatabaseEvent.INITIAL_LOAD_COMPLETE);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        mCardCountListener = new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                int count = dataSnapshot.getValue(Integer.class);
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
+                                if (count == 0) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+                                emitter.onNext(new RxDatabaseEvent<Integer>(
+                                        dataSnapshot.getKey(),
+                                        count,
+                                        eventType));
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                int count = dataSnapshot.getValue(Integer.class);
+                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
+                                if (count == 0) {
+                                    eventType = RxDatabaseEvent.EventType.REMOVED;
+                                }
+                                emitter.onNext(new RxDatabaseEvent<Integer>(
+                                        dataSnapshot.getKey(),
+                                        count,
+                                        eventType));
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                int count = dataSnapshot.getValue(Integer.class);
+                                emitter.onNext(new RxDatabaseEvent<Integer>(
+                                        dataSnapshot.getKey(),
+                                        count,
+                                        RxDatabaseEvent.EventType.REMOVED));
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                int count = dataSnapshot.getValue(Integer.class);
+                                emitter.onNext(new RxDatabaseEvent<Integer>(
+                                        dataSnapshot.getKey(),
+                                        count,
+                                        RxDatabaseEvent.EventType.MOVED));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        mCardCountQuery.addChildEventListener(mCardCountListener);
+                        mCardCountQuery.addListenerForSingleValueEvent(initialCountListener);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     public Observable<RxDatabaseEvent<Deck>> getFeaturedDecks() {
         Query query = mPublicReference.child("decks").orderByChild("week");
         return getDecks(query);
@@ -330,6 +413,9 @@ public class DecksInteractorFirebase implements DecksInteractor {
         }
         if (mDeckQuery != null && mDeckDetailListener != null) {
             mDeckQuery.removeEventListener(mDeckDetailListener);
+        }
+        if (mCardCountQuery != null && mCardCountListener != null) {
+            mCardCountQuery.removeEventListener(mCardCountListener);
         }
     }
 

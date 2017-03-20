@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
@@ -15,6 +16,7 @@ import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckSummaryViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckViewHolder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,7 +38,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     private CollectionCardViewHolder.CollectionButtonListener mCollectionButtonListener;
     private DeckDetailCardViewHolder.DeckDetailButtonListener mDeckButtonListener;
     private Collection mCollection;
-    private Map<String, Integer> mDeckCardCounts;
+    private Map<String, Integer> mDeckCardCounts = new HashMap<>();
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -107,10 +109,32 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         }
     }
 
-    public void setDeck(Deck deck) {
-        if (mDeckCardCounts == null || !mDeckCardCounts.equals(deck.getCardCount())) {
-            mDeckCardCounts = deck.getCardCount();
-            notifyDataSetChanged();
+    public void updateCardCount(String cardId, int newCount) {
+        mDeckCardCounts.put(cardId, newCount);
+
+        int index = getIndexOfCard(cardId);
+        if (index != -1) {
+            notifyItemChanged(index);
+        }
+    }
+
+    private int getIndexOfCard(String cardId) {
+        for (int i = 0; i < getItems().size(); i++ ){
+            if (getItems().get(i) instanceof CardDetails) {
+                CardDetails cardDetails = (CardDetails) getItems().get(i);
+                if (cardDetails.getIngameId().equals(cardId)) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public void removeCard(String cardId) {
+        int index = getIndexOfCard(cardId);
+        if (index != -1) {
+            removeItem(index);
         }
     }
 
