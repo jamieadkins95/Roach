@@ -14,6 +14,7 @@ import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
+import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
@@ -131,7 +132,14 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
                     .subscribe(new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
                         @Override
                         public void onSuccess(RxDatabaseEvent<CardDetails> value) {
-                            getRecyclerViewAdapter().replaceItem(LEADER_INDEX, value.getValue());
+                            int gold = getRecyclerViewAdapter().getItems()
+                                    .indexOf(mRowHeaders.get(getString(R.string.gold)));
+                            if (getRecyclerViewAdapter().getItemAt(gold - 1).getItemType()
+                                    == GwentRecyclerViewAdapter.TYPE_CARD_LEADER) {
+                                getRecyclerViewAdapter().replaceItem(gold - 1, value.getValue());
+                            } else {
+                                getRecyclerViewAdapter().addItem(gold, value.getValue());
+                            }
                         }
                     });
         }
