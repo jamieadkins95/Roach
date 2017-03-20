@@ -43,9 +43,9 @@ public interface DecksContract {
 
         void onLoadingComplete();
 
-        void addCardToDeck(String deckId, CardDetails card);
+        Completable addCardToDeck(String deckId, CardDetails card);
 
-        void removeCardFromDeck(String deckId, CardDetails card);
+        Completable removeCardFromDeck(String deckId, CardDetails card);
 
         void setLeader(Deck deck, CardDetails leader);
 

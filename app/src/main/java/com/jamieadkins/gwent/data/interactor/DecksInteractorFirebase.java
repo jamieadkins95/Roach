@@ -537,42 +537,52 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(String deckId, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
-
-        // Transactions will ensure concurrency errors don't occur.
-        deckReference.runTransaction(new Transaction.Handler() {
+    public Completable addCardToDeck(final String deckId, final CardDetails card) {
+        return Completable.defer(new Callable<CompletableSource>() {
             @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
+            public CompletableSource call() throws Exception {
+                return Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(CompletableEmitter e) throws Exception {
+                        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
-                if (cards == null) {
-                    cards = new HashMap<String, Long>();
-                }
+                        // Transactions will ensure concurrency errors don't occur.
+                        deckReference.runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData mutableData) {
+                                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
 
-                if (!canAddCard(cards, card)) {
-                    return Transaction.success(mutableData);
-                }
+                                if (cards == null) {
+                                    cards = new HashMap<String, Long>();
+                                }
 
-                if (cards.containsKey(card.getIngameId())) {
-                    // If the user already has at least one of these cards in their deck.
-                    long currentCardCount = cards.get(card.getIngameId());
-                    cards.put(card.getIngameId(), currentCardCount + 1);
-                } else {
-                    // Else add one card to the deck.
-                    cards.put(card.getIngameId(), 1L);
-                }
+                                if (!canAddCard(cards, card)) {
+                                    return Transaction.success(mutableData);
+                                }
 
-                // Set value and report transaction success.
-                mutableData.setValue(cards);
-                return Transaction.success(mutableData);
-            }
+                                if (cards.containsKey(card.getIngameId())) {
+                                    // If the user already has at least one of these cards in their deck.
+                                    long currentCardCount = cards.get(card.getIngameId());
+                                    cards.put(card.getIngameId(), currentCardCount + 1);
+                                } else {
+                                    // Else add one card to the deck.
+                                    cards.put(card.getIngameId(), 1L);
+                                }
 
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Set value and report transaction success.
+                                mutableData.setValue(cards);
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(DatabaseError databaseError, boolean b,
+                                                   DataSnapshot dataSnapshot) {
+                                // Transaction completed
+                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -628,33 +638,44 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void removeCardFromDeck(String deckId, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
-
-        // Transactions will ensure concurrency errors don't occur.
-        deckReference.runTransaction(new Transaction.Handler() {
+    public Completable removeCardFromDeck(final String deckId, final CardDetails card) {
+        return Completable.defer(new Callable<CompletableSource>() {
             @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
+            public CompletableSource call() throws Exception {
+                return Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(CompletableEmitter e) throws Exception {
 
-                if (cards.containsKey(card.getIngameId())) {
-                    // If the user already has at least one of these cards in their deck.
-                    long currentCardCount = cards.get(card.getIngameId());
-                    cards.put(card.getIngameId(), currentCardCount - 1);
-                } else {
-                    // This deck doesn't have that card in it.
-                }
+                        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
-                // Set value and report transaction success.
-                mutableData.setValue(cards);
-                return Transaction.success(mutableData);
-            }
+                        // Transactions will ensure concurrency errors don't occur.
+                        deckReference.runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData mutableData) {
+                                Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
 
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                if (cards.containsKey(card.getIngameId())) {
+                                    // If the user already has at least one of these cards in their deck.
+                                    long currentCardCount = cards.get(card.getIngameId());
+                                    cards.put(card.getIngameId(), currentCardCount - 1);
+                                } else {
+                                    // This deck doesn't have that card in it.
+                                }
+
+                                // Set value and report transaction success.
+                                mutableData.setValue(cards);
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(DatabaseError databaseError, boolean b,
+                                                   DataSnapshot dataSnapshot) {
+                                // Transaction completed
+                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                            }
+                        });
+                    }
+                });
             }
         });
     }

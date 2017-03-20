@@ -55,12 +55,18 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
                 @Override
                 public void addCard(CardDetails card) {
-                    mDecksPresenter.addCardToDeck(mDeckId, card);
+                    mDecksPresenter.addCardToDeck(mDeckId, card)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
                 }
 
                 @Override
                 public void removeCard(CardDetails card) {
-                    mDecksPresenter.removeCardFromDeck(mDeckId, card);
+                    mDecksPresenter.removeCardFromDeck(mDeckId, card)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
                 }
             };
 
