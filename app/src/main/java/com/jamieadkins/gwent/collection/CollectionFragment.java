@@ -12,6 +12,9 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -62,10 +65,11 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
         mPresenter.getCollection()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<Collection>() {
+                .subscribe(new BaseObserver<RxDatabaseEvent<Map<String, Long>>>() {
                     @Override
-                    public void onNext(Collection value) {
-                        getRecyclerViewAdapter().setCardCollection(value);
+                    public void onNext(RxDatabaseEvent<Map<String, Long>> value) {
+                        getRecyclerViewAdapter()
+                                .updateCollection(value.getKey(), value.getValue());
                     }
 
                     @Override

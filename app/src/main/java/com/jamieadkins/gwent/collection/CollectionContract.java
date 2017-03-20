@@ -2,6 +2,9 @@ package com.jamieadkins.gwent.collection;
 
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -15,7 +18,7 @@ public interface CollectionContract {
     }
 
     interface Presenter extends CardsContract.Presenter {
-        Observable<Collection> getCollection();
+        Observable<RxDatabaseEvent<Map<String, Long>>> getCollection();
 
         void addCard(String cardId, String variationId);
 

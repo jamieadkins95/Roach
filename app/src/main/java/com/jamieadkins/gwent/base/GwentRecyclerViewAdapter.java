@@ -45,7 +45,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     private Controls mControls = Controls.NONE;
     private CollectionCardViewHolder.CollectionButtonListener mCollectionButtonListener;
     private DeckDetailCardViewHolder.DeckDetailButtonListener mDeckButtonListener;
-    private Collection mCollection;
+    private Map<String, Map<String, Long>> mCollection;
     private Map<String, Integer> mDeckCardCounts = new HashMap<>();
 
     @Override
@@ -110,11 +110,23 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         }
     }
 
-    public void setCardCollection(Collection collection) {
-        if (mCollection == null || !mCollection.equals(collection)) {
-            mCollection = collection;
-            notifyDataSetChanged();
+    public void updateCollection(String cardId, Map<String, Long> variationCounts) {
+        if (mCollection == null) {
+            mCollection = new HashMap<>();
         }
+
+        mCollection.put(cardId, variationCounts);
+        getIndexOfCard(cardId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer value) {
+                        if (value != -1) {
+                            notifyItemChanged(value);
+                        }
+                    }
+                });
     }
 
     public void updateCardCount(String cardId, int newCount) {
@@ -183,11 +195,11 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     private void bindCollection(CollectionCardViewHolder holder, int position) {
         CardDetails cardDetails = (CardDetails) getItemAt(position);
         if (mCollection != null &&
-                mCollection.getCards().containsKey(cardDetails.getIngameId())) {
+                mCollection.containsKey(cardDetails.getIngameId())) {
 
             for (String variationId : cardDetails.getVariations().keySet()) {
-                if (mCollection.getCards().get(cardDetails.getIngameId()).containsKey(variationId)) {
-                    final int count = mCollection.getCards().get(cardDetails.getIngameId()).get(variationId);
+                if (mCollection.get(cardDetails.getIngameId()).containsKey(variationId)) {
+                    final int count = mCollection.get(cardDetails.getIngameId()).get(variationId).intValue();
                     holder.setItemCount(variationId, count);
                 } else {
                     holder.setItemCount(variationId, 0);

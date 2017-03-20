@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.data.interactor;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +30,7 @@ import io.reactivex.ObservableSource;
 public class CollectionInteractorFirebase implements CollectionInteractor {
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mCollectionReference;
-    private ValueEventListener mCollectionListener;
+    private ChildEventListener mCollectionListener;
 
     private final String databasePath;
 
@@ -132,18 +133,48 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
     }
 
     @Override
-    public Observable<Collection> getCollection() {
-        return Observable.defer(new Callable<ObservableSource<? extends Collection>>() {
+    public Observable<RxDatabaseEvent<Map<String, Long>>> getCollection() {
+        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<Map<String, Long>>>>() {
             @Override
-            public ObservableSource<? extends Collection> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<Collection>() {
+            public ObservableSource<? extends RxDatabaseEvent<Map<String, Long>>> call() throws Exception {
+                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Map<String, Long>>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<Collection> emitter) throws Exception {
-                        mCollectionListener = new ValueEventListener() {
+                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<Map<String, Long>>> emitter) throws Exception {
+                        mCollectionListener = new ChildEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Collection collection = dataSnapshot.getValue(Collection.class);
-                                emitter.onNext(collection);
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Map<String, Long> cards = (Map<String, Long>) dataSnapshot.getValue();
+                                emitter.onNext(new RxDatabaseEvent<>(
+                                        dataSnapshot.getKey(),
+                                        cards,
+                                        RxDatabaseEvent.EventType.ADDED));
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                Map<String, Long> cards = (Map<String, Long>) dataSnapshot.getValue();
+                                emitter.onNext(new RxDatabaseEvent<>(
+                                        dataSnapshot.getKey(),
+                                        cards,
+                                        RxDatabaseEvent.EventType.CHANGED));
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                Map<String, Long> cards = (Map<String, Long>) dataSnapshot.getValue();
+                                emitter.onNext(new RxDatabaseEvent<>(
+                                        dataSnapshot.getKey(),
+                                        cards,
+                                        RxDatabaseEvent.EventType.REMOVED));
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                Map<String, Long> cards = (Map<String, Long>) dataSnapshot.getValue();
+                                emitter.onNext(new RxDatabaseEvent<>(
+                                        dataSnapshot.getKey(),
+                                        cards,
+                                        RxDatabaseEvent.EventType.MOVED));
                             }
 
                             @Override
@@ -152,7 +183,7 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
                             }
                         };
 
-                        mCollectionReference.addValueEventListener(mCollectionListener);
+                        mCollectionReference.child("cards").addChildEventListener(mCollectionListener);
                     }
                 });
             }

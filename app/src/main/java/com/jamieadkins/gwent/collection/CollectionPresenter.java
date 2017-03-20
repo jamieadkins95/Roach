@@ -9,6 +9,8 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -49,7 +51,7 @@ public class CollectionPresenter implements CollectionContract.Presenter {
     }
 
     @Override
-    public Observable<Collection> getCollection() {
+    public Observable<RxDatabaseEvent<Map<String, Long>>> getCollection() {
         return mCollectionInteractor.getCollection();
     }
 
