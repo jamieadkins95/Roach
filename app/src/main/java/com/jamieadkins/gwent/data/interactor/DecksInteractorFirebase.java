@@ -505,23 +505,33 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void deleteDeck(Deck deck) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("deleted");
-
-        // Transactions will ensure concurrency errors don't occur.
-        deckReference.runTransaction(new Transaction.Handler() {
+    public Completable deleteDeck(final String deckId) {
+        return Completable.defer(new Callable<CompletableSource>() {
             @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                // Set value and report transaction success.
-                mutableData.setValue(true);
-                return Transaction.success(mutableData);
-            }
+            public CompletableSource call() throws Exception {
+                return Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(CompletableEmitter e) throws Exception {
+                        DatabaseReference deckReference = mUserReference.child(deckId).child("deleted");
 
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                        // Transactions will ensure concurrency errors don't occur.
+                        deckReference.runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData mutableData) {
+                                // Set value and report transaction success.
+                                mutableData.setValue(true);
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(DatabaseError databaseError, boolean b,
+                                                   DataSnapshot dataSnapshot) {
+                                // Transaction completed
+                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                            }
+                        });
+                    }
+                });
             }
         });
     }

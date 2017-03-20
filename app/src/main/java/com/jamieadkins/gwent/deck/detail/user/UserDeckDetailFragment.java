@@ -256,7 +256,10 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDecksPresenter.deleteDeck(mDeck);
+                                mDecksPresenter.deleteDeck(mDeckId)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe();
                                 getActivity().finish();
                             }
                         })

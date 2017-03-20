@@ -89,8 +89,8 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public void deleteDeck(Deck deck) {
-        mDecksInteractor.deleteDeck(deck);
+    public Completable deleteDeck(String deckId) {
+        return mDecksInteractor.deleteDeck(deckId);
     }
 
     @Override
