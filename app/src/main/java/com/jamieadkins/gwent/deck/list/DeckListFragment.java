@@ -135,28 +135,6 @@ public class DeckListFragment extends BaseFragment implements DecksContract.View
     }
 
     @Override
-    public void onDataEvent(final RxDatabaseEvent<? extends RecyclerViewItem> data) {
-        if (data.getValue() instanceof Deck) {
-            final Deck deck = (Deck) data.getValue();
-            deck.evaluateDeck(mDecksPresenter)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseCompletableObserver() {
-                        @Override
-                        public void onComplete() {
-                            DeckListFragment.super.onDataEvent(
-                                    new RxDatabaseEvent<RecyclerViewItem>(
-                                            data.getKey(),
-                                            deck,
-                                            data.getEventType()));
-                        }
-                    });
-        } else {
-            super.onDataEvent(data);
-        }
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         mDecksPresenter.stop();

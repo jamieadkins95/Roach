@@ -36,6 +36,8 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
+    Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck, boolean evaluate);
+
     void stopData();
 
     void upgradeDeckToPatch(String deckId, String patch);

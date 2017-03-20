@@ -7,11 +7,13 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -19,6 +21,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,14 +29,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
+import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
 import static com.jamieadkins.gwent.data.Deck.MAX_EACH_BRONZE;
@@ -99,56 +107,88 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDecksListener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
-                                Deck deck = checkLegacy(deckSnapshot);
+                                final Deck deck = checkLegacy(deckSnapshot);
 
-                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
-                                if (deck.isDeleted()) {
-                                    eventType = RxDatabaseEvent.EventType.REMOVED;
-                                }
+                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                        .subscribe(
+                                                new BaseCompletableObserver() {
+                                                    @Override
+                                                    public void onComplete() {
+                                                        RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.ADDED;
+                                                        if (deck.isDeleted()) {
+                                                            eventType = RxDatabaseEvent.EventType.REMOVED;
+                                                        }
 
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                deckSnapshot.getKey(),
-                                                deck,
-                                                eventType));
+                                                        emitter.onNext(
+                                                                new RxDatabaseEvent<Deck>(
+                                                                        deck.getId(),
+                                                                        deck,
+                                                                        eventType));
+                                                    }
+                                                }
+                                        );
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
-                                Deck deck = checkLegacy(deckSnapshot);
+                                final Deck deck = checkLegacy(deckSnapshot);
 
-                                RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.CHANGED;
-                                if (deck.isDeleted()) {
-                                    eventType = RxDatabaseEvent.EventType.REMOVED;
-                                }
+                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                        .subscribe(
+                                                new BaseCompletableObserver() {
+                                                    @Override
+                                                    public void onComplete() {
+                                                        RxDatabaseEvent.EventType eventType = RxDatabaseEvent.EventType.CHANGED;
+                                                        if (deck.isDeleted()) {
+                                                            eventType = RxDatabaseEvent.EventType.REMOVED;
+                                                        }
 
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                deck.getId(),
-                                                deck,
-                                                eventType));
+                                                        emitter.onNext(
+                                                                new RxDatabaseEvent<Deck>(
+                                                                        deck.getId(),
+                                                                        deck,
+                                                                        eventType));
+                                                    }
+                                                }
+                                        );
                             }
 
                             @Override
                             public void onChildRemoved(DataSnapshot deckSnapshot) {
-                                Deck deck = checkLegacy(deckSnapshot);
+                                final Deck deck = checkLegacy(deckSnapshot);
 
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                deck.getId(),
-                                                deck,
-                                                RxDatabaseEvent.EventType.REMOVED));
+                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                        .subscribe(
+                                                new BaseCompletableObserver() {
+                                                    @Override
+                                                    public void onComplete() {
+                                                        emitter.onNext(
+                                                                new RxDatabaseEvent<Deck>(
+                                                                        deck.getId(),
+                                                                        deck,
+                                                                        RxDatabaseEvent.EventType.REMOVED));
+                                                    }
+                                                }
+                                        );
                             }
 
                             @Override
                             public void onChildMoved(DataSnapshot deckSnapshot, String s) {
-                                Deck deck = checkLegacy(deckSnapshot);
+                                final Deck deck = checkLegacy(deckSnapshot);
 
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                deck.getId(),
-                                                deck,
-                                                RxDatabaseEvent.EventType.MOVED));
+                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                        .subscribe(
+                                                new BaseCompletableObserver() {
+                                                    @Override
+                                                    public void onComplete() {
+                                                        emitter.onNext(
+                                                                new RxDatabaseEvent<Deck>(
+                                                                        deck.getId(),
+                                                                        deck,
+                                                                        RxDatabaseEvent.EventType.MOVED));
+                                                    }
+                                                }
+                                        );
                             }
 
                             @Override
@@ -218,6 +258,13 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public Observable<RxDatabaseEvent<Deck>> getDeck(final String deckId, boolean isPublicDeck) {
+        // Return unevaluated deck by default.
+        return getDeck(deckId, isPublicDeck, false);
+    }
+
+    @Override
+    public Observable<RxDatabaseEvent<Deck>> getDeck(final String deckId, boolean isPublicDeck,
+                                                     final boolean evaluate) {
         if (isPublicDeck) {
             mDeckQuery = mPublicReference.child("decks").child(deckId);
         } else {
@@ -232,7 +279,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                         mDeckDetailListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Deck deck = checkLegacy(dataSnapshot);
+                                final Deck deck = checkLegacy(dataSnapshot);
 
                                 if (deck == null) {
                                     emitter.onError(new Throwable("Deck doesn't exist"));
@@ -240,11 +287,27 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                     return;
                                 }
 
-                                emitter.onNext(
-                                        new RxDatabaseEvent<Deck>(
-                                                deck.getId(),
-                                                deck,
-                                                RxDatabaseEvent.EventType.ADDED));
+                                if (evaluate) {
+                                    deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                            .subscribe(
+                                                    new BaseCompletableObserver() {
+                                                        @Override
+                                                        public void onComplete() {
+                                                            emitter.onNext(
+                                                                    new RxDatabaseEvent<Deck>(
+                                                                            deck.getId(),
+                                                                            deck,
+                                                                            RxDatabaseEvent.EventType.ADDED));
+                                                        }
+                                                    }
+                                            );
+                                } else {
+                                    emitter.onNext(
+                                            new RxDatabaseEvent<Deck>(
+                                                    deck.getId(),
+                                                    deck,
+                                                    RxDatabaseEvent.EventType.ADDED));
+                                }
                             }
 
                             @Override

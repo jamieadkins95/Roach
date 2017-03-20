@@ -73,7 +73,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     @Override
     public void onLoadData() {
         super.onLoadData();
-        mDecksPresenter.getDeck(mDeckId, false)
+        mDecksPresenter.getDeck(mDeckId, false, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver());
@@ -95,50 +95,40 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
         mDeck = deck;
         getActivity().setTitle(mDeck.getName());
 
-        deck.evaluateDeck(mDecksPresenter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        mDeck = deck;
+        // Add the sub headers.
+        if (getRecyclerViewAdapter().isAnItemAt(LEADER_INDEX)) {
+            getRecyclerViewAdapter().replaceItem(LEADER_INDEX, mDeck.getLeader());
+        } else {
+            getRecyclerViewAdapter().addItem(LEADER_INDEX, mDeck.getLeader());
+        }
+        getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.gold)));
+        getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.silver)));
+        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.bronze)));
 
-                        // Add the sub headers.
-                        if (getRecyclerViewAdapter().isAnItemAt(LEADER_INDEX)) {
-                            getRecyclerViewAdapter().replaceItem(LEADER_INDEX, mDeck.getLeader());
-                        } else {
-                            getRecyclerViewAdapter().addItem(LEADER_INDEX, mDeck.getLeader());
-                        }
-                        getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.gold)));
-                        getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.silver)));
-                        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.bronze)));
+        for (String cardId : mDeck.getCards().keySet()) {
+            CardDetails card = mDeck.getCards().get(cardId);
+            if (mDeck.getCardCount().get(cardId) > 0) {
+                switch (card.getType()) {
+                    case Type.BRONZE_ID:
+                        getRecyclerViewAdapter().addItem(card);
+                        break;
+                    case Type.SILVER_ID:
+                        int bronzeIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.bronze)));
+                        getRecyclerViewAdapter().addItem(bronzeIndex, card);
+                        break;
+                    case Type.GOLD_ID:
+                        int silverIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.silver)));
+                        getRecyclerViewAdapter().addItem(silverIndex, card);
+                        break;
+                }
 
-                        for (String cardId : mDeck.getCards().keySet()) {
-                            CardDetails card = mDeck.getCards().get(cardId);
-                            if (mDeck.getCardCount().get(cardId) > 0) {
-                                switch (card.getType()) {
-                                    case Type.BRONZE_ID:
-                                        getRecyclerViewAdapter().addItem(card);
-                                        break;
-                                    case Type.SILVER_ID:
-                                        int bronzeIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.bronze)));
-                                        getRecyclerViewAdapter().addItem(bronzeIndex, card);
-                                        break;
-                                    case Type.GOLD_ID:
-                                        int silverIndex = getRecyclerViewAdapter().getItems().indexOf(mRowHeaders.get(getString(R.string.silver)));
-                                        getRecyclerViewAdapter().addItem(silverIndex, card);
-                                        break;
-                                }
+            } else {
+                // Remove the card from the list.
+                getRecyclerViewAdapter().removeItem(card);
+            }
+        }
 
-                            } else {
-                                // Remove the card from the list.
-                                getRecyclerViewAdapter().removeItem(card);
-                            }
-                        }
-
-                        setLoadingIndicator(false);
-                    }
-                });
+        setLoadingIndicator(false);
     }
 
     @Override

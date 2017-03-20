@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
+import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
@@ -156,7 +157,7 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public Completable evaluateDeck(final DecksContract.Presenter presenter) {
+    public Completable evaluateDeck(final CardsInteractor cardsInteractor) {
         return Completable.defer(new Callable<CompletableSource>() {
             @Override
             public CompletableSource call() throws Exception {
@@ -167,7 +168,7 @@ public class Deck implements RecyclerViewItem {
                             cards = new HashMap<String, CardDetails>();
                         }
 
-                        presenter.getCard(leaderId).subscribe(
+                        cardsInteractor.getCard(leaderId).subscribe(
                                 new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
                                     @Override
                                     public void onSuccess(RxDatabaseEvent<CardDetails> value) {
@@ -187,7 +188,7 @@ public class Deck implements RecyclerViewItem {
                         for (String cardId : cardCount.keySet()) {
                             filter.addCardId(cardId);
                         }
-                        presenter.getCards(filter).subscribe(
+                        cardsInteractor.getCards(filter).subscribe(
                                 new BaseObserver<RxDatabaseEvent<CardDetails>>() {
                                     @Override
                                     public void onNext(RxDatabaseEvent<CardDetails> value) {

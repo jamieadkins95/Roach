@@ -103,22 +103,13 @@ public abstract class DeckDetailActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
+        mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void onNext(RxDatabaseEvent<Deck> value) {
-                        final Deck deck = value.getValue();
-                        deck.evaluateDeck(mDeckDetailsPresenter)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new BaseCompletableObserver() {
-                                    @Override
-                                    public void onComplete() {
-                                        mSummaryView.setDeck(deck);
-                                    }
-                                });
+                        mSummaryView.setDeck(value.getValue());
                     }
 
                     @Override

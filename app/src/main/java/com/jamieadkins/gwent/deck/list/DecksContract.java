@@ -26,6 +26,8 @@ public interface DecksContract {
 
         Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
 
+        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck, boolean evaluate);
+
         Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId);
 
         Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
