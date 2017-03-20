@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.jamieadkins.gwent.R;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements SnackbarShower {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +24,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void initialiseContentView();
 
+    @Override
     public void showSnackbar(String message) {
         showSnackbar(message, null, null);
     }
 
+    @Override
     public void showSnackbar(String message, String actionString, View.OnClickListener action) {
         Snackbar snackbar = Snackbar.make(
                 findViewById(R.id.coordinator_layout),

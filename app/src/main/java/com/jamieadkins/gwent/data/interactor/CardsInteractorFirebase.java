@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -172,17 +176,29 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
-    public void reportMistake(String cardid, String description) {
-        String key = mMistakesReference.push().getKey();
-        Map<String, Object> values = new HashMap<>();
-        values.put("cardId", cardid);
-        values.put("description", description);
-        values.put("fixed", false);
+    public Completable reportMistake(final String cardid, final String description) {
+        return Completable.defer(new Callable<CompletableSource>() {
+            @Override
+            public CompletableSource call() throws Exception {
+                return Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(CompletableEmitter emitter) throws Exception {
+                        String key = mMistakesReference.push().getKey();
+                        Map<String, Object> values = new HashMap<>();
+                        values.put("cardId", cardid);
+                        values.put("description", description);
+                        values.put("fixed", false);
 
-        Map<String, Object> firebaseUpdates = new HashMap<>();
-        firebaseUpdates.put(key, values);
+                        Map<String, Object> firebaseUpdates = new HashMap<>();
+                        firebaseUpdates.put(key, values);
 
-        mMistakesReference.updateChildren(firebaseUpdates);
+                        mMistakesReference.updateChildren(firebaseUpdates);
+
+                        emitter.onComplete();
+                    }
+                });
+            }
+        });
     }
 
     @Override

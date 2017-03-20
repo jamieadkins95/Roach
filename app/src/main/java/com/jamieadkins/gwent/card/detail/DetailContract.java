@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -26,6 +27,6 @@ public interface DetailContract {
 
         String getCardId();
 
-        void reportMistake(String cardId, String description);
+        Completable reportMistake(String cardId, String description);
     }
 }

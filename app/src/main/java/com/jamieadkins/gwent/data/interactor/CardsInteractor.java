@@ -5,6 +5,7 @@ import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -18,7 +19,7 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
 
     Single<RxDatabaseEvent<CardDetails>> getCard(String id);
 
-    void reportMistake(String cardid, String description);
+    Completable reportMistake(String cardid, String description);
 
     void removeListeners();
 }

@@ -22,7 +22,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
+import com.jamieadkins.gwent.base.SnackbarShower;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.FirebaseUtils;
@@ -167,7 +169,19 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                         .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDetailPresenter.reportMistake(mCardId, input.getText().toString());
+                                mDetailPresenter.reportMistake(mCardId, input.getText().toString())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new BaseCompletableObserver() {
+                                            @Override
+                                            public void onComplete() {
+                                                if (getActivity() != null) {
+                                                    SnackbarShower snackbarShower
+                                                            = (SnackbarShower) getActivity();
+                                                    snackbarShower.showSnackbar(getString(R.string.mistake_reported));
+                                                }
+                                            }
+                                        });
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

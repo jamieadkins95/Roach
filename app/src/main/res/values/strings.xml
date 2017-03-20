@@ -122,4 +122,5 @@
     <string name="flag_error_message">If there is a mistake in the card data, please provide a description of what is wrong so we can fix it as soon as possible!</string>
     <string name="old_patch">This deck was built using an old Gwent patch</string>
     <string name="update_patch">Update</string>
+    <string name="mistake_reported">Mistake reported!</string>
 </resources>

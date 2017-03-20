@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -59,7 +60,7 @@ public class DetailPresenter implements DetailContract.Presenter {
     }
 
     @Override
-    public void reportMistake(String cardId, String description) {
-        mDetailInteractor.reportMistake(cardId, description);
+    public Completable reportMistake(String cardId, String description) {
+        return mDetailInteractor.reportMistake(cardId, description);
     }
 }
