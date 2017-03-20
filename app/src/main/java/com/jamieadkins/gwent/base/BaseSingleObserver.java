@@ -15,9 +15,7 @@ public abstract class BaseSingleObserver<T> implements SingleObserver<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
-        if (BuildConfig.DEBUG) {
-            Log.v(getClass().getSimpleName(), "onSubscribe: " + d.toString());
-        }
+        // Do nothing.
     }
 
     @Override
