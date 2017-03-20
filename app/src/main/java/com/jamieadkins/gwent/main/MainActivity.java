@@ -14,6 +14,7 @@ import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -194,21 +195,16 @@ public class MainActivity extends AuthenticationActivity implements
     private void checkLanguage() {
         String language = getResources().getConfiguration().locale.getLanguage();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!language.equals(Locale.ENGLISH.getLanguage())
-                && !preferences.contains(getString(R.string.shown_language))) {
-            showSnackbar(
-                    getString(R.string.change_language),
-                    getString(R.string.settings),
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
-                            settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
-                            settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
-                            startActivity(settings);
-                        }
-                    });
-            preferences.edit().putBoolean(getString(R.string.shown_language), true).apply();
+        if (!preferences.contains(getString(R.string.shown_language))) {
+            SharedPreferences.Editor editor = preferences.edit();
+            String[] locales = getResources().getStringArray(R.array.locales);
+            for (String locale : locales) {
+                if (locale.contains(language)) {
+                    editor.putString(getString(R.string.pref_locale_key), locale);
+                }
+            }
+            editor.putBoolean(getString(R.string.shown_language), true);
+            editor.apply();
         }
     }
 
