@@ -240,7 +240,10 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                         .setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDecksPresenter.renameDeck(mDeck, input.getText().toString());
+                                mDecksPresenter.renameDeck(mDeckId, input.getText().toString())
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

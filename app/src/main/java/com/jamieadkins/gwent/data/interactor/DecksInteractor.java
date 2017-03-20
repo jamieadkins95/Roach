@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -20,7 +21,7 @@ public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter>
 
     void setLeader(Deck deck, CardDetails leader);
 
-    void renameDeck(Deck deck, String newName);
+    Completable renameDeck(String deckId, String newName);
 
     void removeCardFromDeck(String deckId, CardDetails card);
 

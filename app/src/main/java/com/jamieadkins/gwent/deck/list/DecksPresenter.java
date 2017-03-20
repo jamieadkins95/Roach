@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.data.interactor.DecksInteractor;
 import com.jamieadkins.gwent.data.interactor.PatchInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -135,8 +136,8 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public void renameDeck(Deck deck, String name) {
-        mDecksInteractor.renameDeck(deck, name);
+    public Completable renameDeck(String deckId, String name) {
+        return mDecksInteractor.renameDeck(deckId, name);
     }
 
     @Override

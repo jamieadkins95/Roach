@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -48,7 +49,7 @@ public interface DecksContract {
 
         void setLeader(Deck deck, CardDetails leader);
 
-        void renameDeck(Deck deck, String name);
+        Completable renameDeck(String deckId, String name);
 
         void deleteDeck(Deck deck);
 
