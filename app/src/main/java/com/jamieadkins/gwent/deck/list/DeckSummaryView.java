@@ -7,8 +7,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Position;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Wrapper for our card detail view.
@@ -62,27 +66,48 @@ public class DeckSummaryView extends LinearLayout {
         mDeckSiege.setText(String.valueOf(deck.getStrengthForPosition(Position.SIEGE)));
         mDeckTotalAttack.setText(String.valueOf(deck.getTotalStrength()));
 
-        int totalCardCount = deck.getTotalCardCount();
-        int invalidColour = ContextCompat.getColor(getContext(), R.color.monsters);
-        int defaultColour = ContextCompat.getColor(getContext(), R.color.textSecondary);
+        final int invalidColour = ContextCompat.getColor(getContext(), R.color.monsters);
+        final int defaultColour = ContextCompat.getColor(getContext(), R.color.textSecondary);
 
-        mDeckTotalCards.setText(String.format(
-                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
-                totalCardCount, Deck.MAX_CARD_COUNT));
-        mDeckTotalCards.setTextColor(
-                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
-                        ? invalidColour : defaultColour);
+        deck.getTotalCardCount()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer totalCardCount) {
+                        mDeckTotalCards.setText(String.format(
+                                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
+                                totalCardCount, Deck.MAX_CARD_COUNT));
+                        mDeckTotalCards.setTextColor(
+                                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
+                                        ? invalidColour : defaultColour);
+                    }
+                });
 
-        int silverCardCount = deck.getSilverCardCount();
-        mDeckSilver.setText(String.format(
-                getContext().getString(R.string.deck_total_cards_value),
-                silverCardCount, Deck.MAX_SILVER_COUNT));
-        mDeckSilver.setTextColor(silverCardCount > Deck.MAX_SILVER_COUNT ? invalidColour : defaultColour);
+        deck.getSilverCardCount()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer silverCardCount) {
+                        mDeckSilver.setText(String.format(
+                                getContext().getString(R.string.deck_total_cards_value),
+                                silverCardCount, Deck.MAX_SILVER_COUNT));
+                        mDeckSilver.setTextColor(silverCardCount > Deck.MAX_SILVER_COUNT ? invalidColour : defaultColour);
+                    }
+                });
 
-        int goldCardCount = deck.getGoldCardCount();
-        mDeckGold.setText(String.format(
-                getContext().getString(R.string.deck_total_cards_value),
-                goldCardCount, Deck.MAX_GOLD_COUNT));
-        mDeckGold.setTextColor(goldCardCount > Deck.MAX_GOLD_COUNT ? invalidColour : defaultColour);
+        deck.getGoldCardCount()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer goldCardCount) {
+                        mDeckGold.setText(String.format(
+                                getContext().getString(R.string.deck_total_cards_value),
+                                goldCardCount, Deck.MAX_GOLD_COUNT));
+                        mDeckGold.setTextColor(goldCardCount > Deck.MAX_GOLD_COUNT ? invalidColour : defaultColour);
+                    }
+                });
     }
 }

@@ -17,6 +17,9 @@ import java.util.concurrent.Callable;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleSource;
 
 /**
  * Class that models what a deck is.
@@ -230,33 +233,53 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public int getTotalCardCount() {
-        int count = 0;
-        for (String cardId : cardCount.keySet()) {
-            count += cardCount.get(cardId);
-        }
-        return count;
+    public Single<Integer> getTotalCardCount() {
+        return Single.defer(new Callable<SingleSource<? extends Integer>>() {
+            @Override
+            public SingleSource<? extends Integer> call() throws Exception {
+                return new Single<Integer>() {
+                    @Override
+                    protected void subscribeActual(SingleObserver<? super Integer> observer) {
+                        int count = 0;
+                        for (String cardId : cardCount.keySet()) {
+                            count += cardCount.get(cardId);
+                        }
+                        observer.onSuccess(count);
+                    }
+                };
+            }
+        });
     }
 
     @Exclude
-    public int getSilverCardCount() {
+    public Single<Integer> getSilverCardCount() {
         return getCardCount(Type.SILVER_ID);
     }
 
     @Exclude
-    public int getGoldCardCount() {
+    public Single<Integer> getGoldCardCount() {
         return getCardCount(Type.GOLD_ID);
     }
 
     @Exclude
-    private int getCardCount(String type) {
-        int count = 0;
-        for (String cardId : cardCount.keySet()) {
-            if (getCards().get(cardId).getType().equals(type)) {
-                count += cardCount.get(cardId);
+    private Single<Integer> getCardCount(final String type) {
+        return Single.defer(new Callable<SingleSource<? extends Integer>>() {
+            @Override
+            public SingleSource<? extends Integer> call() throws Exception {
+                return new Single<Integer>() {
+                    @Override
+                    protected void subscribeActual(SingleObserver<? super Integer> observer) {
+                        int count = 0;
+                        for (String cardId : cardCount.keySet()) {
+                            if (getCards().get(cardId).getType().equals(type)) {
+                                count += cardCount.get(cardId);
+                            }
+                        }
+                        observer.onSuccess(count);
+                    }
+                };
             }
-        }
-        return count;
+        });
     }
 
     @Exclude
