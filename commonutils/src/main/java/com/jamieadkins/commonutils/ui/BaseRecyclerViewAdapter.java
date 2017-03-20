@@ -83,7 +83,12 @@ public abstract class BaseRecyclerViewAdapter
     }
 
     public void updateItem(RecyclerViewItem updatedItem) {
-        replaceItem(mItems.indexOf(updatedItem), updatedItem);
+        int index = mItems.indexOf(updatedItem);
+        if (index != -1) {
+            replaceItem(index, updatedItem);
+        } else {
+            addItem(updatedItem);
+        }
     }
 
     public void removeItem(RecyclerViewItem itemToRemove) {
