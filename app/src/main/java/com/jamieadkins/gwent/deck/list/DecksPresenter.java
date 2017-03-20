@@ -125,13 +125,13 @@ public class DecksPresenter implements DecksContract.Presenter {
     }
 
     @Override
-    public void addCardToDeck(Deck deck, CardDetails card) {
-        mDecksInteractor.addCardToDeck(deck, card);
+    public void addCardToDeck(String deckId, CardDetails card) {
+        mDecksInteractor.addCardToDeck(deckId, card);
     }
 
     @Override
-    public void removeCardFromDeck(Deck deck, CardDetails card) {
-        mDecksInteractor.removeCardFromDeck(deck, card);
+    public void removeCardFromDeck(String deckId, CardDetails card) {
+        mDecksInteractor.removeCardFromDeck(deckId, card);
     }
 
     @Override

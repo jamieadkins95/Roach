@@ -515,8 +515,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(final Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("cardCount");
+    public void addCardToDeck(String deckId, final CardDetails card) {
+        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
@@ -606,8 +606,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void removeCardFromDeck(Deck deck, final CardDetails card) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("cardCount");
+    public void removeCardFromDeck(String deckId, final CardDetails card) {
+        DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {

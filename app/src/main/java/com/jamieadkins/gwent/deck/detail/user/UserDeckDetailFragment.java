@@ -55,12 +55,12 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
                 @Override
                 public void addCard(CardDetails card) {
-                    mDecksPresenter.addCardToDeck(mDeck, card);
+                    mDecksPresenter.addCardToDeck(mDeckId, card);
                 }
 
                 @Override
                 public void removeCard(CardDetails card) {
-                    mDecksPresenter.removeCardFromDeck(mDeck, card);
+                    mDecksPresenter.removeCardFromDeck(mDeckId, card);
                 }
             };
 

@@ -42,9 +42,9 @@ public interface DecksContract {
 
         void onLoadingComplete();
 
-        void addCardToDeck(Deck deck, CardDetails card);
+        void addCardToDeck(String deckId, CardDetails card);
 
-        void removeCardFromDeck(Deck deck, CardDetails card);
+        void removeCardFromDeck(String deckId, CardDetails card);
 
         void setLeader(Deck deck, CardDetails leader);
 
