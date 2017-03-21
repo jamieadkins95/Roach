@@ -411,19 +411,19 @@ public class DecksInteractorFirebase implements DecksInteractor {
             for (ChildEventListener listener : mDeckListListeners) {
                 mDecksQuery.removeEventListener(listener);
             }
-            mDeckListListeners = null;
+            mDeckListListeners.clear();
         }
         if (mDeckQuery != null && mDeckDetailListeners != null) {
             for (ValueEventListener listener : mDeckDetailListeners) {
                 mDeckQuery.removeEventListener(listener);
             }
-            mDeckDetailListeners = null;
+            mDeckDetailListeners.clear();
         }
         if (mCardCountQuery != null && mCardCountListeners != null) {
             for (ChildEventListener listener : mCardCountListeners) {
                 mCardCountQuery.removeEventListener(listener);
             }
-            mCardCountListeners = null;
+            mCardCountListeners.clear();
         }
     }
 
