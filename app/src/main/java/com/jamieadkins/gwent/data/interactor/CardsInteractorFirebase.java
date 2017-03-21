@@ -26,6 +26,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Deals with firebase.
@@ -87,30 +88,9 @@ public class CardsInteractorFirebase implements CardsInteractor {
                         mCardListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot cardSnapshot : dataSnapshot.getChildren()) {
-                                    CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
-
-                                    if (cardDetails == null) {
-                                        emitter.onError(new Throwable("Card doesn't exist."));
-                                        emitter.onComplete();
-                                        return;
-                                    }
-
-                                    cardDetails.setPatch(mPatch);
-
-                                    // Only add card if the card meets all the filters.
-                                    // Also check name and info are not null. Those are dud cards.
-                                    if (filter.doesCardMeetFilter(cardDetails)) {
-                                        emitter.onNext(
-                                                new RxDatabaseEvent<CardDetails>(
-                                                        cardSnapshot.getKey(),
-                                                        cardDetails,
-                                                        RxDatabaseEvent.EventType.ADDED
-                                                ));
-                                    }
-                                }
-
-                                emitter.onComplete();
+                                emitCards(dataSnapshot, emitter, filter)
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe();
                             }
 
                             @Override
@@ -120,6 +100,46 @@ public class CardsInteractorFirebase implements CardsInteractor {
                         };
 
                         mCardsQuery.addListenerForSingleValueEvent(mCardListener);
+                    }
+                });
+            }
+        });
+    }
+
+    private Completable emitCards(final DataSnapshot cardsSnapshot,
+                                  final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter,
+                                  final CardFilter filter) {
+        return Completable.defer(new Callable<CompletableSource>() {
+            @Override
+            public CompletableSource call() throws Exception {
+                return Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(CompletableEmitter e) throws Exception {
+                        for (DataSnapshot cardSnapshot : cardsSnapshot.getChildren()) {
+                            CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
+
+                            if (cardDetails == null) {
+                                emitter.onError(new Throwable("Card doesn't exist."));
+                                emitter.onComplete();
+                                return;
+                            }
+
+                            cardDetails.setPatch(mPatch);
+
+                            // Only add card if the card meets all the filters.
+                            // Also check name and info are not null. Those are dud cards.
+                            if (filter.doesCardMeetFilter(cardDetails)) {
+                                emitter.onNext(
+                                        new RxDatabaseEvent<CardDetails>(
+                                                cardSnapshot.getKey(),
+                                                cardDetails,
+                                                RxDatabaseEvent.EventType.ADDED
+                                        ));
+                            }
+                        }
+
+                        emitter.onComplete();
+                        e.onComplete();
                     }
                 });
             }
