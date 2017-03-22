@@ -57,7 +57,6 @@
     <string name="analytics_summary">Permita que Roach recopile estadísticas anónimas para ayudar al desarrollo futuro de la aplicación.</string>
     <string name="crowd_sourcing">Ayuda a juntar información sobre dados de las Cartas.</string>
     <string name="crowd_sourcing_summary">Ayude a Roach a actualizarse rápidamente cuando una nueva versión de Gwent se lance contestando preguntas sobre las tarjetas que han sido cambiadas.</string>
-    <string name="pref_images">Imágenes de las tarjetas</string>
     <string name="low_data">Modo de consumo de datos bajo</string>
     <string name="low_data_summary">Utilice imágenes de menor calidad para reducir el consumo de datos.</string>
     <string name="show_images_in_list">Mostrar imágenes en la lista de tarjetas.</string>

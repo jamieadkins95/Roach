@@ -57,7 +57,6 @@
     <string name="analytics_summary">Zezwól Płotce na zbieranie anonimowych informacji, aby pomóc w przyszłym rozwoju aplikacji.</string>
     <string name="crowd_sourcing">Crowd Sourcing</string>
     <string name="crowd_sourcing_summary">Pomóż Płotce w szybkiej aktualizacji po nowym patchu, odpowiadając na kilka pytań o zaktualizowanych kartach.</string>
-    <string name="pref_images">Grafiki kart</string>
     <string name="low_data">Tryb zmniejszonego poboru danych</string>
     <string name="low_data_summary">Używaj niższej rozdziellczości kart, aby zmniejszyć zużycie danych.</string>
     <string name="show_images_in_list">Pokaż grafiki w liście.</string>
@@ -108,4 +107,15 @@
     <string name="russian">Rosyjski</string>
     <string name="spanish">Hiszpański</string>
     <string name="portuguese">Portugalski</string>
+    <string name="pref_locale">Język wyświetlania kart</string>
+    <string name="pref_locale_summary">Język, w którym karty mają być wyświetlane</string>
+    <string name="change_language">Zmień język kart w ustawieniach</string>
+    <string name="flag_error">Zgłoś błąd</string>
+    <string name="related_cards">Podobne karty</string>
+    <string name="error_description">Opis błędu</string>
+    <string name="send">Wyśluj</string>
+    <string name="flag_error_title">Znalazłeś błąd?</string>
+    <string name="flag_error_message">Jeśli w bazie kart znajduje się błąd, to, proszę, napisz co jest nie tak, więc będziemy mogli to naprawić tak szybko, jak to możliwe!</string>
+    <string name="mistake_reported">Błąd zgłoszony!</string>
+    <string name="update_patch">Aktualizacja</string>
 </resources>
