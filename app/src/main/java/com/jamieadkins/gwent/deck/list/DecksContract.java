@@ -52,9 +52,5 @@ public interface DecksContract {
         Completable renameDeck(String deckId, String name);
 
         Completable deleteDeck(String deckId);
-
-        Single<String> getLatestPatch();
-
-        void upgradeDeckToPatch(String deckId, String newPatch);
     }
 }

@@ -32,7 +32,6 @@ import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
@@ -256,8 +255,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                CardsInteractorFirebase.getInstance(),
-                                new PatchInteractorFirebase());
+                                CardsInteractorFirebase.getInstance());
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
@@ -272,8 +270,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                CardsInteractorFirebase.getInstance(),
-                                new PatchInteractorFirebase());
+                                CardsInteractorFirebase.getInstance());
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;
