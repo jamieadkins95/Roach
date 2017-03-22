@@ -472,8 +472,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                // Do nothing.
             }
         });
     }
@@ -500,8 +499,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -532,8 +530,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -583,8 +580,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -662,8 +658,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
