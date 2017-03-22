@@ -624,26 +624,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void upgradeDeckToPatch(String deckId, final String patch) {
-        final DatabaseReference patchReference = mUserReference.child(deckId).child("patch");
-
-        patchReference.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(final MutableData mutableData) {
-                mutableData.setValue(patch);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
-            }
-        });
-    }
-
-    @Override
     public Completable removeCardFromDeck(final String deckId, final CardDetails card) {
         return Completable.defer(new Callable<CompletableSource>() {
             @Override
