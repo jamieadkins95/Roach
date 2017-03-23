@@ -257,7 +257,13 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onFilterChanged(String key, boolean checked) {
         mCardFilter.put(key, checked);
-        onCardFilterUpdated();
+    }
+
+    @Override
+    public void onFilterDismissed(boolean filtersChanged) {
+        if (filtersChanged) {
+            onCardFilterUpdated();
+        }
     }
 
     @Override
