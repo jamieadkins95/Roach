@@ -63,11 +63,12 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private Query mCardCountQuery;
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
-    private ChildEventListener mDecksListener;
-    private ValueEventListener mDeckDetailListener;
-    private ChildEventListener mCardCountListener;
 
     private CardsInteractor mCardsInteractor;
+
+    private List<ChildEventListener> mDeckListListeners = new ArrayList<>();
+    private List<ValueEventListener> mDeckDetailListeners = new ArrayList<>();
+    private List<ChildEventListener> mCardCountListeners = new ArrayList<>();
 
     public DecksInteractorFirebase() {
         mPublicReference = mDatabase.getReference(PUBLIC_DECKS_PATH);
@@ -108,7 +109,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDecksListener = new ChildEventListener() {
+                        ChildEventListener listener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
@@ -201,7 +202,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDecksQuery.addChildEventListener(mDecksListener);
+                        mDecksQuery.addChildEventListener(listener);
+                        mDeckListListeners.add(listener);
                         mDecksQuery.addListenerForSingleValueEvent(initialCountListener);
                     }
                 });
@@ -231,7 +233,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mCardCountListener = new ChildEventListener() {
+                        ChildEventListener listener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 int count = dataSnapshot.getValue(Integer.class);
@@ -274,7 +276,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mCardCountQuery.addChildEventListener(mCardCountListener);
+                        mCardCountQuery.addChildEventListener(listener);
+                        mCardCountListeners.add(listener);
                         mCardCountQuery.addListenerForSingleValueEvent(initialCountListener);
                     }
                 });
@@ -303,7 +306,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Single.create(new SingleOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final SingleEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDeckDetailListener = new ValueEventListener() {
+                        ValueEventListener listener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Deck deck = checkLegacy(dataSnapshot);
@@ -326,7 +329,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDeckQuery.addListenerForSingleValueEvent(mDeckDetailListener);
+                        mDeckQuery.addListenerForSingleValueEvent(listener);
+                        mDeckDetailListeners.add(listener);
                     }
                 });
             }
@@ -353,7 +357,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Deck>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Deck>> emitter) throws Exception {
-                        mDeckDetailListener = new ValueEventListener() {
+                        ValueEventListener listener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 final Deck deck = checkLegacy(dataSnapshot);
@@ -393,7 +397,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             }
                         };
 
-                        mDeckQuery.addValueEventListener(mDeckDetailListener);
+                        mDeckQuery.addValueEventListener(listener);
+                        mDeckDetailListeners.add(listener);
                     }
                 });
             }
@@ -402,14 +407,23 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
     @Override
     public void stopData() {
-        if (mDecksQuery != null && mDecksListener != null) {
-            mDecksQuery.removeEventListener(mDecksListener);
+        if (mDecksQuery != null && mDeckListListeners != null) {
+            for (ChildEventListener listener : mDeckListListeners) {
+                mDecksQuery.removeEventListener(listener);
+            }
+            mDeckListListeners.clear();
         }
-        if (mDeckQuery != null && mDeckDetailListener != null) {
-            mDeckQuery.removeEventListener(mDeckDetailListener);
+        if (mDeckQuery != null && mDeckDetailListeners != null) {
+            for (ValueEventListener listener : mDeckDetailListeners) {
+                mDeckQuery.removeEventListener(listener);
+            }
+            mDeckDetailListeners.clear();
         }
-        if (mCardCountQuery != null && mCardCountListener != null) {
-            mCardCountQuery.removeEventListener(mCardCountListener);
+        if (mCardCountQuery != null && mCardCountListeners != null) {
+            for (ChildEventListener listener : mCardCountListeners) {
+                mCardCountQuery.removeEventListener(listener);
+            }
+            mCardCountListeners.clear();
         }
     }
 

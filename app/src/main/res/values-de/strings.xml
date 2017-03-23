@@ -57,7 +57,6 @@
     <string name="analytics_summary">Plötze ermöglichen, anonymisierte Statistiken zu sammeln um die zukünftige Entwicklung der App zu erleichtern</string>
     <string name="crowd_sourcing">Hilf mit beim Crowd-Sourcing der Kartendaten</string>
     <string name="crowd_sourcing_summary">Hilf Plötze dabei, nach der Veröffentlichung eines Gwent Patches rasch auf den neuesten Stand zu kommen in dem du Fragen über Karten beantwortest, welche ein Update bekommen haben. </string>
-    <string name="pref_images">Kartenabbildungen</string>
     <string name="low_data">Modus für reduziertes Datenvolumen</string>
     <string name="low_data_summary">Geringere Auflösung der Abbildungen verwenden um das Datenvolumen zu verringern</string>
     <string name="show_images_in_list">Zeige Abbildungen in der Kartenliste</string>
@@ -99,4 +98,24 @@
     <string name="delete">Löschen</string>
     <string name="new_name">Neuer Name</string>
     <string name="confirm_delete">Deck löschen?</string>
+    <string name="pref_attributions">Zuordnung</string>
+    <string name="icon">Bild</string>
+    <string name="version">Version</string>
+    <string name="translations">Übersetzungen</string>
+    <string name="polish">Polnisch</string>
+    <string name="german">Deutsch</string>
+    <string name="russian">Russisch</string>
+    <string name="spanish">Spanisch</string>
+    <string name="portuguese">Portugiesisch</string>
+    <string name="pref_locale">Sprache der Karten</string>
+    <string name="pref_locale_summary">Sprache, in welcher die Karten angezeigt werden sollen.</string>
+    <string name="change_language">Ändere die Sprache der Karten in den Einstellungen</string>
+    <string name="flag_error">Melde einen Fehler</string>
+    <string name="related_cards">Verwandte Karten</string>
+    <string name="error_description">Fehlerbeschreibung</string>
+    <string name="send">Senden</string>
+    <string name="flag_error_title">Fehler gefunden?</string>
+    <string name="flag_error_message">Falls es einen Fehler bei den Karten gibt, beschreibe bitte was falsch ist, damit wir ihn schnellstmöglich beheben können!</string>
+    <string name="mistake_reported">Fehler gemeldet!</string>
+    <string name="update_patch">Update</string>
 </resources>

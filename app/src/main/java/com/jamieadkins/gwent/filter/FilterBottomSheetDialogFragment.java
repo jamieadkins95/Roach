@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.filter;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     public interface FilterUiListener {
         void onFilterChanged(String key, boolean checked);
+        void onFilterDismissed(boolean filtersChanged);
     }
 
     public static FilterBottomSheetDialogFragment newInstance(String filteringOn,
@@ -53,5 +55,11 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
         recyclerView.setAdapter(adapter);
 
         dialog.setContentView(contentView);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mListener.onFilterDismissed(true);
+        super.onDismiss(dialog);
     }
 }

@@ -33,14 +33,8 @@
             android:title="@string/robert"
             android:summary="@string/german" />
         <Preference
-            android:title="@string/blank_space"
-            android:summary="@string/russian" />
-        <Preference
             android:title="@string/jaime"
             android:summary="@string/spanish" />
-        <Preference
-            android:title="@string/joao"
-            android:summary="@string/portuguese" />
 
     </PreferenceCategory>
 

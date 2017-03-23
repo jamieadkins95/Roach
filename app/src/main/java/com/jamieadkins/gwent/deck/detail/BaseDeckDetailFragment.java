@@ -118,12 +118,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
 
     protected void onDeckLoaded(final Deck deck) {
         getActivity().setTitle(deck.getName());
-        boolean getLeader = false;
-        if (mDeck == null) {
-            getLeader = true;
-        } else {
-            getLeader = !mDeck.getLeaderId().equals(deck.getLeaderId());
-        }
+        boolean getLeader = mDeck == null || !mDeck.getLeaderId().equals(deck.getLeaderId());
 
         if (getLeader) {
             mDecksPresenter.getCard(deck.getLeaderId())
