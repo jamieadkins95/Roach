@@ -29,6 +29,7 @@ import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
@@ -244,6 +245,11 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     private void setupFragment(Fragment fragment, String tag) {
+        CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        cardsInteractor.setLocale(preferences.getString(
+                getString(R.string.pref_locale_key),
+                getString(R.string.default_locale)));
         switch (tag) {
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;
@@ -256,7 +262,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                CardsInteractorFirebase.getInstance(),
+                                cardsInteractor,
                                 new PatchInteractorFirebase());
                 break;
             case TAG_COLLECTION:
@@ -264,7 +270,7 @@ public class MainActivity extends AuthenticationActivity implements
                 mCollectionPresenter = new CollectionPresenter(
                         (CollectionContract.View) fragment,
                         new CollectionInteractorFirebase(),
-                        CardsInteractorFirebase.getInstance());
+                        cardsInteractor);
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
@@ -272,7 +278,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                CardsInteractorFirebase.getInstance(),
+                                cardsInteractor,
                                 new PatchInteractorFirebase());
                 break;
             case TAG_RESULTS_TRACKER:
