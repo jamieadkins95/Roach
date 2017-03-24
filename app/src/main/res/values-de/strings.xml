@@ -57,6 +57,7 @@
     <string name="analytics_summary">Plötze ermöglichen, anonymisierte Statistiken zu sammeln um die zukünftige Entwicklung der App zu erleichtern</string>
     <string name="crowd_sourcing">Hilf mit beim Crowd-Sourcing der Kartendaten</string>
     <string name="crowd_sourcing_summary">Hilf Plötze dabei, nach der Veröffentlichung eines Gwent Patches rasch auf den neuesten Stand zu kommen in dem du Fragen über Karten beantwortest, welche ein Update bekommen haben. </string>
+    <string name="pref_appearance">Das Auftreten</string>
     <string name="low_data">Modus für reduziertes Datenvolumen</string>
     <string name="low_data_summary">Geringere Auflösung der Abbildungen verwenden um das Datenvolumen zu verringern</string>
     <string name="show_images_in_list">Zeige Abbildungen in der Kartenliste</string>

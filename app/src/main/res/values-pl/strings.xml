@@ -57,6 +57,7 @@
     <string name="analytics_summary">Zezwól Płotce na zbieranie anonimowych informacji, aby pomóc w przyszłym rozwoju aplikacji.</string>
     <string name="crowd_sourcing">Crowd Sourcing</string>
     <string name="crowd_sourcing_summary">Pomóż Płotce w szybkiej aktualizacji po nowym patchu, odpowiadając na kilka pytań o zaktualizowanych kartach.</string>
+    <string name="pref_appearance">Wygląd</string>
     <string name="low_data">Tryb zmniejszonego poboru danych</string>
     <string name="low_data_summary">Używaj niższej rozdziellczości kart, aby zmniejszyć zużycie danych.</string>
     <string name="show_images_in_list">Pokaż grafiki w liście.</string>
