@@ -43,6 +43,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
 
     private Query mCardsQuery;
     private ValueEventListener mCardListener;
+    private String mLocale = "en-US";
 
     private static CardsInteractorFirebase mInstance;
 
@@ -94,6 +95,11 @@ public class CardsInteractorFirebase implements CardsInteractor {
     }
 
     @Override
+    public void setLocale(String locale) {
+        mLocale = locale;
+    }
+
+    @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(final CardFilter filter) {
         return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
@@ -106,7 +112,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
                                 .subscribe(new BaseSingleObserver<String>() {
                                     @Override
                                     public void onSuccess(String value) {
-                                        mCardsQuery = mCardsReference.orderByChild("name");
+                                        mCardsQuery = mCardsReference.orderByChild("localisedData/name/" + mLocale);
 
                                         if (filter.getSearchQuery() != null) {
                                             String query = filter.getSearchQuery();

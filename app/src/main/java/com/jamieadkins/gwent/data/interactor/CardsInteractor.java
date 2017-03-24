@@ -22,4 +22,6 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
     Completable reportMistake(String cardid, String description);
 
     void removeListeners();
+
+    void setLocale(String locale);
 }
