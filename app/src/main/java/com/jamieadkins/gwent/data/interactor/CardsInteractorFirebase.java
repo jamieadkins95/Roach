@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -34,7 +35,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class CardsInteractorFirebase implements CardsInteractor {
-    private static final String PATCH_PATH = "card-data/latest-patch";
+    private static final String PATCH_PATH =
+            !BuildConfig.DEBUG ? "card-data/latest-patch" : "card-data/latest-patch-debug";
 
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mCardsReference;
