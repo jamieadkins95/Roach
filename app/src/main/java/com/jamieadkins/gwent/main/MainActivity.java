@@ -181,7 +181,7 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     private void checkLanguage() {
-        String language = getResources().getConfiguration().locale.getLanguage();
+        String language = Locale.getDefault().getLanguage();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!preferences.contains(getString(R.string.shown_language))) {
             SharedPreferences.Editor editor = preferences.edit();
