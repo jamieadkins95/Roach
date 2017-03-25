@@ -28,7 +28,7 @@ import io.reactivex.ObservableSource;
  */
 
 public class CollectionInteractorFirebase implements CollectionInteractor {
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCollectionReference;
     private ChildEventListener mCollectionListener;
 

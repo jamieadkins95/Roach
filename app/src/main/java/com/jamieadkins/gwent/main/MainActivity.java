@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
@@ -81,8 +80,6 @@ public class MainActivity extends AuthenticationActivity implements
     private ProfileDrawerItem mProfile;
     private Map<Integer, PrimaryDrawerItem> mDrawerItems;
 
-    private static boolean mPersistanceSet = false;
-
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -95,18 +92,9 @@ public class MainActivity extends AuthenticationActivity implements
         setContentView(R.layout.activity_main);
     }
 
-    private void setPersistance() {
-        if (!mPersistanceSet) {
-            // Enable offline use. This has to be done before any other firebase database work.
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            mPersistanceSet = true;
-        }
-    }
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPersistance();
         checkLanguage();
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)

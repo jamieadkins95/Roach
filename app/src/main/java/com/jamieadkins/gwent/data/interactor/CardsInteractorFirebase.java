@@ -38,7 +38,7 @@ public class CardsInteractorFirebase implements CardsInteractor {
     private static final String PATCH_PATH =
             !BuildConfig.DEBUG ? "card-data/latest-patch" : "card-data/latest-patch-debug";
 
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private DatabaseReference mCardsReference;
     private final DatabaseReference mMistakesReference;
     private final DatabaseReference mPatchReference;

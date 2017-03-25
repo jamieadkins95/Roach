@@ -57,7 +57,7 @@ import static com.jamieadkins.gwent.data.Deck.MAX_EACH_SILVER;
 public class DecksInteractorFirebase implements DecksInteractor {
     private static final String PUBLIC_DECKS_PATH = "public-decks/";
 
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private Query mDecksQuery;
     private Query mDeckQuery;
     private Query mCardCountQuery;
