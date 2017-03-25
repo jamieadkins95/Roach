@@ -117,7 +117,9 @@ public abstract class BaseDeckDetailFragment extends BaseFragment
     protected abstract int getLayoutId();
 
     protected void onDeckLoaded(final Deck deck) {
-        getActivity().setTitle(deck.getName());
+        if (getActivity() != null) {
+            getActivity().setTitle(deck.getName());
+        }
         boolean getLeader = mDeck == null || !mDeck.getLeaderId().equals(deck.getLeaderId());
 
         if (getLeader) {
