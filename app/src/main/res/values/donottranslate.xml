@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name" translatable="false">Roach</string>
     <string name="pref_rxjava" translatable="false">Rxjava</string>
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>

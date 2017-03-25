@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">Roach</string>
     <string name="settings">Ajustes</string>
     <string name="my_decks">Mis Barajas</string>
     <string name="my_collection">Mi Colección</string>

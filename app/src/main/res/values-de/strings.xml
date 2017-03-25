@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">Plötze</string>
     <string name="settings">Einstellungen</string>
     <string name="my_decks">Meine Decks</string>
     <string name="my_collection">Meine Sammlung</string>
