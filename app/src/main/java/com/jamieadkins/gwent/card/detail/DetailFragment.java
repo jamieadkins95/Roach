@@ -60,9 +60,11 @@ public class DetailFragment extends Fragment implements DetailContract.View {
             new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
                 @Override
                 public void onSuccess(RxDatabaseEvent<CardDetails> value) {
-                    if (getActivity() != null) {
-                        getActivity().invalidateOptionsMenu();
+                    if (getActivity() == null) {
+                        return;
                     }
+
+                    getActivity().invalidateOptionsMenu();
                     CardDetails card = value.getValue();
                     mCard = card;
 
