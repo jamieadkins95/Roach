@@ -79,7 +79,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                         if (mUseLowData) {
                             storageReference = storage.getReferenceFromUrl(
                                     FirebaseUtils.STORAGE_BUCKET +
-                                            variation.getArt().getMediumImage());
+                                            variation.getArt().getLowImage());
                         } else {
                             storageReference = storage.getReferenceFromUrl(
                                     FirebaseUtils.STORAGE_BUCKET +
