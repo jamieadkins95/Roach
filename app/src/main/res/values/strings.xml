@@ -108,6 +108,7 @@
     <string name="russian">Russian</string>
     <string name="spanish">Spanish</string>
     <string name="portuguese">Portuguese</string>
+    <string name="italian">Italian</string>
 
     <string name="pref_locale">Card Data Language</string>
     <string name="pref_locale_summary">Language to display card data in.</string>
