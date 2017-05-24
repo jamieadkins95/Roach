@@ -122,4 +122,7 @@
     <string name="flag_error_message">If there is a mistake in the card data, please provide a description of what is wrong so we can fix it as soon as possible!</string>
     <string name="update_patch">Update</string>
     <string name="mistake_reported">Mistake reported!</string>
+    <string name="open_beta">Looking for Open Beta cards?</string>
+    <string name="info">Info</string>
+    <string name="open_beta_message">Hi,\n\nI am currently working very hard to bring you the latest data from the open beta. Unfortunately the update broke the method I usually use to extract data from the game files so this may take longer than usual.\n\nThanks for your patience and understanding,\n\nJamie</string>
 </resources>
