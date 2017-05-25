@@ -37,7 +37,7 @@
         <item>pt-BR</item>
         <item>ru-RU</item>
         <item>zh-CN</item>
-        <item>xh-TW</item>
+        <item>zh-TW</item>
     </array>
 
     <string translatable="false" name="default_locale">en-US</string>
