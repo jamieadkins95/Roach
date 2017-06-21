@@ -12,7 +12,7 @@
     <string name="no_internet_connection">No hay conexión a internet :(</string>
     <string name="sign_in_failed">Fallo al iniciar sesión :(</string>
     <string name="sign_out">Cerrar sesión</string>
-    <string name="sign_in_to_view">¡Es necesario iniciar sesión para ver tus %!</string>
+    <string name="sign_in_to_view">¡Es necesario iniciar sesión para ver tus %s!</string>
     <string name="sign_in_successful">¡Se ha iniciado sesión con éxito!</string>
     <string name="sign_out_successful">¡Se ha cerrado sesión con éxito!</string>
     <string name="coming_soon">¡Próximamente!</string>

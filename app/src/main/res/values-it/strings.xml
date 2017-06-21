@@ -12,7 +12,7 @@
     <string name="no_internet_connection">Nessuna connessione :(</string>
     <string name="sign_in_failed">Accesso fallito :(</string>
     <string name="sign_out">Disconnetti</string>
-    <string name="sign_in_to_view">Accedi per vedere i tuoi /s</string>
+    <string name="sign_in_to_view">Accedi per vedere i tuoi %s</string>
     <string name="sign_in_successful">Accesso effettuato!</string>
     <string name="sign_out_successful">Disconnessione effettuata!</string>
     <string name="coming_soon">In sviluppo!</string>
