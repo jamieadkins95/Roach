@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.data.interactor;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -103,86 +106,82 @@ public class CardsInteractorFirebase implements CardsInteractor {
 
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(final CardFilter filter) {
-        return Observable.defer(new Callable<ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
+        return getLatestPatch().flatMapObservable(new Function<String, ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
-            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
-                return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+            public ObservableSource<? extends RxDatabaseEvent<CardDetails>> apply(String patch) throws Exception {
+                onPatchUpdated(patch);
+                mCardsQuery = mCardsReference.orderByChild("localisedData/name/" + mLocale);
+
+                if (filter.getSearchQuery() != null) {
+                    String query = filter.getSearchQuery();
+                    int charValue = query.charAt(query.length() - 1);
+                    String endQuery = query.substring(0, query.length() - 1);
+                    endQuery += (char) (charValue + 1);
+
+                    mCardsQuery = mCardsQuery.
+                            startAt(query)
+                            // No 'contains' query so have to fudge it.
+                            .endAt(endQuery);
+                }
+                return getCardDataSnapshot().flatMapObservable(new Function<DataSnapshot, ObservableSource<? extends RxDatabaseEvent<CardDetails>>>() {
                     @Override
-                    public void subscribe(final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        getLatestPatch()
-                                .observeOn(Schedulers.io())
-                                .subscribe(new BaseSingleObserver<String>() {
-                                    @Override
-                                    public void onSuccess(String value) {
-                                        mCardsQuery = mCardsReference.orderByChild("localisedData/name/" + mLocale);
+                    public ObservableSource<? extends RxDatabaseEvent<CardDetails>> apply(final DataSnapshot dataSnapshot) throws Exception {
+                        return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
+                                for (DataSnapshot cardSnapshot : dataSnapshot.getChildren()) {
+                                    CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
 
-                                        if (filter.getSearchQuery() != null) {
-                                            String query = filter.getSearchQuery();
-                                            int charValue = query.charAt(query.length() - 1);
-                                            String endQuery = query.substring(0, query.length() - 1);
-                                            endQuery += (char) (charValue + 1);
-
-                                            mCardsQuery = mCardsQuery.
-                                                    startAt(query)
-                                                    // No 'contains' query so have to fudge it.
-                                                    .endAt(endQuery);
-                                        }
-
-                                        mCardListener = new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                emitCards(dataSnapshot, emitter, filter)
-                                                        .subscribeOn(Schedulers.io())
-                                                        .subscribe();
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        };
-
-                                        mCardsQuery.addListenerForSingleValueEvent(mCardListener);
+                                    if (cardDetails == null) {
+                                        emitter.onError(new Throwable("Card doesn't exist."));
+                                        emitter.onComplete();
+                                        return;
                                     }
-                                });
+
+                                    // Only add card if the card meets all the filters.
+                                    // Also check name and info are not null. Those are dud cards.
+                                    if (filter.doesCardMeetFilter(cardDetails)) {
+                                        emitter.onNext(
+                                                new RxDatabaseEvent<CardDetails>(
+                                                        cardSnapshot.getKey(),
+                                                        cardDetails,
+                                                        RxDatabaseEvent.EventType.ADDED
+                                                ));
+                                    }
+                                }
+
+                                emitter.onComplete();
+                            }
+                        })
+                                // IMPORTANT: Firebase forces us back onto UI thread.
+                                .subscribeOn(Schedulers.io());
                     }
                 });
+
             }
         });
     }
 
-    private Completable emitCards(final DataSnapshot cardsSnapshot,
-                                  final ObservableEmitter<RxDatabaseEvent<CardDetails>> emitter,
-                                  final CardFilter filter) {
-        return Completable.defer(new Callable<CompletableSource>() {
+    private Single<DataSnapshot> getCardDataSnapshot() {
+        return Single.defer(new Callable<SingleSource<? extends DataSnapshot>>() {
             @Override
-            public CompletableSource call() throws Exception {
-                return Completable.create(new CompletableOnSubscribe() {
+            public SingleSource<? extends DataSnapshot> call() throws Exception {
+                return Single.create(new SingleOnSubscribe<DataSnapshot>() {
                     @Override
-                    public void subscribe(CompletableEmitter e) throws Exception {
-                        for (DataSnapshot cardSnapshot : cardsSnapshot.getChildren()) {
-                            CardDetails cardDetails = cardSnapshot.getValue(CardDetails.class);
-
-                            if (cardDetails == null) {
-                                emitter.onError(new Throwable("Card doesn't exist."));
-                                emitter.onComplete();
-                                return;
+                    public void subscribe(final SingleEmitter<DataSnapshot> emitter) throws Exception {
+                        mCardListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                emitter.onSuccess(dataSnapshot);
                             }
 
-                            // Only add card if the card meets all the filters.
-                            // Also check name and info are not null. Those are dud cards.
-                            if (filter.doesCardMeetFilter(cardDetails)) {
-                                emitter.onNext(
-                                        new RxDatabaseEvent<CardDetails>(
-                                                cardSnapshot.getKey(),
-                                                cardDetails,
-                                                RxDatabaseEvent.EventType.ADDED
-                                        ));
-                            }
-                        }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        emitter.onComplete();
-                        e.onComplete();
+                            }
+                        };
+
+                        mCardsQuery.addListenerForSingleValueEvent(mCardListener);
                     }
                 });
             }
@@ -197,46 +196,45 @@ public class CardsInteractorFirebase implements CardsInteractor {
      */
     @Override
     public Single<RxDatabaseEvent<CardDetails>> getCard(final String id) {
-        return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<CardDetails>>>() {
+        return getLatestPatch().flatMap(new Function<String, SingleSource<? extends RxDatabaseEvent<CardDetails>>>() {
             @Override
-            public SingleSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
-                return Single.create(new SingleOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+            public SingleSource<? extends RxDatabaseEvent<CardDetails>> apply(String patch) throws Exception {
+                onPatchUpdated(patch);
+                return Single.defer(new Callable<SingleSource<? extends RxDatabaseEvent<CardDetails>>>() {
                     @Override
-                    public void subscribe(final SingleEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
-                        getLatestPatch()
-                                .observeOn(Schedulers.io())
-                                .subscribe(new BaseSingleObserver<String>() {
+                    public SingleSource<? extends RxDatabaseEvent<CardDetails>> call() throws Exception {
+                        return Single.create(new SingleOnSubscribe<RxDatabaseEvent<CardDetails>>() {
+                            @Override
+                            public void subscribe(final SingleEmitter<RxDatabaseEvent<CardDetails>> emitter) throws Exception {
+                                mCardsQuery = mCardsReference.child(id);
+
+                                mCardListener = new ValueEventListener() {
                                     @Override
-                                    public void onSuccess(String value) {
-                                        mCardsQuery = mCardsReference.child(id);
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
 
-                                        mCardListener = new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                CardDetails cardDetails = dataSnapshot.getValue(CardDetails.class);
+                                        if (cardDetails == null) {
+                                            emitter.onError(new Throwable("Card doesn't exist."));
+                                            return;
+                                        }
 
-                                                if (cardDetails == null) {
-                                                    emitter.onError(new Throwable("Card doesn't exist."));
-                                                    return;
-                                                }
-
-                                                emitter.onSuccess(
-                                                        new RxDatabaseEvent<CardDetails>(
-                                                                dataSnapshot.getKey(),
-                                                                cardDetails,
-                                                                RxDatabaseEvent.EventType.ADDED
-                                                        ));
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        };
-
-                                        mCardsQuery.addListenerForSingleValueEvent(mCardListener);
+                                        emitter.onSuccess(
+                                                new RxDatabaseEvent<CardDetails>(
+                                                        dataSnapshot.getKey(),
+                                                        cardDetails,
+                                                        RxDatabaseEvent.EventType.ADDED
+                                                ));
                                     }
-                                });
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                };
+
+                                mCardsQuery.addListenerForSingleValueEvent(mCardListener);
+                            }
+                        });
                     }
                 });
             }
