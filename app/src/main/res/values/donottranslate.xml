@@ -24,6 +24,7 @@
     <string name="jaime" translatable="false">Jaime \"Zegma\" Torres</string>
     <string name="joao" translatable="false">João Alexandre</string>
     <string name="stefano" translatable="false">Stefano Sanitate</string>
+    <string name="raquel" translatable="false">Raquel Gesé Ponce</string>
 
     <array translatable="false" name="locales">
         <item>en-US</item>
