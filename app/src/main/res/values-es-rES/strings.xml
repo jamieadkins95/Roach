@@ -77,8 +77,7 @@
     <string name="my_stuff">Mi Gwent</string>
     <string name="gwent">Gwent</string>
     <string name="signed_out">Se ha cerrado sesión</string>
-    <string name="keg_helper">
-Asistente de creación de barajas</string>
+    <string name="keg_helper">Asistente de creación de barajas</string>
     <string name="keg_helper_message">Nuestros amigos de Gwentify han creado una herramienta para ayudarte a elegir entre las cartas que te hayan tocado en un barril. \n\nSi haces clic en Ir, abandonarás Roach y se te redireccionará a gwentify.com</string>
     <string name="go">Ir</string>
     <string name="strength">Fuerza</string>
