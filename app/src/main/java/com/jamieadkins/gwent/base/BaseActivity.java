@@ -1,6 +1,9 @@
 package com.jamieadkins.gwent.base;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Snackbar
 
         // Set default values of our settings once, on first launch.
         PreferenceManager.setDefaultValues(this, R.xml.settings, true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId = getString(R.string.notification_channel_id);
+            String channelName = getString(R.string.notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
     }
 
     @Override
