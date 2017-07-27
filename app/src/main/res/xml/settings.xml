@@ -20,7 +20,7 @@
         <CheckBoxPreference android:key="@string/pref_patch_notifications_key"
             android:title="@string/patch_notifications"
             android:summary="@string/patch_notifications_summary"
-            android:defaultValue="false" />
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
