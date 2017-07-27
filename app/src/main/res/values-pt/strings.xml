@@ -16,8 +16,8 @@
 	<string name="sign_in_successful">Início de sessão bem sucedido!</string>
 	<string name="sign_out_successful">Fim de sessão bem sucedido!</string>
 	<string name="coming_soon">Brevemente!</string>
-	<string name="is_coming_soon">% estará disponível brevemente!</string>
-	<string name="are_coming_soon">% estarão disponíveis brevemente!</string>
+	<string name="is_coming_soon">%s estará disponível brevemente!</string>
+	<string name="are_coming_soon">%s estarão disponíveis brevemente!</string>
 	<string name="decks">Baralhos</string>
 	<string name="collection">Coleção</string>
 	<string name="search">Procura</string>
