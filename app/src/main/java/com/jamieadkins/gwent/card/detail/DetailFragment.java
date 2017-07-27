@@ -60,6 +60,10 @@ public class DetailFragment extends Fragment implements DetailContract.View {
             new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
                 @Override
                 public void onSuccess(RxDatabaseEvent<CardDetails> value) {
+                    if (getActivity() == null) {
+                        return;
+                    }
+
                     getActivity().invalidateOptionsMenu();
                     CardDetails card = value.getValue();
                     mCard = card;
@@ -79,7 +83,7 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                         } else {
                             storageReference = storage.getReferenceFromUrl(
                                     FirebaseUtils.STORAGE_BUCKET +
-                                            variation.getArt().getLowImage());
+                                            variation.getArt().getMediumImage());
                         }
 
                         mAdapter.addItem(storageReference);
@@ -178,7 +182,9 @@ public class DetailFragment extends Fragment implements DetailContract.View {
                                                 if (getActivity() != null) {
                                                     SnackbarShower snackbarShower
                                                             = (SnackbarShower) getActivity();
-                                                    snackbarShower.showSnackbar(getString(R.string.mistake_reported));
+                                                    if (snackbarShower != null) {
+                                                        snackbarShower.showSnackbar(getString(R.string.mistake_reported));
+                                                    }
                                                 }
                                             }
                                         });

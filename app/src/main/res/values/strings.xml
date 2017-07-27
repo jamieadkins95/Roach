@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Roach</string>
     <string name="settings">Settings</string>
     <string name="my_decks">My Decks</string>
     <string name="my_collection">My Collection</string>
@@ -109,6 +108,7 @@
     <string name="russian">Russian</string>
     <string name="spanish">Spanish</string>
     <string name="portuguese">Portuguese</string>
+    <string name="italian">Italian</string>
 
     <string name="pref_locale">Card Data Language</string>
     <string name="pref_locale_summary">Language to display card data in.</string>
@@ -120,7 +120,6 @@
     <string name="send">Send</string>
     <string name="flag_error_title">Found a mistake?</string>
     <string name="flag_error_message">If there is a mistake in the card data, please provide a description of what is wrong so we can fix it as soon as possible!</string>
-    <string name="old_patch">This deck was built using an old Gwent patch</string>
     <string name="update_patch">Update</string>
     <string name="mistake_reported">Mistake reported!</string>
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name" translatable="false">Roach</string>
     <string name="pref_rxjava" translatable="false">Rxjava</string>
     <string name="pref_glide" translatable="false">Glide</string>
     <string name="pref_material_drawer" translatable="false">Material Drawer</string>
     <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
     <string name="pref_crowd_sourcing_key" translatable="false">com.jamieadkins.gwent.crowd.sourcing</string>
     <string name="pref_locale_key" translatable="false">com.jamieadkins.gwent.crowd.locale</string>
-    <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.crowd.show.images</string>
+    <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.show.images</string>
     <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
@@ -23,6 +23,8 @@
     <string name="blank_space" translatable="false">Blank Space</string>
     <string name="jaime" translatable="false">Jaime \"Zegma\" Torres</string>
     <string name="joao" translatable="false">João Alexandre</string>
+    <string name="stefano" translatable="false">Stefano Sanitate</string>
+    <string name="raquel" translatable="false">Raquel Gesé Ponce</string>
 
     <array translatable="false" name="locales">
         <item>en-US</item>
@@ -36,7 +38,7 @@
         <item>pt-BR</item>
         <item>ru-RU</item>
         <item>zh-CN</item>
-        <item>xh-TW</item>
+        <item>zh-TW</item>
     </array>
 
     <string translatable="false" name="default_locale">en-US</string>

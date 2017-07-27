@@ -22,6 +22,18 @@ import static com.jamieadkins.gwent.settings.SettingsActivity.PREFERENCE_ANALYTI
 public class FirebaseUtils {
     public static final String STORAGE_BUCKET = "gs://gwent-9e62a.appspot.com/";
 
+    private static boolean persistanceSet = false;
+
+    public static FirebaseDatabase getDatabase() {
+        if (!persistanceSet) {
+            // Enable offline use. This has to be done before any other firebase database work.
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            persistanceSet = true;
+        }
+
+        return FirebaseDatabase.getInstance();
+    }
+
     public static void askForAnalyticsPermission(final Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (!preferences.contains(PREFERENCE_ANALYTICS)) {

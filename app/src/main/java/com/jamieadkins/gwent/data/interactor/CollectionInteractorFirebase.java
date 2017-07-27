@@ -28,7 +28,7 @@ import io.reactivex.ObservableSource;
  */
 
 public class CollectionInteractorFirebase implements CollectionInteractor {
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private final DatabaseReference mCollectionReference;
     private ChildEventListener mCollectionListener;
 
@@ -82,8 +82,7 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                // Do nothing.
             }
         });
     }
@@ -126,8 +125,7 @@ public class CollectionInteractorFirebase implements CollectionInteractor {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                // Do nothing.
             }
         });
     }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">Plötze</string>
     <string name="settings">Einstellungen</string>
     <string name="my_decks">Meine Decks</string>
     <string name="my_collection">Meine Sammlung</string>
@@ -53,10 +52,10 @@
     <string name="pref_general">Allgemein</string>
     <string name="analytics">Anonymisierte Auswertungen</string>
     <string name="analytics_title">Anonymisierte Auswertungen ermöglichen?</string>
-    <string name="analytics_message">Plötze würde gerne anonymisierte Informationen über dein Nutzungsverhalten sammeln. Diese Informationen werden vom Entwickler verwendet, um festzustellen worauf der Fokus bei der Weiterentwicklung liegen soll. Diese Informationen werden nicht mit Dritten geteilt und werden nicht verwendet um dich zu identifizieren oder kontaktieren. \n\nMöchtest du teilnehmen?</string>
-    <string name="analytics_summary">Plötze ermöglichen, anonymisierte Statistiken zu sammeln um die zukünftige Entwicklung der App zu erleichtern</string>
+    <string name="analytics_message">Roach würde gerne anonymisierte Informationen über dein Nutzungsverhalten sammeln. Diese Informationen werden vom Entwickler verwendet, um festzustellen worauf der Fokus bei der Weiterentwicklung liegen soll. Diese Informationen werden nicht mit Dritten geteilt und werden nicht verwendet um dich zu identifizieren oder kontaktieren. \n\nMöchtest du teilnehmen?</string>
+    <string name="analytics_summary">Roach ermöglichen, anonymisierte Statistiken zu sammeln um die zukünftige Entwicklung der App zu erleichtern</string>
     <string name="crowd_sourcing">Hilf mit beim Crowd-Sourcing der Kartendaten</string>
-    <string name="crowd_sourcing_summary">Hilf Plötze dabei, nach der Veröffentlichung eines Gwent Patches rasch auf den neuesten Stand zu kommen in dem du Fragen über Karten beantwortest, welche ein Update bekommen haben. </string>
+    <string name="crowd_sourcing_summary">Hilf Roach dabei, nach der Veröffentlichung eines Gwent Patches rasch auf den neuesten Stand zu kommen in dem du Fragen über Karten beantwortest, welche ein Update bekommen haben. </string>
     <string name="low_data">Modus für reduziertes Datenvolumen</string>
     <string name="low_data_summary">Geringere Auflösung der Abbildungen verwenden um das Datenvolumen zu verringern</string>
     <string name="show_images_in_list">Zeige Abbildungen in der Kartenliste</string>
@@ -79,7 +78,7 @@
     <string name="gwent">Gwent</string>
     <string name="signed_out">Abgemeldet</string>
     <string name="keg_helper">Hilfe bei der Kartenauswahl</string>
-    <string name="keg_helper_message">Unsere Freunde bei Gwentify haben ein Werkzeug entwickelt, dass dir dabei helfen kann, die richtige Karte aus einem Fass auszuwählen. \n\nWenn du auf "Los" klickst, verlässt du Plötze und wirst auf gwentify.com weitergeleitet</string>
+    <string name="keg_helper_message">Unsere Freunde bei Gwentify haben ein Werkzeug entwickelt, dass dir dabei helfen kann, die richtige Karte aus einem Fass auszuwählen. \n\nWenn du auf "Los" klickst, verlässt du Roach und wirst auf gwentify.com weitergeleitet</string>
     <string name="go">Los</string>
     <string name="strength">Stärke</string>
     <string name="event_cards">Sonderkarte</string>

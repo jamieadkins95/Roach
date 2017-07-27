@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
@@ -33,7 +32,6 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
@@ -82,8 +80,6 @@ public class MainActivity extends AuthenticationActivity implements
     private ProfileDrawerItem mProfile;
     private Map<Integer, PrimaryDrawerItem> mDrawerItems;
 
-    private static boolean mPersistanceSet = false;
-
     private final View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -96,18 +92,9 @@ public class MainActivity extends AuthenticationActivity implements
         setContentView(R.layout.activity_main);
     }
 
-    private void setPersistance() {
-        if (!mPersistanceSet) {
-            // Enable offline use. This has to be done before any other firebase database work.
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            mPersistanceSet = true;
-        }
-    }
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPersistance();
         checkLanguage();
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
@@ -194,7 +181,7 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     private void checkLanguage() {
-        String language = getResources().getConfiguration().locale.getLanguage();
+        String language = Locale.getDefault().getLanguage();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!preferences.contains(getString(R.string.shown_language))) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -254,7 +241,7 @@ public class MainActivity extends AuthenticationActivity implements
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;
                 mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                        CardsInteractorFirebase.getInstance());
+                        cardsInteractor);
                 break;
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
@@ -262,8 +249,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                cardsInteractor,
-                                new PatchInteractorFirebase());
+                                cardsInteractor);
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
@@ -278,8 +264,7 @@ public class MainActivity extends AuthenticationActivity implements
                         new DecksPresenter(
                                 (DecksContract.View) fragment,
                                 new DecksInteractorFirebase(),
-                                cardsInteractor,
-                                new PatchInteractorFirebase());
+                                cardsInteractor);
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;

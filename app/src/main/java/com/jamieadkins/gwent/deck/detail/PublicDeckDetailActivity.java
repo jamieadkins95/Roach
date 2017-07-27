@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.PatchInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
 /**
@@ -33,8 +32,7 @@ public class PublicDeckDetailActivity extends DeckDetailActivity {
         mDeckDetailsPresenter = new DecksPresenter(
                 fragment,
                 new DecksInteractorFirebase(),
-                CardsInteractorFirebase.getInstance(),
-                new PatchInteractorFirebase());
+                CardsInteractorFirebase.getInstance());
     }
 
 }

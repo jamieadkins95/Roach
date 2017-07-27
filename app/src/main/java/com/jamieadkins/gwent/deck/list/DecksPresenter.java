@@ -10,7 +10,6 @@ import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.DecksInteractor;
-import com.jamieadkins.gwent.data.interactor.PatchInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import io.reactivex.Completable;
@@ -24,17 +23,13 @@ import io.reactivex.Single;
 
 public class DecksPresenter implements DecksContract.Presenter {
     private final DecksInteractor mDecksInteractor;
-    private final PatchInteractor mPatchInteractor;
     private final CardsInteractor mCardsInteractor;
     private final DecksContract.View mDecksView;
 
     public DecksPresenter(@NonNull DecksContract.View decksView,
                           @NonNull DecksInteractor decksInteractor,
-                          @NonNull CardsInteractor cardsInteractor,
-                          @NonNull PatchInteractor patchInteractor) {
+                          @NonNull CardsInteractor cardsInteractor) {
         mDecksInteractor = decksInteractor;
-
-        mPatchInteractor = patchInteractor;
 
         mCardsInteractor = cardsInteractor;
 
@@ -148,15 +143,5 @@ public class DecksPresenter implements DecksContract.Presenter {
     @Override
     public void onLoadingComplete() {
         mDecksView.setLoadingIndicator(false);
-    }
-
-    @Override
-    public Single<String> getLatestPatch() {
-        return mPatchInteractor.getLatestPatch();
-    }
-
-    @Override
-    public void upgradeDeckToPatch(String deckId, String newPatch) {
-        mDecksInteractor.upgradeDeckToPatch(deckId, newPatch);
     }
 }

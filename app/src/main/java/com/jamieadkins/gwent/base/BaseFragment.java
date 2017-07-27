@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -102,6 +103,17 @@ public abstract class BaseFragment extends Fragment
         final LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Glide.with(getActivity()).resumeRequests();
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    Glide.with(getActivity()).pauseRequests();
+                }
+            }
+        });
         mAdapter = onBuildRecyclerView();
         recyclerView.setAdapter(mAdapter);
     }

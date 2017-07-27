@@ -57,7 +57,7 @@ import static com.jamieadkins.gwent.data.Deck.MAX_EACH_SILVER;
 public class DecksInteractorFirebase implements DecksInteractor {
     private static final String PUBLIC_DECKS_PATH = "public-decks/";
 
-    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase mDatabase = FirebaseUtils.getDatabase();
     private Query mDecksQuery;
     private Query mDeckQuery;
     private Query mCardCountQuery;
@@ -472,8 +472,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                // Do nothing.
             }
         });
     }
@@ -500,8 +499,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -532,8 +530,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -583,8 +580,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
@@ -621,26 +617,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
             return !cardDetails.getType().equals(Type.LEADER_ID);
         }
 
-    }
-
-    @Override
-    public void upgradeDeckToPatch(String deckId, final String patch) {
-        final DatabaseReference patchReference = mUserReference.child(deckId).child("patch");
-
-        patchReference.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(final MutableData mutableData) {
-                mutableData.setValue(patch);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
-            }
-        });
     }
 
     @Override
@@ -682,8 +658,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onComplete(DatabaseError databaseError, boolean b,
                                                    DataSnapshot dataSnapshot) {
-                                // Transaction completed
-                                Log.d(getClass().getSimpleName(), "postTransaction:onComplete:" + databaseError);
+                                // Do nothing.
                             }
                         });
                     }
