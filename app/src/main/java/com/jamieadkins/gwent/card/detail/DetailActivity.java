@@ -56,7 +56,7 @@ public class DetailActivity extends BaseActivity {
 
         new DetailPresenter(
                 (DetailContract.View) fragment,
-                CardsInteractorFirebase.getInstance());
+                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override
