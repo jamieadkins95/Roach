@@ -44,4 +44,7 @@
     <string translatable="false" name="default_locale">en-US</string>
     <string translatable="false" name="shown_language">com.jamieadkins.gwent.shown.language</string>
     <string name="news_url" translatable="false">https://playgwent.com/news</string>
+
+    <string translatable="false" name="pref_news_notifications_key">com.jamieadkins.gwent.notifications.news</string>
+    <string translatable="false" name="pref_patch_notifications_key">com.jamieadkins.gwent.notifications.patch</string>
 </resources>
