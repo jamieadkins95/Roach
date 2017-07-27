@@ -86,7 +86,7 @@ public abstract class DeckDetailActivity extends BaseActivity {
         mDeckDetailsPresenter = new DecksPresenter(
                 (DecksContract.View) fragment,
                 new DecksInteractorFirebase(),
-                CardsInteractorFirebase.getInstance());
+                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override

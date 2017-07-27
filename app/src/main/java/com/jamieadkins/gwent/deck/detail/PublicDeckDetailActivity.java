@@ -32,7 +32,7 @@ public class PublicDeckDetailActivity extends DeckDetailActivity {
         mDeckDetailsPresenter = new DecksPresenter(
                 fragment,
                 new DecksInteractorFirebase(),
-                CardsInteractorFirebase.getInstance());
+                CardsInteractorFirebase.Companion.getInstance());
     }
 
 }
