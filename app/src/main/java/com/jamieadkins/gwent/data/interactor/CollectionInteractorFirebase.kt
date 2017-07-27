@@ -69,7 +69,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError, b: Boolean,
+            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
                                     dataSnapshot: DataSnapshot) {
                 // Do nothing.
             }
@@ -102,7 +102,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError, b: Boolean,
+            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
                                     dataSnapshot: DataSnapshot) {
                 // Do nothing.
             }
@@ -113,7 +113,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
         return Observable.defer {
             Observable.create(ObservableOnSubscribe<RxDatabaseEvent<Map<String, Long>>> { emitter ->
                 mCollectionListener = object : ChildEventListener {
-                    override fun onChildAdded(dataSnapshot: DataSnapshot, s: String) {
+                    override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                         val cards = dataSnapshot.value as Map<String, Long>
                         emitter.onNext(RxDatabaseEvent(
                                 dataSnapshot.key,
@@ -121,7 +121,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                                 RxDatabaseEvent.EventType.ADDED))
                     }
 
-                    override fun onChildChanged(dataSnapshot: DataSnapshot, s: String) {
+                    override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
                         val cards = dataSnapshot.value as Map<String, Long>
                         emitter.onNext(RxDatabaseEvent(
                                 dataSnapshot.key,
@@ -137,7 +137,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                                 RxDatabaseEvent.EventType.REMOVED))
                     }
 
-                    override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
+                    override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
                         val cards = dataSnapshot.value as Map<String, Long>
                         emitter.onNext(RxDatabaseEvent(
                                 dataSnapshot.key,
@@ -145,7 +145,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                                 RxDatabaseEvent.EventType.MOVED))
                     }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
+                    override fun onCancelled(databaseError: DatabaseError?) {
 
                     }
                 }
