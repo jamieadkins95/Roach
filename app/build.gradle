@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.jamieadkins.gwent"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 35
         versionName "v1.4.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -42,18 +42,19 @@ android {
 
 dependencies {
     // Support libraries.
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
-    compile 'com.android.support:cardview-v7:25.3.0'
-    compile 'com.android.support:preference-v14:25.3.0'
+    compile "com.android.support:appcompat-v7:$support_library_version"
+    compile "com.android.support:design:$support_library_version"
+    compile "com.android.support:recyclerview-v7:$support_library_version"
+    compile "com.android.support:cardview-v7:$support_library_version"
+    compile "com.android.support:preference-v14:$support_library_version"
+    compile "com.android.support:palette-v7:$support_library_version"
 
     // UI.
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile('com.mikepenz:materialdrawer:5.8.1@aar') {
         transitive = true
     }
-    compile 'com.android.support:customtabs:25.3.0'
+    compile "com.android.support:customtabs:$support_library_version"
 
     // Common Utils.
     compile project(':commonutils')
@@ -66,18 +67,18 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
 
     // Firebase
-    compile 'com.google.firebase:firebase-auth:10.2.0'
-    compile 'com.firebaseui:firebase-ui-auth:1.0.1'
-    compile 'com.google.android.gms:play-services-auth:10.2.0'
-    compile 'com.google.firebase:firebase-database:10.2.0'
-    compile 'com.google.firebase:firebase-storage:10.2.0'
-    compile 'com.firebaseui:firebase-ui-storage:1.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
-    releaseCompile 'com.google.firebase:firebase-crash:10.2.0'
+    compile "com.google.firebase:firebase-auth:$google_services_version"
+    compile "com.firebaseui:firebase-ui-auth:1.0.1"
+    compile "com.google.android.gms:play-services-auth:$google_services_version"
+    compile "com.google.firebase:firebase-database:$google_services_version"
+    compile "com.google.firebase:firebase-storage:$google_services_version"
+    compile "com.firebaseui:firebase-ui-storage:1.0.1"
+    compile "com.google.firebase:firebase-messaging:$google_services_version"
+    releaseCompile "com.google.firebase:firebase-crash:$google_services_version"
 
     // Testing.
     testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -85,6 +86,7 @@ dependencies {
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://maven.google.com' }
     mavenCentral()
 }
 
