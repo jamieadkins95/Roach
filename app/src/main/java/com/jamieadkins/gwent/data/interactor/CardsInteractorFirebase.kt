@@ -52,10 +52,12 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         mMistakesReference = mDatabase.getReference("reported-mistakes")
     }
 
-    private fun onPatchUpdated(patch: String) {
-        mCardsReference = mDatabase.getReference("card-data/" + patch)
-        // Keep Cards data in cache at all times.
-        mCardsReference?.keepSynced(true)
+    private fun onPatchUpdated(patch: String?) {
+        patch.let {
+            mCardsReference = mDatabase.getReference("card-data/" + patch)
+            // Keep Cards data in cache at all times.
+            mCardsReference?.keepSynced(true)
+        }
     }
 
     private val latestPatch: Single<String>
