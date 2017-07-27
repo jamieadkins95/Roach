@@ -11,6 +11,7 @@ android {
         versionCode 35
         versionName "v1.4.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -71,6 +72,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.2.0'
     compile 'com.google.firebase:firebase-storage:10.2.0'
     compile 'com.firebaseui:firebase-ui-storage:1.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
     releaseCompile 'com.google.firebase:firebase-crash:10.2.0'
 
     // Testing.

@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.base;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import static com.jamieadkins.gwent.settings.SettingsActivity.onSettingsChange;
 
-public abstract class BaseActivity extends AppCompatActivity implements SnackbarShower {
+public abstract class BaseActivity extends AppCompatActivity implements SnackbarShower,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +21,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Snackbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+
         // Set default values of our settings once, on first launch.
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, true);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        onSettingsChange(sharedPreferences, key);
     }
 
     public abstract void initialiseContentView();

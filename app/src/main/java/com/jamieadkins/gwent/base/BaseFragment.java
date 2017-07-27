@@ -142,7 +142,6 @@ public abstract class BaseFragment extends Fragment
     public void setLoading(boolean loading) {
         mLoading = loading;
         mRefreshContainer.setRefreshing(loading);
-        enableRefreshing(loading);
     }
 
     public void enableRefreshing(boolean enable) {
@@ -168,7 +167,6 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onRefresh() {
-        getRecyclerViewAdapter().clear();
         onLoadData();
     }
 
