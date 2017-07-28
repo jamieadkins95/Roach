@@ -11,7 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import io.reactivex.annotations.NonNull;
 
 import static com.jamieadkins.gwent.settings.SettingsActivity.onSettingsChange;
 
@@ -40,6 +44,29 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Snackb
             notificationManager.createNotificationChannel(new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
+
+        RxBus.INSTANCE.register(SnackbarRequest.class, this.<SnackbarRequest>bindToLifecycle())
+                .subscribe(new BaseObserver<SnackbarRequest>() {
+                    @Override
+                    public void onNext(@NonNull SnackbarRequest snackbarRequest) {
+                        Snackbar snackbar = Snackbar.make(
+                                findViewById(R.id.coordinator_layout),
+                                snackbarRequest.getData().getMessage(),
+                                Snackbar.LENGTH_LONG);
+
+                        if (snackbarRequest.getData().getAction() != null) {
+                            snackbar.setAction(snackbarRequest.getData().getActionMessage(),
+                                    snackbarRequest.getData().getAction());
+                        }
+
+                        snackbar.show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
@@ -56,15 +83,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Snackb
 
     @Override
     public void showSnackbar(String message, String actionString, View.OnClickListener action) {
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.coordinator_layout),
-                message,
-                Snackbar.LENGTH_LONG);
 
-        if (action != null) {
-            snackbar.setAction(actionString, action);
-        }
-
-        snackbar.show();
     }
 }

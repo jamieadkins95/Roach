@@ -7,8 +7,13 @@ import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
+
+import io.reactivex.annotations.NonNull;
 
 /**
  * Shows card image and details.

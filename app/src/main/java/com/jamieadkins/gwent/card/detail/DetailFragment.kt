@@ -22,6 +22,9 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.base.SnackbarShower
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.FirebaseUtils
@@ -160,10 +163,7 @@ class DetailFragment : RxFragment(), DetailContract.View {
                                         ?.observeOn(AndroidSchedulers.mainThread())
                                         ?.subscribe(object : BaseCompletableObserver() {
                                             override fun onComplete() {
-                                                if (activity != null) {
-                                                    val snackbarShower = activity as SnackbarShower
-                                                    snackbarShower.showSnackbar(getString(R.string.mistake_reported))
-                                                }
+                                                RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.mistake_reported))))
                                             }
                                         })
                             }
