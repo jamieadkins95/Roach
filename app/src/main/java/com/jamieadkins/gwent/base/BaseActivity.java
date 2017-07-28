@@ -19,8 +19,8 @@ import io.reactivex.annotations.NonNull;
 
 import static com.jamieadkins.gwent.settings.SettingsActivity.onSettingsChange;
 
-public abstract class BaseActivity extends RxAppCompatActivity implements SnackbarShower,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseActivity extends RxAppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +75,4 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Snackb
     }
 
     public abstract void initialiseContentView();
-
-    @Override
-    public void showSnackbar(String message) {
-        showSnackbar(message, null, null);
-    }
-
-    @Override
-    public void showSnackbar(String message, String actionString, View.OnClickListener action) {
-
-    }
 }

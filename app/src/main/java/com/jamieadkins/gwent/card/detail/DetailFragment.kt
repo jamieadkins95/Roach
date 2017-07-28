@@ -2,7 +2,6 @@ package com.jamieadkins.gwent.card.detail
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
@@ -21,7 +20,6 @@ import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseSingleObserver
-import com.jamieadkins.gwent.base.SnackbarShower
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
@@ -33,7 +31,6 @@ import com.trello.rxlifecycle2.components.support.RxFragment
 
 import java.util.ArrayList
 
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

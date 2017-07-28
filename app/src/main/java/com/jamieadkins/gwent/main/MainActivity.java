@@ -22,6 +22,9 @@ import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
@@ -371,11 +374,11 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_decks:
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.decks)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.decks)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -386,11 +389,11 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_collection:
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.collection)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.collection)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -402,19 +405,20 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_results:
                 // Hide this feature in release versions for now.
                 if (!BuildConfig.DEBUG) {
-                    showSnackbar(String.format(
-                            getString(R.string.is_coming_soon),
-                            getString(R.string.results)));
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(String.format(
+                                    getString(R.string.is_coming_soon),
+                                    getString(R.string.results)))));
                     return false;
                 }
 
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.your_results)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.your_results)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -425,9 +429,10 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_public_decks:
                 // Hide this feature in release versions for now.
                 if (!BuildConfig.DEBUG) {
-                    showSnackbar(String.format(
-                            getString(R.string.are_coming_soon),
-                            getString(R.string.public_decks)));
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(String.format(
+                                    getString(R.string.are_coming_soon),
+                                    getString(R.string.public_decks)))));
                     return false;
                 }
 
@@ -471,7 +476,7 @@ public class MainActivity extends AuthenticationActivity implements
                 // Return true to not close the navigation drawer.
                 return true;
             default:
-                showSnackbar(getString(R.string.coming_soon));
+                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.coming_soon))));
                 // Don't display the item as the selected item.
                 return false;
         }
