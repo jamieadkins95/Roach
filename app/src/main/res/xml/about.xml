@@ -43,6 +43,9 @@
         <Preference
             android:title="@string/stefano"
             android:summary="@string/italian" />
+        <Preference
+            android:title="@string/andre"
+            android:summary="@string/portuguese" />
 
     </PreferenceCategory>
 

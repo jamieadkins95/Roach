@@ -25,6 +25,7 @@
     <string name="joao" translatable="false">João Alexandre</string>
     <string name="stefano" translatable="false">Stefano Sanitate</string>
     <string name="raquel" translatable="false">Raquel Gesé Ponce</string>
+    <string name="andre" translatable="false">André Viegas</string>
 
     <array translatable="false" name="locales">
         <item>en-US</item>
