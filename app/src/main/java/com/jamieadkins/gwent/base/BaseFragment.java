@@ -25,7 +25,6 @@ import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
-import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ import io.reactivex.Observer;
 /**
  * UI fragment that shows a list of the users decks.
  */
-public abstract class BaseFragment extends RxFragment
+public abstract class BaseFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener, CardFilterListener,
         FilterBottomSheetDialogFragment.FilterUiListener {
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
