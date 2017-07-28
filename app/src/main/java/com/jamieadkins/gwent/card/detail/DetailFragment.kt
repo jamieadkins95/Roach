@@ -49,7 +49,7 @@ class DetailFragment : RxFragment(), DetailContract.View {
 
     private var mLocale: String? = null
 
-    private lateinit var mCard: CardDetails
+    private var mCard: CardDetails? = null
 
     private var mUseLowData = false
 
@@ -126,24 +126,24 @@ class DetailFragment : RxFragment(), DetailContract.View {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        if (mCard == null) {
-            return
+        mCard?.let {
+            inflater?.inflate(R.menu.card_detail, menu)
+            menu?.findItem(R.id.action_related)?.isVisible = it.related != null && BuildConfig.DEBUG
         }
-
-        inflater?.inflate(R.menu.card_detail, menu)
-        menu?.findItem(R.id.action_related)?.isVisible = mCard.related != null && BuildConfig.DEBUG
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
             when (it.itemId) {
                 R.id.action_related -> {
-                    val relatedCards = ArrayList<String>()
-                    relatedCards.addAll(mCard.related)
-                    val fragment = CardListBottomSheetFragment.newInstance(relatedCards)
-                    fragment.setPresenter(mDetailPresenter)
-                    fragment.show(childFragmentManager, "related")
-                    return true
+                    mCard?.let {
+                        val relatedCards = ArrayList<String>()
+                        relatedCards.addAll(it.related)
+                        val fragment = CardListBottomSheetFragment.newInstance(relatedCards)
+                        fragment.setPresenter(mDetailPresenter)
+                        fragment.show(childFragmentManager, "related")
+                        return true
+                    }
                 }
                 R.id.action_flag_error -> {
                     val builder = AlertDialog.Builder(activity)
