@@ -431,7 +431,7 @@ public class MainActivity extends AuthenticationActivity implements
                     return false;
                 }
 
-                fragment = DeckListFragment.newInstance(true);
+                fragment = DeckListFragment.Companion.newInstance(true);
                 tag = TAG_PUBLIC_DECKS;
                 break;
             case R.id.tab_helper:
