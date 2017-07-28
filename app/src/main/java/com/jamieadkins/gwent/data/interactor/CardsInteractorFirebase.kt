@@ -1,36 +1,14 @@
 package com.jamieadkins.gwent.data.interactor
 
-import android.util.Log
-
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.jamieadkins.gwent.BuildConfig
-import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.FirebaseUtils
-
-import java.util.HashMap
-import java.util.concurrent.Callable
-
-import io.reactivex.Completable
-import io.reactivex.CompletableEmitter
-import io.reactivex.CompletableOnSubscribe
-import io.reactivex.CompletableSource
+import io.reactivex.*
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.ObservableSource
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
-import io.reactivex.SingleOnSubscribe
-import io.reactivex.SingleSource
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 /**
  * Deals with firebase.
