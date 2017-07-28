@@ -66,8 +66,10 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                 val patchListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val patch = dataSnapshot.getValue(String::class.java)
-                        onPatchUpdated(patch)
-                        emitter.onSuccess(patch)
+                        patch?.let {
+                            onPatchUpdated(patch)
+                            emitter.onSuccess(patch)
+                        }
                     }
 
                     override fun onCancelled(databaseError: DatabaseError?) {
