@@ -6,15 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import static com.jamieadkins.gwent.settings.SettingsActivity.onSettingsChange;
 
-public abstract class BaseActivity extends AppCompatActivity implements SnackbarShower,
+public abstract class BaseActivity extends RxAppCompatActivity implements SnackbarShower,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
