@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,6 +37,8 @@ public class LargeCardView extends SimpleCardView {
     private TextView mCardType;
 
     private ImageView mCardImage;
+
+    private String mImageUrl;
 
     public LargeCardView(Context context) {
         super(context);
@@ -63,6 +69,10 @@ public class LargeCardView extends SimpleCardView {
         inflate(getContext(), R.layout.item_card_large, this);
     }
 
+    public ImageView getImageView() {
+        return mCardImage;
+    }
+
     @Override
     public void setCardDetails(CardDetails cardDetails) {
         super.setCardDetails(cardDetails);
@@ -77,22 +87,23 @@ public class LargeCardView extends SimpleCardView {
         }
 
         setStrength(String.valueOf(cardDetails.getStrength()));
+        mImageUrl = cardDetails.getImage();
+    }
 
+    public void loadImage() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mCardImage.getContext());
-        if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), false)) {
+        if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), true)) {
             mCardImage.setVisibility(VISIBLE);
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(
-                    FirebaseUtils.STORAGE_BUCKET +
-                            cardDetails.getImage());
+                    FirebaseUtils.STORAGE_BUCKET + mImageUrl);
 
             Glide.with(getContext())
                     .using(new FirebaseImageLoader())
                     .load(storageReference)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .fitCenter()
                     .into(mCardImage);
-        } else {
-            mCardImage.setVisibility(GONE);
         }
     }
 

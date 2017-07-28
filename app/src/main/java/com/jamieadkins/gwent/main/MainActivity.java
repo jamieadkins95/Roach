@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,9 @@ import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.AuthenticationActivity;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
@@ -102,7 +106,7 @@ public class MainActivity extends AuthenticationActivity implements
                 .withNameShown(false);
 
         final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
-                .withIcon(R.drawable.ic_account_circle)
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme()))
                 .withIdentifier(SIGN_IN_IDENTIFIER)
                 .withName(getString(R.string.sign_in));
 
@@ -155,12 +159,12 @@ public class MainActivity extends AuthenticationActivity implements
                         new PrimaryDrawerItem()
                                 .withIdentifier(R.id.action_settings).
                                 withName(R.string.settings)
-                                .withIcon(R.drawable.ic_settings)
+                                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_settings, getTheme()))
                                 .withSelectable(false),
                         new PrimaryDrawerItem()
                                 .withIdentifier(R.id.action_about).
                                 withName(R.string.about)
-                                .withIcon(R.drawable.ic_info)
+                                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_info, getTheme()))
                                 .withSelectable(false)
                 )
                 .withOnDrawerItemClickListener(this)
@@ -201,38 +205,38 @@ public class MainActivity extends AuthenticationActivity implements
         mDrawerItems.put(R.id.tab_card_db, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_card_db)
                 .withName(R.string.card_database)
-                .withIcon(R.drawable.ic_database));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_database, getTheme())));
         mDrawerItems.put(R.id.tab_public_decks, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_public_decks)
                 .withName(R.string.public_decks)
                 .withSelectable(BuildConfig.DEBUG)
-                .withIcon(R.drawable.ic_public));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_public, getTheme())));
         mDrawerItems.put(R.id.tab_decks, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_decks)
                 .withName(R.string.deck_builder)
-                .withIcon(R.drawable.ic_cards_filled));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_cards_filled, getTheme())));
         mDrawerItems.put(R.id.tab_collection, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_collection)
                 .withName(R.string.collection_manager)
-                .withIcon(R.drawable.ic_cards_outline));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_cards_outline, getTheme())));
         mDrawerItems.put(R.id.tab_results, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_results)
                 .withName(R.string.results)
-                .withIcon(R.drawable.ic_chart));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_chart, getTheme())));
         mDrawerItems.put(R.id.tab_helper, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_helper)
                 .withSelectable(false)
                 .withName(R.string.keg_helper)
-                .withIcon(R.drawable.ic_help));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_help, getTheme())));
         mDrawerItems.put(R.id.tab_news, new PrimaryDrawerItem()
                 .withIdentifier(R.id.tab_news)
                 .withSelectable(false)
                 .withName(R.string.news)
-                .withIcon(R.drawable.ic_news));
+                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_news, getTheme())));
     }
 
     private void setupFragment(Fragment fragment, String tag) {
-        CardsInteractor cardsInteractor = CardsInteractorFirebase.getInstance();
+        CardsInteractor cardsInteractor = CardsInteractorFirebase.Companion.getInstance();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         cardsInteractor.setLocale(preferences.getString(
                 getString(R.string.pref_locale_key),
@@ -370,11 +374,11 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_decks:
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.decks)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.decks)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -385,11 +389,11 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_collection:
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.collection)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.collection)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -401,19 +405,20 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_results:
                 // Hide this feature in release versions for now.
                 if (!BuildConfig.DEBUG) {
-                    showSnackbar(String.format(
-                            getString(R.string.is_coming_soon),
-                            getString(R.string.results)));
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(String.format(
+                                    getString(R.string.is_coming_soon),
+                                    getString(R.string.results)))));
                     return false;
                 }
 
                 // Stop authenticated only tabs from being selected.
                 if (!isAuthenticated()) {
-                    showSnackbar(
-                            String.format(getString(R.string.sign_in_to_view),
-                                    getString(R.string.your_results)),
-                            getString(R.string.sign_in),
-                            signInClickListener);
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(
+                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.your_results)),
+                                    getString(R.string.sign_in),
+                                    signInClickListener)));
                     return false;
                 }
 
@@ -424,13 +429,14 @@ public class MainActivity extends AuthenticationActivity implements
             case R.id.tab_public_decks:
                 // Hide this feature in release versions for now.
                 if (!BuildConfig.DEBUG) {
-                    showSnackbar(String.format(
-                            getString(R.string.are_coming_soon),
-                            getString(R.string.public_decks)));
+                    RxBus.INSTANCE.post(new SnackbarRequest(
+                            new SnackbarBundle(String.format(
+                                    getString(R.string.are_coming_soon),
+                                    getString(R.string.public_decks)))));
                     return false;
                 }
 
-                fragment = DeckListFragment.newInstance(true);
+                fragment = DeckListFragment.Companion.newInstance(true);
                 tag = TAG_PUBLIC_DECKS;
                 break;
             case R.id.tab_helper:
@@ -470,7 +476,7 @@ public class MainActivity extends AuthenticationActivity implements
                 // Return true to not close the navigation drawer.
                 return true;
             default:
-                showSnackbar(getString(R.string.coming_soon));
+                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.coming_soon))));
                 // Don't display the item as the selected item.
                 return false;
         }

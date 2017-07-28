@@ -15,6 +15,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_notifications">
+
+        <CheckBoxPreference android:key="@string/pref_patch_notifications_key"
+            android:title="@string/patch_notifications"
+            android:summary="@string/patch_notifications_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_appearance">
 
         <ListPreference
@@ -30,12 +39,12 @@
             android:title="@string/low_data"
             android:summary="@string/low_data_summary"
             android:defaultValue="false"
-            android:enabled="false" />
+            android:enabled="true" />
 
         <CheckBoxPreference android:key="@string/pref_show_images_key"
             android:title="@string/show_images_in_list"
             android:summary="@string/show_images_in_list_summary"
-            android:defaultValue="false"
-            android:enabled="false" />
+            android:defaultValue="true"
+            android:enabled="true" />
     </PreferenceCategory>
 </PreferenceScreen>

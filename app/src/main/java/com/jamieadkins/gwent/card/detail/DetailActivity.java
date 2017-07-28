@@ -7,8 +7,13 @@ import android.view.MenuItem;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.base.BaseObserver;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.main.MainActivity;
+
+import io.reactivex.annotations.NonNull;
 
 /**
  * Shows card image and details.
@@ -45,7 +50,7 @@ public class DetailActivity extends BaseActivity {
 
         Fragment fragment;
         if (savedInstanceState == null) {
-            fragment = DetailFragment.newInstance(mCardId);
+            fragment = DetailFragment.Companion.newInstance(mCardId);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
@@ -56,7 +61,7 @@ public class DetailActivity extends BaseActivity {
 
         new DetailPresenter(
                 (DetailContract.View) fragment,
-                CardsInteractorFirebase.getInstance());
+                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override

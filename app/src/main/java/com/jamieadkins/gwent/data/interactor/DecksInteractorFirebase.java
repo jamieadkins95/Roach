@@ -114,7 +114,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -138,7 +138,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -162,7 +162,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildRemoved(DataSnapshot deckSnapshot) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -181,7 +181,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildMoved(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -369,7 +369,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                 }
 
                                 if (evaluate) {
-                                    deck.evaluateDeck(CardsInteractorFirebase.getInstance())
+                                    deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
                                             .subscribe(
                                                     new BaseCompletableObserver() {
                                                         @Override

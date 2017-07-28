@@ -40,7 +40,7 @@ public class CardDetails implements RecyclerViewItem {
 
     @Exclude
     public String getName(String locale) {
-        if (localisedData != null) {
+        if (localisedData != null && localisedData.getInfo() != null) {
             return localisedData.getName().get(locale);
         } else {
             return name;
@@ -58,7 +58,7 @@ public class CardDetails implements RecyclerViewItem {
 
     @Exclude
     public String getFlavor(String locale) {
-        if (localisedData != null) {
+        if (localisedData != null && localisedData.getInfo() != null) {
             return localisedData.getFlavor().get(locale);
         } else {
             return flavor;

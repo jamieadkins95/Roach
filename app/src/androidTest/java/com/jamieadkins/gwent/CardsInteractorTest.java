@@ -31,7 +31,7 @@ public class CardsInteractorTest {
 
     @Before
     public void setUp() {
-        cardsInteractor = CardsInteractorFirebase.getInstance();
+        cardsInteractor = CardsInteractorFirebase.Companion.getInstance();
     }
 
     @Test

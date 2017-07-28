@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 
 import java.util.ArrayList;
@@ -54,7 +57,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     protected void onSignedOut() {
         mSignedIn = false;
-        showSnackbar(getString(R.string.sign_out_successful));
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.sign_out_successful))));
     }
 
     public void startSignOutProcess() {
@@ -91,7 +94,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            showSnackbar(getString(R.string.sign_in_successful));
+            RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.sign_in_successful))));
         } else {
             ArrayList<AuthUI.IdpConfig> providers = new ArrayList<>();
             providers.add(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
@@ -115,25 +118,25 @@ public abstract class AuthenticationActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // Successful sign in!
-                showSnackbar(getString(R.string.sign_in_successful));
+                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.sign_in_successful))));
                 onSignedIn();
                 return;
             }
 
             // Sign in cancelled.
             if (resultCode == RESULT_CANCELED) {
-                showSnackbar(getString(R.string.sign_in_cancelled));
+                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.sign_in_cancelled))));
                 return;
             }
 
             // No network.
             if (resultCode == ResultCodes.RESULT_NO_NETWORK) {
-                showSnackbar(getString(R.string.no_internet_connection));
+                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.no_internet_connection))));
                 return;
             }
 
             // User is not signed in. Show generic failed snackbar.
-            showSnackbar(getString(R.string.sign_in_failed));
+            RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.sign_in_failed))));
         }
     }
 }

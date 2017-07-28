@@ -18,3 +18,4 @@
 
 -keep class android.support.v7.widget.SearchView { *; }
 -keep class com.jamieadkins.gwent.data** { *; }
+-dontwarn com.trello.rxlifecycle2.*
