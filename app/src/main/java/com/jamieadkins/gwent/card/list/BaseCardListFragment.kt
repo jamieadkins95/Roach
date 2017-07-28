@@ -37,7 +37,7 @@ abstract class BaseCardListFragment : BaseFragment(), CardsContract.View {
         setupFilterMenu(menu, inflater)
     }
 
-    val layoutId: Int
+    open val layoutId: Int
         get() = R.layout.fragment_card_list
 
     override fun onStart() {
