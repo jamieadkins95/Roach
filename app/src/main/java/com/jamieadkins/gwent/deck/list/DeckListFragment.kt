@@ -94,12 +94,14 @@ class DeckListFragment : BaseFragment(), DecksContract.View, NewDeckDialog.NewDe
         }
         decks?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
+                ?.compose(bindToLifecycle())
                 ?.subscribe(observer)
 
         if (mPublicDecks) {
             mDecksPresenter?.deckOfTheWeek
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.compose(bindToLifecycle())
                     ?.subscribe(object : BaseSingleObserver<RxDatabaseEvent<Deck>>() {
                         override fun onSuccess(value: RxDatabaseEvent<Deck>) {
                             recyclerViewAdapter.addItem(0, SubHeader("Deck of the Week"))
@@ -128,6 +130,7 @@ class DeckListFragment : BaseFragment(), DecksContract.View, NewDeckDialog.NewDe
         mDecksPresenter?.createNewDeck(name, faction, leader, "v0-8-60-2-images")
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
+                ?.compose(bindToLifecycle())
                 ?.subscribe(object : BaseObserver<RxDatabaseEvent<Deck>>() {
                     override fun onNext(value: RxDatabaseEvent<Deck>) {
                         val deck = value.value
