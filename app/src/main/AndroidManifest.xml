@@ -39,7 +39,6 @@
 
         <activity
             android:name=".card.detail.DetailActivity"
-            android:launchMode="singleTask"
             android:theme="@style/Theme.Gwent.NoActionBar">
 
             <meta-data
