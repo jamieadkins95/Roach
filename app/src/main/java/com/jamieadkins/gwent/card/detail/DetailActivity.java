@@ -45,7 +45,7 @@ public class DetailActivity extends BaseActivity {
 
         Fragment fragment;
         if (savedInstanceState == null) {
-            fragment = DetailFragment.newInstance(mCardId);
+            fragment = DetailFragment.Companion.newInstance(mCardId);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
