@@ -26,6 +26,7 @@ import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.FirebaseUtils
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.trello.rxlifecycle2.components.support.RxFragment
 
 import java.util.ArrayList
 
@@ -37,7 +38,7 @@ import io.reactivex.schedulers.Schedulers
  * Shows picture and details of a card.
  */
 
-class DetailFragment : Fragment(), DetailContract.View {
+class DetailFragment : RxFragment(), DetailContract.View {
     private var mDetailPresenter: DetailContract.Presenter? = null
     private var mCardPicture: ImageView? = null
     private var mLargeCardView: LargeCardView? = null
@@ -182,6 +183,7 @@ class DetailFragment : Fragment(), DetailContract.View {
         mDetailPresenter?.getCard(mCardId)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
+                ?.compose(bindToLifecycle())
                 ?.subscribe(mObserver)
     }
 
