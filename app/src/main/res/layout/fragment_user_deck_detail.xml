@@ -45,6 +45,6 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@color/white"
-        android:src="@drawable/ic_add_cards" />
+        app:srcCompat="@drawable/ic_add_cards" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,9 +87,9 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         mDeckBuilderOpen = open;
 
         if (mDeckBuilderOpen) {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+            getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
         } else {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back, getTheme()));
         }
     }
 }

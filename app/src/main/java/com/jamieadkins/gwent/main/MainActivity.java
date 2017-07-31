@@ -302,7 +302,7 @@ public class MainActivity extends AuthenticationActivity implements
                     new ProfileSettingDrawerItem()
                             .withIdentifier(SIGN_OUT_IDENTIFIER)
                             .withName(getString(R.string.sign_out))
-                            .withIcon(R.drawable.ic_account_circle));
+                            .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
 
             mDrawerItems.get(R.id.tab_collection).withSelectable(true);
             mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
@@ -319,7 +319,7 @@ public class MainActivity extends AuthenticationActivity implements
                     new ProfileSettingDrawerItem()
                             .withIdentifier(SIGN_IN_IDENTIFIER)
                             .withName(getString(R.string.sign_in))
-                            .withIcon(R.drawable.ic_account_circle));
+                            .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
 
             // If we are currently in an activity that requires authentication, switch to another.
             if (mCurrentTab == R.id.tab_collection ||
