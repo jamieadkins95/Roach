@@ -1,10 +1,12 @@
 package com.jamieadkins.gwent.base;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.preference.BuildConfig;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -108,6 +110,13 @@ public abstract class BaseFragment extends RxFragment
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
+                if (Build.VERSION.SDK_INT >= 17) {
+                    if (getActivity().isDestroyed()) {
+                        return;
+                    }
+                }
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     Glide.with(getActivity()).resumeRequests();
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
