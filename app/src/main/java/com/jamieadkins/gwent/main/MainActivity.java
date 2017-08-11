@@ -64,6 +64,8 @@ public class MainActivity extends AuthenticationActivity implements
     private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
+    private static final String STATE_NEWS_SHOWN = "com.jamieadkins.gwent.news.shown";
+
     private static final String LAUNCH_EXTERNAL = "external";
 
     private static final int ACCOUNT_IDENTIFIER = 1000;
@@ -78,6 +80,7 @@ public class MainActivity extends AuthenticationActivity implements
 
     private int mCurrentTab;
     private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
+    private boolean newsItemShown = false;
 
     private Drawer mNavigationDrawer;
     private AccountHeader mAccountHeader;
@@ -99,7 +102,12 @@ public class MainActivity extends AuthenticationActivity implements
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            newsItemShown = savedInstanceState.getBoolean(STATE_NEWS_SHOWN, false);
+        }
+
         checkLanguage();
+        checkIntent();
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
                 .withEmail(getString(R.string.signed_out))
@@ -181,6 +189,17 @@ public class MainActivity extends AuthenticationActivity implements
             setupFragment(fragment, fragment.getTag());
 
             mNavigationDrawer.setSelection(mCurrentTab);
+        }
+    }
+
+    private void checkIntent() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            String url = intent.getExtras().getString("url");
+            if (url != null && !newsItemShown) {
+                showChromeCustomTab(url);
+                newsItemShown = true;
+            }
         }
     }
 
@@ -350,6 +369,12 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(STATE_NEWS_SHOWN, newsItemShown);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onSignedIn() {
         super.onSignedIn();
         invalidateOptionsMenu();
@@ -501,6 +526,7 @@ public class MainActivity extends AuthenticationActivity implements
     private void showChromeCustomTab(String url) {
         new CustomTabsIntent.Builder()
                 .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+                .setShowTitle(true)
                 .build()
                 .launchUrl(this, Uri.parse(url));
     }
