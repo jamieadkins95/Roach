@@ -8,8 +8,8 @@ android {
         applicationId "com.jamieadkins.gwent"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 39
-        versionName "v1.5.3"
+        versionCode 40
+        versionName "v1.5.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
