@@ -198,6 +198,18 @@ public class MainActivity extends AuthenticationActivity implements
             editor.putBoolean(getString(R.string.shown_language), true);
             editor.apply();
         }
+
+        if (!preferences.contains(getString(R.string.shown_news))) {
+            SharedPreferences.Editor editor = preferences.edit();
+            String[] locales = getResources().getStringArray(R.array.locales_news);
+            for (String locale : locales) {
+                if (locale.contains(language)) {
+                    editor.putString(getString(R.string.pref_news_notifications_key), locale);
+                }
+            }
+            editor.putBoolean(getString(R.string.shown_news), true);
+            editor.apply();
+        }
     }
 
     private void initialiseDrawerItems() {
