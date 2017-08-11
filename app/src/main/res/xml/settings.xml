@@ -21,6 +21,13 @@
             android:title="@string/patch_notifications"
             android:summary="@string/patch_notifications_summary"
             android:defaultValue="true" />
+
+        <ListPreference android:key="@string/pref_news_notifications_key"
+            android:title="@string/news_notifications"
+            android:summary="@string/news_notifications_summary"
+            android:defaultValue="en"
+            android:entryValues="@array/locales_news"
+            android:entries="@array/locales_news_readable"/>
     </PreferenceCategory>
 
     <PreferenceCategory

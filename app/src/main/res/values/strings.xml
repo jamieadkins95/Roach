@@ -126,6 +126,7 @@
     <string name="pref_notifications">Notifications</string>
     <string name="news_notifications">News</string>
     <string name="news_notifications_summary">Receive notifications about Gwent news.</string>
+    <string name="none">None</string>
     <string name="patch_notifications">New Patches</string>
     <string name="patch_notifications_summary">Receive notifications when Roach is updated to a new Gwent patch.</string>
 </resources>

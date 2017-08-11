@@ -42,6 +42,42 @@
         <item>zh-TW</item>
     </array>
 
+    <string name="en" translatable="false">en</string>
+    <string name="de" translatable="false">de</string>
+    <string name="es" translatable="false">es</string>
+    <string name="fr" translatable="false">fr</string>
+    <string name="it" translatable="false">it</string>
+    <string name="jp" translatable="false">jp</string>
+    <string name="pl" translatable="false">pl</string>
+    <string name="pt_BR" translatable="false">pt-BR</string>
+    <string name="ru" translatable="false">ru</string>
+
+    <array translatable="false" name="locales_news">
+        <item>none</item>
+        <item>@string/en</item>
+        <item>@string/de</item>
+        <item>@string/es</item>
+        <item>@string/fr</item>
+        <item>@string/it</item>
+        <item>@string/jp</item>
+        <item>@string/pl</item>
+        <item>@string/pt_BR</item>
+        <item>@string/ru</item>
+    </array>
+
+    <array translatable="false" name="locales_news_readable">
+        <item>@string/none</item>
+        <item>English</item>
+        <item>Deutsch</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Polski</item>
+        <item>Português (Brazil)</item>
+        <item>Pусский</item>
+    </array>
+
     <string translatable="false" name="default_locale">en-US</string>
     <string translatable="false" name="shown_language">com.jamieadkins.gwent.shown.language</string>
     <string name="news_url" translatable="false">https://playgwent.com/news</string>

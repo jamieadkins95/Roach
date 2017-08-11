@@ -71,7 +71,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        onSettingsChange(sharedPreferences, key);
+        onSettingsChange(sharedPreferences, getResources(), key);
     }
 
     public abstract void initialiseContentView();
