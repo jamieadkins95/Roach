@@ -198,11 +198,6 @@ public abstract class BaseFragment extends RxFragment
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
                 if (query.equals("")) {
                     // Don't search for everything!
                     mCardFilter.setSearchQuery(null);
@@ -211,6 +206,11 @@ public abstract class BaseFragment extends RxFragment
 
                 mCardFilter.setSearchQuery(query);
                 onCardFilterUpdated();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
                 return false;
             }
         });
