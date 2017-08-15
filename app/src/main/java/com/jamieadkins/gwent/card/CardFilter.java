@@ -104,7 +104,7 @@ public class CardFilter implements Parcelable {
     public boolean doesCardMeetFilter(CardDetails card) {
         if (mCardIds != null) {
             // If there are card ids specified, use them only.
-            return mCardIds.contains(card.getIngameId());
+            return mCardIds.contains(card.getIngameId()) && card.isReleased();
         } else {
             boolean collectible = false;
             for (String variationId : card.getVariations().keySet()) {

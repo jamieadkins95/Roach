@@ -9,6 +9,11 @@ import io.reactivex.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.util.Log
+import com.jamieadkins.gwent.base.BaseSingleObserver
+import com.jamieadkins.gwent.data.SearchResult
+
 
 /**
  * Deals with firebase.
@@ -107,6 +112,65 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                         .subscribeOn(Schedulers.io())
             }
         }
+    }
+
+    override fun getCardsIntelligentSearch(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
+
+        if (filter.searchQuery == null) {
+            return getCards(filter)
+        }
+
+        return latestPatch.flatMapObservable { patch ->
+            onPatchUpdated(patch)
+            getSearchResult(filter.searchQuery, patch).flatMapObservable { result ->
+                val cardFilter = CardFilter()
+                result.value.hits?.forEach {
+                    cardFilter.addCardId(it)
+                }
+
+                getCards(cardFilter)
+            }
+        }
+    }
+
+    fun getSearchResult(query: String, patch: String): Single<RxDatabaseEvent<SearchResult>> {
+        val key = search(query, patch)
+        return Single.defer {
+            Single.create(SingleOnSubscribe<RxDatabaseEvent<SearchResult>> { emitter ->
+                val searchQuery = mDatabase.getReference("search/$patch/results/$key")
+
+                val searchListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val result = dataSnapshot.getValue(SearchResult::class.java) ?: return
+
+                        emitter.onSuccess(
+                                RxDatabaseEvent(
+                                        dataSnapshot.key,
+                                        result,
+                                        RxDatabaseEvent.EventType.ADDED
+                                ))
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError?) {
+
+                    }
+                }
+
+                searchQuery.addValueEventListener(searchListener)
+            })
+        }
+    }
+
+    private fun search(query: String, patch: String): String {
+        val searchReference = mDatabase.getReference("search/$patch/queries")
+        val key = searchReference.push().key
+        val firebaseUpdates = HashMap<String, Any>()
+        val queryMap = HashMap<String, Any>()
+        queryMap.put("query", query)
+        firebaseUpdates.put(key, queryMap)
+
+        searchReference.updateChildren(firebaseUpdates)
+        return key
     }
 
     private val cardDataSnapshot: Single<DataSnapshot>

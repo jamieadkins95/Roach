@@ -17,6 +17,8 @@ public interface CardsInteractor extends BaseInteractor<BasePresenter> {
 
     Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter filter);
 
+    Observable<RxDatabaseEvent<CardDetails>> getCardsIntelligentSearch(CardFilter filter);
+
     Single<RxDatabaseEvent<CardDetails>> getCard(String id);
 
     Completable reportMistake(String cardid, String description);
