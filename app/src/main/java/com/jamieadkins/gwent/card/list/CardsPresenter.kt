@@ -1,5 +1,9 @@
 package com.jamieadkins.gwent.card.list
 
+import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.commonutils.mvp2.addToComposite
+import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
@@ -13,11 +17,12 @@ import io.reactivex.Single
  * UI as required.
  */
 
-class CardsPresenter(private val mCardsView: CardsContract.View,
-                     private val mCardsInteractor: CardsInteractor) : CardsContract.Presenter {
+class CardsPresenter(private val mCardsInteractor: CardsInteractor) :
+        BaseFilterPresenter<CardsContract.View>(), CardsContract.Presenter {
 
-    init {
-        mCardsView.setPresenter(this)
+    override fun onAttach(newView: CardsContract.View) {
+        super.onAttach(newView)
+        onLoadData()
     }
 
     override fun start() {
@@ -26,6 +31,17 @@ class CardsPresenter(private val mCardsView: CardsContract.View,
 
     override fun stop() {
 
+    }
+
+    override fun onCardFilterUpdated() {
+        onLoadData()
+    }
+
+    private fun onLoadData() {
+        getCards(cardFilter)
+                .applySchedulers()
+                .subscribe()
+                .addToComposite(disposable)
     }
 
     override fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
