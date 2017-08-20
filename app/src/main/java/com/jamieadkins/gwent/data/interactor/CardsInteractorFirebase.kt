@@ -67,7 +67,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     override fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
         return latestPatch.flatMapObservable { patch ->
             onPatchUpdated(patch)
-            mCardsQuery = mCardsReference!!.orderByChild("localisedData/name/" + mLocale)
+            mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
 
             if (filter.searchQuery != null) {
                 val query = filter.searchQuery
