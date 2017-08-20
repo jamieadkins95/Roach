@@ -19,22 +19,9 @@ import com.google.firebase.storage.StorageReference
 import com.jamieadkins.commonutils.mvp2.MvpFragment
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.base.BaseCompletableObserver
-import com.jamieadkins.gwent.base.BaseSingleObserver
-import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.bus.SnackbarBundle
-import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.FirebaseUtils
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
-import com.trello.rxlifecycle2.components.support.RxFragment
-
-import java.util.ArrayList
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Shows picture and details of a card.
