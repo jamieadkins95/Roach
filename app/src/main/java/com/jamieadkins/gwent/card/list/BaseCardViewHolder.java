@@ -48,7 +48,7 @@ public class BaseCardViewHolder extends BaseViewHolder {
 
         // Log what card has been viewed.
         FirebaseUtils.logAnalytics(getView().getContext(),
-                mCardDetails.getIngameId(), mCardDetails.getName(), "View Card");
+                mCardDetails.getIngameId(), mCardDetails.getName("en-US"), "View Card");
     }
 
     public CardDetails getBoundCardDetails() {

@@ -132,7 +132,6 @@ public class CardFilter implements Parcelable {
         parcel.writeStringList(mCardIds);
     }
 
-
     public static final Parcelable.Creator<CardFilter> CREATOR
             = new Parcelable.Creator<CardFilter>() {
         public CardFilter createFromParcel(Parcel in) {

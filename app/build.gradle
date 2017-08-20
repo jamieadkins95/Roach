@@ -17,6 +17,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "CARD_DATA_VERSION", "2"
         }
 
         debug {
@@ -24,6 +25,7 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
+            buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
         }
     }
 

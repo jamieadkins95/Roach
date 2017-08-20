@@ -72,13 +72,14 @@ class DetailFragment : RxFragment(), DetailContract.View {
                 val variation = card.variations[variationId]
                 var storageReference: StorageReference? = null
                 variation?.let {
-                    if (mUseLowData) {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.lowImage)
-                    } else {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.mediumImage)
+                    it.art?.let {
+                        if (mUseLowData) {
+                            storageReference = storage.getReferenceFromUrl(it.low)
+                        } else {
+                            storageReference = storage.getReferenceFromUrl(it.medium)
+                        }
                     }
+
                 }
 
                 mAdapter?.addItem(storageReference)

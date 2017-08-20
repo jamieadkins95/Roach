@@ -32,6 +32,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
+        mPatchReference.keepSynced(true)
         mMistakesReference = mDatabase.getReference("reported-mistakes")
     }
 
@@ -71,7 +72,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     override fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
         return latestPatch.flatMapObservable { patch ->
             onPatchUpdated(patch)
-            mCardsQuery = mCardsReference!!.orderByChild("localisedData/name/" + mLocale)
+            mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
 
             if (filter.searchQuery != null) {
                 val query = filter.searchQuery
@@ -257,7 +258,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     }
 
     companion object {
-        private val PATCH_PATH = if (!BuildConfig.DEBUG) "card-data/latest-patch" else "card-data/latest-patch-debug"
+        private val PATCH_PATH = "patch/" + BuildConfig.CARD_DATA_VERSION
         val instance: CardsInteractorFirebase by lazy { CardsInteractorFirebase() }
     }
 }
