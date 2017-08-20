@@ -13,6 +13,7 @@ import android.content.Context.CONNECTIVITY_SERVICE
 import android.util.Log
 import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.data.SearchResult
+import kotlin.collections.ArrayList
 
 
 /**
@@ -70,12 +71,65 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     }
 
     override fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
+        return getCards(filter, null, null, false)
+    }
+
+    override fun getCards(filter: CardFilter?, cardIds: List<String>): Observable<RxDatabaseEvent<CardDetails>> {
+        return getCards(filter, null, cardIds, false)
+    }
+
+    override fun getCards(filter: CardFilter?, query: String?, useIntelligentSearch: Boolean): Observable<RxDatabaseEvent<CardDetails>> {
+        return getCards(filter, query, null, useIntelligentSearch)
+    }
+
+    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?, useIntelligentSearch: Boolean): Observable<RxDatabaseEvent<CardDetails>> {
+        var source: Observable<RxDatabaseEvent<CardDetails>> = getCards()
+
+        if (query != null) {
+            if (useIntelligentSearch) {
+                source = latestPatch.flatMapObservable { patch ->
+                    onPatchUpdated(patch)
+                    getSearchResult(query, patch).flatMapObservable { result ->
+                        val idList = ArrayList<String>()
+                        result.value.hits?.forEach {
+                            idList.add(it)
+                        }
+
+                        getCards(idList)
+                    }
+                }
+            } else {
+                getCards(query)
+            }
+        } else if (cardIds != null) {
+            source = getCards(cardIds)
+        }
+
+        filter?.let {
+            source = source.filter { card ->
+                 it.doesCardMeetFilter(card.value)
+            }
+        }
+
+        return source
+    }
+
+    private fun getCards(): Observable<RxDatabaseEvent<CardDetails>> {
+        return getCards(null)
+    }
+
+    private fun getCards(cardIds: List<String>): Observable<RxDatabaseEvent<CardDetails>> {
+        val singles: ArrayList<Single<RxDatabaseEvent<CardDetails>>> = ArrayList()
+        cardIds.forEach { singles.add(getCard(it)) }
+        return Single.merge(singles).toObservable()
+    }
+
+    private fun getCards(query: String?): Observable<RxDatabaseEvent<CardDetails>> {
         return latestPatch.flatMapObservable { patch ->
             onPatchUpdated(patch)
             mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
 
-            if (filter.searchQuery != null) {
-                val query = filter.searchQuery
+            query?.let {
                 val charValue = query[query.length - 1].toInt()
                 var endQuery = query.substring(0, query.length - 1)
                 endQuery += (charValue + 1).toChar()
@@ -95,41 +149,16 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                             return@ObservableOnSubscribe
                         }
 
-                        // Only add card if the card meets all the filters.
-                        // Also check name and info are not null. Those are dud cards.
-                        if (filter.doesCardMeetFilter(cardDetails)) {
-                            emitter.onNext(
-                                    RxDatabaseEvent(
-                                            cardSnapshot.key,
-                                            cardDetails,
-                                            RxDatabaseEvent.EventType.ADDED
-                                    ))
-                        }
+                        emitter.onNext(RxDatabaseEvent(
+                                cardSnapshot.key,
+                                cardDetails,
+                                RxDatabaseEvent.EventType.ADDED))
                     }
 
                     emitter.onComplete()
                 })
                         // IMPORTANT: Firebase forces us back onto UI thread.
                         .subscribeOn(Schedulers.io())
-            }
-        }
-    }
-
-    override fun getCardsIntelligentSearch(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
-
-        if (filter.searchQuery == null) {
-            return getCards(filter)
-        }
-
-        return latestPatch.flatMapObservable { patch ->
-            onPatchUpdated(patch)
-            getSearchResult(filter.searchQuery, patch).flatMapObservable { result ->
-                val cardFilter = CardFilter()
-                result.value.hits?.forEach {
-                    cardFilter.addCardId(it)
-                }
-
-                getCards(cardFilter)
             }
         }
     }

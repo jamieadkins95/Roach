@@ -39,7 +39,7 @@ public class CardsPresenter implements CardsContract.Presenter {
 
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter filter) {
-        return mCardsInteractor.getCardsIntelligentSearch(filter);
+        return mCardsInteractor.getCards(filter, filter.getSearchQuery(), true);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -184,11 +185,11 @@ public class Deck implements RecyclerViewItem {
                             return;
                         }
 
-                        CardFilter filter = new CardFilter();
+                        ArrayList<String> cardIds = new ArrayList<>();
                         for (String cardId : cardCount.keySet()) {
-                            filter.addCardId(cardId);
+                            cardIds.add(cardId);
                         }
-                        cardsInteractor.getCards(filter).subscribe(
+                        cardsInteractor.getCards(null, cardIds).subscribe(
                                 new BaseObserver<RxDatabaseEvent<CardDetails>>() {
                                     @Override
                                     public void onNext(RxDatabaseEvent<CardDetails> value) {

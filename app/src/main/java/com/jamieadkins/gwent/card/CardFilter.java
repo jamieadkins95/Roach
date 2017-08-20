@@ -20,7 +20,6 @@ import java.util.List;
 public class CardFilter implements Parcelable {
     private String mSearchQuery;
     private HashMap<String, Boolean> mFilters;
-    private List<String> mCardIds;
 
     private boolean mCollectibleOnly = false;
 
@@ -29,7 +28,6 @@ public class CardFilter implements Parcelable {
     public CardFilter() {
         mSearchQuery = null;
         mFilters = new HashMap<>();
-        mCardIds = null;
 
         for (Filterable rarity : Rarity.ALL_RARITIES) {
             mFilters.put(rarity.getId(), true);
@@ -93,30 +91,17 @@ public class CardFilter implements Parcelable {
         mFilters.put(key, filter);
     }
 
-    public void addCardId(String cardId) {
-        if (mCardIds == null) {
-            mCardIds = new ArrayList<>();
-        }
-
-        mCardIds.add(cardId);
-    }
-
     public boolean doesCardMeetFilter(CardDetails card) {
-        if (mCardIds != null) {
-            // If there are card ids specified, use them only.
-            return mCardIds.contains(card.getIngameId()) && card.isReleased();
-        } else {
-            boolean collectible = false;
-            for (String variationId : card.getVariations().keySet()) {
-                if (card.getVariations().get(variationId).isCollectible()) {
-                    collectible = true;
-                }
+        boolean collectible = false;
+        for (String variationId : card.getVariations().keySet()) {
+            if (card.getVariations().get(variationId).isCollectible()) {
+                collectible = true;
             }
-
-            boolean include = !mCollectibleOnly || collectible;
-            return get(card.getFaction()) && get(card.getRarity())
-                    && get(card.getType()) && card.isReleased() && include;
         }
+
+        boolean include = !mCollectibleOnly || collectible;
+        return get(card.getFaction()) && get(card.getRarity())
+                && get(card.getType()) && card.isReleased() && include;
     }
 
     @Override
@@ -129,7 +114,6 @@ public class CardFilter implements Parcelable {
         parcel.writeString(mSearchQuery);
         parcel.writeSerializable(mFilters);
         parcel.writeSerializable(mCollectibleOnly);
-        parcel.writeStringList(mCardIds);
     }
 
     public static final Parcelable.Creator<CardFilter> CREATOR
@@ -147,12 +131,11 @@ public class CardFilter implements Parcelable {
         mSearchQuery = parcel.readString();
         mFilters = (HashMap<String, Boolean>) parcel.readSerializable();
         mCollectibleOnly = (Boolean) parcel.readSerializable();
-        mCardIds = parcel.createStringArrayList();
 
     }
 
     @Override
     public String toString() {
-        return mSearchQuery + "," + mCollectibleOnly + "," + mCardIds + "," + mFilters;
+        return mSearchQuery + "," + mCollectibleOnly + "," + mFilters;
     }
 }

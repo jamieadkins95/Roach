@@ -42,7 +42,7 @@ public class CollectionPresenter implements CollectionContract.Presenter {
 
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
-        return mCardsInteractor.getCards(cardFilter);
+        return mCardsInteractor.getCards(cardFilter, cardFilter.getSearchQuery(), true);
     }
 
     @Override

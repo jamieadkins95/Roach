@@ -95,7 +95,7 @@ public class DecksPresenter implements DecksContract.Presenter {
 
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
-        return mCardsInteractor.getCards(cardFilter);
+        return mCardsInteractor.getCards(cardFilter, cardFilter.getSearchQuery(), true);
     }
 
     @Override

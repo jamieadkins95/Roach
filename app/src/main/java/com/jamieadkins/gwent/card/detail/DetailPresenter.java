@@ -56,7 +56,7 @@ public class DetailPresenter implements DetailContract.Presenter {
 
     @Override
     public Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter) {
-        return mDetailInteractor.getCards(cardFilter);
+        return mDetailInteractor.getCards(cardFilter, cardFilter.getSearchQuery(), true);
     }
 
     @Override

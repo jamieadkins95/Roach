@@ -56,7 +56,6 @@ abstract class BaseCardListFragment : BaseFragment(), CardsContract.View {
     }
 
     fun onLoadCardData() {
-        val cardFilter = cardFilter
         mCardsPresenter?.let {
             it.getCards(cardFilter)
                     .subscribeOn(Schedulers.io())

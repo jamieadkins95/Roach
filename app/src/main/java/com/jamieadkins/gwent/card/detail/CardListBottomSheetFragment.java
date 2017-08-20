@@ -79,13 +79,9 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        CardFilter cardFilter = new CardFilter();
-        for (String id : mCardIds) {
-            cardFilter.addCardId(id);
-        }
         mRefreshContainer.setEnabled(true);
         mRefreshContainer.setRefreshing(true);
-        mPresenter.getCards(cardFilter)
+        mPresenter.getCards(new CardFilter())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
