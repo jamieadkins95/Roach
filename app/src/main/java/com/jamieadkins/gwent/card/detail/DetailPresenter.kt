@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.card.detail
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
+import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.bus.RxBus
@@ -24,8 +25,7 @@ class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId
         view?.setPresenter(this)
 
         mDetailInteractor.getCard(cardId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applySchedulers()
                 .subscribe { result -> view?.showCard(result.value)}
                 .addToComposite(disposable)
     }
@@ -37,8 +37,7 @@ class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId
 
     override fun reportMistake(cardId: String, description: String) {
         mDetailInteractor.reportMistake(cardId, description)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applySchedulers()
                 .subscribe(object : BaseCompletableObserver() {
                     override fun onComplete() {
                         view?.context?.let {
