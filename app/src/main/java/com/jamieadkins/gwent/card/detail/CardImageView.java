@@ -70,11 +70,13 @@ public class CardImageView extends LinearLayout implements RequestListener {
     }
 
     protected void setCardImage(StorageReference image) {
-        Glide.with(getContext())
-                .using(new FirebaseImageLoader())
-                .load(image)
-                .listener(this)
-                .fitCenter()
-                .into(mImageView);
+        if (image != null) {
+            Glide.with(getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(image)
+                    .listener(this)
+                    .fitCenter()
+                    .into(mImageView);
+        }
     }
 }
