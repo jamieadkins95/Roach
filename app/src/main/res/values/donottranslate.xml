@@ -38,8 +38,6 @@
         <item>pl-PL</item>
         <item>pt-BR</item>
         <item>ru-RU</item>
-        <item>zh-CN</item>
-        <item>zh-TW</item>
     </array>
 
     <array translatable="false" name="locales_readable">
@@ -53,8 +51,6 @@
         <item>@string/polish_pl</item>
         <item>@string/portuguese_br</item>
         <item>@string/russian_ru</item>
-        <item>zh-CN</item>
-        <item>zh-TW</item>
     </array>
 
     <string name="english_en" translatable="false">English</string>
