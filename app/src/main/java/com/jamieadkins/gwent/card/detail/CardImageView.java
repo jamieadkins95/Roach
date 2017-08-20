@@ -51,10 +51,7 @@ public class CardImageView extends LinearLayout implements RequestListener {
 
     @Override
     public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
-        // No art available.
-        findViewById(R.id.no_art).setVisibility(View.VISIBLE);
-        mImageView.setVisibility(View.GONE);
-        setLoading(false);
+        onNoArtAvailable();
         return false;
     }
 
@@ -62,6 +59,12 @@ public class CardImageView extends LinearLayout implements RequestListener {
     public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
         setLoading(false);
         return false;
+    }
+
+    private void onNoArtAvailable() {
+        findViewById(R.id.no_art).setVisibility(View.VISIBLE);
+        mImageView.setVisibility(View.GONE);
+        setLoading(false);
     }
 
     private void setLoading(boolean loading) {
@@ -77,6 +80,8 @@ public class CardImageView extends LinearLayout implements RequestListener {
                     .listener(this)
                     .fitCenter()
                     .into(mImageView);
+        } else {
+            onNoArtAvailable();
         }
     }
 }

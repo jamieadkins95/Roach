@@ -22,7 +22,6 @@ class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId
         DetailContract.Presenter {
     override fun onAttach(newView: DetailContract.View) {
         super.onAttach(newView)
-        view?.setPresenter(this)
 
         mDetailInteractor.getCard(cardId)
                 .applySchedulers()
