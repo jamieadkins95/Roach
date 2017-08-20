@@ -89,15 +89,15 @@
 
     <array translatable="false" name="locales_news_readable">
         <item>@string/none</item>
-        <item>English</item>
-        <item>Deutsch</item>
-        <item>Español</item>
-        <item>Français</item>
-        <item>Italiano</item>
-        <item>日本語</item>
-        <item>Polski</item>
-        <item>Português (Brazil)</item>
-        <item>Pусский</item>
+        <item>@string/english_en</item>
+        <item>@string/german_de</item>
+        <item>@string/spanish_es</item>
+        <item>@string/french_fr</item>
+        <item>@string/italian_it</item>
+        <item>@string/japanese_ja</item>
+        <item>@string/polish_pl</item>
+        <item>@string/portuguese_br</item>
+        <item>@string/russian_ru</item>
     </array>
 
     <string translatable="false" name="default_locale">en-US</string>
