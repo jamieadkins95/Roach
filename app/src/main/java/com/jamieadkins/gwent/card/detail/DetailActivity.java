@@ -55,13 +55,7 @@ public class DetailActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
                     .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(DetailFragment.class.getSimpleName());
         }
-
-        new DetailPresenter(
-                (DetailContract.View) fragment,
-                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override

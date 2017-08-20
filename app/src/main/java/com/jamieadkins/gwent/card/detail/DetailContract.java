@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.card.detail;
 
+import android.content.Context;
+
 import com.jamieadkins.commonutils.mvp.BasePresenter;
 import com.jamieadkins.commonutils.mvp.BaseView;
 import com.jamieadkins.gwent.card.list.CardsContract;
@@ -17,16 +19,13 @@ public interface DetailContract {
     interface View extends BaseView<Presenter> {
 
         void setLoadingIndicator(boolean active);
+
+        Context getContext();
+
+        void showCard(CardDetails card);
     }
 
-    interface Presenter extends CardsContract.Presenter {
-
-        Single<RxDatabaseEvent<CardDetails>> getCard(String cardId);
-
-        void setCardId(String id);
-
-        String getCardId();
-
-        Completable reportMistake(String cardId, String description);
+    interface Presenter {
+        void reportMistake(String cardId, String description);
     }
 }
