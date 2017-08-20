@@ -42,6 +42,32 @@
         <item>zh-TW</item>
     </array>
 
+    <array translatable="false" name="locales_readable">
+        <item>@string/english_en</item>
+        <item>@string/german_de</item>
+        <item>@string/spanish_es</item>
+        <item>@string/spanish_mx</item>
+        <item>@string/french_fr</item>
+        <item>@string/italian_it</item>
+        <item>@string/japanese_ja</item>
+        <item>@string/polish_pl</item>
+        <item>@string/portuguese_br</item>
+        <item>@string/russian_ru</item>
+        <item>zh-CN</item>
+        <item>zh-TW</item>
+    </array>
+
+    <string name="english_en" translatable="false">English</string>
+    <string name="german_de" translatable="false">Deutsch</string>
+    <string name="spanish_es" translatable="false">Español</string>
+    <string name="spanish_mx" translatable="false">Español (AL)</string>
+    <string name="french_fr" translatable="false">Français</string>
+    <string name="italian_it" translatable="false">Italiano</string>
+    <string name="japanese_ja" translatable="false">日本語</string>
+    <string name="polish_pl" translatable="false">Polski</string>
+    <string name="portuguese_br" translatable="false">Português do Brasil</string>
+    <string name="russian_ru" translatable="false">Pусский</string>
+
     <string name="en" translatable="false">en</string>
     <string name="de" translatable="false">de</string>
     <string name="es" translatable="false">es</string>
