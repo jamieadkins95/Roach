@@ -13,20 +13,19 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CardDetails implements RecyclerViewItem {
-    private String ingameId;
-    private String name;
-    private String info;
+    private List<String> categories;
     private String faction;
-    private List<String> lane;
-    private String type;
-    private List<String> loyalty;
-    private int strength;
-    private String flavor;
-    private boolean released;
-    private Map<String, Variation> variations;
-    private List<String> category;
+    private Map<String, String> flavor;
+    private Map<String, String> info;
+    private String ingameId;
+    private List<String> loyalties;
+    private Map<String, String> name;
+    private List<String> positions;
     private List<String> related;
-    private LocalisedData localisedData;
+    private boolean released;
+    private int strength;
+    private String type;
+    private Map<String, Variation> variations;
 
     private String patch;
 
@@ -34,39 +33,19 @@ public class CardDetails implements RecyclerViewItem {
         // Required empty constructor for Firebase.
     }
 
-    public String getName() {
-        return name;
-    }
-
     @Exclude
     public String getName(String locale) {
-        if (localisedData != null && localisedData.getInfo() != null) {
-            return localisedData.getName().get(locale);
-        } else {
-            return name;
-        }
+        return name.get(locale);
     }
 
     @Exclude
     public String getInfo(String locale) {
-        if (localisedData != null) {
-            return localisedData.getInfo().get(locale);
-        } else {
-            return info;
-        }
+        return info.get(locale);
     }
 
     @Exclude
     public String getFlavor(String locale) {
-        if (localisedData != null && localisedData.getInfo() != null) {
-            return localisedData.getFlavor().get(locale);
-        } else {
-            return flavor;
-        }
-    }
-
-    public LocalisedData getLocalisedData() {
-        return localisedData;
+        return flavor.get(locale);
     }
 
     public String getFaction() {
@@ -77,28 +56,12 @@ public class CardDetails implements RecyclerViewItem {
         return ingameId;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
     public String getType() {
         return type;
     }
 
-    public List<String> getLoyalty() {
-        return loyalty;
-    }
-
     public int getStrength() {
         return strength;
-    }
-
-    public List<String> getLane() {
-        return lane;
-    }
-
-    public String getFlavor() {
-        return flavor;
     }
 
     public boolean isReleased() {
@@ -126,7 +89,7 @@ public class CardDetails implements RecyclerViewItem {
     @Exclude
     @Override
     public String toString() {
-        return name;
+        return name.get("en-US");
     }
 
     @Exclude
@@ -139,10 +102,34 @@ public class CardDetails implements RecyclerViewItem {
         this.patch = patch;
     }
 
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public Map<String, String> getFlavor() {
+        return flavor;
+    }
+
+    public Map<String, String> getInfo() {
+        return info;
+    }
+
+    public List<String> getLoyalties() {
+        return loyalties;
+    }
+
+    public Map<String, String> getName() {
+        return name;
+    }
+
+    public List<String> getPositions() {
+        return positions;
+    }
+
     @Exclude
     public String getImage() {
         for (String key : variations.keySet()) {
-            return variations.get(key).getArt().getLowImage();
+            return variations.get(key).getArt().getLow();
         }
 
         return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
@@ -155,32 +142,6 @@ public class CardDetails implements RecyclerViewItem {
         }
 
         return Rarity.COMMON_ID;
-    }
-
-    public List<String> getCategory() {
-        return category;
-    }
-
-    public static class LocalisedData {
-        private Map<String, String> name;
-        private Map<String, String> info;
-        private Map<String, String> flavor;
-
-        public LocalisedData() {
-            // Required for firebase.
-        }
-
-        public Map<String, String> getName() {
-            return name;
-        }
-
-        public Map<String, String> getInfo() {
-            return info;
-        }
-
-        public Map<String, String> getFlavor() {
-            return flavor;
-        }
     }
 
     public static class Variation {
@@ -235,9 +196,11 @@ public class CardDetails implements RecyclerViewItem {
     }
 
     public static class Art {
-        private String highImage;
-        private String mediumImage;
-        private String lowImage;
+        private String original;
+        private String high;
+        private String medium;
+        private String low;
+        private String thumbnail;
 
         private String artist;
 
@@ -249,16 +212,24 @@ public class CardDetails implements RecyclerViewItem {
             return artist;
         }
 
-        public String getHighImage() {
-            return highImage;
+        public String getOriginal() {
+            return original;
         }
 
-        public String getMediumImage() {
-            return mediumImage;
+        public String getHigh() {
+            return high;
         }
 
-        public String getLowImage() {
-            return lowImage;
+        public String getMedium() {
+            return medium;
+        }
+
+        public String getLow() {
+            return low;
+        }
+
+        public String getThumbnail() {
+            return thumbnail;
         }
     }
 

@@ -79,8 +79,8 @@ public class LargeCardView extends SimpleCardView {
         setDescription(cardDetails.getInfo(getLocale()));
         setFaction(cardDetails.getFaction());
         setRarity(cardDetails.getRarity());
-        if (cardDetails.getLoyalty() != null) {
-            setLoyalty(cardDetails.getLoyalty().get(0));
+        if (cardDetails.getLoyalties() != null) {
+            setLoyalty(cardDetails.getLoyalties().get(0));
         }
         if (cardDetails.getType() != null) {
             setType(cardDetails.getType());
@@ -95,8 +95,7 @@ public class LargeCardView extends SimpleCardView {
         if (sharedPreferences.getBoolean(mCardImage.getContext().getString(R.string.pref_show_images_key), true)) {
             mCardImage.setVisibility(VISIBLE);
 
-            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(
-                    FirebaseUtils.STORAGE_BUCKET + mImageUrl);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(mImageUrl);
 
             Glide.with(getContext())
                     .using(new FirebaseImageLoader())

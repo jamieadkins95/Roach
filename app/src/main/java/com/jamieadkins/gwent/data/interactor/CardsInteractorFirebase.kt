@@ -27,6 +27,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
+        mPatchReference.keepSynced(true)
         mMistakesReference = mDatabase.getReference("reported-mistakes")
     }
 
@@ -193,7 +194,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     }
 
     companion object {
-        private val PATCH_PATH = if (!BuildConfig.DEBUG) "card-data/latest-patch" else "card-data/latest-patch-debug"
+        private val PATCH_PATH = "patch/" + BuildConfig.CARD_DATA_VERSION
         val instance: CardsInteractorFirebase by lazy { CardsInteractorFirebase() }
     }
 }

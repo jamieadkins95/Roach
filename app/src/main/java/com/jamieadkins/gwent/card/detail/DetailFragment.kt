@@ -73,11 +73,9 @@ class DetailFragment : RxFragment(), DetailContract.View {
                 var storageReference: StorageReference? = null
                 variation?.let {
                     if (mUseLowData) {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.lowImage)
+                        storageReference = storage.getReferenceFromUrl(it.art?.low ?: "none")
                     } else {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.mediumImage)
+                        storageReference = storage.getReferenceFromUrl(it.art?.medium ?: "none")
                     }
                 }
 
