@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.card.CardFilterListener
 
 abstract class BaseFilterPresenter<V> : BasePresenter<V>(), CardFilterListener {
     lateinit var cardFilter: CardFilter
+    var searchQuery: String? = null
 
     fun clearFilters() {
         cardFilter.clearFilters()
@@ -17,7 +18,7 @@ abstract class BaseFilterPresenter<V> : BasePresenter<V>(), CardFilterListener {
     }
 
     fun updateSearchQuery(query: String?) {
-        cardFilter.searchQuery = if (query == "") null else query
+        searchQuery = if (query == "") null else query
         onCardFilterUpdated()
     }
 }
