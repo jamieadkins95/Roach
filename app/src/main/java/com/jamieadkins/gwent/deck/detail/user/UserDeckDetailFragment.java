@@ -55,18 +55,12 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
             new DeckDetailCardViewHolder.DeckDetailButtonListener() {
                 @Override
                 public void addCard(CardDetails card) {
-                    mDecksPresenter.addCardToDeck(mDeckId, card)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
+                    mDecksPresenter.addCardToDeck(mDeckId, card);
                 }
 
                 @Override
                 public void removeCard(CardDetails card) {
-                    mDecksPresenter.removeCardFromDeck(mDeckId, card)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
+                    mDecksPresenter.removeCardFromDeck(mDeckId, card);
                 }
             };
 
@@ -160,12 +154,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
     }
 
     @Override
-    public void onLoadData() {
-        super.onLoadData();
-        loadCardData();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (mBottomSheet.getState() == BottomSheetBehavior.STATE_EXPANDED) {
@@ -192,8 +180,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
 
         switch (item.getItemId()) {
             case R.id.filter_reset:
-                getCardFilter().clearFilters();
-                onCardFilterUpdated();
+                filterPresenter.clearFilters();
                 return true;
             case R.id.filter_faction:
                 filteringOn = getString(R.string.faction);
@@ -246,10 +233,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                         .setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDecksPresenter.renameDeck(mDeckId, input.getText().toString())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -262,11 +245,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDecksPresenter.deleteDeck(mDeckId)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
-                                getActivity().finish();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -281,88 +259,11 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment
             filterableItems.add(new FilterableItem(
                     filterable.getId(),
                     getString(filterable.getName()),
-                    getCardFilter().get(filterable.getId())));
+                    filterPresenter.cardFilter.get(filterable.getId())));
         }
 
         showFilterMenu(filteringOn, filterableItems);
         return true;
-    }
-
-    @Override
-    public void onCardFilterUpdated() {
-        mCardDatabaseAdapter.clear();
-        loadCardData();
-    }
-
-    private void loadCardData() {
-        mDecksPresenter.getCards(getCardFilter())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        super.onSubscribe(d);
-                        mCardDatabaseRefeshLayout.setEnabled(true);
-                        mCardDatabaseRefeshLayout.setRefreshing(true);
-                    }
-
-                    @Override
-                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                        switch (value.getEventType()) {
-                            case ADDED:
-                                mCardDatabaseAdapter.addItem(value.getValue());
-                                break;
-                            case REMOVED:
-                                mCardDatabaseAdapter.removeItem(value.getValue());
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        mCardDatabaseRefeshLayout.setRefreshing(false);
-                        mCardDatabaseRefeshLayout.setEnabled(false);
-                    }
-                });
-    }
-
-    @Override
-    protected void onDeckLoaded(Deck deck) {
-        super.onDeckLoaded(deck);
-
-        if (mPotentialLeaders == null) {
-            mPotentialLeaders = new ArrayList<>();
-            mDecksPresenter.getLeadersForFaction(deck.getFactionId())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                        @Override
-                        public void onNext(RxDatabaseEvent<CardDetails> value) {
-                            mPotentialLeaders.add(value.getValue());
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            if (getActivity() != null) {
-                                getActivity().invalidateOptionsMenu();
-                            }
-                        }
-                    });
-        }
-    }
-
-    @Override
-    protected void onDeckCardCountsChanged(RxDatabaseEvent<Integer> data) {
-        super.onDeckCardCountsChanged(data);
-        if (data.getEventType() != RxDatabaseEvent.EventType.COMPLETE) {
-            mCardDatabaseAdapter.updateCardCount(data.getKey(), data.getValue());
-        }
-
-        switch (data.getEventType()) {
-            case REMOVED:
-                mCardDatabaseAdapter.updateCardCount(data.getKey(), 0);
-                break;
-        }
     }
 
     protected void setDeckBuilderListener(DeckBuilderListener listener) {

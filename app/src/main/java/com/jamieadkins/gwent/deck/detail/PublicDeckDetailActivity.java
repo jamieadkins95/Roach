@@ -28,11 +28,6 @@ public class PublicDeckDetailActivity extends DeckDetailActivity {
                     .replace(R.id.contentContainer, fragment, TAG_DECK_DETAIL)
                     .commit();
         }
-
-        mDeckDetailsPresenter = new DecksPresenter(
-                fragment,
-                new DecksInteractorFirebase(),
-                CardsInteractorFirebase.Companion.getInstance());
     }
 
 }

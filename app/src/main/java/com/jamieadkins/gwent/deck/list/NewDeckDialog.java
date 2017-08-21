@@ -90,35 +90,6 @@ public class NewDeckDialog extends DialogFragment {
                         cardFilter.put(faction.getId(), false);
                     }
                 }
-
-                mDeckPresenter.getCards(cardFilter)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<RxDatabaseEvent<CardDetails>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(RxDatabaseEvent<CardDetails> value) {
-                                switch (value.getEventType()) {
-                                    case ADDED:
-                                        leaderAdapter.add(value.getValue());
-                                        break;
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
             }
 
             @Override

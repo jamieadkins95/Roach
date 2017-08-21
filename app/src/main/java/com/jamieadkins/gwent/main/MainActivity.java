@@ -275,31 +275,15 @@ public class MainActivity extends AuthenticationActivity implements
         switch (tag) {
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;
-                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                        cardsInteractor);
                 break;
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
-                mPublicDecksPresenter =
-                        new DecksPresenter(
-                                (DecksContract.View) fragment,
-                                new DecksInteractorFirebase(),
-                                cardsInteractor);
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
-                mCollectionPresenter = new CollectionPresenter(
-                        (CollectionContract.View) fragment,
-                        new CollectionInteractorFirebase(),
-                        cardsInteractor);
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
-                mDecksPresenter =
-                        new DecksPresenter(
-                                (DecksContract.View) fragment,
-                                new DecksInteractorFirebase(),
-                                cardsInteractor);
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;

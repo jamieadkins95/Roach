@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.list;
 
-import com.jamieadkins.commonutils.mvp.BaseView;
+import com.jamieadkins.commonutils.mvp2.BaseListView;
+import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
@@ -15,42 +16,23 @@ import io.reactivex.Single;
  */
 
 public interface DecksContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseListView {
 
-        void setLoadingIndicator(boolean active);
     }
 
     interface Presenter extends CardsContract.Presenter {
-        Observable<RxDatabaseEvent<Deck>> getUserDecks();
-
-        Observable<RxDatabaseEvent<Deck>> getPublicDecks();
-
-        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck);
-
-        Observable<RxDatabaseEvent<Deck>> getDeck(String deckId, boolean isPublicDeck, boolean evaluate);
-
-        Observable<RxDatabaseEvent<Integer>> subscribeToCardCountUpdates(String deckId);
-
-        Observable<RxDatabaseEvent<CardDetails>> getLeadersForFaction(String factionId);
-
-        Single<RxDatabaseEvent<Deck>> getDeckOfTheWeek();
-
-        void stop();
-
-        Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+        void createNewDeck(String name, String faction, CardDetails leader, String patch);
 
         void publishDeck(Deck deck);
 
-        void onLoadingComplete();
+        void addCardToDeck(String deckId, CardDetails card);
 
-        Completable addCardToDeck(String deckId, CardDetails card);
-
-        Completable removeCardFromDeck(String deckId, CardDetails card);
+        void removeCardFromDeck(String deckId, CardDetails card);
 
         void setLeader(Deck deck, CardDetails leader);
 
-        Completable renameDeck(String deckId, String name);
+        void renameDeck(String deckId, String name);
 
-        Completable deleteDeck(String deckId);
+        void deleteDeck(String deckId);
     }
 }

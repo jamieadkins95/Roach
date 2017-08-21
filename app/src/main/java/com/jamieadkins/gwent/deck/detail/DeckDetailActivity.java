@@ -38,7 +38,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
     private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
 
-    protected DecksContract.Presenter mDeckDetailsPresenter;
     protected String mDeckId;
     protected String mFactionId;
     private boolean mIsPublicDeck;
@@ -82,11 +81,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
                     .replace(R.id.contentContainer, fragment, TAG_FRAGMENT)
                     .commit();
         }
-
-        mDeckDetailsPresenter = new DecksPresenter(
-                (DecksContract.View) fragment,
-                new DecksInteractorFirebase(),
-                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override
@@ -99,45 +93,13 @@ public abstract class DeckDetailActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck, true)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<Deck> value) {
-                        mSummaryView.setDeck(value.getValue());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.action_publish_deck:
-                mDeckDetailsPresenter.getDeck(mDeckId, mIsPublicDeck)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new BaseObserver<RxDatabaseEvent<Deck>>() {
-                            @Override
-                            public void onNext(RxDatabaseEvent<Deck> value) {
-                                mDeckDetailsPresenter.publishDeck(value.getValue());
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

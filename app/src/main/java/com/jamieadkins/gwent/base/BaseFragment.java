@@ -51,7 +51,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     private GwentRecyclerViewAdapter mAdapter;
 
     private FilterBottomSheetDialogFragment mFilterMenu;
-    private BaseFilterPresenter<V> filterPresenter;
+    public BaseFilterPresenter<V> filterPresenter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

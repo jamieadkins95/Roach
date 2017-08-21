@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
@@ -46,8 +47,8 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void showItem(RecyclerViewItem item) {
+        mAdapter.addItem(item);
     }
 
     @Override
@@ -81,40 +82,16 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
         super.onStart();
         mRefreshContainer.setEnabled(true);
         mRefreshContainer.setRefreshing(true);
-        mPresenter.getCards(new CardFilter())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                        switch (value.getEventType()) {
-                            case ADDED:
-                                mAdapter.addItem(value.getValue());
-                                break;
-                            case REMOVED:
-                                mAdapter.removeItem(value.getValue());
-                                break;
-                            case CHANGED:
-                                mAdapter.updateItem(value.getValue());
-                                break;
-                            case COMPLETE:
-                                mRefreshContainer.setRefreshing(false);
-                                mRefreshContainer.setEnabled(false);
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        mRefreshContainer.setRefreshing(false);
-                        mRefreshContainer.setEnabled(false);
-                    }
-                });
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList(STATE_CARD_IDS, mCardIds);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean loading) {
+        mRefreshContainer.setRefreshing(true);
     }
 }
