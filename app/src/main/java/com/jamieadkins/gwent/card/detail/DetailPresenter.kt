@@ -22,7 +22,10 @@ class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId
         DetailContract.Presenter {
     override fun onAttach(newView: DetailContract.View) {
         super.onAttach(newView)
+        onRefresh()
+    }
 
+    override fun onRefresh() {
         mDetailInteractor.getCard(cardId)
                 .applySchedulers()
                 .subscribe { result -> view?.showCard(result.value)}

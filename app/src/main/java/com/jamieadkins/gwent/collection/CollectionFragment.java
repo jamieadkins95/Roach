@@ -60,37 +60,8 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onLoadData() {
-        super.onLoadData();
-        mPresenter.getCollection()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<Map<String, Long>>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<Map<String, Long>> value) {
-                        getRecyclerViewAdapter()
-                                .updateCollection(value.getKey(), value.getValue());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        super.setPresenter(presenter);
-        mPresenter = (CollectionContract.Presenter) presenter;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mPresenter != null) {
-            mPresenter.stop();
-        }
+    public void showCollection(String key, Map<String, Long> collection) {
+        getRecyclerViewAdapter().updateCollection(key, collection);
     }
 
     @Override

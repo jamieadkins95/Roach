@@ -2,7 +2,7 @@ package com.jamieadkins.commonutils.mvp2
 
 import io.reactivex.disposables.CompositeDisposable
 
-open class BasePresenter<V> {
+abstract class BasePresenter<V> {
     var view: V? = null
     val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -14,4 +14,6 @@ open class BasePresenter<V> {
         view = null
         disposable.dispose()
     }
+
+    abstract fun onRefresh()
 }

@@ -8,12 +8,16 @@ import android.support.annotation.NonNull;
 
 public class RxDatabaseEvent<T> {
     private static final String KEY_LOAD_COMPLETE = "com.jamieadkins.gwent.complete";
+    private static final String KEY_LOADING = "com.jamieadkins.gwent.loading";
 
     /**
      * Special Event that says initial loading has been completed.
      */
     protected static RxDatabaseEvent INITIAL_LOAD_COMPLETE =
             new RxDatabaseEvent(KEY_LOAD_COMPLETE, null, EventType.COMPLETE);
+
+    public static RxDatabaseEvent LOADING =
+            new RxDatabaseEvent(KEY_LOADING, null, EventType.LOADING);
 
     private EventType eventType;
     private String key;
@@ -45,6 +49,7 @@ public class RxDatabaseEvent<T> {
         CHANGED,
         REMOVED,
         MOVED,
-        COMPLETE
+        COMPLETE,
+        LOADING
     }
 }

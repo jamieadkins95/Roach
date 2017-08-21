@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.jamieadkins.commonutils.mvp2.BaseListView;
+import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.commonutils.mvp2.MvpFragment;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
@@ -40,33 +42,16 @@ import io.reactivex.Observer;
  */
 public abstract class BaseFragment<V> extends MvpFragment<V>
         implements SwipeRefreshLayout.OnRefreshListener,
-        FilterBottomSheetDialogFragment.FilterUiListener {
+        FilterBottomSheetDialogFragment.FilterUiListener, BaseListView {
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
     public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private GwentRecyclerViewAdapter mAdapter;
-    private boolean mLoading = false;
 
     private FilterBottomSheetDialogFragment mFilterMenu;
     private BaseFilterPresenter<V> filterPresenter;
-
-    private Observer<RxDatabaseEvent<? extends RecyclerViewItem>> mObserver
-            = new BaseObserver<RxDatabaseEvent<? extends RecyclerViewItem>>() {
-        @Override
-        public void onNext(RxDatabaseEvent<? extends RecyclerViewItem> value) {
-            if (getActivity() == null) {
-                return;
-            }
-            onDataEvent(value);
-        }
-
-        @Override
-        public void onComplete() {
-            setLoading(false);
-        }
-    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -127,38 +112,14 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void onDataEvent(RxDatabaseEvent<? extends RecyclerViewItem> data) {
-        switch (data.getEventType()) {
-            case ADDED:
-                mAdapter.addItem(data.getValue());
-                break;
-            case REMOVED:
-                mAdapter.removeItem(data.getValue());
-                break;
-            case CHANGED:
-                mAdapter.updateItem(data.getValue());
-                break;
-            case COMPLETE:
-                setLoading(false);
-                break;
-        }
-    }
-
-    public void onLoadData() {
-        setLoading(true);
-    }
-
-    public void setLoading(boolean loading) {
-        mLoading = loading;
+    @Override
+    public void setLoadingIndicator(boolean loading) {
         mRefreshContainer.setRefreshing(loading);
     }
 
-    public void enableRefreshing(boolean enable) {
-        mRefreshContainer.setEnabled(enable);
-    }
-
-    public boolean isLoading() {
-        return mLoading;
+    @Override
+    public void showItem(RecyclerViewItem item) {
+        mAdapter.addItem(item);
     }
 
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
@@ -170,13 +131,9 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         return mAdapter;
     }
 
-    public Observer<RxDatabaseEvent<? extends RecyclerViewItem>> getObserver() {
-        return mObserver;
-    }
-
     @Override
     public void onRefresh() {
-        onLoadData();
+        getPresenter().onRefresh();
     }
 
     @Override
