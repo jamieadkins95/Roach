@@ -28,7 +28,6 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
  */
 
 class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
-    private var mDetailPresenter: DetailContract.Presenter? = null
     private var mCardPicture: ImageView? = null
     private var mLargeCardView: LargeCardView? = null
     private var mViewPager: ViewPager? = null
@@ -101,7 +100,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
                             .setTitle(R.string.flag_error_title)
                             .setMessage(R.string.flag_error_message)
                             .setPositiveButton(R.string.send) { _, _ ->
-                                mDetailPresenter?.reportMistake(mCardId, input.text.toString())
+                                (presenter as DetailContract.Presenter).reportMistake(mCardId, input.text.toString())
                             }
                             .setNegativeButton(android.R.string.cancel, null)
                             .create()
@@ -127,14 +126,15 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
             val variation = card.variations[variationId]
             var storageReference: StorageReference? = null
             variation?.let {
-                it.art?.let {
-                    if (mUseLowData) {
-                        storageReference = storage.getReferenceFromUrl(it.low)
-                    } else {
-                        storageReference = storage.getReferenceFromUrl(it.medium)
+                if (mUseLowData) {
+                    it.art?.low?.let {
+                        storageReference = storage.getReferenceFromUrl(it)
+                    }
+                } else {
+                    it.art?.medium?.let {
+                        storageReference = storage.getReferenceFromUrl(it)
                     }
                 }
-
             }
 
             mAdapter?.addItem(storageReference)
@@ -150,10 +150,6 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
 
     override fun setLoadingIndicator(active: Boolean) {
 
-    }
-
-    override fun setPresenter(presenter: DetailContract.Presenter) {
-        mDetailPresenter = presenter
     }
 
     companion object {
