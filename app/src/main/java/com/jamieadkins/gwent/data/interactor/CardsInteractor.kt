@@ -4,6 +4,7 @@ import com.jamieadkins.commonutils.mvp.BaseInteractor
 import com.jamieadkins.commonutils.mvp.BasePresenter
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.data.DatabaseResult
 
 import io.reactivex.Completable
 import io.reactivex.Observable

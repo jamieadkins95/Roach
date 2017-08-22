@@ -12,7 +12,7 @@ abstract class BasePresenter<V> {
 
     open fun onDetach() {
         view = null
-        disposable.dispose()
+        disposable.clear()
     }
 
     abstract fun onRefresh()

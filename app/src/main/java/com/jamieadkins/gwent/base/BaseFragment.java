@@ -122,6 +122,11 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         mAdapter.addItem(item);
     }
 
+    @Override
+    public void onClear() {
+        mAdapter.clear();
+    }
+
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
                 .build();

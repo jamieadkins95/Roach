@@ -1,8 +1,8 @@
 package com.jamieadkins.gwent.card.list
 
-import android.util.Log
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
@@ -26,6 +26,7 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     }
 
     override fun onCardFilterUpdated() {
+        view?.onClear()
         onLoadData()
     }
 
@@ -33,19 +34,17 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         view?.setLoadingIndicator(true)
         mCardsInteractor.getCards(cardFilter, searchQuery, true)
                 .applySchedulers()
-                .subscribe(
-                        { event: RxDatabaseEvent<CardDetails>? ->
-                            event?.value?.let {
-                                view?.showItem(it)
-                            }
-                        },
-                        { e ->
+                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<CardDetails>>() {
+                    override fun onNext(t: RxDatabaseEvent<CardDetails>) {
+                        view?.showItem(t.value)
+                    }
 
-                        },
-                        {
-                          view?.setLoadingIndicator(false)
-                        }
-                )
+                    override fun onComplete() {
+                        super.onComplete()
+                        view?.setLoadingIndicator(false)
+                    }
+
+                })
                 .addToComposite(disposable)
     }
 }

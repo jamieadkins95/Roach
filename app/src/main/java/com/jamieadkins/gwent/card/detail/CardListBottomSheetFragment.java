@@ -52,6 +52,11 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
+    public void onClear() {
+        mAdapter.clear();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
