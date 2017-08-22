@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_sign_in"
-        android:title="@string/sign_in"
+        android:title="@string/sign_in_default"
         app:showAsAction="never" />
 </menu>

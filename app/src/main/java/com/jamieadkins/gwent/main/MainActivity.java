@@ -116,7 +116,7 @@ public class MainActivity extends AuthenticationActivity implements
         final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
                 .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme()))
                 .withIdentifier(SIGN_IN_IDENTIFIER)
-                .withName(getString(R.string.sign_in));
+                .withName(getString(R.string.sign_in_default));
 
         mAccountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(R.drawable.header)
@@ -333,7 +333,7 @@ public class MainActivity extends AuthenticationActivity implements
             mAccountHeader.addProfiles(
                     new ProfileSettingDrawerItem()
                             .withIdentifier(SIGN_IN_IDENTIFIER)
-                            .withName(getString(R.string.sign_in))
+                            .withName(getString(R.string.sign_in_default))
                             .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
 
             // If we are currently in an activity that requires authentication, switch to another.
@@ -398,7 +398,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.decks)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
@@ -413,7 +413,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.collection)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
@@ -438,7 +438,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.your_results)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
