@@ -22,6 +22,7 @@ import io.reactivex.CompletableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
+import kotlin.jvm.internal.markers.KMutableList;
 
 /**
  * Class that models what a deck is.
@@ -170,10 +171,10 @@ public class Deck implements RecyclerViewItem {
                         }
 
                         cardsInteractor.getCard(leaderId).subscribe(
-                                new BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
+                                new BaseSingleObserver<CardDetails>() {
                                     @Override
-                                    public void onSuccess(RxDatabaseEvent<CardDetails> value) {
-                                        leader = value.getValue();
+                                    public void onSuccess(CardDetails value) {
+                                        leader = value;
                                         leader.setPatch(patch);
                                         if (cards.keySet().size() == cardCount.keySet().size()) {
                                             emitter.onComplete();
@@ -189,23 +190,7 @@ public class Deck implements RecyclerViewItem {
                         for (String cardId : cardCount.keySet()) {
                             cardIds.add(cardId);
                         }
-                        cardsInteractor.getCards(null, cardIds).subscribe(
-                                new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                                    @Override
-                                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                                        CardDetails cardDetails = value.getValue();
-                                        cardDetails.setPatch(patch);
-                                        cards.put(value.getKey(), cardDetails);
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                        if (leader != null) {
-                                            emitter.onComplete();
-                                        }
-                                    }
-                                }
-                        );
+                        // Get cards.
                     }
                 };
             }

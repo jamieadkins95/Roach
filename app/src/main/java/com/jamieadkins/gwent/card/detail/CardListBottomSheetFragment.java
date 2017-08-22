@@ -19,6 +19,8 @@ import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +49,8 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void showItem(RecyclerViewItem item) {
-        mAdapter.addItem(item);
-    }
+    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
 
-    @Override
-    public void onClear() {
-        mAdapter.clear();
     }
 
     @Override
@@ -73,7 +70,7 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
                 new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new GwentRecyclerViewAdapter.Builder().build();
-        mAdapter.addItem(0, new SubHeader(getString(R.string.related_cards)));
+        //mAdapter.addItem(0, new SubHeader(getString(R.string.related_cards)));
         mRecyclerView.setAdapter(mAdapter);
 
         mRefreshContainer = (SwipeRefreshLayout) contentView.findViewById(R.id.refreshContainer);

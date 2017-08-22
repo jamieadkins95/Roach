@@ -34,4 +34,9 @@ public class FilterableItem implements RecyclerViewItem {
     public int getItemType() {
         return FilterRecyclerViewAdapter.TYPE_FILTER;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof FilterableItem && mId.equals(((FilterableItem) obj).getId());
+    }
 }

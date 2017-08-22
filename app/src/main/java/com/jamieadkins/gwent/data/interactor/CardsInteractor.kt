@@ -16,13 +16,13 @@ import io.reactivex.Single
 
 interface CardsInteractor : BaseInteractor<BasePresenter> {
 
-    fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>>
+    fun getCards(filter: CardFilter): Single<MutableList<CardDetails>>
 
-    fun getCards(filter: CardFilter?, cardIds: List<String>): Observable<RxDatabaseEvent<CardDetails>>
+    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<MutableList<CardDetails>>
 
-    fun getCards(filter: CardFilter?, query: String?, useIntelligentSearch: Boolean): Observable<RxDatabaseEvent<CardDetails>>
+    fun getCards(filter: CardFilter?, query: String?, useIntelligentSearch: Boolean): Single<MutableList<CardDetails>>
 
-    fun getCard(id: String): Single<RxDatabaseEvent<CardDetails>>
+    fun getCard(id: String): Single<CardDetails>
 
     fun reportMistake(cardid: String, description: String): Completable
 

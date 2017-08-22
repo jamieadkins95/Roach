@@ -32,6 +32,8 @@ import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,13 +120,8 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     }
 
     @Override
-    public void showItem(RecyclerViewItem item) {
-        mAdapter.addItem(item);
-    }
-
-    @Override
-    public void onClear() {
-        mAdapter.clear();
+    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
+        mAdapter.setItems(items);
     }
 
     public GwentRecyclerViewAdapter onBuildRecyclerView() {

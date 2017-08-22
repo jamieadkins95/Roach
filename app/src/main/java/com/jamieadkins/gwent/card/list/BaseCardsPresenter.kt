@@ -3,7 +3,9 @@ package com.jamieadkins.gwent.card.list
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
+import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
@@ -26,7 +28,6 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     }
 
     override fun onCardFilterUpdated() {
-        view?.onClear()
         onLoadData()
     }
 
@@ -34,14 +35,12 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         view?.setLoadingIndicator(true)
         mCardsInteractor.getCards(cardFilter, searchQuery, true)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<CardDetails>>() {
-                    override fun onNext(t: RxDatabaseEvent<CardDetails>) {
-                        view?.showItem(t.value)
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        view?.setLoadingIndicator(false)
+                .subscribeWith(object : BaseDisposableSingle<MutableList<CardDetails>>() {
+                    override fun onSuccess(t: MutableList<CardDetails>) {
+                        view?.let {
+                            it.showItems(t)
+                            it.setLoadingIndicator(false)
+                        }
                     }
 
                 })

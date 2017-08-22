@@ -5,13 +5,10 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
-import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Collection;
-import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckSummaryViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckViewHolder;
@@ -168,22 +165,8 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         });
     }
 
-    public void removeCard(String cardId) {
-        getIndexOfCard(cardId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSingleObserver<Integer>() {
-                    @Override
-                    public void onSuccess(Integer value) {
-                        if (value != -1) {
-                            removeItem(value);
-                        }
-                    }
-                });
-    }
-
     private void bindDeckCardCounts(DeckDetailCardViewHolder holder, int position) {
-        CardDetails cardDetails = (CardDetails) getItemAt(position);
+        CardDetails cardDetails = (CardDetails) getItems().get(position);
         if (mDeckCardCounts != null &&
                 mDeckCardCounts.containsKey(cardDetails.getIngameId())) {
             holder.setItemCount(mDeckCardCounts.get(cardDetails.getIngameId()));
@@ -193,7 +176,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
     private void bindCollection(CollectionCardViewHolder holder, int position) {
-        CardDetails cardDetails = (CardDetails) getItemAt(position);
+        CardDetails cardDetails = (CardDetails) getItems().get(position);
         if (mCollection != null &&
                 mCollection.containsKey(cardDetails.getIngameId())) {
 

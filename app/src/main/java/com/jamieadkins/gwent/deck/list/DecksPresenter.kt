@@ -25,7 +25,7 @@ class DecksPresenter(private val decksInteractor: DecksInteractor, cardsInteract
                 .applySchedulers()
                 .doOnNext { event: RxDatabaseEvent<Deck>? ->
                     event?.value?.let {
-                        view?.showItem(it)
+
                     }
                 }
                 .subscribe()

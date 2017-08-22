@@ -27,9 +27,9 @@ class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId
     override fun onRefresh() {
         mDetailInteractor.getCard(cardId)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSingle<RxDatabaseEvent<CardDetails>>() {
-                    override fun onSuccess(result: RxDatabaseEvent<CardDetails>) {
-                        view?.showCard(result.value)
+                .subscribeWith(object : BaseDisposableSingle<CardDetails>() {
+                    override fun onSuccess(result: CardDetails) {
+                        view?.showCard(result)
                     }
 
                 })
