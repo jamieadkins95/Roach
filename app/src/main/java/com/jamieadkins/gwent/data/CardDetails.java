@@ -35,17 +35,29 @@ public class CardDetails implements RecyclerViewItem {
 
     @Exclude
     public String getName(String locale) {
-        return name.get(locale);
+        if (name != null) {
+            return name.get(locale);
+        } else {
+            return "";
+        }
     }
 
     @Exclude
     public String getInfo(String locale) {
-        return info.get(locale);
+        if (info != null) {
+            return info.get(locale);
+        } else {
+            return "";
+        }
     }
 
     @Exclude
     public String getFlavor(String locale) {
-        return flavor.get(locale);
+        if (flavor != null) {
+            return flavor.get(locale);
+        } else {
+            return "";
+        }
     }
 
     public String getFaction() {
