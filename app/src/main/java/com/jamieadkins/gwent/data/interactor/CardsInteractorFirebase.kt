@@ -100,7 +100,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                     }
                 }
             } else {
-                getCards(query)
+                source = getCards(query)
             }
         } else if (cardIds != null) {
             source = getCards(cardIds)
