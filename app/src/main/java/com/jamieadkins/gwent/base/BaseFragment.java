@@ -50,6 +50,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         implements SwipeRefreshLayout.OnRefreshListener,
         FilterBottomSheetDialogFragment.FilterUiListener, BaseListView {
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
+    private static final String STATE_CARD_QUERY = "com.jamieadkins.gwent.card.query";
     public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
 
     private RecyclerView mRecyclerView;
@@ -72,6 +73,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
 
         if (savedInstanceState != null) {
             filterPresenter.cardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
+            filterPresenter.updateSearchQuery(savedInstanceState.getString(STATE_CARD_QUERY, null));
         } else {
             filterPresenter.cardFilter = initialiseCardFilter();
         }
@@ -153,6 +155,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
             mFilterMenu.dismiss();
         }
         outState.putParcelable(STATE_CARD_FILTER, filterPresenter.cardFilter);
+        outState.putString(STATE_CARD_QUERY, filterPresenter.getSearchQuery());
         super.onSaveInstanceState(outState);
     }
 
@@ -160,7 +163,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         inflater.inflate(R.menu.search, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
