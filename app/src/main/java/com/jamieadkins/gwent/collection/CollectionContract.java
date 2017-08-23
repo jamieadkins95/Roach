@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 
 public interface CollectionContract {
     interface View extends CardsContract.View {
-        void showCollection(String key, Map<String, Long> collection);
+        void showCollection(String cardId, Map<String, Long> collection);
     }
 
     interface Presenter extends CardsContract.Presenter {

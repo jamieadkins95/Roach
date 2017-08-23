@@ -20,7 +20,7 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
  * UI fragment that shows a list of the users decks.
  */
 
-abstract class BaseCardListFragment : BaseFragment<CardsContract.View>(), CardsContract.View {
+abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(), CardsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -38,10 +38,6 @@ abstract class BaseCardListFragment : BaseFragment<CardsContract.View>(), CardsC
     }
 
     open val layoutId: Int = R.layout.fragment_card_list
-
-    override fun setupPresenter() {
-        presenter = CardsPresenter(CardsInteractorFirebase.instance, ConnectionCheckerImpl(activity))
-    }
 
     override fun showIntelligentSearchFailure() {
         RxBus.post(RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_internet_search)))))

@@ -3,9 +3,11 @@ package com.jamieadkins.gwent.collection
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.ConnectionChecker
+import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import com.jamieadkins.gwent.data.interactor.CollectionInteractor
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -20,7 +22,11 @@ class CollectionPresenter(private val collectionInteractor: CollectionInteractor
         super.onLoadData()
         collectionInteractor.collection
                 .applySchedulers()
-                .subscribe()
+                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Map<String, Long>>>() {
+                    override fun onNext(event: RxDatabaseEvent<Map<String, Long>>) {
+                        view?.showCollection(event.key, event.value)
+                    }
+                })
                 .addToComposite(disposable)
     }
 

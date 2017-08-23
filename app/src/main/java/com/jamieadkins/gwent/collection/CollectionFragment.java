@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.jamieadkins.gwent.ConnectionCheckerImpl;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
@@ -12,6 +13,8 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.Collection;
+import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import java.util.Map;
@@ -23,13 +26,21 @@ import io.reactivex.schedulers.Schedulers;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
-    CollectionContract.Presenter mPresenter;
+public class CollectionFragment extends BaseCardListFragment<CollectionContract.View> implements CollectionContract.View {
+    CollectionContract.Presenter collectionPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
+    }
+
+    @Override
+    public void setupPresenter() {
+        setPresenter(new CollectionPresenter(new CollectionInteractorFirebase(),
+                CardsInteractorFirebase.Companion.getInstance(),
+                new ConnectionCheckerImpl(getActivity())));
+        collectionPresenter = (CollectionContract.Presenter) getPresenter();
     }
 
     @Override
@@ -70,12 +81,12 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
                 .withCollectionControls(new CollectionCardViewHolder.CollectionButtonListener() {
                     @Override
                     public void addCard(String cardId, String variationId) {
-                        mPresenter.addCard(cardId, variationId);
+                        collectionPresenter.addCard(cardId, variationId);
                     }
 
                     @Override
                     public void removeCard(String cardId, String variationId) {
-                        mPresenter.removeCard(cardId, variationId);
+                        collectionPresenter.removeCard(cardId, variationId);
                     }
                 })
                 .build();
