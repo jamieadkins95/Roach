@@ -14,8 +14,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.jamieadkins.commonutils.mvp2.MvpFragment
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.R
@@ -123,24 +121,21 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
         // Update UI with card details.
         activity.title = card.getName(mLocale)
 
-        val storage = FirebaseStorage.getInstance()
-
         for (variationId in card.variations.keys) {
             val variation = card.variations[variationId]
-            var storageReference: StorageReference? = null
             variation?.let {
                 if (mUseLowData) {
                     it.art?.low?.let {
-                        storageReference = storage.getReferenceFromUrl(it)
+                        mAdapter?.addItem(it)
                     }
                 } else {
                     it.art?.medium?.let {
-                        storageReference = storage.getReferenceFromUrl(it)
+                        mAdapter?.addItem(it)
                     }
                 }
             }
 
-            mAdapter?.addItem(storageReference)
+
         }
 
         mLargeCardView?.setCardDetails(card)

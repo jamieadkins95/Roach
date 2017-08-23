@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.StorageReference;
 import com.jamieadkins.gwent.R;
 
 /**
@@ -72,10 +70,9 @@ public class CardImageView extends LinearLayout implements RequestListener {
         mRefreshLayout.setEnabled(loading);
     }
 
-    protected void setCardImage(StorageReference image) {
+    protected void setCardImage(String image) {
         if (image != null) {
             Glide.with(getContext())
-                    .using(new FirebaseImageLoader())
                     .load(image)
                     .listener(this)
                     .fitCenter()

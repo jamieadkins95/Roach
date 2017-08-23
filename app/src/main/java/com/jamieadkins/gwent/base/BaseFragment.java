@@ -98,24 +98,6 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         final LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (Build.VERSION.SDK_INT >= 17) {
-                    if (getActivity().isDestroyed()) {
-                        return;
-                    }
-                }
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(getActivity()).resumeRequests();
-                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    Glide.with(getActivity()).pauseRequests();
-                }
-            }
-        });
         mAdapter = onBuildRecyclerView();
         recyclerView.setAdapter(mAdapter);
     }
