@@ -19,6 +19,9 @@ import com.google.firebase.storage.StorageReference
 import com.jamieadkins.commonutils.mvp2.MvpFragment
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
@@ -150,6 +153,10 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
 
     override fun setLoadingIndicator(active: Boolean) {
 
+    }
+
+    override fun showGenericErrorMessage() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.general_error))))
     }
 
     companion object {

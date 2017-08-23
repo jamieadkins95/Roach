@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.base;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +22,9 @@ import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.commonutils.mvp2.MvpFragment;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.data.Faction;
@@ -117,6 +121,11 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     @Override
     public void setLoadingIndicator(boolean loading) {
         mRefreshContainer.setRefreshing(loading);
+    }
+
+    @Override
+    public void showGenericErrorMessage() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error), Snackbar.LENGTH_INDEFINITE)));
     }
 
     @Override

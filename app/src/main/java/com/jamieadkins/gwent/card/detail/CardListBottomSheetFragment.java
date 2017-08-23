@@ -14,6 +14,9 @@ import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -56,6 +59,11 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     @Override
     public void showIntelligentSearchFailure() {
 
+    }
+
+    @Override
+    public void showGenericErrorMessage() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error))));
     }
 
     @Override

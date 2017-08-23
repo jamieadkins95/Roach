@@ -8,6 +8,8 @@ import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -38,11 +40,20 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         }
         mCardsInteractor.getCards(cardFilter, searchQuery, connected)
                 .applySchedulers()
+                .timeout(10, TimeUnit.SECONDS)
                 .subscribeWith(object : BaseDisposableSingle<MutableList<CardDetails>>() {
                     override fun onSuccess(t: MutableList<CardDetails>) {
                         view?.let {
                             it.showItems(t)
                             it.setLoadingIndicator(false)
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                        if (e is TimeoutException) {
+                            view?.showGenericErrorMessage()
+                            view?.setLoadingIndicator(false)
                         }
                     }
 

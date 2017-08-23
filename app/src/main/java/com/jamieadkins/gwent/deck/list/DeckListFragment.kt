@@ -15,6 +15,9 @@ import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseFragment
 import com.jamieadkins.gwent.base.BaseObserver
 import com.jamieadkins.gwent.base.BaseSingleObserver
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.detail.DetailActivity
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Deck
@@ -96,6 +99,10 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
 
     override fun setLoadingIndicator(active: Boolean) {
 
+    }
+
+    override fun showGenericErrorMessage() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.general_error))))
     }
 
     companion object {
