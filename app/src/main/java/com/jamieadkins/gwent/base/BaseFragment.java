@@ -104,8 +104,13 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     }
 
     @Override
-    public void setLoadingIndicator(boolean loading) {
-        mRefreshContainer.setRefreshing(loading);
+    public void setLoadingIndicator(final boolean loading) {
+        mRefreshContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshContainer.setRefreshing(loading);
+            }
+        });
     }
 
     @Override
