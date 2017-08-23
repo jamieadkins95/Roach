@@ -35,8 +35,14 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
         val connected = connectionChecker.isConnectedToInternet()
-        if (!connected && searchQuery != null) {
-            view?.showIntelligentSearchFailure()
+        if (searchQuery != null) {
+            if (!connected) {
+                view?.showIntelligentSearchFailure()
+            } else {
+                view?.showAlgoliaAttribution()
+            }
+        } else {
+            view?.hideAlgoliaAttribution()
         }
         mCardsInteractor.getCards(cardFilter, searchQuery, connected)
                 .applySchedulers()

@@ -42,4 +42,12 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
     override fun showIntelligentSearchFailure() {
         RxBus.post(RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_internet_search)))))
     }
+
+    override fun showAlgoliaAttribution() {
+        view?.findViewById<View>(R.id.algolia_attribution)?.visibility = View.VISIBLE
+    }
+
+    override fun hideAlgoliaAttribution() {
+        view?.findViewById<View>(R.id.algolia_attribution)?.visibility = View.GONE
+    }
 }
