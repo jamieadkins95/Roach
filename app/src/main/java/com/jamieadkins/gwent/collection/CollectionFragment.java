@@ -78,17 +78,7 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withCollectionControls(new CollectionCardViewHolder.CollectionButtonListener() {
-                    @Override
-                    public void addCard(String cardId, String variationId) {
-                        collectionPresenter.addCard(cardId, variationId);
-                    }
-
-                    @Override
-                    public void removeCard(String cardId, String variationId) {
-                        collectionPresenter.removeCard(cardId, variationId);
-                    }
-                })
+                .withControls(GwentRecyclerViewAdapter.Controls.COLLECTION)
                 .build();
     }
 }

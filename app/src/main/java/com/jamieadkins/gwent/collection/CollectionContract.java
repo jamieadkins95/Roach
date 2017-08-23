@@ -18,8 +18,6 @@ public interface CollectionContract {
     }
 
     interface Presenter extends CardsContract.Presenter {
-        void addCard(String cardId, String variationId);
-
-        void removeCard(String cardId, String variationId);
+        // Nothing extra here.
     }
 }

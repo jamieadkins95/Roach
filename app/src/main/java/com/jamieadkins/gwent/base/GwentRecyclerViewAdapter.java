@@ -40,7 +40,6 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
     private Controls mControls = Controls.NONE;
-    private CollectionCardViewHolder.CollectionButtonListener mCollectionButtonListener;
     private DeckDetailCardViewHolder.DeckDetailButtonListener mDeckButtonListener;
     private Map<String, Map<String, Long>> mCollection;
     private Map<String, Integer> mDeckCardCounts = new HashMap<>();
@@ -66,8 +65,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
                     case TYPE_CARD_LEADER:
                         return new CollectionCardViewHolder(
                                 LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.card_collection_layout, parent, false),
-                                mCollectionButtonListener);
+                                        .inflate(R.layout.card_collection_layout, parent, false));
                     case TYPE_DECK:
                         return new DeckViewHolder(LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.item_deck, parent, false));
@@ -203,10 +201,8 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
             mAdapter = new GwentRecyclerViewAdapter();
         }
 
-        public Builder withCollectionControls(
-                CollectionCardViewHolder.CollectionButtonListener listener) {
-            mAdapter.mControls = Controls.COLLECTION;
-            mAdapter.mCollectionButtonListener = listener;
+        public Builder withControls(Controls controls) {
+            mAdapter.mControls = controls;
             return this;
         }
 

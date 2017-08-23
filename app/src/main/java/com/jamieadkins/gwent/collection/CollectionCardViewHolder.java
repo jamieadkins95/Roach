@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.bus.CollectionEvent;
+import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
 
@@ -20,17 +22,9 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
     private Map<String, Button> mAddButtons;
     private Map<String, Button> mRemoveButtons;
     private Map<String, TextView> mCollectionCounts;
-    private CollectionButtonListener mListener;
 
-    public interface CollectionButtonListener {
-        void addCard(String cardId, String variationId);
-
-        void removeCard(String cardId, String variationId);
-    }
-
-    public CollectionCardViewHolder(View view, CollectionButtonListener listener) {
+    public CollectionCardViewHolder(View view) {
         super(view);
-        mListener = listener;
         mAddButtons = new HashMap<>();
         mRemoveButtons = new HashMap<>();
         mCollectionCounts = new HashMap<>();
@@ -68,17 +62,18 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
             mAddButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mListener != null) {
-                        mListener.addCard(getBoundCardDetails().getIngameId(), variationId);
-                    }
+                    RxBus.INSTANCE.post(new CollectionEvent(
+                            new CollectionEvent.CollectionEventBundle(
+                                    CollectionEvent.Event.ADD_CARD, getBoundCardDetails().getIngameId(), variationId)));
+
                 }
             });
             mRemoveButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mListener != null) {
-                        mListener.removeCard(getBoundCardDetails().getIngameId(), variationId);
-                    }
+                    RxBus.INSTANCE.post(new CollectionEvent(
+                            new CollectionEvent.CollectionEventBundle(
+                                    CollectionEvent.Event.REMOVE_CARD, getBoundCardDetails().getIngameId(), variationId)));
                 }
             });
         }
