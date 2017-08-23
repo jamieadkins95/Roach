@@ -8,7 +8,7 @@ import com.jamieadkins.commonutils.mvp2.BaseListView;
 
 public interface CardsContract {
     interface View extends BaseListView {
-        // Nothing here.
+        void showIntelligentSearchFailure();
     }
 
     interface Presenter {

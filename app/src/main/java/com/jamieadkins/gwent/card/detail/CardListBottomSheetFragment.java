@@ -54,6 +54,11 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
+    public void showIntelligentSearchFailure() {
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {

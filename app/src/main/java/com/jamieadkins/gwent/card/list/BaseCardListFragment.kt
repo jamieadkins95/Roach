@@ -6,9 +6,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jamieadkins.gwent.ConnectionChecker
+import com.jamieadkins.gwent.ConnectionCheckerImpl
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseFragment
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
 
 /**
@@ -35,6 +40,10 @@ abstract class BaseCardListFragment : BaseFragment<CardsContract.View>(), CardsC
     open val layoutId: Int = R.layout.fragment_card_list
 
     override fun setupPresenter() {
-        presenter = CardsPresenter(CardsInteractorFirebase.instance)
+        presenter = CardsPresenter(CardsInteractorFirebase.instance, ConnectionCheckerImpl(activity))
+    }
+
+    override fun showIntelligentSearchFailure() {
+        RxBus.post(RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_internet_search)))))
     }
 }

@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.collection
 
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.ConnectionChecker
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import com.jamieadkins.gwent.data.interactor.CollectionInteractor
@@ -12,8 +13,8 @@ import com.jamieadkins.gwent.data.interactor.CollectionInteractor
  */
 
 class CollectionPresenter(private val collectionInteractor: CollectionInteractor,
-                          private val cardsInteractor: CardsInteractor) :
-        BaseCardsPresenter<CollectionContract.View>(cardsInteractor), CollectionContract.Presenter {
+                          cardsInteractor: CardsInteractor, connectionChecker: ConnectionChecker) :
+        BaseCardsPresenter<CollectionContract.View>(cardsInteractor, connectionChecker), CollectionContract.Presenter {
 
     override fun onLoadData() {
         super.onLoadData()

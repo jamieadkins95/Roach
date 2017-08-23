@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.list
 
+import com.jamieadkins.gwent.ConnectionChecker
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 
 /**
@@ -7,5 +8,5 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor
  * UI as required.
  */
 
-class CardsPresenter(cardsInteractor: CardsInteractor) :
-        BaseCardsPresenter<CardsContract.View>(cardsInteractor), CardsContract.Presenter
+class CardsPresenter(cardsInteractor: CardsInteractor, connectionChecker: ConnectionChecker) :
+        BaseCardsPresenter<CardsContract.View>(cardsInteractor, connectionChecker), CardsContract.Presenter
