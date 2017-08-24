@@ -7,6 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
@@ -64,10 +65,10 @@ public class DeckViewHolder extends BaseViewHolder {
                 // Log what deck has been viewed.
                 if (mDeck.isPublicDeck()) {
                     FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "View Public Deck");
+                            mDeck.getId(), mDeck.getName(), "Public Deck", FirebaseAnalytics.Event.VIEW_ITEM);
                 } else {
                     FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "View Deck");
+                            mDeck.getId(), mDeck.getName(), "User Deck", FirebaseAnalytics.Event.VIEW_ITEM);
                 }
 
             }

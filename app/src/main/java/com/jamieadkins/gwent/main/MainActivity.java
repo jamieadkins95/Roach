@@ -503,6 +503,8 @@ public class MainActivity extends AuthenticationActivity implements
                 return false;
         }
 
+
+        FirebaseUtils.logAnalytics(this, tag, tag, "Screen");
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         return false;
