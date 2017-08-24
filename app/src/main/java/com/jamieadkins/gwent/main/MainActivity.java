@@ -108,6 +108,7 @@ public class MainActivity extends AuthenticationActivity implements
 
         checkLanguage();
         checkIntent();
+        SettingsActivity.checkAndUpdatePatchTopic(PreferenceManager.getDefaultSharedPreferences(this), getResources());
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
                 .withEmail(getString(R.string.signed_out))

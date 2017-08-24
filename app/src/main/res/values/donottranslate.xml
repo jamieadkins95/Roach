@@ -107,6 +107,7 @@
 
     <string translatable="false" name="pref_news_notifications_key">com.jamieadkins.gwent.notifications.news</string>
     <string translatable="false" name="pref_patch_notifications_key">com.jamieadkins.gwent.notifications.patch</string>
+    <string translatable="false" name="pref_patch_notifications_topic_key">com.jamieadkins.gwent.notifications.patch.topic</string>
     <string translatable="false" name="notification_channel_id">com.jamieadkins.gwent</string>
     <string translatable="false" name="notification_channel_name">Gwent</string>
 </resources>

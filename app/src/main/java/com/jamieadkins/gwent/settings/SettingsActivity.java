@@ -60,19 +60,29 @@ public class SettingsActivity extends BasePreferenceActivity implements
                 }
                 break;
             case NOTIFICATIONS_PATCH:
-                boolean patch = sharedPreferences.getBoolean(NOTIFICATIONS_PATCH, true);
-                if (patch) {
-                    FirebaseMessaging.getInstance().subscribeToTopic("patch");
-                    if (BuildConfig.DEBUG) {
-                        FirebaseMessaging.getInstance().subscribeToTopic("patch-debug");
-                    }
-                } else {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic("patch");
-                    if (BuildConfig.DEBUG) {
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("patch-debug");
-                    }
-                }
+                checkAndUpdatePatchTopic(sharedPreferences, resources);
                 break;
+        }
+    }
+
+    public static void checkAndUpdatePatchTopic(SharedPreferences sharedPreferences, Resources resources) {
+        boolean subscribed = sharedPreferences.getBoolean(NOTIFICATIONS_PATCH, true);
+        String intendedTopic = "patch-" + BuildConfig.CARD_DATA_VERSION;
+        String key = resources.getString(R.string.pref_patch_notifications_topic_key);
+        String topic = sharedPreferences.getString(key, null);
+        if (subscribed) {
+            if (!intendedTopic.equals(topic)) {
+                if (topic != null) {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+                }
+                FirebaseMessaging.getInstance().subscribeToTopic(intendedTopic);
+                sharedPreferences.edit().putString(key, intendedTopic).apply();
+            }
+        } else {
+            if (topic != null) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+                sharedPreferences.edit().remove(key).apply();
+            }
         }
     }
 
