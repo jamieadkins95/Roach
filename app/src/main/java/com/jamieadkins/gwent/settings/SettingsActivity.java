@@ -3,11 +3,11 @@ package com.jamieadkins.gwent.settings;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.preference.BuildConfig;
 import android.support.v7.preference.PreferenceManager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 
 public class SettingsActivity extends BasePreferenceActivity implements
