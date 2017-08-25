@@ -88,15 +88,9 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         var state = Result.Status.OK
 
         if (query != null) {
-            source = source.map { cardList ->
+            source = getCards().flatMap { cardList ->
                 val searchResults = searchCards(query, cardList, mLocale)
-                val iterator = cardList.iterator()
-                while (iterator.hasNext()) {
-                    if (!searchResults.contains(iterator.next().ingameId)) {
-                        iterator.remove()
-                    }
-                }
-                cardList
+                getCards(searchResults)
             }
         } else if (cardIds != null) {
             source = getCards(cardIds)

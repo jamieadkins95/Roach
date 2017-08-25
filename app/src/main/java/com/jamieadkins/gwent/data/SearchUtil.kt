@@ -22,13 +22,19 @@ fun searchCards (query: String, cardList: List<CardDetails>, locale: String): Li
         }
     }
 
+    searchResults.sortByDescending { result -> result.score }
+    val cutOff = maxScore - maxScore / 20
     searchResults.forEach {
         // Catch anything within 20%
-        if (it.score >= maxScore - maxScore / 20) {
+        if (it.score >= cutOff) {
             cardIds.add(it.cardId)
+        } else {
+            // The list is sorted, so by the time we drop below the cutoff, there is no point
+            // looking at other cards.
+            return cardIds
         }
     }
     return cardIds
 }
 
-class CardSearchResult(val cardId: String, val score: Int)
+private class CardSearchResult(val cardId: String, val score: Int)
