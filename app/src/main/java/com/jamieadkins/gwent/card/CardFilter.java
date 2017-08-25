@@ -109,15 +109,16 @@ public class CardFilter implements Parcelable {
             }
         }
 
-        boolean loyalty = false;
+        boolean loyalty = get(Loyalty.DISLOYAL_ID) && get(Loyalty.LOYAL_ID);
         if (card.getLoyalties() != null) {
             for (String l : card.getLoyalties()) {
                 loyalty = loyalty || get(l);
             }
         }
 
-        boolean position = false;
-        if (card.getLoyalties() != null) {
+        boolean position = get(Position.MELEE_ID) && get(Position.RANGED_ID)
+                && get(Position.SIEGE_ID) && get(Position.EVENT_ID);
+        if (card.getPositions() != null) {
             for (String p : card.getPositions()) {
                 position = position || get(p);
             }

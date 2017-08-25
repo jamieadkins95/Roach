@@ -133,4 +133,5 @@
     <string name="loyal">Loyal</string>
     <string name="disloyal">Disloyal</string>
     <string name="position">Position</string>
+    <string name="event">Special</string>
 </resources>
