@@ -61,9 +61,9 @@ public class DeckSummaryView extends LinearLayout {
 
     public void setDeck(Deck deck) {
 
-        mDeckMelee.setText(String.valueOf(deck.getStrengthForPosition(Position.MELEE)));
-        mDeckRanged.setText(String.valueOf(deck.getStrengthForPosition(Position.RANGED)));
-        mDeckSiege.setText(String.valueOf(deck.getStrengthForPosition(Position.SIEGE)));
+        mDeckMelee.setText(String.valueOf(deck.getStrengthForPosition(Position.MELEE_ID)));
+        mDeckRanged.setText(String.valueOf(deck.getStrengthForPosition(Position.RANGED_ID)));
+        mDeckSiege.setText(String.valueOf(deck.getStrengthForPosition(Position.SIEGE_ID)));
         mDeckTotalAttack.setText(String.valueOf(deck.getTotalStrength()));
 
         final int invalidColour = ContextCompat.getColor(getContext(), R.color.monsters);
