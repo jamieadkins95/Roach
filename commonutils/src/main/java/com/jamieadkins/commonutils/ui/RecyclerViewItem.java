@@ -6,4 +6,6 @@ package com.jamieadkins.commonutils.ui;
 
 public interface RecyclerViewItem {
     int getItemType();
+
+    boolean areContentsTheSame(RecyclerViewItem other);
 }

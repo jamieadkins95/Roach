@@ -39,4 +39,9 @@ public class FilterableItem implements RecyclerViewItem {
     public boolean equals(Object obj) {
         return obj instanceof FilterableItem && mId.equals(((FilterableItem) obj).getId());
     }
+
+    @Override
+    public boolean areContentsTheSame(RecyclerViewItem other) {
+        return equals(other);
+    }
 }

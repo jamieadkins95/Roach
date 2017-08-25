@@ -17,7 +17,7 @@ class DiffUtilCallback(val oldList: List<RecyclerViewItem>?, val newList: List<R
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return newList?.get(newItemPosition)?.equals(oldList?.get(oldItemPosition))!!
+        return newList?.get(newItemPosition)?.areContentsTheSame(oldList?.get(oldItemPosition)) ?: false
     }
 
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {

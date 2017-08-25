@@ -220,22 +220,12 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public Single<Integer> getTotalCardCount() {
-        return Single.defer(new Callable<SingleSource<? extends Integer>>() {
-            @Override
-            public SingleSource<? extends Integer> call() throws Exception {
-                return new Single<Integer>() {
-                    @Override
-                    protected void subscribeActual(SingleObserver<? super Integer> observer) {
-                        int count = 0;
-                        for (String cardId : cardCount.keySet()) {
-                            count += cardCount.get(cardId);
-                        }
-                        observer.onSuccess(count);
-                    }
-                };
-            }
-        });
+    public int getTotalCardCount() {
+        int count = 0;
+        for (String cardId : cardCount.keySet()) {
+            count += cardCount.get(cardId);
+        }
+        return count;
     }
 
     @Exclude
@@ -273,5 +263,12 @@ public class Deck implements RecyclerViewItem {
     @Override
     public int getItemType() {
         return GwentRecyclerViewAdapter.TYPE_DECK;
+    }
+
+    @Exclude
+    @Override
+    public boolean areContentsTheSame(RecyclerViewItem other) {
+        return other instanceof Deck && leaderId.equals(((Deck) other).getLeaderId()) &&
+                getTotalCardCount() == ((Deck) other).getTotalCardCount();
     }
 }

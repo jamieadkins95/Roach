@@ -26,4 +26,9 @@ public class SubHeader implements RecyclerViewItem {
     public boolean equals(Object obj) {
         return obj instanceof SubHeader && ((SubHeader) obj).getText().equals(mText);
     }
+
+    @Override
+    public boolean areContentsTheSame(RecyclerViewItem other) {
+        return other instanceof SubHeader && mText.equals(((SubHeader) other).getText());
+    }
 }

@@ -13,6 +13,8 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CardDetails implements RecyclerViewItem {
+    private static final String DEFAULT_LOCALE = "en-US";
+
     private List<String> categories;
     private String faction;
     private Map<String, String> flavor;
@@ -101,7 +103,7 @@ public class CardDetails implements RecyclerViewItem {
     @Exclude
     @Override
     public String toString() {
-        return name.get("en-US");
+        return name.get(DEFAULT_LOCALE);
     }
 
     @Exclude
@@ -252,5 +254,11 @@ public class CardDetails implements RecyclerViewItem {
         } else {
             return GwentRecyclerViewAdapter.TYPE_CARD;
         }
+    }
+
+    @Override
+    public boolean areContentsTheSame(RecyclerViewItem other) {
+        return other instanceof CardDetails
+                && getInfo(DEFAULT_LOCALE).equals(((CardDetails) other).getInfo(DEFAULT_LOCALE));
     }
 }
