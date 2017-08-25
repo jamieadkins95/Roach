@@ -65,8 +65,9 @@ dependencies {
     }
     compile "com.android.support:customtabs:$support_library_version"
 
-    // Common Utils.
+    // Utils.
     compile project(':commonutils')
+    compile 'me.xdrop:fuzzywuzzy:1.1.8'
 
     // Gwent API Wrapper.
     compile project(':jgaw')

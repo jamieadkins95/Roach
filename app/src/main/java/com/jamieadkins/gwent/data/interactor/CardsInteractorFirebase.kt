@@ -3,18 +3,15 @@ package com.jamieadkins.gwent.data.interactor
 import com.google.firebase.database.*
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.FirebaseUtils
 import io.reactivex.*
 import io.reactivex.schedulers.Schedulers
 import java.util.*
-import com.jamieadkins.gwent.data.SearchResult
 import kotlin.collections.ArrayList
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
-import com.jamieadkins.gwent.data.Result
+import com.jamieadkins.gwent.data.*
 
 
 /**
@@ -69,26 +66,6 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
             })
         }
 
-    private val connected: Single<Boolean>
-        get() = Single.defer {
-            Single.create(SingleOnSubscribe<Boolean> { emitter ->
-                val listener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val connected = dataSnapshot.getValue(Boolean::class.java)
-                        connected?.let {
-                            emitter.onSuccess(it)
-                        }
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError?) {
-                        // Do nothing
-                    }
-                }
-
-                connectedRef.addListenerForSingleValueEvent(listener)
-            })
-        }
-
     override fun setLocale(locale: String) {
         mLocale = locale
     }
@@ -111,23 +88,15 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         var state = Result.Status.OK
 
         if (query != null) {
-            source = connected.flatMap { connected ->
-                if (connected) {
-                    latestPatch.flatMap { patch ->
-                        onPatchUpdated(patch)
-                        getSearchResult(query, patch).flatMap { result ->
-                            val idList = ArrayList<String>()
-                            result.value.hits?.forEach {
-                                idList.add(it)
-                            }
-
-                            getCards(idList)
-                        }
+            source = source.map { cardList ->
+                val searchResults = searchCards(query, cardList, mLocale)
+                val iterator = cardList.iterator()
+                while (iterator.hasNext()) {
+                    if (!searchResults.contains(iterator.next().ingameId)) {
+                        iterator.remove()
                     }
-                } else {
-                    state = Result.Status.INTELLIGENT_SEARCH_FAILED
-                    getCards(query)
                 }
+                cardList
             }
         } else if (cardIds != null) {
             source = getCards(cardIds)
@@ -147,30 +116,16 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         return source.map { content -> Result(state, content) }
     }
 
-    private fun getCards(): Single<MutableList<CardDetails>> {
-        return getCards(null)
-    }
-
     private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {
         val singles: ArrayList<Single<CardDetails>> = ArrayList()
         cardIds.forEach { singles.add(getCard(it)) }
         return Single.merge(singles).toList()
     }
 
-    private fun getCards(query: String?): Single<MutableList<CardDetails>> {
+    private fun getCards(): Single<MutableList<CardDetails>> {
         return latestPatch.flatMap { patch ->
             onPatchUpdated(patch)
             mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
-
-            query?.let {
-                val charValue = query[query.length - 1].toInt()
-                var endQuery = query.substring(0, query.length - 1)
-                endQuery += (charValue + 1).toChar()
-
-                mCardsQuery = mCardsQuery!!.startAt(query)
-                        // No 'contains' query so have to fudge it.
-                        .endAt(endQuery)
-            }
             cardDataSnapshot.flatMap { dataSnapshot ->
                 Single.create(SingleOnSubscribe<MutableList<CardDetails>> { emitter ->
                     val cardList = mutableListOf<CardDetails>()
