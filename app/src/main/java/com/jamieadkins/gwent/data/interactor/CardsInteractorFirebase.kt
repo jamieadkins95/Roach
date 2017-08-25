@@ -29,8 +29,6 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     private var mCardListener: ValueEventListener? = null
     private var mLocale = "en-US"
 
-    private val connectedRef = mDatabase.getReference(".info/connected")
-
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
         mPatchReference.keepSynced(true)
@@ -90,6 +88,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         if (query != null) {
             source = getCards().flatMap { cardList ->
                 val searchResults = searchCards(query, cardList, mLocale)
+                recordSearchQuery(query, searchResults)
                 getCards(searchResults)
             }
         } else if (cardIds != null) {
@@ -141,40 +140,13 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
         }
     }
 
-    fun getSearchResult(query: String, patch: String): Single<RxDatabaseEvent<SearchResult>> {
-        val key = search(query, patch)
-        return Single.defer {
-            Single.create(SingleOnSubscribe<RxDatabaseEvent<SearchResult>> { emitter ->
-                val searchQuery = mDatabase.getReference("search/$patch/results/$key")
-
-                val searchListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val result = dataSnapshot.getValue(SearchResult::class.java) ?: return
-
-                        emitter.onSuccess(
-                                RxDatabaseEvent(
-                                        dataSnapshot.key,
-                                        result,
-                                        RxDatabaseEvent.EventType.ADDED
-                                ))
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError?) {
-
-                    }
-                }
-
-                searchQuery.addValueEventListener(searchListener)
-            })
-        }
-    }
-
-    private fun search(query: String, patch: String): String {
-        val searchReference = mDatabase.getReference("search/$patch/queries")
+    private fun recordSearchQuery(query: String, results: List<String>): String {
+        val searchReference = mDatabase.getReference("/search/queries")
         val key = searchReference.push().key
         val firebaseUpdates = HashMap<String, Any>()
         val queryMap = HashMap<String, Any>()
         queryMap.put("query", query)
+        queryMap.put("results", results)
         firebaseUpdates.put(key, queryMap)
 
         searchReference.updateChildren(firebaseUpdates)
