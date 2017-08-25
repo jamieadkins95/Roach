@@ -1,12 +1,12 @@
 package com.jamieadkins.gwent.card.list
 
-import android.util.Log
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.ConnectionChecker
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.data.Result
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException
  * UI as required.
  */
 
-abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInteractor: CardsInteractor, private val connectionChecker: ConnectionChecker) :
+abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInteractor: CardsInteractor) :
         BaseFilterPresenter<T>(), CardsContract.Presenter {
 
     override fun onRefresh() {
@@ -34,24 +34,25 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
 
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
-        val connected = connectionChecker.isConnectedToInternet()
-        if (searchQuery != null) {
-            if (!connected) {
-                view?.showIntelligentSearchFailure()
-            } else {
-                view?.showAlgoliaAttribution()
-            }
-        } else {
-            view?.hideAlgoliaAttribution()
-        }
-        mCardsInteractor.getCards(cardFilter, searchQuery, connected)
+        mCardsInteractor.getCards(cardFilter, searchQuery)
                 .applySchedulers()
                 .timeout(10, TimeUnit.SECONDS)
-                .subscribeWith(object : BaseDisposableSingle<MutableList<CardDetails>>() {
-                    override fun onSuccess(t: MutableList<CardDetails>) {
-                        view?.let {
-                            it.showItems(t)
-                            it.setLoadingIndicator(false)
+                .subscribeWith(object : BaseDisposableSingle<Result<MutableList<CardDetails>>>() {
+                    override fun onSuccess(result: Result<MutableList<CardDetails>>) {
+                        result.content?.let {
+                            view?.showItems(it)
+                        }
+                        view?.setLoadingIndicator(false)
+
+                        if (searchQuery != null) {
+                            if (result.status == Result.Status.INTELLIGENT_SEARCH_FAILED) {
+                                view?.showIntelligentSearchFailure()
+                                view?.hideAlgoliaAttribution()
+                            } else {
+                                view?.showAlgoliaAttribution()
+                            }
+                        } else {
+                            view?.hideAlgoliaAttribution()
                         }
                     }
 

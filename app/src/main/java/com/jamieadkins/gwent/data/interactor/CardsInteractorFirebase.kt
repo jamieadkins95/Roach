@@ -6,15 +6,15 @@ import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.FirebaseUtils
 import io.reactivex.*
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.util.Log
-import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.data.SearchResult
-import kotlin.Comparator
 import kotlin.collections.ArrayList
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
+import com.jamieadkins.gwent.data.Result
 
 
 /**
@@ -31,6 +31,8 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     private var mCardsQuery: Query? = null
     private var mCardListener: ValueEventListener? = null
     private var mLocale = "en-US"
+
+    private val connectedRef = mDatabase.getReference(".info/connected")
 
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
@@ -67,40 +69,65 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
             })
         }
 
+    private val connected: Single<Boolean>
+        get() = Single.defer {
+            Single.create(SingleOnSubscribe<Boolean> { emitter ->
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val connected = dataSnapshot.getValue(Boolean::class.java)
+                        connected?.let {
+                            emitter.onSuccess(it)
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError?) {
+                        // Do nothing
+                    }
+                }
+
+                connectedRef.addListenerForSingleValueEvent(listener)
+            })
+        }
+
     override fun setLocale(locale: String) {
         mLocale = locale
     }
 
-    override fun getCards(filter: CardFilter): Single<MutableList<CardDetails>> {
-        return getCards(filter, null, null, false)
+    override fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>> {
+        return getCards(filter, null, null)
     }
 
-    override fun getCards(filter: CardFilter?, cardIds: List<String>): Single<MutableList<CardDetails>> {
-        return getCards(filter, null, cardIds, false)
+    override fun getCards(filter: CardFilter?, cardIds: List<String>): Single<Result<MutableList<CardDetails>>> {
+        return getCards(filter, null, cardIds)
     }
 
-    override fun getCards(filter: CardFilter?, query: String?, useIntelligentSearch: Boolean): Single<MutableList<CardDetails>> {
-        return getCards(filter, query, null, useIntelligentSearch)
+    override fun getCards(filter: CardFilter?, query: String?): Single<Result<MutableList<CardDetails>>> {
+        return getCards(filter, query, null)
     }
 
-    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?, useIntelligentSearch: Boolean): Single<MutableList<CardDetails>> {
+    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Single<Result<MutableList<CardDetails>>> {
         var source: Single<MutableList<CardDetails>> = getCards()
 
-        if (query != null) {
-            if (useIntelligentSearch) {
-                source = latestPatch.flatMap { patch ->
-                    onPatchUpdated(patch)
-                    getSearchResult(query, patch).flatMap { result ->
-                        val idList = ArrayList<String>()
-                        result.value.hits?.forEach {
-                            idList.add(it)
-                        }
+        var state = Result.Status.OK
 
-                        getCards(idList)
+        if (query != null) {
+            source = connected.flatMap { connected ->
+                if (connected) {
+                    latestPatch.flatMap { patch ->
+                        onPatchUpdated(patch)
+                        getSearchResult(query, patch).flatMap { result ->
+                            val idList = ArrayList<String>()
+                            result.value.hits?.forEach {
+                                idList.add(it)
+                            }
+
+                            getCards(idList)
+                        }
                     }
+                } else {
+                    state = Result.Status.INTELLIGENT_SEARCH_FAILED
+                    getCards(query)
                 }
-            } else {
-                source = getCards(query)
             }
         } else if (cardIds != null) {
             source = getCards(cardIds)
@@ -117,7 +144,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
             }
         }
 
-        return source
+        return source.map { content -> Result(state, content) }
     }
 
     private fun getCards(): Single<MutableList<CardDetails>> {

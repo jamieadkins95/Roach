@@ -129,5 +129,6 @@
     <string name="none">None</string>
     <string name="patch_notifications">New Patches</string>
     <string name="patch_notifications_summary">Receive notifications when Roach is updated to a new Gwent patch.</string>
-    <string name="no_internet_search">Intelligent search requires an active internet connection.</string>
+    <string name="no_internet_search">Intelligent search failed (no internet connection).</string>
+    <string name="retry">Retry</string>
 </resources>

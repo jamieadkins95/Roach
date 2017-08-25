@@ -5,6 +5,7 @@ import com.jamieadkins.commonutils.mvp.BasePresenter
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.DatabaseResult
+import com.jamieadkins.gwent.data.Result
 
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -16,11 +17,11 @@ import io.reactivex.Single
 
 interface CardsInteractor : BaseInteractor<BasePresenter> {
 
-    fun getCards(filter: CardFilter): Single<MutableList<CardDetails>>
+    fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>>
 
-    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<MutableList<CardDetails>>
+    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<Result<MutableList<CardDetails>>>
 
-    fun getCards(filter: CardFilter?, query: String?, useIntelligentSearch: Boolean): Single<MutableList<CardDetails>>
+    fun getCards(filter: CardFilter?, query: String?): Single<Result<MutableList<CardDetails>>>
 
     fun getCard(id: String): Single<CardDetails>
 

@@ -38,8 +38,7 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     @Override
     public void setupPresenter() {
         setPresenter(new CollectionPresenter(new CollectionInteractorFirebase(),
-                CardsInteractorFirebase.Companion.getInstance(),
-                new ConnectionCheckerImpl(getActivity())));
+                CardsInteractorFirebase.Companion.getInstance()));
         collectionPresenter = (CollectionContract.Presenter) getPresenter();
     }
 

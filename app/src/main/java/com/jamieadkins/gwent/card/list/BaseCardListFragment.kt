@@ -40,7 +40,8 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
     open val layoutId: Int = R.layout.fragment_card_list
 
     override fun showIntelligentSearchFailure() {
-        RxBus.post(RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_internet_search)))))
+        RxBus.post(RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_internet_search),
+                getString(R.string.retry), View.OnClickListener { presenter?.onRefresh() }))))
     }
 
     override fun showAlgoliaAttribution() {

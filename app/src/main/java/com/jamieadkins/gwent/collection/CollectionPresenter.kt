@@ -16,9 +16,8 @@ import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
  * UI as required.
  */
 
-class CollectionPresenter(private val collectionInteractor: CollectionInteractor,
-                          cardsInteractor: CardsInteractor, connectionChecker: ConnectionChecker) :
-        BaseCardsPresenter<CollectionContract.View>(cardsInteractor, connectionChecker), CollectionContract.Presenter {
+class CollectionPresenter(private val collectionInteractor: CollectionInteractor, cardsInteractor: CardsInteractor) :
+        BaseCardsPresenter<CollectionContract.View>(cardsInteractor), CollectionContract.Presenter {
 
     override fun onLoadData() {
         super.onLoadData()

@@ -20,6 +20,6 @@ public class CardListFragment extends BaseCardListFragment<CardsContract.View> {
 
     @Override
     public void setupPresenter() {
-        setPresenter(new CardsPresenter(CardsInteractorFirebase.Companion.getInstance(), new ConnectionCheckerImpl(getActivity())));
+        setPresenter(new CardsPresenter(CardsInteractorFirebase.Companion.getInstance()));
     }
 }
