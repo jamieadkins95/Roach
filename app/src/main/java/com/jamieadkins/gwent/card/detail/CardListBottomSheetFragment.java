@@ -57,21 +57,6 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void showIntelligentSearchFailure() {
-
-    }
-
-    @Override
-    public void showAlgoliaAttribution() {
-
-    }
-
-    @Override
-    public void hideAlgoliaAttribution() {
-
-    }
-
-    @Override
     public void showGenericErrorMessage() {
         RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error))));
     }

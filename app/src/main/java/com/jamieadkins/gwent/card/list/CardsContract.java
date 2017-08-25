@@ -8,11 +8,6 @@ import com.jamieadkins.commonutils.mvp2.BaseListView;
 
 public interface CardsContract {
     interface View extends BaseListView {
-        void showIntelligentSearchFailure();
-
-        void showAlgoliaAttribution();
-
-        void hideAlgoliaAttribution();
     }
 
     interface Presenter {

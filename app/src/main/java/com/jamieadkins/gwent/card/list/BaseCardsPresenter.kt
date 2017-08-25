@@ -43,17 +43,6 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
                             view?.showItems(it)
                         }
                         view?.setLoadingIndicator(false)
-
-                        if (searchQuery != null) {
-                            if (result.status == Result.Status.INTELLIGENT_SEARCH_FAILED) {
-                                view?.showIntelligentSearchFailure()
-                                view?.hideAlgoliaAttribution()
-                            } else {
-                                view?.showAlgoliaAttribution()
-                            }
-                        } else {
-                            view?.hideAlgoliaAttribution()
-                        }
                     }
 
                     override fun onError(e: Throwable) {

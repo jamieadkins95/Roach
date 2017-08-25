@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.trello.victor'
 
 android {
     compileSdkVersion 26
@@ -40,12 +39,6 @@ android {
 
     lintOptions {
         abortOnError false
-    }
-
-    sourceSets {
-        main {
-            svg.srcDir 'src/main/svg'
-        }
     }
 }
 

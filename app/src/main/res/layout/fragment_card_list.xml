@@ -6,15 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:padding="8dp"
-        android:visibility="gone"
-        android:layout_gravity="right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/algolia_attribution"
-        app:srcCompat="@drawable/algolia"/>
-
     <include layout="@layout/recycler_view_loading" />
 
 </LinearLayout>
