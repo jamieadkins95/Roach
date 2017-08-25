@@ -47,6 +47,16 @@ import io.reactivex.schedulers.Schedulers;
 public class UserDeckDetailFragment extends BaseDeckDetailFragment
         implements DecksContract.View {
 
+    @Override
+    public void showDeck(@NonNull Deck deck) {
+
+    }
+
+    @Override
+    public void removeDeck(@NonNull Deck deck) {
+
+    }
+
     protected interface DeckBuilderListener {
         void onDeckBuilderStateChanged(boolean open);
     }

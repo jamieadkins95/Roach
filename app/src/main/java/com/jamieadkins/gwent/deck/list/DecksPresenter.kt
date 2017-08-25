@@ -1,31 +1,41 @@
 package com.jamieadkins.gwent.deck.list
 
-import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Deck
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import com.jamieadkins.gwent.data.interactor.DecksInteractor
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
-
 class DecksPresenter(private val decksInteractor: DecksInteractor, cardsInteractor: CardsInteractor) :
-        BasePresenter<DecksContract.View>(), DecksContract.Presenter {
+        BaseFilterPresenter<DecksContract.View>(), DecksContract.Presenter {
+
+    override fun onAttach(newView: DecksContract.View) {
+        super.onAttach(newView)
+        onRefresh()
+    }
 
     override fun onRefresh() {
         decksInteractor.userDecks
                 .applySchedulers()
                 .doOnNext { event: RxDatabaseEvent<Deck>? ->
-                    event?.value?.let {
-
+                    when (event?.eventType) {
+                        RxDatabaseEvent.EventType.ADDED,
+                        RxDatabaseEvent.EventType.CHANGED -> {
+                            view?.showDeck(event.value)
+                        }
+                        RxDatabaseEvent.EventType.REMOVED -> {
+                            view?.removeDeck(event.value)
+                        }
+                        RxDatabaseEvent.EventType.COMPLETE -> {
+                            view?.setLoadingIndicator(false)
+                        }
                     }
                 }
                 .subscribe()
@@ -62,5 +72,9 @@ class DecksPresenter(private val decksInteractor: DecksInteractor, cardsInteract
 
     override fun setLeader(deck: Deck, leader: CardDetails) {
         decksInteractor.setLeader(deck, leader)
+    }
+
+    override fun onCardFilterUpdated() {
+        // Do nothing.
     }
 }

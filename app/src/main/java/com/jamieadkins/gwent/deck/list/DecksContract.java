@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.deck.list;
 
+import android.support.annotation.NonNull;
+
 import com.jamieadkins.commonutils.mvp2.BaseListView;
 import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.gwent.card.list.CardsContract;
@@ -17,7 +19,9 @@ import io.reactivex.Single;
 
 public interface DecksContract {
     interface View extends BaseListView {
+        void showDeck(@NonNull Deck deck);
 
+        void removeDeck(@NonNull Deck deck);
     }
 
     interface Presenter extends CardsContract.Presenter {

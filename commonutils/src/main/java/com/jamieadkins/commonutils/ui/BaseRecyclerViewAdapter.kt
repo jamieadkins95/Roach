@@ -25,6 +25,18 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
         return items.size
     }
 
+    fun addItem(item: RecyclerViewItem) {
+        val newItems = items.toMutableList()
+        newItems.add(item)
+        items = newItems
+    }
+
+    fun removeItem(item: RecyclerViewItem) {
+        val newItems = items.toMutableList()
+        newItems.remove(item)
+        items = newItems
+    }
+
     override fun getItemViewType(position: Int): Int {
         return items[position].itemType
     }

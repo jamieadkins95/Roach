@@ -16,9 +16,6 @@ public class RxDatabaseEvent<T> {
     protected static RxDatabaseEvent INITIAL_LOAD_COMPLETE =
             new RxDatabaseEvent(KEY_LOAD_COMPLETE, null, EventType.COMPLETE);
 
-    public static RxDatabaseEvent LOADING =
-            new RxDatabaseEvent(KEY_LOADING, null, EventType.LOADING);
-
     private EventType eventType;
     private String key;
     private T value;
@@ -49,7 +46,6 @@ public class RxDatabaseEvent<T> {
         CHANGED,
         REMOVED,
         MOVED,
-        COMPLETE,
-        LOADING
+        COMPLETE
     }
 }

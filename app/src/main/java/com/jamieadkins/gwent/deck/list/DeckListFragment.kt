@@ -88,6 +88,14 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
         presenter = DecksPresenter(DecksInteractorFirebase(), CardsInteractorFirebase.instance)
     }
 
+    override fun showDeck(deck: Deck) {
+        recyclerViewAdapter.addItem(deck)
+    }
+
+    override fun removeDeck(deck: Deck) {
+        recyclerViewAdapter.removeItem(deck)
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putBoolean(STATE_PUBLIC_DECKS, mPublicDecks)
         super.onSaveInstanceState(outState)

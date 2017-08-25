@@ -1,9 +1,11 @@
 package com.jamieadkins.gwent.deck.detail;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.list.DecksContract;
 
 /**
@@ -30,5 +32,15 @@ public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements 
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(250);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public void showDeck(@NonNull Deck deck) {
+
+    }
+
+    @Override
+    public void removeDeck(@NonNull Deck deck) {
+
     }
 }
