@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Loyalty;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 
@@ -39,6 +40,10 @@ public class CardFilter implements Parcelable {
 
         for (Filterable faction : Faction.ALL_FACTIONS) {
             mFilters.put(faction.getId(), true);
+        }
+
+        for (Filterable loyalty : Loyalty.ALL_LOYALTIES) {
+            mFilters.put(loyalty.getId(), true);
         }
     }
 
@@ -99,9 +104,15 @@ public class CardFilter implements Parcelable {
             }
         }
 
+        boolean loyalty = false;
+        if (card.getLoyalties() != null) {
+            for (String l : card.getLoyalties()) {
+                loyalty = loyalty || get(l);
+            }
+        }
         boolean include = !mCollectibleOnly || collectible;
         return get(card.getFaction()) && get(card.getRarity())
-                && get(card.getType()) && card.isReleased() && include;
+                && get(card.getType()) && card.isReleased() && loyalty && include;
     }
 
     @Override

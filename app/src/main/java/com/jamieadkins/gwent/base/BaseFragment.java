@@ -30,6 +30,7 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Loyalty;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
@@ -200,6 +201,11 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
                 filterItems = Type.ALL_TYPES;
+                break;
+
+            case R.id.filter_loyalty:
+                filteringOn = getString(R.string.loyalty);
+                filterItems = Loyalty.ALL_LOYALTIES;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
