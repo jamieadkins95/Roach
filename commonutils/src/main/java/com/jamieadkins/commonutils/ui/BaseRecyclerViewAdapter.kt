@@ -27,7 +27,12 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
 
     fun addItem(item: RecyclerViewItem) {
         val newItems = items.toMutableList()
-        newItems.add(item)
+        val index = newItems.indexOf(item)
+        if (index == -1) {
+            newItems.add(item)
+        } else {
+            newItems[index] = item
+        }
         items = newItems
     }
 
