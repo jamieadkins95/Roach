@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -191,6 +192,17 @@ public class Deck implements RecyclerViewItem {
                             cardIds.add(cardId);
                         }
                         // Get cards.
+
+                        cardsInteractor.getCards(new CardFilter(), cardIds).subscribe(
+                                new BaseSingleObserver<Result<List<CardDetails>>>() {
+                                    @Override
+                                    public void onSuccess(Result<List<CardDetails>> result) {
+                                        for (CardDetails card : result.getContent()) {
+                                            cards.put(card.getIngameId(), card);
+                                        }
+                                        emitter.onComplete();
+                                    }
+                                });
                     }
                 };
             }
