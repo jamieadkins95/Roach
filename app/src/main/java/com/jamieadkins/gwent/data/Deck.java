@@ -191,7 +191,6 @@ public class Deck implements RecyclerViewItem {
                         for (String cardId : cardCount.keySet()) {
                             cardIds.add(cardId);
                         }
-                        // Get cards.
 
                         cardsInteractor.getCards(new CardFilter(), cardIds).subscribe(
                                 new BaseSingleObserver<Result<List<CardDetails>>>() {

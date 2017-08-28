@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.deck.list
 
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Deck
@@ -24,21 +25,23 @@ class DecksPresenter(private val decksInteractor: DecksInteractor, cardsInteract
     override fun onRefresh() {
         decksInteractor.userDecks
                 .applySchedulers()
-                .doOnNext { event: RxDatabaseEvent<Deck>? ->
-                    when (event?.eventType) {
-                        RxDatabaseEvent.EventType.ADDED,
-                        RxDatabaseEvent.EventType.CHANGED -> {
-                            view?.showDeck(event.value)
-                        }
-                        RxDatabaseEvent.EventType.REMOVED -> {
-                            view?.removeDeck(event.value)
-                        }
-                        RxDatabaseEvent.EventType.COMPLETE -> {
-                            view?.setLoadingIndicator(false)
+                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Deck>>() {
+                    override fun onNext(event: RxDatabaseEvent<Deck>) {
+                        when (event.eventType) {
+                            RxDatabaseEvent.EventType.ADDED,
+                            RxDatabaseEvent.EventType.CHANGED -> {
+                                view?.showDeck(event.value)
+                            }
+                            RxDatabaseEvent.EventType.REMOVED -> {
+                                view?.removeDeck(event.value)
+                            }
+                            RxDatabaseEvent.EventType.COMPLETE -> {
+                                view?.setLoadingIndicator(false)
+                            }
                         }
                     }
-                }
-                .subscribe()
+
+                })
                 .addToComposite(disposable)
     }
 
