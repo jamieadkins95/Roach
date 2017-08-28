@@ -269,6 +269,7 @@ public class Deck implements RecyclerViewItem {
     @Override
     public boolean areContentsTheSame(RecyclerViewItem other) {
         return other instanceof Deck && leaderId.equals(((Deck) other).getLeaderId()) &&
-                getTotalCardCount() == ((Deck) other).getTotalCardCount();
+                getTotalCardCount() == ((Deck) other).getTotalCardCount() &&
+                name.equals(((Deck) other).name);
     }
 }
