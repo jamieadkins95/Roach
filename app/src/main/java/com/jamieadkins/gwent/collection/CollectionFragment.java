@@ -32,7 +32,7 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
     public void setupPresenter() {
         setPresenter(new CollectionPresenter(
                 Injection.INSTANCE.provideCollectionInteractor(),
-                Injection.INSTANCE.provideCardsInteractor()));
+                Injection.INSTANCE.provideCardsInteractor(getContext())));
         collectionPresenter = (CollectionContract.Presenter) getPresenter();
     }
 

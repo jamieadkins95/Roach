@@ -10,6 +10,7 @@ import com.jamieadkins.commonutils.mvp2.MvpFragment
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.commonutils.ui.SubHeader
+import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseFragment
@@ -85,7 +86,7 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
     }
 
     override fun setupPresenter() {
-        presenter = DecksPresenter(DecksInteractorFirebase(), CardsInteractorFirebase.instance)
+        presenter = DecksPresenter(DecksInteractorFirebase(), Injection.provideCardsInteractor(context))
     }
 
     override fun showDeck(deck: Deck) {

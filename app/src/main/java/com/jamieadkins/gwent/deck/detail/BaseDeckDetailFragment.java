@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.jamieadkins.commonutils.ui.GoogleNowSubHeader;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
+import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.base.BaseFragment;
@@ -64,7 +65,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<DecksContract.
 
     @Override
     public void setupPresenter() {
-        setPresenter(new DecksPresenter(new DecksInteractorFirebase(), CardsInteractorFirebase.Companion.getInstance()));
+        setPresenter(new DecksPresenter(new DecksInteractorFirebase(), Injection.INSTANCE.provideCardsInteractor(getContext())));
     }
 
     @Override

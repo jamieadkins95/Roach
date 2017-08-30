@@ -268,11 +268,6 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     private void setupFragment(Fragment fragment, String tag) {
-        CardsInteractor cardsInteractor = CardsInteractorFirebase.Companion.getInstance();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        cardsInteractor.setLocale(preferences.getString(
-                getString(R.string.pref_locale_key),
-                getString(R.string.default_locale)));
         switch (tag) {
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;

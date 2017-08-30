@@ -18,7 +18,7 @@ import com.jamieadkins.gwent.data.*
  * Deals with firebase.
  */
 
-class CardsInteractorFirebase private constructor() : CardsInteractor {
+class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
 
     private val mDatabase = FirebaseUtils.getDatabase()
     private var mCardsReference: DatabaseReference? = null
@@ -27,7 +27,6 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     private var mCardsQuery: Query? = null
     private var mCardListener: ValueEventListener? = null
-    private var mLocale = "en-US"
 
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
@@ -64,10 +63,6 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
             })
         }
 
-    override fun setLocale(locale: String) {
-        mLocale = locale
-    }
-
     override fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>> {
         return getCards(filter, null, null)
     }
@@ -87,7 +82,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
         if (query != null) {
             source = getCards().flatMap { cardList ->
-                val searchResults = searchCards(query, cardList, mLocale)
+                val searchResults = searchCards(query, cardList, locale)
                 recordSearchQuery(query, searchResults)
                 getCards(searchResults)
             }
@@ -118,7 +113,7 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     private fun getCards(): Single<MutableList<CardDetails>> {
         return latestPatch.flatMap { patch ->
             onPatchUpdated(patch)
-            mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
+            mCardsQuery = mCardsReference!!.orderByChild("name/" + locale)
             cardDataSnapshot.flatMap { dataSnapshot ->
                 Single.create(SingleOnSubscribe<MutableList<CardDetails>> { emitter ->
                     val cardList = mutableListOf<CardDetails>()
@@ -233,6 +228,5 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     companion object {
         private val PATCH_PATH = "patch/" + BuildConfig.CARD_DATA_VERSION
-        val instance: CardsInteractorFirebase by lazy { CardsInteractorFirebase() }
     }
 }

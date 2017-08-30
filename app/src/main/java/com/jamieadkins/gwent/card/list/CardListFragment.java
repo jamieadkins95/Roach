@@ -20,6 +20,6 @@ public class CardListFragment extends BaseCardListFragment<CardsContract.View> {
 
     @Override
     public void setupPresenter() {
-        setPresenter(new CardsPresenter(Injection.INSTANCE.provideCardsInteractor()));
+        setPresenter(new CardsPresenter(Injection.INSTANCE.provideCardsInteractor(getContext())));
     }
 }

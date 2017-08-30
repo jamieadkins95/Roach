@@ -1,27 +1,20 @@
 package com.jamieadkins.gwent.data.interactor;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.base.BaseCompletableObserver;
-import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.base.BaseSingleObserver;
-import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +24,6 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
@@ -40,10 +32,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
-import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
 import static com.jamieadkins.gwent.data.Deck.MAX_EACH_BRONZE;
@@ -64,7 +54,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
 
-    private CardsInteractor mCardsInteractor;
+    private CardsInteractor cardsInteractor;
 
     private List<ChildEventListener> mDeckListListeners = new ArrayList<>();
     private List<ValueEventListener> mDeckDetailListeners = new ArrayList<>();
@@ -87,6 +77,10 @@ public class DecksInteractorFirebase implements DecksInteractor {
         }
 
         return deck;
+    }
+
+    public void setCardsInteractor(CardsInteractor cardsInteractor) {
+        this.cardsInteractor = cardsInteractor;
     }
 
     private Observable<RxDatabaseEvent<Deck>> getDecks(Query query) {
@@ -114,7 +108,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
+                                deck.evaluateDeck(cardsInteractor)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -138,7 +132,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
+                                deck.evaluateDeck(cardsInteractor)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -162,7 +156,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildRemoved(DataSnapshot deckSnapshot) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
+                                deck.evaluateDeck(cardsInteractor)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -181,7 +175,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildMoved(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
+                                deck.evaluateDeck(cardsInteractor)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -369,7 +363,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                 }
 
                                 if (evaluate) {
-                                    deck.evaluateDeck(CardsInteractorFirebase.Companion.getInstance())
+                                    deck.evaluateDeck(cardsInteractor)
                                             .subscribe(
                                                     new BaseCompletableObserver() {
                                                         @Override

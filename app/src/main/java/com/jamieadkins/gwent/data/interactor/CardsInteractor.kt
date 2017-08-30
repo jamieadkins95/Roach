@@ -28,6 +28,4 @@ interface CardsInteractor : BaseInteractor<BasePresenter> {
     fun reportMistake(cardid: String, description: String): Completable
 
     fun removeListeners()
-
-    fun setLocale(locale: String)
 }
