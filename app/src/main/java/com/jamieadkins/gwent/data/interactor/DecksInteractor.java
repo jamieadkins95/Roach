@@ -13,7 +13,7 @@ import io.reactivex.Single;
  * Deck manipulation class.
  */
 
-public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter> {
+public interface DecksInteractor extends BaseInteractor {
 
     Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
 

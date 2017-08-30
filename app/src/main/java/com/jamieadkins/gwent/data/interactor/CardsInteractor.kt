@@ -15,7 +15,7 @@ import io.reactivex.Single
  * Card manipulation class.
  */
 
-interface CardsInteractor : BaseInteractor<BasePresenter> {
+interface CardsInteractor : BaseInteractor {
 
     fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>>
 
