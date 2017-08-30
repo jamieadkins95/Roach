@@ -28,6 +28,14 @@ android {
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
         }
     }
+    productFlavors {
+        prod {
+
+        }
+        mock {
+
+        }
+    }
 
     applicationVariants.all { variant ->
         variant.resValue "string", "versionName", variant.versionName

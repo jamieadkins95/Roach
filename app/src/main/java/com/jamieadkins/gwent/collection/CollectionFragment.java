@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -29,8 +30,9 @@ public class CollectionFragment extends BaseCardListFragment<CollectionContract.
 
     @Override
     public void setupPresenter() {
-        setPresenter(new CollectionPresenter(new CollectionInteractorFirebase(),
-                CardsInteractorFirebase.Companion.getInstance()));
+        setPresenter(new CollectionPresenter(
+                Injection.INSTANCE.provideCollectionInteractor(),
+                Injection.INSTANCE.provideCardsInteractor()));
         collectionPresenter = (CollectionContract.Presenter) getPresenter();
     }
 

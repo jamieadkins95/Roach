@@ -16,6 +16,7 @@ import android.widget.ImageView
 
 import com.jamieadkins.commonutils.mvp2.MvpFragment
 import com.jamieadkins.gwent.BuildConfig
+import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
@@ -76,7 +77,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
     }
 
     override fun setupPresenter() {
-        presenter = DetailPresenter(CardsInteractorFirebase.instance, mCardId!!)
+        presenter = DetailPresenter(Injection.provideCardsInteractor(), mCardId!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
