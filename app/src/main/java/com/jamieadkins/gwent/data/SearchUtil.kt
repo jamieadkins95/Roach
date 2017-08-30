@@ -13,6 +13,9 @@ fun searchCards (query: String, cardList: List<CardDetails>, locale: String): Li
             val scores = ArrayList<Int>()
             scores.add(FuzzySearch.partialRatio(query, card.getName(locale)))
             scores.add(FuzzySearch.partialRatio(query, card.getInfo(locale)))
+            card.categories?.forEach {
+                scores.add(FuzzySearch.partialRatio(query, it))
+            }
             val score = Collections.max(scores)
             if (score > maxScore) {
                 maxScore = score
