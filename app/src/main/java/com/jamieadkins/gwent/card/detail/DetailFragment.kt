@@ -123,19 +123,19 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
 
         for (variationId in card.variations.keys) {
             val variation = card.variations[variationId]
+            var image: String? = null
             variation?.let {
                 if (mUseLowData) {
                     it.art?.low?.let {
-                        mAdapter?.addItem(it)
+                        image = it
                     }
                 } else {
                     it.art?.medium?.let {
-                        mAdapter?.addItem(it)
+                        image = it
                     }
                 }
             }
-
-
+            mAdapter?.addItem(image)
         }
 
         mLargeCardView?.setCardDetails(card)
