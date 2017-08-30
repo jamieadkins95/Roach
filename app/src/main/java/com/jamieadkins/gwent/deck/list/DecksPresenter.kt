@@ -14,7 +14,7 @@ import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
-class DecksPresenter(private val decksInteractor: DecksInteractor, cardsInteractor: CardsInteractor) :
+class DecksPresenter(private val decksInteractor: DecksInteractor) :
         BaseFilterPresenter<DecksContract.View>(), DecksContract.Presenter {
 
     override fun onAttach(newView: DecksContract.View) {

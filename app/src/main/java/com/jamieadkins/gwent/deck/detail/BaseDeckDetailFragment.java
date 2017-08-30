@@ -65,7 +65,7 @@ public abstract class BaseDeckDetailFragment extends BaseFragment<DecksContract.
 
     @Override
     public void setupPresenter() {
-        setPresenter(new DecksPresenter(new DecksInteractorFirebase(), Injection.INSTANCE.provideCardsInteractor(getContext())));
+        setPresenter(new DecksPresenter(Injection.INSTANCE.provideDecksInteractor(getContext())));
     }
 
     @Override

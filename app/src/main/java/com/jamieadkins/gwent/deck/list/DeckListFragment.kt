@@ -86,7 +86,7 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
     }
 
     override fun setupPresenter() {
-        presenter = DecksPresenter(DecksInteractorFirebase(), Injection.provideCardsInteractor(context))
+        presenter = DecksPresenter(Injection.provideDecksInteractor(context))
     }
 
     override fun showDeck(deck: Deck) {

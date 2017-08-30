@@ -2,10 +2,7 @@ package com.jamieadkins.gwent
 
 import android.content.Context
 import android.support.v7.preference.PreferenceManager
-import com.jamieadkins.gwent.data.interactor.CardsInteractor
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
-import com.jamieadkins.gwent.data.interactor.CollectionInteractor
-import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase
+import com.jamieadkins.gwent.data.interactor.*
 
 object Injection {
     fun provideCardsInteractor(context: Context): CardsInteractor {
@@ -16,5 +13,11 @@ object Injection {
 
     fun provideCollectionInteractor(): CollectionInteractor {
         return CollectionInteractorFirebase()
+    }
+
+    fun provideDecksInteractor(context: Context): DecksInteractor {
+        val interactor: DecksInteractorFirebase = DecksInteractorFirebase()
+        interactor.setCardsInteractor(provideCardsInteractor(context))
+        return interactor
     }
 }
