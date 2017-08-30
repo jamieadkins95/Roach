@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.card.list
 
-import com.jamieadkins.gwent.ConnectionChecker
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 
 /**

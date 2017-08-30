@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.card.list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.jamieadkins.gwent.ConnectionCheckerImpl;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 

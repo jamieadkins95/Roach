@@ -2,7 +2,6 @@ package com.jamieadkins.gwent.collection
 
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.ConnectionChecker
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.CollectionEvent
 import com.jamieadkins.gwent.bus.RxBus
