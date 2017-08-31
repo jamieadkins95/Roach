@@ -5,15 +5,3 @@ Android Application that helps you manage your decks and collection, as well as 
 # Note to Devs
 
 This app uses firebase as a backend, and as a result, you'll need to set up your own firebase project if you want to test your fork. I need to write up a guide for that. Until then, message me if you have any problems!
-
-# Gwent Card Scraper
-
-Scrapes data from gwentdb and stores it in a nice handy json.
-
-# JGAW - Java Gwent API Wrapper
-
-Java Wrapper library for https://gwentapi.com/ 
-
-Written using retrofit2.
-
-This library executes everything sequentially and takes no regard in terms of threading. If you are using this in an Android app, then I suggest using something like RxJava to handle the networking.

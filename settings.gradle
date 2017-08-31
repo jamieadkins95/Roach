@@ -1,1 +1,1 @@
-include ':app', ':jgaw', ':commonutils'
+include ':app', ':commonutils'
