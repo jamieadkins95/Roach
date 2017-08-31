@@ -27,7 +27,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail);
     }
 
     @Override
