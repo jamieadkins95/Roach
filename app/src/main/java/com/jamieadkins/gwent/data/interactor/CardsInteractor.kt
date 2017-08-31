@@ -1,14 +1,11 @@
 package com.jamieadkins.gwent.data.interactor
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor
-import com.jamieadkins.commonutils.mvp.BasePresenter
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.DatabaseResult
-import com.jamieadkins.gwent.data.Result
+import com.jamieadkins.gwent.data.CardListResult
 
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -17,11 +14,11 @@ import io.reactivex.Single
 
 interface CardsInteractor : BaseInteractor {
 
-    fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>>
+    fun getCards(filter: CardFilter): Single<CardListResult>
 
-    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<Result<MutableList<CardDetails>>>
+    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<CardListResult>
 
-    fun getCards(filter: CardFilter?, query: String?): Single<Result<MutableList<CardDetails>>>
+    fun getCards(filter: CardFilter?, query: String?): Single<CardListResult>
 
     fun getCard(id: String): Single<CardDetails>
 

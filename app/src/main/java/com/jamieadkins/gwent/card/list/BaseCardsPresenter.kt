@@ -4,8 +4,7 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.Result
+import com.jamieadkins.gwent.data.CardListResult
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -36,12 +35,15 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         mCardsInteractor.getCards(cardFilter, searchQuery)
                 .applySchedulers()
                 .timeout(10, TimeUnit.SECONDS)
-                .subscribeWith(object : BaseDisposableSingle<Result<MutableList<CardDetails>>>() {
-                    override fun onSuccess(result: Result<MutableList<CardDetails>>) {
-                        result.content?.let {
-                            view?.showItems(it)
+                .subscribeWith(object : BaseDisposableSingle<CardListResult>() {
+                    override fun onSuccess(result: CardListResult) {
+                        when (result) {
+                            is CardListResult.Success -> {
+                                view?.showItems(result.cards)
+                                view?.setLoadingIndicator(false)
+                            }
+                            CardListResult.Failed -> view?.setLoadingIndicator(false)
                         }
-                        view?.setLoadingIndicator(false)
                     }
 
                     override fun onError(e: Throwable) {

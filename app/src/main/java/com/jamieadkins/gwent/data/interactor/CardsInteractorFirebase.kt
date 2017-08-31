@@ -13,7 +13,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
 import com.jamieadkins.gwent.data.*
 
-
 /**
  * Deals with firebase.
  */
@@ -63,22 +62,20 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
             })
         }
 
-    override fun getCards(filter: CardFilter): Single<Result<MutableList<CardDetails>>> {
+    override fun getCards(filter: CardFilter): Single<CardListResult> {
         return getCards(filter, null, null)
     }
 
-    override fun getCards(filter: CardFilter?, cardIds: List<String>): Single<Result<MutableList<CardDetails>>> {
+    override fun getCards(filter: CardFilter?, cardIds: List<String>): Single<CardListResult> {
         return getCards(filter, null, cardIds)
     }
 
-    override fun getCards(filter: CardFilter?, query: String?): Single<Result<MutableList<CardDetails>>> {
+    override fun getCards(filter: CardFilter?, query: String?): Single<CardListResult> {
         return getCards(filter, query, null)
     }
 
-    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Single<Result<MutableList<CardDetails>>> {
+    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Single<CardListResult> {
         var source: Single<MutableList<CardDetails>> = getCards()
-
-        var state = Result.Status.OK
 
         if (query != null) {
             source = getCards().flatMap { cardList ->
@@ -101,7 +98,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
             }
         }
 
-        return source.map { content -> Result(state, content) }
+        return source.map { content -> CardListResult.Success(content) }
     }
 
     private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {
