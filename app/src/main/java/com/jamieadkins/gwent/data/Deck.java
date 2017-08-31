@@ -193,13 +193,15 @@ public class Deck implements RecyclerViewItem {
                         }
 
                         cardsInteractor.getCards(new CardFilter(), cardIds).subscribe(
-                                new BaseSingleObserver<Result<List<CardDetails>>>() {
+                                new BaseSingleObserver<CardListResult>() {
                                     @Override
-                                    public void onSuccess(Result<List<CardDetails>> result) {
-                                        for (CardDetails card : result.getContent()) {
-                                            cards.put(card.getIngameId(), card);
+                                    public void onSuccess(CardListResult result) {
+                                        if (result instanceof CardListResult.Success) {
+                                            for (CardDetails card : ((CardListResult.Success) result).getCards()) {
+                                                cards.put(card.getIngameId(), card);
+                                            }
+                                            emitter.onComplete();
                                         }
-                                        emitter.onComplete();
                                     }
                                 });
                     }
