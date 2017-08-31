@@ -55,9 +55,11 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
         recyclerViewAdapter.addItem(deck)
     }
 
-    override fun showDeckDetails(deckId: String) {
+    override fun showDeckDetails(deckId: String, factionId: String) {
         val intent = Intent(activity, UserDeckDetailActivity::class.java)
         intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deckId)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, factionId)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, false)
         context?.startActivity(intent)
     }
 

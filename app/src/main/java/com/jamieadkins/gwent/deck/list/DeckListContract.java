@@ -15,7 +15,7 @@ public interface DeckListContract {
     interface View extends BaseListView {
         void showDeck(@NonNull Deck deck);
 
-        void showDeckDetails(@NonNull String deckId);
+        void showDeckDetails(@NonNull String deckId, @NonNull String factionId);
 
         void removeDeck(@NonNull Deck deck);
     }

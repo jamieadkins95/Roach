@@ -27,7 +27,7 @@ class DeckListPresenter(private val decksInteractor: DecksInteractor) :
                 .subscribeWith(object : BaseDisposableObserver<NewDeckRequest>() {
                     override fun onNext(newDeckRequest: NewDeckRequest) {
                         val id = decksInteractor.createNewDeck(newDeckRequest.data.name, newDeckRequest.data.faction)
-                        view?.showDeckDetails(id)
+                        view?.showDeckDetails(id, newDeckRequest.data.faction)
                     }
                 })
                 .addToComposite(disposable)
