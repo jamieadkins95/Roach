@@ -15,6 +15,7 @@ public class SettingsActivity extends BasePreferenceActivity implements
     public static final String PREFERENCE_ANALYTICS = "com.jamieadkins.gwent.analytics";
     public static final String NOTIFICATIONS_NEWS = "com.jamieadkins.gwent.notifications.news";
     public static final String NOTIFICATIONS_PATCH = "com.jamieadkins.gwent.notifications.patch";
+    public static final String LOCALE = "com.jamieadkins.gwent.crowd.locale";
 
     SharedPreferences mPreferences;
 
@@ -36,6 +37,9 @@ public class SettingsActivity extends BasePreferenceActivity implements
             case PREFERENCE_ANALYTICS:
                 boolean enableAnalytics = sharedPreferences.getBoolean(PREFERENCE_ANALYTICS, false);
                 FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(enableAnalytics);
+                break;
+            case LOCALE:
+                setResult(RESULT_OK);
                 break;
             default:
                 onSettingsChange(sharedPreferences, getResources(), key);
