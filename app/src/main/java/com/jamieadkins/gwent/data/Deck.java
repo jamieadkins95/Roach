@@ -3,17 +3,13 @@ package com.jamieadkins.gwent.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -23,7 +19,6 @@ import io.reactivex.CompletableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
-import kotlin.jvm.internal.markers.KMutableList;
 
 /**
  * Class that models what a deck is.

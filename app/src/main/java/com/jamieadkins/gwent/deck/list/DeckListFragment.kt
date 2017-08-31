@@ -2,41 +2,24 @@ package com.jamieadkins.gwent.deck.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jamieadkins.commonutils.mvp2.MvpFragment
 
-import com.jamieadkins.commonutils.ui.RecyclerViewItem
-import com.jamieadkins.commonutils.ui.SubHeader
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseFragment
-import com.jamieadkins.gwent.base.BaseObserver
-import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
-import com.jamieadkins.gwent.card.detail.DetailActivity
-import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Deck
-import com.jamieadkins.gwent.data.FirebaseUtils
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity
-
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View {
+class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract.View {
 
     // Set up to show user decks by default.
     private var mPublicDecks = false
@@ -65,11 +48,17 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View 
     }
 
     override fun setupPresenter() {
-        presenter = DecksPresenter(Injection.provideDecksInteractor(context))
+        presenter = DeckListPresenter(Injection.provideDecksInteractor(context))
     }
 
     override fun showDeck(deck: Deck) {
         recyclerViewAdapter.addItem(deck)
+    }
+
+    override fun showDeckDetails(deckId: String) {
+        val intent = Intent(activity, UserDeckDetailActivity::class.java)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deckId)
+        context?.startActivity(intent)
     }
 
     override fun removeDeck(deck: Deck) {

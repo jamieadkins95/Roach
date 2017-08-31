@@ -6,13 +6,12 @@ import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements DecksContract.View {
+public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements DeckDetailsContract.View {
 
     public static PublicDeckDetailFragment newInstance(String deckId) {
         PublicDeckDetailFragment fragment = new PublicDeckDetailFragment();
@@ -36,11 +35,6 @@ public class PublicDeckDetailFragment extends BaseDeckDetailFragment implements 
 
     @Override
     public void showDeck(@NonNull Deck deck) {
-
-    }
-
-    @Override
-    public void removeDeck(@NonNull Deck deck) {
 
     }
 }

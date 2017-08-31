@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,21 +9,8 @@ import android.view.MenuItem;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.base.BaseCompletableObserver;
-import com.jamieadkins.gwent.base.BaseObserver;
-import com.jamieadkins.gwent.base.BaseSingleObserver;
-import com.jamieadkins.gwent.card.detail.DetailActivity;
-import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
-import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows card image and details.

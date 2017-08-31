@@ -12,13 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
@@ -28,19 +25,12 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
-import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
-import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
-import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
+import com.jamieadkins.gwent.deck.list.DeckListPresenter;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
@@ -76,8 +66,8 @@ public class MainActivity extends AuthenticationActivity implements
     private static final int SIGN_OUT_IDENTIFIER = 1002;
     private static final int NO_LAUNCH_ATTEMPT = -1;
 
-    private DecksPresenter mDecksPresenter;
-    private DecksPresenter mPublicDecksPresenter;
+    private DeckListPresenter mDecksPresenter;
+    private DeckListPresenter mPublicDecksPresenter;
     private CardsPresenter mCardsPresenter;
     private CollectionPresenter mCollectionPresenter;
 

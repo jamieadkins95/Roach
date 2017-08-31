@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.data.interactor;
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;

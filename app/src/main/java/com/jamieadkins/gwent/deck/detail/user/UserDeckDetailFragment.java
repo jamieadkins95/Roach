@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.CardDetails;
@@ -28,32 +27,20 @@ import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 import com.jamieadkins.gwent.filter.FilterableItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public class UserDeckDetailFragment extends BaseDeckDetailFragment
-        implements DecksContract.View {
+public class UserDeckDetailFragment extends BaseDeckDetailFragment {
 
     @Override
     public void showDeck(@NonNull Deck deck) {
-
-    }
-
-    @Override
-    public void removeDeck(@NonNull Deck deck) {
 
     }
 
