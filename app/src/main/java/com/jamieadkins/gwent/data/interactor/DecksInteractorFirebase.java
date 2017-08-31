@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.base.BaseCompletableObserver;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.Type;
 
@@ -422,10 +423,29 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch) {
+    public String createNewDeck(String name, String faction) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Deck deck = new Deck(key, name, faction, leader.getIngameId(), author, patch);
+
+        String leaderId = null;
+        switch (faction) {
+            case Faction.MONSTERS_ID:
+                leaderId = "131101";
+                break;
+            case Faction.NILFGAARD_ID:
+                leaderId = "200162";
+                break;
+            case Faction.NORTHERN_REALMS_ID:
+                leaderId = "200168";
+                break;
+            case Faction.SKELLIGE_ID:
+                leaderId = "200160";
+                break;
+            case Faction.SCOIATAEL_ID:
+                leaderId = "200165";
+                break;
+        }
+        Deck deck = new Deck(key, name, faction, leaderId, author);
         Map<String, Object> deckValues = deck.toMap();
 
         Map<String, Object> firebaseUpdates = new HashMap<>();
@@ -433,7 +453,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
         mUserReference.updateChildren(firebaseUpdates);
 
-        return getDeck(key, false);
+        return key;
     }
 
     @Override

@@ -25,7 +25,6 @@ public interface DecksContract {
     }
 
     interface Presenter extends CardsContract.Presenter {
-        void createNewDeck(String name, String faction, CardDetails leader, String patch);
 
         void publishDeck(Deck deck);
 

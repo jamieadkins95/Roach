@@ -15,7 +15,7 @@ import io.reactivex.Single;
 
 public interface DecksInteractor extends BaseInteractor {
 
-    Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+    String createNewDeck(String name, String faction);
 
     Completable addCardToDeck(String deckId, CardDetails card);
 

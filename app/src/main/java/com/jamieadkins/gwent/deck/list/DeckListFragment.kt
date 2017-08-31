@@ -36,7 +36,7 @@ import io.reactivex.schedulers.Schedulers
  * UI fragment that shows a list of the users decks.
  */
 
-class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View, NewDeckDialog.NewDeckDialogListener {
+class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View {
 
     // Set up to show user decks by default.
     private var mPublicDecks = false
@@ -61,27 +61,6 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
 
         setupViews(rootView)
 
-        val buttonNewDeck = rootView?.findViewById<View>(R.id.new_deck) as FloatingActionButton
-
-        if (savedInstanceState != null) {
-            val dialog = activity.supportFragmentManager
-                    .findFragmentByTag(NewDeckDialog::class.java.simpleName) as NewDeckDialog?
-            dialog?.setPresenter(presenter as DecksContract.Presenter)
-        }
-
-        if (!mPublicDecks) {
-            buttonNewDeck.setOnClickListener {
-                val newFragment = NewDeckDialog()
-                newFragment.setPresenter(presenter as DecksContract.Presenter)
-                newFragment.setTargetFragment(this@DeckListFragment, REQUEST_CODE)
-                newFragment.show(activity.supportFragmentManager,
-                        newFragment.javaClass.simpleName)
-            }
-        } else {
-            buttonNewDeck.visibility = View.GONE
-            buttonNewDeck.isEnabled = false
-        }
-
         return rootView
     }
 
@@ -102,10 +81,6 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
         super.onSaveInstanceState(outState)
     }
 
-    override fun createNewDeck(name: String, faction: String, leader: CardDetails) {
-        (presenter as DecksContract.Presenter).createNewDeck(name, faction, leader, "")
-    }
-
     override fun setLoadingIndicator(loading: Boolean) {
 
     }
@@ -115,7 +90,7 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
     }
 
     companion object {
-        private val REQUEST_CODE = 3414
+        const val REQUEST_CODE = 3414
         private val STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks"
 
         fun newInstance(userDecks: Boolean): DeckListFragment {

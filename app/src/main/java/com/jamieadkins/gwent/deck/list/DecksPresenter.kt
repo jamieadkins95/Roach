@@ -4,6 +4,8 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseFilterPresenter
+import com.jamieadkins.gwent.bus.NewDeckRequest
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Deck
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
@@ -20,6 +22,14 @@ class DecksPresenter(private val decksInteractor: DecksInteractor) :
     override fun onAttach(newView: DecksContract.View) {
         super.onAttach(newView)
         onRefresh()
+
+        RxBus.register(NewDeckRequest::class.java)
+                .subscribeWith(object : BaseDisposableObserver<NewDeckRequest>() {
+                    override fun onNext(newDeckRequest: NewDeckRequest) {
+                        decksInteractor.createNewDeck(newDeckRequest.data.name, newDeckRequest.data.faction)
+                    }
+                })
+                .addToComposite(disposable)
     }
 
     override fun onRefresh() {
@@ -42,14 +52,6 @@ class DecksPresenter(private val decksInteractor: DecksInteractor) :
                     }
 
                 })
-                .addToComposite(disposable)
-    }
-
-    override fun createNewDeck(name: String, faction: String,
-                               leader: CardDetails, patch: String) {
-        decksInteractor.createNewDeck(name, faction, leader, patch)
-                .applySchedulers()
-                .subscribe()
                 .addToComposite(disposable)
     }
 

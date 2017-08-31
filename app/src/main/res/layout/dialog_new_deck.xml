@@ -18,9 +18,4 @@
         android:layout_height="@dimen/menu_item_height"
         android:id="@+id/factions"/>
 
-    <android.support.v7.widget.AppCompatSpinner
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/menu_item_height"
-        android:id="@+id/leaders"/>
-
 </LinearLayout>
