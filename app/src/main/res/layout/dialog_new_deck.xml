@@ -7,6 +7,7 @@
     android:paddingRight="@dimen/dialog_padding_horizontal">
 
     <EditText
+        android:layout_marginTop="16dp"
         android:inputType="textCapSentences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
