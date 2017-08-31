@@ -147,7 +147,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
         super.onSaveInstanceState(outState)
     }
 
-    override fun setLoadingIndicator(active: Boolean) {
+    override fun setLoadingIndicator(loading: Boolean) {
 
     }
 

@@ -106,7 +106,7 @@ class DeckListFragment : BaseFragment<DecksContract.View>(), DecksContract.View,
         (presenter as DecksContract.Presenter).createNewDeck(name, faction, leader, "")
     }
 
-    override fun setLoadingIndicator(active: Boolean) {
+    override fun setLoadingIndicator(loading: Boolean) {
 
     }
 
