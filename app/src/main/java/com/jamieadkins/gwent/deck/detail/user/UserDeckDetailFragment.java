@@ -37,11 +37,20 @@ import java.util.List;
  * UI fragment that shows a list of the users decks.
  */
 
-public class UserDeckDetailFragment extends BaseDeckDetailFragment {
+public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetailsContract.View>
+        implements UserDeckDetailsContract.View {
+
+    protected UserDeckDetailsContract.Presenter mDecksPresenter;
 
     @Override
     public void showDeck(@NonNull Deck deck) {
 
+    }
+
+    @Override
+    public void showPotentialLeaders(List<CardDetails> potentialLeaders) {
+        mPotentialLeaders = potentialLeaders;
+        getActivity().invalidateOptionsMenu();
     }
 
     protected interface DeckBuilderListener {

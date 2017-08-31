@@ -19,10 +19,9 @@ import java.util.Map;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseDeckDetailFragment extends BaseFragment<DeckDetailsContract.View>
+public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.View> extends BaseFragment<T>
         implements DeckDetailsContract.View {
     private static final int LEADER_INDEX = 0;
-    protected DeckDetailsContract.Presenter mDecksPresenter;
     protected String mDeckId;
     protected Deck mDeck;
     private String mPatch;

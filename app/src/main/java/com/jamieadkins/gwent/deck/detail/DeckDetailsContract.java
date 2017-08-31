@@ -18,16 +18,5 @@ public interface DeckDetailsContract {
 
     interface Presenter extends CardsContract.Presenter {
 
-        void publishDeck(Deck deck);
-
-        void addCardToDeck(String deckId, CardDetails card);
-
-        void removeCardFromDeck(String deckId, CardDetails card);
-
-        void setLeader(Deck deck, CardDetails leader);
-
-        void renameDeck(String deckId, String name);
-
-        void deleteDeck(String deckId);
     }
 }
