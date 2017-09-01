@@ -52,15 +52,15 @@ class UserDeckDetailsPresenter(private val deckId: String, private val decksInte
     }
 
     override fun publishDeck(deck: Deck?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        decksInteractor.publishDeck(deck)
     }
 
     override fun addCardToDeck(deckId: String?, card: CardDetails?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        decksInteractor.addCardToDeck(deckId, card)
     }
 
     override fun removeCardFromDeck(deckId: String?, card: CardDetails?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        decksInteractor.removeCardFromDeck(deckId, card)
     }
 
     override fun changeLeader(deckId: String?, leaderId: String?) {
@@ -68,10 +68,10 @@ class UserDeckDetailsPresenter(private val deckId: String, private val decksInte
     }
 
     override fun renameDeck(deckId: String?, name: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        decksInteractor.renameDeck(deckId, name)
     }
 
     override fun deleteDeck(deckId: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        decksInteractor.deleteDeck(deckId)
     }
 }
