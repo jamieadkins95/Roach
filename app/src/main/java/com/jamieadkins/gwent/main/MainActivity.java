@@ -6,16 +6,15 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.jamieadkins.gwent.BuildConfig;
@@ -26,19 +25,13 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
-import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
-import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
-import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
+import com.jamieadkins.gwent.deck.list.DeckListPresenter;
+import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -73,8 +66,8 @@ public class MainActivity extends AuthenticationActivity implements
     private static final int SIGN_OUT_IDENTIFIER = 1002;
     private static final int NO_LAUNCH_ATTEMPT = -1;
 
-    private DecksPresenter mDecksPresenter;
-    private DecksPresenter mPublicDecksPresenter;
+    private DeckListPresenter mDecksPresenter;
+    private DeckListPresenter mPublicDecksPresenter;
     private CardsPresenter mCardsPresenter;
     private CollectionPresenter mCollectionPresenter;
 
@@ -94,6 +87,8 @@ public class MainActivity extends AuthenticationActivity implements
         }
     };
 
+    private FloatingActionButton buttonNewDeck;
+
     @Override
     public void initialiseContentView() {
         setContentView(R.layout.activity_main);
@@ -105,6 +100,8 @@ public class MainActivity extends AuthenticationActivity implements
         if (savedInstanceState != null) {
             newsItemShown = savedInstanceState.getBoolean(STATE_NEWS_SHOWN, false);
         }
+
+        buttonNewDeck = findViewById(R.id.new_deck);
 
         checkLanguage();
         checkIntent();
@@ -287,7 +284,7 @@ public class MainActivity extends AuthenticationActivity implements
         }
     }
 
-    private void launchFragment(Fragment fragment, String tag) {
+    private void launchFragment(final Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(
@@ -295,6 +292,21 @@ public class MainActivity extends AuthenticationActivity implements
         fragmentTransaction.commit();
 
         mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
+
+        if (fragment.getTag().equals(TAG_USER_DECKS)) {
+            buttonNewDeck.setVisibility(View.VISIBLE);
+            buttonNewDeck.setEnabled(true);
+            buttonNewDeck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NewDeckDialog newDeckDialog = new NewDeckDialog();
+                    newDeckDialog.show(getSupportFragmentManager(), newDeckDialog.getClass().getSimpleName());
+                }
+            });
+        } else {
+            buttonNewDeck.setVisibility(View.GONE);
+            buttonNewDeck.setEnabled(false);
+        }
 
         // Our options menu will be different for different tabs.
         invalidateOptionsMenu();

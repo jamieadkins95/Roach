@@ -3,9 +3,6 @@ package com.jamieadkins.gwent.deck.detail;
 import android.os.Bundle;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
 
 /**
  * Created by jamiea on 27/02/17.

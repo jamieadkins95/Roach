@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.data.interactor;
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -15,7 +14,7 @@ import io.reactivex.Single;
 
 public interface DecksInteractor extends BaseInteractor {
 
-    Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+    String createNewDeck(String name, String faction);
 
     Completable addCardToDeck(String deckId, CardDetails card);
 
