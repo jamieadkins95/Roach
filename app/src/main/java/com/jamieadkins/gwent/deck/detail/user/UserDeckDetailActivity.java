@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.list.CardListFragment;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 public class UserDeckDetailActivity extends DeckDetailActivity {
@@ -16,7 +15,6 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
     private static final String TAG_BOTTOM_FRAGMENT = "com.jamieadkins.com.gwent.deck.builder";
 
     private boolean mDeckBuilderOpen = false;
-    private UserDeckDetailFragment baseFragment;
     private Fragment bottomFragment;
     private FloatingActionButton mAddCardButton;
 
@@ -38,7 +36,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
             }
             bottomFragment = getSupportFragmentManager().findFragmentByTag(TAG_BOTTOM_FRAGMENT);
         } else {
-            bottomFragment = new CardListFragment();
+            bottomFragment = CardDatabaseFragment.newInstance(mFactionId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer2, bottomFragment, TAG_BOTTOM_FRAGMENT)
                     .hide(bottomFragment)
