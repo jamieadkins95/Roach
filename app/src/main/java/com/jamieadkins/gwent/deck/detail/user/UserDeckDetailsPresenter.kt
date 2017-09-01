@@ -63,8 +63,8 @@ class UserDeckDetailsPresenter(private val deckId: String, private val decksInte
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setLeader(deck: Deck?, leader: CardDetails?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun changeLeader(deckId: String?, leaderId: String?) {
+        decksInteractor.setLeader(deckId, leaderId)
     }
 
     override fun renameDeck(deckId: String?, name: String?) {

@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
-import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.detail.DeckDetailsContract;
@@ -24,7 +23,7 @@ public interface UserDeckDetailsContract {
 
         void removeCardFromDeck(String deckId, CardDetails card);
 
-        void setLeader(Deck deck, CardDetails leader);
+        void changeLeader(String deckId, String leaderId);
 
         void renameDeck(String deckId, String name);
 

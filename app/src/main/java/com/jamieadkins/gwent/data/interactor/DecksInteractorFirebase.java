@@ -471,15 +471,15 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void setLeader(Deck deck, final CardDetails leader) {
-        DatabaseReference deckReference = mUserReference.child(deck.getId()).child("leaderId");
+    public void setLeader(String deckId, final String leaderId) {
+        DatabaseReference deckReference = mUserReference.child(deckId).child("leaderId");
 
         // Transactions will ensure concurrency errors don't occur.
         deckReference.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 // Set value and report transaction success.
-                mutableData.setValue(leader.getIngameId());
+                mutableData.setValue(leaderId);
                 return Transaction.success(mutableData);
             }
 

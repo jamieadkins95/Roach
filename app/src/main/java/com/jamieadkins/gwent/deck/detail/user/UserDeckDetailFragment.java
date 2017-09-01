@@ -175,7 +175,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                deckDetailsPresenter.setLeader(mDeck, leader);
+                                deckDetailsPresenter.changeLeader(mDeckId, leader.getIngameId());
                                 return true;
                             }
                         });

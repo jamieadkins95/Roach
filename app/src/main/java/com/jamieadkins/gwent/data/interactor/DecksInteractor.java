@@ -18,7 +18,7 @@ public interface DecksInteractor extends BaseInteractor {
 
     Completable addCardToDeck(String deckId, CardDetails card);
 
-    void setLeader(Deck deck, CardDetails leader);
+    void setLeader(String deckId, String leaderId);
 
     Completable renameDeck(String deckId, String newName);
 
