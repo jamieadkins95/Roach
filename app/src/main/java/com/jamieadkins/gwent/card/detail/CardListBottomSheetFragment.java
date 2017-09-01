@@ -57,6 +57,11 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
+    public void showEmptyView() {
+
+    }
+
+    @Override
     public void showGenericErrorMessage() {
         RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error))));
     }

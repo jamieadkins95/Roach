@@ -40,6 +40,9 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
                         when (result) {
                             is CardListResult.Success -> {
                                 view?.showItems(result.cards)
+                                if (result.cards.size == 0) {
+                                    view?.showEmptyView()
+                                }
                                 view?.setLoadingIndicator(false)
                             }
                             CardListResult.Failed -> view?.setLoadingIndicator(false)

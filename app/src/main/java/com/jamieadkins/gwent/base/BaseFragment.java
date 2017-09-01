@@ -125,6 +125,11 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         mAdapter.setItems(items);
     }
 
+    @Override
+    public void showEmptyView() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.no_results), Snackbar.LENGTH_LONG)));
+    }
+
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
                 .build();
