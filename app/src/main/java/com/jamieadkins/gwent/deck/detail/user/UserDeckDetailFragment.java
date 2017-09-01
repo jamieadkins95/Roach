@@ -45,7 +45,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
     protected UserDeckDetailsContract.Presenter deckDetailsPresenter;
 
     @Override
-    public void showDeck(@NonNull Deck deck) {
+    public void onDeckUpdated(@NonNull Deck deck) {
 
     }
 

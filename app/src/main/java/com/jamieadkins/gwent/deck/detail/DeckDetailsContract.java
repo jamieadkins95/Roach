@@ -13,7 +13,7 @@ import com.jamieadkins.gwent.data.Deck;
 
 public interface DeckDetailsContract {
     interface View extends BaseListView {
-        void showDeck(@NonNull Deck deck);
+        void onDeckUpdated(@NonNull Deck deck);
     }
 
     interface Presenter extends CardsContract.Presenter {
