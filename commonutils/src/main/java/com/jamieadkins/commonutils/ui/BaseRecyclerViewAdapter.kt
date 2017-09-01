@@ -36,20 +36,32 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
     }
 
     fun addItem(item: RecyclerViewItem) {
-        val newItems = items.toMutableList()
-        val index = newItems.indexOf(item)
-        if (index == -1) {
-            newItems.add(item)
-        } else {
-            newItems[index] = item
+        if (items !is MutableList<RecyclerViewItem>) {
+            return
         }
-        items = newItems
+
+        if (item in items) {
+            val index = items.indexOf(item)
+            if (!item.areContentsTheSame(items[index])) {
+                (items as MutableList<RecyclerViewItem>)[index] = item
+                notifyItemChanged(index)
+            }
+        } else {
+            (items as MutableList<RecyclerViewItem>).add(item)
+            notifyItemInserted(itemCount - 1)
+        }
     }
 
     fun removeItem(item: RecyclerViewItem) {
-        val newItems = items.toMutableList()
-        newItems.remove(item)
-        items = newItems
+        if (items !is MutableList<RecyclerViewItem>) {
+            return
+        }
+
+        if (item in items) {
+            val index = items.indexOf(item)
+            (items as MutableList<RecyclerViewItem>).removeAt(index)
+            notifyItemRemoved(index)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
