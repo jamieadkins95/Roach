@@ -32,6 +32,8 @@ public abstract class DeckDetailActivity extends BaseActivity {
 
     private DeckBriefSummaryView mSummaryView;
 
+    protected Fragment fragment;
+
     @Override
     public void initialiseContentView() {
         setContentView(R.layout.activity_deck_detail);
@@ -43,8 +45,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSummaryView = (DeckBriefSummaryView) findViewById(R.id.deck_summary_brief);
-
-        Fragment fragment;
 
         if (savedInstanceState != null) {
 

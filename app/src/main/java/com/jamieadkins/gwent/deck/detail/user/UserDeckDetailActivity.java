@@ -13,9 +13,10 @@ import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 
 public class UserDeckDetailActivity extends DeckDetailActivity {
     private static final String STATE_DECK_BUILDER_OPEN = "com.jamieadkins.com.gwent.deck.open";
+    private static final String TAG_BOTTOM_FRAGMENT = "com.jamieadkins.com.gwent.deck.builder";
 
     private boolean mDeckBuilderOpen = false;
-    private UserDeckDetailFragment mFragment;
+    private UserDeckDetailFragment baseFragment;
     private Fragment bottomFragment;
     private FloatingActionButton mAddCardButton;
 
@@ -35,6 +36,19 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
                 mAddCardButton.hide();
                 getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
             }
+            bottomFragment = getSupportFragmentManager().findFragmentByTag(TAG_BOTTOM_FRAGMENT);
+        } else {
+            bottomFragment = new CardListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentContainer2, bottomFragment, TAG_BOTTOM_FRAGMENT)
+                    .hide(bottomFragment)
+                    .commit();
+        }
+
+        if (mDeckBuilderOpen) {
+            openDeckBuilderMenu();
+        } else {
+            closeDeckBuilderMenu();
         }
     }
 
@@ -76,12 +90,10 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
         mAddCardButton.hide();
         getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
 
-        if (bottomFragment == null) {
-            bottomFragment = new CardListFragment();
-        }
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .add(R.id.contentContainer, bottomFragment, bottomFragment.getClass().getSimpleName())
+                .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down)
+                .show(bottomFragment)
+                .hide(fragment)
                 .addToBackStack(null)
                 .commit();
     }

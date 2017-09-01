@@ -15,6 +15,13 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true" />
 
+    <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/contentContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/deck_add"
         android:layout_width="wrap_content"
