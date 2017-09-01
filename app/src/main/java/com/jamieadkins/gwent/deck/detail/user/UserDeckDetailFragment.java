@@ -4,13 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,12 +22,9 @@ import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment;
-import com.jamieadkins.gwent.filter.FilterableItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -134,44 +126,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        List<FilterableItem> filterableItems = new ArrayList<>();
-        String filteringOn;
-        Filterable[] filterItems;
-
         switch (item.getItemId()) {
-            case R.id.filter_reset:
-                filterPresenter.clearFilters();
-                return true;
-            case R.id.filter_faction:
-                filteringOn = getString(R.string.faction);
-                Filterable faction = Faction.NORTHERN_REALMS;
-                switch (mFactionId) {
-                    case Faction.MONSTERS_ID:
-                    faction = Faction.MONSTERS;
-                    break;
-                case Faction.NORTHERN_REALMS_ID:
-                    faction = Faction.NORTHERN_REALMS;
-                    break;
-                case Faction.SCOIATAEL_ID:
-                    faction = Faction.SCOIATAEL;
-                    break;
-                case Faction.SKELLIGE_ID:
-                    faction = Faction.SKELLIGE;
-                    break;
-                case Faction.NILFGAARD_ID:
-                    faction = Faction.NILFGAARD;
-                    break;
-                }
-                filterItems = new Filterable[] {faction, Faction.NEUTRAL};
-                break;
-            case R.id.filter_rarity:
-                filteringOn = getString(R.string.rarity);
-                filterItems = Rarity.ALL_RARITIES;
-                break;
-            case R.id.filter_type:
-                filteringOn = getString(R.string.type);
-                filterItems = new Filterable[] {Type.BRONZE, Type.SILVER, Type.GOLD};
-                break;
             case R.id.action_rename:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -208,15 +163,5 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-        for (Filterable filterable : filterItems) {
-            filterableItems.add(new FilterableItem(
-                    filterable.getId(),
-                    getString(filterable.getName()),
-                    filterPresenter.cardFilter.get(filterable.getId())));
-        }
-
-        showFilterMenu(filteringOn, filterableItems);
-        return true;
     }
 }
