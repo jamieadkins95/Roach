@@ -51,8 +51,11 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
 
     @Override
     public void setupPresenter() {
-        UserDeckDetailsPresenter presenter = new UserDeckDetailsPresenter(mDeckId,
-                Injection.INSTANCE.provideDecksInteractor(getContext()));
+        UserDeckDetailsPresenter presenter = new UserDeckDetailsPresenter(
+                mDeckId,
+                mFactionId,
+                Injection.INSTANCE.provideDecksInteractor(getContext()),
+                Injection.INSTANCE.provideCardsInteractor(getContext()));
         deckDetailsPresenter = presenter;
         setPresenter(presenter);
     }
