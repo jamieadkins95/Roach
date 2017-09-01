@@ -66,63 +66,12 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
         getActivity().invalidateOptionsMenu();
     }
 
-    protected interface DeckBuilderListener {
-        void onDeckBuilderStateChanged(boolean open);
-    }
-
-    private BottomSheetBehavior mBottomSheet;
-    private DeckBuilderListener mDeckBuilderListener;
-    private SwipeRefreshLayout mCardDatabaseRefeshLayout;
-    private RecyclerView mCardDatabaseRecyclerView;
-    private GwentRecyclerViewAdapter mCardDatabaseAdapter;
-    private FloatingActionButton mAddCardButton;
-
     private List<CardDetails> mPotentialLeaders;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void setupViews(View rootView) {
-        super.setupViews(rootView);
-        View bottomSheet = rootView.findViewById(R.id.bottom_sheet);
-
-        mBottomSheet = BottomSheetBehavior.from(bottomSheet);
-        mBottomSheet.setPeekHeight(0);
-        mBottomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    mDeckBuilderListener.onDeckBuilderStateChanged(false);
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    mDeckBuilderListener.onDeckBuilderStateChanged(true);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-
-        mAddCardButton = (FloatingActionButton) rootView.findViewById(R.id.deck_add);
-        mAddCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDeckBuilderMenu();
-            }
-        });
-
-        mCardDatabaseRefeshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.cardRefreshContainer);
-        mCardDatabaseRecyclerView = (RecyclerView) rootView.findViewById(R.id.card_recycler_view);
-        final LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(mCardDatabaseRecyclerView.getContext());
-        mCardDatabaseRecyclerView.setLayoutManager(linearLayoutManager);
-        mCardDatabaseAdapter = onBuildRecyclerView();
-        mCardDatabaseRecyclerView.setAdapter(mCardDatabaseAdapter);
     }
 
     public static UserDeckDetailFragment newInstance(String deckId, String factionId) {
@@ -162,9 +111,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mBottomSheet.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            setupFilterMenu(menu, inflater);
-        }
         if (mPotentialLeaders != null && mPotentialLeaders.size() >= 3) {
 
             String key = getString(R.string.pref_locale_key);
@@ -272,25 +218,5 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
 
         showFilterMenu(filteringOn, filterableItems);
         return true;
-    }
-
-    protected void setDeckBuilderListener(DeckBuilderListener listener) {
-        mDeckBuilderListener = listener;
-    }
-
-    protected void closeDeckBuilderMenu() {
-        mBottomSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        mAddCardButton.show();
-    }
-
-    protected void openDeckBuilderMenu() {
-        mBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-        mAddCardButton.hide();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mDeckBuilderListener = null;
     }
 }
