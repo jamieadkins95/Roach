@@ -25,6 +25,7 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
     override fun onAttach(newView: UserDeckDetailsContract.View) {
         super.onAttach(newView)
         onRefresh()
+        getPotentialLeaders()
 
         RxBus.register(DeckEvent::class.java)
                 .subscribeWith(object : BaseDisposableObserver<DeckEvent>() {
@@ -47,8 +48,6 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
                 .applySchedulers()
                 .subscribe()
                 .addToComposite(disposable)
-
-        getPotentialLeaders()
     }
 
     private fun getPotentialLeaders() {
