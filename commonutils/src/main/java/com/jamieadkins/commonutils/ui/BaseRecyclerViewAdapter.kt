@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 import com.jamieadkins.commonutils.R
+import com.jamieadkins.commonutils.mvp2.applySchedulers
+import io.reactivex.Completable
+import io.reactivex.Single
 
 import java.util.ArrayList
 
@@ -16,13 +19,20 @@ import java.util.ArrayList
 abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     var items: List<RecyclerViewItem> = mutableListOf()
         set(value) {
-            val diffResult = DiffUtil.calculateDiff(DiffUtilCallback(items, value))
+            calculateDiffAsync(DiffUtilCallback(items, value))
+                    .applySchedulers()
+                    .subscribe { diffResult: DiffUtil.DiffResult ->
+                        diffResult.dispatchUpdatesTo(this)
+                    }
             field = value
-            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun calculateDiffAsync(callback: DiffUtil.Callback) : Single<DiffUtil.DiffResult> {
+        return Single.just(DiffUtil.calculateDiff(callback))
     }
 
     fun addItem(item: RecyclerViewItem) {
