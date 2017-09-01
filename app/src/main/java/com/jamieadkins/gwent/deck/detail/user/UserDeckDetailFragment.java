@@ -19,6 +19,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 
+import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
@@ -41,11 +42,19 @@ import java.util.List;
 public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetailsContract.View>
         implements UserDeckDetailsContract.View {
 
-    protected UserDeckDetailsContract.Presenter mDecksPresenter;
+    protected UserDeckDetailsContract.Presenter deckDetailsPresenter;
 
     @Override
     public void showDeck(@NonNull Deck deck) {
 
+    }
+
+    @Override
+    public void setupPresenter() {
+        UserDeckDetailsPresenter presenter = new UserDeckDetailsPresenter(mDeckId,
+                Injection.INSTANCE.provideDecksInteractor(getContext()));
+        deckDetailsPresenter = presenter;
+        setPresenter(presenter);
     }
 
     @Override
@@ -57,19 +66,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
     protected interface DeckBuilderListener {
         void onDeckBuilderStateChanged(boolean open);
     }
-
-    DeckDetailCardViewHolder.DeckDetailButtonListener mButtonListener =
-            new DeckDetailCardViewHolder.DeckDetailButtonListener() {
-                @Override
-                public void addCard(CardDetails card) {
-                    mDecksPresenter.addCardToDeck(mDeckId, card);
-                }
-
-                @Override
-                public void removeCard(CardDetails card) {
-                    mDecksPresenter.removeCardFromDeck(mDeckId, card);
-                }
-            };
 
     private BottomSheetBehavior mBottomSheet;
     private DeckBuilderListener mDeckBuilderListener;
@@ -141,7 +137,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
     @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withDeckControls(mButtonListener)
+                .withControls(GwentRecyclerViewAdapter.Controls.DECK)
                 .build();
     }
 
@@ -179,7 +175,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                mDecksPresenter.setLeader(mDeck, leader);
+                                deckDetailsPresenter.setLeader(mDeck, leader);
                                 return true;
                             }
                         });
@@ -239,6 +235,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                deckDetailsPresenter.renameDeck(mDeckId, input.getText().toString());
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -251,6 +248,8 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                deckDetailsPresenter.deleteDeck(mDeckId);
+                                getActivity().finish();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

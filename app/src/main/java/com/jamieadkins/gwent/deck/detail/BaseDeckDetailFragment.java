@@ -44,11 +44,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.View>
     }
 
     @Override
-    public void setupPresenter() {
-        //setPresenter(new DecksPresenter(Injection.INSTANCE.provideDecksInteractor(getContext())));
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(getLayoutId(), container, false);

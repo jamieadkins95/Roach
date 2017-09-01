@@ -12,6 +12,8 @@ import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
 
+import kotlin.NotImplementedError;
+
 /**
  * Shows card image and details.
  */
@@ -57,7 +59,7 @@ public abstract class DeckDetailActivity extends BaseActivity {
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
             if (mIsPublicDeck) {
-                fragment = PublicDeckDetailFragment.newInstance(mDeckId);
+                throw new NotImplementedError();
             } else {
                 fragment = UserDeckDetailFragment.newInstance(mDeckId, mFactionId);
             }

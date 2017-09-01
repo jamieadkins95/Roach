@@ -11,13 +11,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
-import com.jamieadkins.gwent.deck.detail.PublicDeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
+
+import kotlin.NotImplementedError;
 
 /**
  * Holds much more detail about a card.
@@ -53,7 +53,7 @@ public class DeckViewHolder extends BaseViewHolder {
             public void onClick(View view) {
                 Intent intent;
                 if (mDeck.isPublicDeck()) {
-                    intent = new Intent(getView().getContext(), PublicDeckDetailActivity.class);
+                    throw new NotImplementedError();
                 } else {
                     intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
                 }
