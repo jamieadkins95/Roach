@@ -31,12 +31,11 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.View>
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
             mFactionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
         }
+        super.onCreate(savedInstanceState);
         mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
         mRowHeaders.put(getString(R.string.gold), new GoogleNowSubHeader(getString(R.string.gold), R.color.gold));
         mRowHeaders.put(getString(R.string.silver), new GoogleNowSubHeader(getString(R.string.silver), R.color.silver));
