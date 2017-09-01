@@ -5,21 +5,7 @@
         android:id="@+id/action_change_leader"
         android:icon="@drawable/ic_leader"
         app:showAsAction="ifRoom"
-        android:title="@string/change_leader">
-
-        <menu>
-            <item
-                android:id="@+id/action_leader_1"
-                android:title="@string/change_leader" />
-            <item
-                android:id="@+id/action_leader_2"
-                android:title="@string/change_leader" />
-            <item
-                android:id="@+id/action_leader_3"
-                android:title="@string/change_leader" />
-        </menu>
-
-    </item>
+        android:title="@string/change_leader" />
 
     <item android:id="@+id/action_rename"
         app:showAsAction="never"

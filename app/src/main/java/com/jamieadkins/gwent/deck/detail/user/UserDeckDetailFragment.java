@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -165,16 +166,24 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
         if (mBottomSheet.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             setupFilterMenu(menu, inflater);
         }
-        if (mPotentialLeaders != null && mPotentialLeaders.size() == 3) {
+        if (mPotentialLeaders != null && mPotentialLeaders.size() >= 3) {
 
             String key = getString(R.string.pref_locale_key);
             String locale = PreferenceManager.getDefaultSharedPreferences(getContext())
                     .getString(key, getString(R.string.default_locale));
 
             inflater.inflate(R.menu.deck_builder, menu);
-            menu.findItem(R.id.action_leader_1).setTitle(mPotentialLeaders.get(0).getName(locale));
-            menu.findItem(R.id.action_leader_2).setTitle(mPotentialLeaders.get(1).getName(locale));
-            menu.findItem(R.id.action_leader_3).setTitle(mPotentialLeaders.get(2).getName(locale));
+            SubMenu subMenu = menu.findItem(R.id.action_change_leader).getSubMenu();
+            for (final CardDetails leader : mPotentialLeaders) {
+                subMenu.add(leader.getName(locale))
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                mDecksPresenter.setLeader(mDeck, leader);
+                                return true;
+                            }
+                        });
+            }
         }
     }
 
@@ -218,15 +227,6 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                 filteringOn = getString(R.string.type);
                 filterItems = new Filterable[] {Type.BRONZE, Type.SILVER, Type.GOLD};
                 break;
-            case R.id.action_leader_1:
-                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(0));
-                return true;
-            case R.id.action_leader_2:
-                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(1));
-                return true;
-            case R.id.action_leader_3:
-                mDecksPresenter.setLeader(mDeck, mPotentialLeaders.get(2));
-                return true;
             case R.id.action_rename:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
