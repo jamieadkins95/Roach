@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.detail.DeckDetailsContract;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public interface UserDeckDetailsContract {
 
     interface Presenter extends DeckDetailsContract.Presenter {
 
-        void publishDeck(Deck deck);
+        void publishDeck();
 
-        void changeLeader(String deckId, String leaderId);
+        void changeLeader(String leaderId);
 
-        void renameDeck(String deckId, String name);
+        void renameDeck(String name);
 
-        void deleteDeck(String deckId);
+        void deleteDeck();
     }
 }

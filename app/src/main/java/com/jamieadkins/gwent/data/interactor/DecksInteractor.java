@@ -24,7 +24,7 @@ public interface DecksInteractor extends BaseInteractor {
 
     Completable removeCardFromDeck(String deckId, CardDetails card);
 
-    void publishDeck(Deck deck);
+    void publishDeck(String deckId);
 
     Completable deleteDeck(String deckId);
 

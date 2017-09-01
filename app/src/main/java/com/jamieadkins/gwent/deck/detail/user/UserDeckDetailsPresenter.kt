@@ -77,19 +77,19 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
         // Do nothing.
     }
 
-    override fun publishDeck(deck: Deck?) {
-        decksInteractor.publishDeck(deck)
+    override fun publishDeck() {
+        decksInteractor.publishDeck(deckId)
     }
 
-    override fun changeLeader(deckId: String?, leaderId: String?) {
+    override fun changeLeader(leaderId: String?) {
         decksInteractor.setLeader(deckId, leaderId)
     }
 
-    override fun renameDeck(deckId: String?, name: String?) {
+    override fun renameDeck(name: String?) {
         decksInteractor.renameDeck(deckId, name)
     }
 
-    override fun deleteDeck(deckId: String?) {
+    override fun deleteDeck() {
         decksInteractor.deleteDeck(deckId)
     }
 }

@@ -35,6 +35,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+import kotlin.NotImplementedError;
 
 import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
 import static com.jamieadkins.gwent.data.Deck.MAX_EACH_BRONZE;
@@ -457,17 +458,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void publishDeck(Deck deck) {
-        String key = mPublicReference.child("decks").push().getKey();
-
-        Map<String, Object> deckValues = deck.toMap();
-        deckValues.put("id", key);
-        deckValues.put("publicDeck", true);
-        deckValues.put("week", 0);
-        Map<String, Object> firebaseUpdates = new HashMap<>();
-        firebaseUpdates.put(key, deckValues);
-
-        mPublicReference.child("decks").updateChildren(firebaseUpdates);
+    public void publishDeck(String deckId) {
+        throw new NotImplementedError();
     }
 
     @Override

@@ -178,7 +178,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                deckDetailsPresenter.changeLeader(mDeckId, leader.getIngameId());
+                                deckDetailsPresenter.changeLeader(leader.getIngameId());
                                 return true;
                             }
                         });
@@ -238,7 +238,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deckDetailsPresenter.renameDeck(mDeckId, input.getText().toString());
+                                deckDetailsPresenter.renameDeck(input.getText().toString());
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -251,7 +251,7 @@ public class UserDeckDetailFragment extends BaseDeckDetailFragment<UserDeckDetai
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deckDetailsPresenter.deleteDeck(mDeckId);
+                                deckDetailsPresenter.deleteDeck();
                                 getActivity().finish();
                             }
                         })
