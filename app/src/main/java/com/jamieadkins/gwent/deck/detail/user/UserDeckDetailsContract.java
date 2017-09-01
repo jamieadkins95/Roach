@@ -19,10 +19,6 @@ public interface UserDeckDetailsContract {
 
         void publishDeck(Deck deck);
 
-        void addCardToDeck(String deckId, CardDetails card);
-
-        void removeCardFromDeck(String deckId, CardDetails card);
-
         void changeLeader(String deckId, String leaderId);
 
         void renameDeck(String deckId, String name);

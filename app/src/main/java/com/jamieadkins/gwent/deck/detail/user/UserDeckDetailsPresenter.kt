@@ -55,14 +55,6 @@ class UserDeckDetailsPresenter(private val deckId: String, private val decksInte
         decksInteractor.publishDeck(deck)
     }
 
-    override fun addCardToDeck(deckId: String?, card: CardDetails?) {
-        decksInteractor.addCardToDeck(deckId, card)
-    }
-
-    override fun removeCardFromDeck(deckId: String?, card: CardDetails?) {
-        decksInteractor.removeCardFromDeck(deckId, card)
-    }
-
     override fun changeLeader(deckId: String?, leaderId: String?) {
         decksInteractor.setLeader(deckId, leaderId)
     }
