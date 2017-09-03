@@ -72,15 +72,6 @@ public abstract class DeckDetailActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if (BuildConfig.DEBUG) {
-            inflater.inflate(R.menu.deck_detail, menu);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
