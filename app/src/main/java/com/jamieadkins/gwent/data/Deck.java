@@ -201,7 +201,9 @@ public class Deck implements RecyclerViewItem {
                                             for (CardDetails card : ((CardListResult.Success) result).getCards()) {
                                                 cards.put(card.getIngameId(), card);
                                             }
-                                            emitter.onComplete();
+                                            if (leader != null) {
+                                                emitter.onComplete();
+                                            }
                                         }
                                     }
                                 });
