@@ -53,10 +53,7 @@ class DeckBuilderPresenter(private val deckId: String, private val factionId: St
 
                 })
                 .addToComposite(disposable)
-    }
 
-    override fun onRefresh() {
-        super.onRefresh()
         decksInteractor.getDeck(deckId, false)
                 .applySchedulers()
                 .subscribe()

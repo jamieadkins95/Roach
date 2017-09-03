@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.data.interactor.CardsInteractor
 import com.jamieadkins.gwent.data.interactor.DecksInteractor
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.*
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 
 /**
@@ -41,12 +42,56 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
                     }
                 })
                 .addToComposite(disposable)
-    }
 
-    override fun onRefresh() {
+        decksInteractor.subscribeToCardCountUpdates(deckId)
+                .applySchedulers()
+                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Int>>() {
+                    override fun onNext(event: RxDatabaseEvent<Int>) {
+                        when (event.eventType) {
+                            RxDatabaseEvent.EventType.ADDED -> {
+                                cardsInteractor.getCard(event.key)
+                                        .applySchedulers()
+                                        .subscribe { card ->
+                                            view?.onCardAdded(card)
+                                            view?.updateCardCount(card.ingameId, event.value)
+                                        }
+                                        .addToComposite(disposable)
+                            }
+                            RxDatabaseEvent.EventType.REMOVED -> {
+                                cardsInteractor.getCard(event.key)
+                                        .applySchedulers()
+                                        .subscribe { card ->
+                                            view?.onCardRemoved(card)
+                                            view?.updateCardCount(card.ingameId, 0)
+                                        }
+                                        .addToComposite(disposable)
+                            }
+                            RxDatabaseEvent.EventType.CHANGED -> {
+                                view?.updateCardCount(event.key, event.value)
+                            }
+                        }
+                    }
+
+                })
+                .addToComposite(disposable)
+
         decksInteractor.getDeck(deckId, false)
                 .applySchedulers()
-                .subscribe()
+                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Deck>>() {
+                    override fun onNext(event: RxDatabaseEvent<Deck>) {
+                        val deck = event.value
+                        view?.onDeckUpdated(deck)
+
+                        cardsInteractor.getCard(deck.leaderId)
+                                .applySchedulers()
+                                .subscribe { leader ->
+                                    view?.onLeaderChanged(leader)
+
+                                }
+                                .addToComposite(disposable)
+                    }
+
+                })
                 .addToComposite(disposable)
     }
 
@@ -91,5 +136,9 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
 
     override fun deleteDeck() {
         decksInteractor.deleteDeck(deckId)
+    }
+
+    override fun onRefresh() {
+        // Do nothing.
     }
 }

@@ -36,6 +36,10 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
     }
 
     fun addItem(item: RecyclerViewItem) {
+        addItem(-1, item)
+    }
+
+    fun addItem(position: Int, item: RecyclerViewItem) {
         if (items !is MutableList<RecyclerViewItem>) {
             return
         }
@@ -47,8 +51,13 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
                 notifyItemChanged(index)
             }
         } else {
-            (items as MutableList<RecyclerViewItem>).add(item)
-            notifyItemInserted(itemCount - 1)
+            if (position != -1) {
+                (items as MutableList<RecyclerViewItem>).add(position, item)
+                notifyItemInserted(position)
+            } else {
+                (items as MutableList<RecyclerViewItem>).add(item)
+                notifyItemInserted(itemCount - 1)
+            }
         }
     }
 
@@ -62,6 +71,15 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
             (items as MutableList<RecyclerViewItem>).removeAt(index)
             notifyItemRemoved(index)
         }
+    }
+
+    fun removeItemAt(position: Int) {
+        if (items !is MutableList<RecyclerViewItem>) {
+            return
+        }
+
+        (items as MutableList<RecyclerViewItem>).removeAt(position)
+        notifyItemRemoved(position)
     }
 
     override fun getItemViewType(position: Int): Int {

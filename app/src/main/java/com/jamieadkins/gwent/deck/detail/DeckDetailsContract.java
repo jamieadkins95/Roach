@@ -20,6 +20,8 @@ public interface DeckDetailsContract {
         void onCardAdded(CardDetails card);
 
         void onCardRemoved(CardDetails card);
+
+        void onLeaderChanged(CardDetails newLeader);
     }
 
     interface Presenter extends CardsContract.Presenter {

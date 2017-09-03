@@ -139,6 +139,10 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         return mAdapter;
     }
 
+    public SwipeRefreshLayout getRefreshLayout() {
+        return mRefreshContainer;
+    }
+
     @Override
     public void onRefresh() {
         getPresenter().onRefresh();

@@ -1,15 +1,11 @@
 package com.jamieadkins.gwent.deck.detail.user
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.SubMenu
-import android.view.View
 import android.widget.EditText
 
 import com.jamieadkins.gwent.Injection
@@ -17,9 +13,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.Deck
 import com.jamieadkins.gwent.data.Faction
-import com.jamieadkins.gwent.data.Filterable
 import com.jamieadkins.gwent.data.Type
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment
 
@@ -28,23 +22,7 @@ import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment
  */
 
 class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.View>(), UserDeckDetailsContract.View {
-    override fun updateCardCount(cardId: String?, count: Int) {
-        recyclerViewAdapter.updateCardCount(cardId, count)
-    }
-
-    override fun onCardAdded(card: CardDetails) {
-        recyclerViewAdapter.addItem(card)
-    }
-
-    override fun onCardRemoved(card: CardDetails) {
-        recyclerViewAdapter.removeItem(card)
-    }
-
     private var deckDetailsPresenter: UserDeckDetailsContract.Presenter? = null
-
-    override fun onDeckUpdated(deck: Deck) {
-
-    }
 
     override fun setupPresenter() {
         val newPresenter = UserDeckDetailsPresenter(

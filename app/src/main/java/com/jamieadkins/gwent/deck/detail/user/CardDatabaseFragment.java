@@ -170,6 +170,11 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
 
     @Override
     public void onDeckUpdated(@NonNull Deck deck) {
+        // Do nothing.
+    }
 
+    @Override
+    public void onLeaderChanged(CardDetails newLeader) {
+        // Do nothing.
     }
 }
