@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.MenuItem;
 
 import com.jamieadkins.gwent.Injection;
@@ -10,6 +11,8 @@ import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
+import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Rarity;
@@ -26,10 +29,11 @@ import java.util.List;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CardDatabaseFragment extends BaseCardListFragment<CardsContract.View>
-        implements CardsContract.View {
+public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContract.View>
+        implements DeckBuilderContract.View {
 
     private String factionId;
+    private String deckId;
 
     @Override
     public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
@@ -41,17 +45,21 @@ public class CardDatabaseFragment extends BaseCardListFragment<CardsContract.Vie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             factionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
+            deckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
         }
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void setupPresenter() {
-       setPresenter(new CardsPresenter(Injection.INSTANCE.provideCardsInteractor(getContext())));
+       setPresenter(new DeckBuilderPresenter(deckId, factionId,
+               Injection.INSTANCE.provideDecksInteractor(getContext()),
+               Injection.INSTANCE.provideCardsInteractor(getContext())));
     }
 
-    public static CardDatabaseFragment newInstance(String factionId) {
+    public static CardDatabaseFragment newInstance(String deckId, String factionId) {
         CardDatabaseFragment fragment = new CardDatabaseFragment();
+        fragment.deckId = deckId;
         fragment.factionId = factionId;
         return fragment;
     }
@@ -86,6 +94,7 @@ public class CardDatabaseFragment extends BaseCardListFragment<CardsContract.Vie
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_FACTION_ID, factionId);
+        outState.putString(DeckDetailActivity.EXTRA_DECK_ID, deckId);
         super.onSaveInstanceState(outState);
     }
 
@@ -142,5 +151,25 @@ public class CardDatabaseFragment extends BaseCardListFragment<CardsContract.Vie
 
         showFilterMenu(filteringOn, filterableItems);
         return true;
+    }
+
+    @Override
+    public void updateCardCount(String cardId, int count) {
+        getRecyclerViewAdapter().updateCardCount(cardId, count);
+    }
+
+    @Override
+    public void onCardAdded(CardDetails card) {
+        getRecyclerViewAdapter().addItem(card);
+    }
+
+    @Override
+    public void onCardRemoved(CardDetails card) {
+        getRecyclerViewAdapter().removeItem(card);
+    }
+
+    @Override
+    public void onDeckUpdated(@NonNull Deck deck) {
+
     }
 }

@@ -81,11 +81,11 @@ class UserDeckDetailsPresenter(private val deckId: String, private val factionId
         decksInteractor.publishDeck(deckId)
     }
 
-    override fun changeLeader(leaderId: String?) {
+    override fun changeLeader(leaderId: String) {
         decksInteractor.setLeader(deckId, leaderId)
     }
 
-    override fun renameDeck(name: String?) {
+    override fun renameDeck(name: String) {
         decksInteractor.renameDeck(deckId, name)
     }
 

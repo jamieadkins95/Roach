@@ -61,7 +61,7 @@ public abstract class DeckDetailActivity extends BaseActivity {
             if (mIsPublicDeck) {
                 throw new NotImplementedError();
             } else {
-                fragment = UserDeckDetailFragment.newInstance(mDeckId, mFactionId);
+                fragment = UserDeckDetailFragment.Companion.newInstance(mDeckId, mFactionId);
             }
 
             getSupportFragmentManager()
