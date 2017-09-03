@@ -161,6 +161,20 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         });
     }
 
+    public void removeCard(String cardId) {
+        getIndexOfCard(cardId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer value) {
+                        if (value != -1) {
+                            removeItemAt(value);
+                        }
+                    }
+                });
+    }
+
     private void bindDeckCardCounts(DeckDetailCardViewHolder holder, int position) {
         CardDetails cardDetails = (CardDetails) getItems().get(position);
         if (mDeckCardCounts != null &&

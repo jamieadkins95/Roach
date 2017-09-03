@@ -190,7 +190,7 @@ public class Deck implements RecyclerViewItem {
                             cardIds.add(cardId);
                         }
 
-                        cardsInteractor.getCards(new CardFilter(), cardIds)
+                        cardsInteractor.getCards(null, cardIds)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(

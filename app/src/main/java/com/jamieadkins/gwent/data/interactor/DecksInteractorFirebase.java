@@ -218,18 +218,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
                 return Observable.create(new ObservableOnSubscribe<RxDatabaseEvent<Integer>>() {
                     @Override
                     public void subscribe(final ObservableEmitter<RxDatabaseEvent<Integer>> emitter) throws Exception {
-                        ValueEventListener initialCountListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                emitter.onNext(RxDatabaseEvent.INITIAL_LOAD_COMPLETE);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        };
-
                         ChildEventListener listener = new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -285,7 +273,6 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
                         mCardCountQuery.addChildEventListener(listener);
                         mCardCountListeners.add(listener);
-                        mCardCountQuery.addListenerForSingleValueEvent(initialCountListener);
                     }
                 });
             }

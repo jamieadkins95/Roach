@@ -28,27 +28,8 @@ class CardDatabasePresenter(private val deckId: String,
                 .applySchedulers()
                 .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Int>>() {
                     override fun onNext(event: RxDatabaseEvent<Int>) {
-                        when (event.eventType) {
-                            RxDatabaseEvent.EventType.ADDED -> {
-                                cardsInteractor.getCard(event.key)
-                                        .applySchedulers()
-                                        .subscribe { card ->
-                                            view?.updateCardCount(card.ingameId, event.value)
-                                        }
-                                        .addToComposite(disposable)
-                            }
-                            RxDatabaseEvent.EventType.REMOVED -> {
-                                cardsInteractor.getCard(event.key)
-                                        .applySchedulers()
-                                        .subscribe { card ->
-                                            view?.updateCardCount(card.ingameId, 0)
-                                        }
-                                        .addToComposite(disposable)
-                            }
-                            RxDatabaseEvent.EventType.CHANGED -> {
-                                view?.updateCardCount(event.key, event.value)
-                            }
-                        }
+                        val count = if (event.eventType == RxDatabaseEvent.EventType.REMOVED) 0 else event.value
+                        view?.updateCardCount(event.key, count)
                     }
 
                 })

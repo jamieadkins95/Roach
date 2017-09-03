@@ -11,8 +11,6 @@ interface DeckDetailsContract {
     interface DeckDetailsView : DeckSummaryView, DeckBuilderContract.View {
         fun onCardAdded(card: CardDetails)
 
-        fun onCardRemoved(card: CardDetails)
-
         fun onLeaderChanged(newLeader: CardDetails)
     }
 

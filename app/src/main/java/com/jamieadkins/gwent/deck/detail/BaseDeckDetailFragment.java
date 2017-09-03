@@ -71,6 +71,9 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     @Override
     public void updateCardCount(String cardId, int count) {
         getRecyclerViewAdapter().updateCardCount(cardId, count);
+        if (count == 0) {
+            getRecyclerViewAdapter().removeCard(cardId);
+        }
     }
 
     @Override
@@ -101,11 +104,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
             getRecyclerViewAdapter().removeItemAt(leaderIndex);
         }
         getRecyclerViewAdapter().addItem(leaderIndex, newLeader);
-    }
-
-    @Override
-    public void onCardRemoved(CardDetails card) {
-        getRecyclerViewAdapter().removeItem(card);
     }
 
     @Override
