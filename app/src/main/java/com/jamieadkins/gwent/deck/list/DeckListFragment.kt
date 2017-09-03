@@ -73,7 +73,9 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
     }
 
     override fun setLoadingIndicator(loading: Boolean) {
-
+        if (!loading) {
+            refreshLayout.isEnabled = false
+        }
     }
 
     override fun showGenericErrorMessage() {

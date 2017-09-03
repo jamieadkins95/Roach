@@ -80,7 +80,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
         var source: Single<MutableList<CardDetails>> = getCards()
 
         if (query != null) {
-            source = getCards().flatMap { cardList ->
+            source = getCards().applyComputationSchedulers().flatMap { cardList ->
                 val searchResults = searchCards(query, cardList, locale)
                 recordSearchQuery(query, searchResults)
                 getCards(searchResults)
@@ -100,7 +100,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
             }
         }
 
-        return source.applyComputationSchedulers().map { content -> CardListResult.Success(content) }
+        return source.map { content -> CardListResult.Success(content) }
     }
 
     private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {

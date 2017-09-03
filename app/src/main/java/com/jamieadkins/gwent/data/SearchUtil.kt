@@ -1,10 +1,9 @@
 package com.jamieadkins.gwent.data
 
-import android.util.Log
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 
-fun searchCards (query: String, cardList: List<CardDetails>, locale: String): List<String> {
+fun searchCards(query: String, cardList: List<CardDetails>, locale: String): List<String> {
     val searchResults = ArrayList<CardSearchResult>()
     val cardIds = ArrayList<String>()
     var maxScore = 0
