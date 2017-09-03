@@ -233,19 +233,29 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 int count = dataSnapshot.getValue(Integer.class);
+                                RxDatabaseEvent.EventType type = RxDatabaseEvent.EventType.ADDED;
+                                if (count == 0) {
+                                    type = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
                                 emitter.onNext(new RxDatabaseEvent<Integer>(
                                         dataSnapshot.getKey(),
                                         count,
-                                        RxDatabaseEvent.EventType.ADDED));
+                                        type));
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                                 int count = dataSnapshot.getValue(Integer.class);
+                                RxDatabaseEvent.EventType type = RxDatabaseEvent.EventType.CHANGED;
+                                if (count == 0) {
+                                    type = RxDatabaseEvent.EventType.REMOVED;
+                                }
+
                                 emitter.onNext(new RxDatabaseEvent<Integer>(
                                         dataSnapshot.getKey(),
                                         count,
-                                        RxDatabaseEvent.EventType.CHANGED));
+                                        type));
                             }
 
                             @Override

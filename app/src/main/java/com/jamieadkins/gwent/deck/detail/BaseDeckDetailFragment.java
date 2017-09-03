@@ -22,12 +22,11 @@ import java.util.Map;
  * UI fragment that shows a list of the users decks.
  */
 
-public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.View> extends BaseFragment<T>
-        implements DeckDetailsContract.View {
+public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckDetailsView> extends BaseFragment<T>
+        implements DeckDetailsContract.DeckDetailsView {
     private static final int LEADER_INDEX = 0;
     protected String mDeckId;
     protected Deck mDeck;
-    private String mPatch;
     protected String mFactionId;
 
     private Map<String, SubHeader> mRowHeaders = new HashMap<>();

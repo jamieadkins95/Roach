@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.MenuItem;
 
 import com.jamieadkins.gwent.Injection;
@@ -9,18 +8,13 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
-import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.card.list.CardsPresenter;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.deck.detail.DeckBuilderContract;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.filter.FilterableItem;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +23,20 @@ import java.util.List;
  * UI fragment that shows a list of the users decks.
  */
 
-public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContract.View>
-        implements DeckBuilderContract.View {
+public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContract.CardDatabaseView>
+        implements DeckBuilderContract.CardDatabaseView {
 
     private String factionId;
     private String deckId;
 
     @Override
-    public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             factionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
             deckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
@@ -52,9 +46,10 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
 
     @Override
     public void setupPresenter() {
-       setPresenter(new DeckBuilderPresenter(deckId, factionId,
-               Injection.INSTANCE.provideDecksInteractor(getContext()),
-               Injection.INSTANCE.provideCardsInteractor(getContext())));
+        setPresenter(new CardDatabasePresenter(
+                deckId,
+                Injection.INSTANCE.provideDecksInteractor(getContext()),
+                Injection.INSTANCE.provideCardsInteractor(getContext())));
     }
 
     public static CardDatabaseFragment newInstance(String deckId, String factionId) {
@@ -128,7 +123,7 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
                         faction = Faction.NILFGAARD;
                         break;
                 }
-                filterItems = new Filterable[] {faction, Faction.NEUTRAL};
+                filterItems = new Filterable[]{faction, Faction.NEUTRAL};
                 break;
             case R.id.filter_rarity:
                 filteringOn = getString(R.string.rarity);
@@ -136,7 +131,7 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                filterItems = new Filterable[] {Type.BRONZE, Type.SILVER, Type.GOLD};
+                filterItems = new Filterable[]{Type.BRONZE, Type.SILVER, Type.GOLD};
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -156,25 +151,5 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     @Override
     public void updateCardCount(String cardId, int count) {
         getRecyclerViewAdapter().updateCardCount(cardId, count);
-    }
-
-    @Override
-    public void onCardAdded(CardDetails card) {
-        getRecyclerViewAdapter().addItem(card);
-    }
-
-    @Override
-    public void onCardRemoved(CardDetails card) {
-        getRecyclerViewAdapter().removeItem(card);
-    }
-
-    @Override
-    public void onDeckUpdated(@NonNull Deck deck) {
-        // Do nothing.
-    }
-
-    @Override
-    public void onLeaderChanged(CardDetails newLeader) {
-        // Do nothing.
     }
 }
