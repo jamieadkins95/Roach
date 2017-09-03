@@ -29,6 +29,8 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
     private var mCardsQuery: Query? = null
     private var mCardListener: ValueEventListener? = null
 
+    private var currentPatch: String = ""
+
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
         mPatchReference.keepSynced(true)
@@ -36,10 +38,16 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
     }
 
     private fun onPatchUpdated(patch: String?) {
-        patch.let {
+        patch?.let {
             mCardsReference = mDatabase.getReference("card-data/" + patch)
             // Keep Cards data in cache at all times.
             mCardsReference?.keepSynced(true)
+
+            if (currentPatch != patch) {
+                CardCache.clear()
+            }
+
+            currentPatch = patch
         }
     }
 
@@ -123,6 +131,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
                             emitter.onError(Throwable("Card doesn't exist."))
                             continue
                         }
+                        CardCache.cardsById[cardDetails.ingameId] = cardDetails
                         cardList.add(cardDetails)
                     }
 
@@ -171,30 +180,35 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
      * @param id id of the card to retrieve
      */
     override fun getCard(id: String): Single<CardDetails> {
-        return latestPatch.flatMap { patch ->
-            onPatchUpdated(patch)
-            Single.create(SingleOnSubscribe<CardDetails> { emitter ->
-                mCardsQuery = mCardsReference!!.child(id)
+        if (CardCache.cardsById[id] == null) {
+            return latestPatch.flatMap { patch ->
+                onPatchUpdated(patch)
+                Single.create(SingleOnSubscribe<CardDetails> { emitter ->
+                    mCardsQuery = mCardsReference!!.child(id)
 
-                mCardListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val cardDetails = dataSnapshot.getValue(CardDetails::class.java)
+                    mCardListener = object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val cardDetails = dataSnapshot.getValue(CardDetails::class.java)
 
-                        if (cardDetails == null) {
-                            emitter.onError(Throwable("Card doesn't exist."))
-                            return
+                            if (cardDetails == null) {
+                                emitter.onError(Throwable("Card doesn't exist."))
+                                return
+                            }
+
+                            CardCache.cardsById[id] = cardDetails
+                            emitter.onSuccess(cardDetails)
                         }
 
-                        emitter.onSuccess(cardDetails)
+                        override fun onCancelled(databaseError: DatabaseError?) {
+
+                        }
                     }
 
-                    override fun onCancelled(databaseError: DatabaseError?) {
-
-                    }
-                }
-
-                mCardsQuery!!.addListenerForSingleValueEvent(mCardListener)
-            }).applyComputationSchedulers()
+                    mCardsQuery!!.addListenerForSingleValueEvent(mCardListener)
+                }).applyComputationSchedulers()
+            }
+        } else {
+            return Single.just(CardCache.cardsById[id])
         }
     }
 
