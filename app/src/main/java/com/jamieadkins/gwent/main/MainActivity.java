@@ -66,11 +66,6 @@ public class MainActivity extends AuthenticationActivity implements
     private static final int SIGN_OUT_IDENTIFIER = 1002;
     private static final int NO_LAUNCH_ATTEMPT = -1;
 
-    private DeckListPresenter mDecksPresenter;
-    private DeckListPresenter mPublicDecksPresenter;
-    private CardsPresenter mCardsPresenter;
-    private CollectionPresenter mCollectionPresenter;
-
     private int mCurrentTab;
     private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
     private boolean newsItemShown = false;
