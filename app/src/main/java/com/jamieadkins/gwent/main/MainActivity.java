@@ -146,15 +146,13 @@ public class MainActivity extends AuthenticationActivity implements
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
                         mDrawerItems.get(R.id.tab_card_db),
-                        mDrawerItems.get(R.id.tab_public_decks),
                         mDrawerItems.get(R.id.tab_news),
                         mDrawerItems.get(R.id.tab_helper),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
                                 .withDivider(false),
                         mDrawerItems.get(R.id.tab_decks),
-                        mDrawerItems.get(R.id.tab_collection),
-                        mDrawerItems.get(R.id.tab_results)
+                        mDrawerItems.get(R.id.tab_collection)
                 )
                 .addStickyDrawerItems(
                         new PrimaryDrawerItem()
