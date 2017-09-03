@@ -21,3 +21,15 @@ fun <T> Single<T>.applySchedulers(): Single<T> {
 fun Completable.applySchedulers(): Completable {
     return subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
 }
+
+fun <T> Observable<T>.applyComputationSchedulers(): Observable<T> {
+    return subscribeOn(Schedulers.computation()).observeOn(Schedulers.computation())
+}
+
+fun <T> Single<T>.applyComputationSchedulers(): Single<T> {
+    return subscribeOn(Schedulers.computation()).observeOn(Schedulers.computation())
+}
+
+fun Completable.applyComputationSchedulers(): Completable {
+    return subscribeOn(Schedulers.computation()).observeOn(Schedulers.computation())
+}

@@ -73,9 +73,9 @@ class UserDeckDetailsPresenter(private val deckId: String,
                                         .applySchedulers()
                                         .subscribe { card ->
                                             view?.onCardAdded(card)
-                                            view?.updateCardCount(card.ingameId, event.value)
                                         }
                                         .addToComposite(disposable)
+                                view?.updateCardCount(event.key, event.value)
                             }
                             RxDatabaseEvent.EventType.REMOVED -> {
                                 cardsInteractor.getCard(event.key)
@@ -85,6 +85,7 @@ class UserDeckDetailsPresenter(private val deckId: String,
                                             view?.updateCardCount(card.ingameId, 0)
                                         }
                                         .addToComposite(disposable)
+                                view?.updateCardCount(event.key, 0)
                             }
                             RxDatabaseEvent.EventType.CHANGED -> {
                                 view?.updateCardCount(event.key, event.value)

@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
+import com.jamieadkins.commonutils.mvp2.applyComputationSchedulers
+import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.data.*
 
 /**
@@ -88,7 +90,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
         }
 
         filter?.let {
-            source = source.map { cardList ->
+            source = source.applyComputationSchedulers().map { cardList ->
                 val iterator = cardList.listIterator()
                 while (iterator.hasNext()) {
                     val card = iterator.next()
@@ -98,7 +100,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
             }
         }
 
-        return source.map { content -> CardListResult.Success(content) }
+        return source.applyComputationSchedulers().map { content -> CardListResult.Success(content) }
     }
 
     private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {
@@ -111,7 +113,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
         return latestPatch.flatMap { patch ->
             onPatchUpdated(patch)
             mCardsQuery = mCardsReference!!.orderByChild("name/" + locale)
-            cardDataSnapshot.flatMap { dataSnapshot ->
+            cardDataSnapshot.applyComputationSchedulers().flatMap { dataSnapshot ->
                 Single.create(SingleOnSubscribe<MutableList<CardDetails>> { emitter ->
                     val cardList = mutableListOf<CardDetails>()
                     for (cardSnapshot in dataSnapshot.children) {
@@ -127,7 +129,7 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
                     emitter.onSuccess(cardList)
                 })
                         // IMPORTANT: Firebase forces us back onto UI thread.
-                        .subscribeOn(Schedulers.io())
+                        .applyComputationSchedulers()
             }
         }
     }
@@ -171,30 +173,28 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
     override fun getCard(id: String): Single<CardDetails> {
         return latestPatch.flatMap { patch ->
             onPatchUpdated(patch)
-            Single.defer {
-                Single.create(SingleOnSubscribe<CardDetails> { emitter ->
-                    mCardsQuery = mCardsReference!!.child(id)
+            Single.create(SingleOnSubscribe<CardDetails> { emitter ->
+                mCardsQuery = mCardsReference!!.child(id)
 
-                    mCardListener = object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val cardDetails = dataSnapshot.getValue(CardDetails::class.java)
+                mCardListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val cardDetails = dataSnapshot.getValue(CardDetails::class.java)
 
-                            if (cardDetails == null) {
-                                emitter.onError(Throwable("Card doesn't exist."))
-                                return
-                            }
-
-                            emitter.onSuccess(cardDetails)
+                        if (cardDetails == null) {
+                            emitter.onError(Throwable("Card doesn't exist."))
+                            return
                         }
 
-                        override fun onCancelled(databaseError: DatabaseError?) {
-
-                        }
+                        emitter.onSuccess(cardDetails)
                     }
 
-                    mCardsQuery!!.addListenerForSingleValueEvent(mCardListener)
-                })
-            }
+                    override fun onCancelled(databaseError: DatabaseError?) {
+
+                    }
+                }
+
+                mCardsQuery!!.addListenerForSingleValueEvent(mCardListener)
+            }).applyComputationSchedulers()
         }
     }
 
