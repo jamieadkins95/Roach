@@ -8,14 +8,16 @@ import com.jamieadkins.gwent.data.Deck
  */
 
 interface DeckDetailsContract {
-    interface DeckDetailsView : DeckBuilderContract.View {
-        fun onDeckUpdated(deck: Deck)
-
+    interface DeckDetailsView : DeckSummaryView, DeckBuilderContract.View {
         fun onCardAdded(card: CardDetails)
 
         fun onCardRemoved(card: CardDetails)
 
         fun onLeaderChanged(newLeader: CardDetails)
+    }
+
+    interface DeckSummaryView {
+        fun onDeckUpdated(deck: Deck)
     }
 
     interface Presenter : DeckBuilderContract.Presenter

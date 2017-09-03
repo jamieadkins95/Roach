@@ -35,6 +35,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
+import io.reactivex.schedulers.Schedulers;
 import kotlin.NotImplementedError;
 
 import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
@@ -376,6 +377,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
 
                                 if (evaluate) {
                                     deck.evaluateDeck(cardsInteractor)
+                                            .subscribeOn(Schedulers.io())
                                             .subscribe(
                                                     new BaseCompletableObserver() {
                                                         @Override

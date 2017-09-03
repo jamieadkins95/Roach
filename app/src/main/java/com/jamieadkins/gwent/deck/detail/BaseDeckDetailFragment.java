@@ -110,6 +110,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
 
     @Override
     public void onDeckUpdated(Deck deck) {
-        // Do nothing.
+        mDeck = deck;
     }
 }

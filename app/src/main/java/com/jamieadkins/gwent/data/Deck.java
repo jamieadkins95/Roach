@@ -19,6 +19,7 @@ import io.reactivex.CompletableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Class that models what a deck is.
@@ -165,7 +166,10 @@ public class Deck implements RecyclerViewItem {
                             cards = new HashMap<String, CardDetails>();
                         }
 
-                        cardsInteractor.getCard(leaderId).subscribe(
+                        cardsInteractor.getCard(leaderId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe(
                                 new BaseSingleObserver<CardDetails>() {
                                     @Override
                                     public void onSuccess(CardDetails value) {
@@ -186,7 +190,10 @@ public class Deck implements RecyclerViewItem {
                             cardIds.add(cardId);
                         }
 
-                        cardsInteractor.getCards(new CardFilter(), cardIds).subscribe(
+                        cardsInteractor.getCards(new CardFilter(), cardIds)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe(
                                 new BaseSingleObserver<CardListResult>() {
                                     @Override
                                     public void onSuccess(CardListResult result) {

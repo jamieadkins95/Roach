@@ -86,6 +86,9 @@ class UserDeckDetailsPresenter(private val deckId: String,
                                         }
                                         .addToComposite(disposable)
                             }
+                            RxDatabaseEvent.EventType.CHANGED -> {
+                                view?.updateCardCount(event.key, event.value)
+                            }
                         }
                     }
 
