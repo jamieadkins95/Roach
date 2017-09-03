@@ -270,6 +270,8 @@ public class MainActivity extends AuthenticationActivity implements
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
+                buttonNewDeck.setVisibility(View.VISIBLE);
+                buttonNewDeck.setEnabled(true);
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;
