@@ -29,6 +29,9 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@color/white"
+        app:layout_anchor="@id/contentContainer"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.jamieadkins.gwent.deck.detail.ScrollAwareFabBehavior"
         app:srcCompat="@drawable/ic_add_cards" />
 
 </android.support.design.widget.CoordinatorLayout>
