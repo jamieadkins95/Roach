@@ -55,7 +55,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (mDeckBuilderOpen) {
-                    onBackPressed();
+                    closeDeckBuilderMenu();
                     return true;
                 } else {
                     return super.onOptionsItemSelected(item);
@@ -73,14 +73,23 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        closeDeckBuilderMenu();
+        if (mDeckBuilderOpen) {
+            closeDeckBuilderMenu();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     protected void closeDeckBuilderMenu() {
         mDeckBuilderOpen = false;
         mAddCardButton.show();
         getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back, getTheme()));
+
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down)
+                .show(fragment)
+                .hide(bottomFragment)
+                .commit();
     }
 
     protected void openDeckBuilderMenu() {
@@ -92,7 +101,6 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
                 .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down)
                 .show(bottomFragment)
                 .hide(fragment)
-                .addToBackStack(null)
                 .commit();
     }
 }

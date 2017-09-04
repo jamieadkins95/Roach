@@ -97,6 +97,13 @@ public class MainActivity extends AuthenticationActivity implements
         }
 
         buttonNewDeck = findViewById(R.id.new_deck);
+        buttonNewDeck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewDeckDialog newDeckDialog = new NewDeckDialog();
+                newDeckDialog.show(getSupportFragmentManager(), newDeckDialog.getClass().getSimpleName());
+            }
+        });
 
         checkLanguage();
         checkIntent();
@@ -271,7 +278,6 @@ public class MainActivity extends AuthenticationActivity implements
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
                 buttonNewDeck.setVisibility(View.VISIBLE);
-                buttonNewDeck.setEnabled(true);
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;
@@ -290,17 +296,8 @@ public class MainActivity extends AuthenticationActivity implements
 
         if (fragment.getTag().equals(TAG_USER_DECKS)) {
             buttonNewDeck.setVisibility(View.VISIBLE);
-            buttonNewDeck.setEnabled(true);
-            buttonNewDeck.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NewDeckDialog newDeckDialog = new NewDeckDialog();
-                    newDeckDialog.show(getSupportFragmentManager(), newDeckDialog.getClass().getSimpleName());
-                }
-            });
         } else {
             buttonNewDeck.setVisibility(View.GONE);
-            buttonNewDeck.setEnabled(false);
         }
 
         // Our options menu will be different for different tabs.
