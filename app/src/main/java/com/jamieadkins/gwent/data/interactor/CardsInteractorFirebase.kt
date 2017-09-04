@@ -108,7 +108,9 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
             }
         }
 
-        return source.map { content -> CardListResult.Success(content) }
+        return Single.defer {
+            source.map { content -> CardListResult.Success(content) }
+        }
     }
 
     private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {
@@ -208,7 +210,9 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
                 }).applyComputationSchedulers()
             }
         } else {
-            return Single.just(CardCache.cardsById[id])
+            return Single.defer {
+                Single.just(CardCache.cardsById[id])
+            }
         }
     }
 
