@@ -1,4 +1,4 @@
 package com.jamieadkins.commonutils.mvp;
 
-public interface BaseInteractor<T> {
+public interface BaseInteractor {
 }

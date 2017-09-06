@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.card
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.support.v4.content.ContextCompat
 import android.support.v7.preference.PreferenceManager
 import android.util.AttributeSet
@@ -11,16 +10,9 @@ import android.widget.TextView
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.firebase.ui.storage.images.FirebaseImageLoader
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.Faction
-import com.jamieadkins.gwent.data.FirebaseUtils
 import com.jamieadkins.gwent.data.Rarity
 import com.jamieadkins.gwent.data.Type
 
@@ -83,17 +75,14 @@ open class LargeCardView : SimpleCardView {
         if (sharedPreferences.getBoolean(imageView!!.context.getString(R.string.pref_show_images_key), true)) {
             imageView?.visibility = View.VISIBLE
 
-            imageView?.setImageDrawable(null)
-
-            mImageUrl?.let {
-                val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(it)
-
+            if (mImageUrl != null) {
                 Glide.with(context)
-                        .using(FirebaseImageLoader())
-                        .load(storageReference)
+                        .load(mImageUrl)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .fitCenter()
                         .into(imageView)
+            } else {
+                imageView?.setImageDrawable(null)
             }
         }
     }

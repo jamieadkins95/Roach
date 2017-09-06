@@ -8,8 +8,8 @@ android {
         applicationId "com.jamieadkins.gwent"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 41
-        versionName "v1.5.4"
+        versionCode 44
+        versionName "v2.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -17,7 +17,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CARD_DATA_VERSION", "2"
+            buildConfigField "String", "CARD_DATA_VERSION", '"2"'
         }
 
         debug {
@@ -26,6 +26,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
+        }
+    }
+    productFlavors {
+        prod {
+
+        }
+        mock {
+
+        }
+    }
+
+    // Remove mockRelease as it's not needed.
+    android.variantFilter { variant ->
+        if(variant.buildType.name.equals('release')
+                && variant.getFlavors().get(0).name.equals('mock')) {
+            variant.setIgnore(true)
         }
     }
 
@@ -58,25 +74,22 @@ dependencies {
     }
     compile "com.android.support:customtabs:$support_library_version"
 
-    // Common Utils.
+    // Utils.
     compile project(':commonutils')
-
-    // Gwent API Wrapper.
-    compile project(':jgaw')
+    compile 'me.xdrop:fuzzywuzzy:1.1.8'
 
     // RxJava.
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.1'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
 
     // Firebase
     compile "com.google.firebase:firebase-auth:$google_services_version"
-    compile "com.firebaseui:firebase-ui-auth:1.0.1"
+    compile "com.firebaseui:firebase-ui-auth:1.2.0"
     compile "com.google.android.gms:play-services-auth:$google_services_version"
     compile "com.google.firebase:firebase-database:$google_services_version"
     compile "com.google.firebase:firebase-storage:$google_services_version"
-    compile "com.firebaseui:firebase-ui-storage:1.0.1"
     compile "com.google.firebase:firebase-messaging:$google_services_version"
     releaseCompile "com.google.firebase:firebase-crash:$google_services_version"
 

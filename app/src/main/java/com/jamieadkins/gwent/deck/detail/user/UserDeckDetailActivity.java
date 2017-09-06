@@ -1,53 +1,52 @@
 package com.jamieadkins.gwent.deck.detail.user;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.Rarity;
-import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
-import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
-import com.jamieadkins.gwent.filter.FilterableItem;
-import com.jamieadkins.gwent.main.MainActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by jamiea on 27/02/17.
- */
-
-public class UserDeckDetailActivity extends DeckDetailActivity
-        implements UserDeckDetailFragment.DeckBuilderListener {
+public class UserDeckDetailActivity extends DeckDetailActivity {
     private static final String STATE_DECK_BUILDER_OPEN = "com.jamieadkins.com.gwent.deck.open";
+    private static final String TAG_BOTTOM_FRAGMENT = "com.jamieadkins.com.gwent.deck.builder";
 
     private boolean mDeckBuilderOpen = false;
-    private UserDeckDetailFragment mFragment;
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-
-        if (fragment instanceof UserDeckDetailFragment) {
-            mFragment = (UserDeckDetailFragment) fragment;
-            mFragment.setDeckBuilderListener(this);
-        }
-    }
+    private Fragment bottomFragment;
+    private FloatingActionButton mAddCardButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAddCardButton = findViewById(R.id.deck_add);
+        mAddCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDeckBuilderMenu();
+            }
+        });
         if (savedInstanceState != null) {
-            onDeckBuilderStateChanged(savedInstanceState.getBoolean(STATE_DECK_BUILDER_OPEN));
+            mDeckBuilderOpen = savedInstanceState.getBoolean(STATE_DECK_BUILDER_OPEN);
+            if (mDeckBuilderOpen) {
+                mAddCardButton.hide();
+                getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
+            }
+            bottomFragment = getSupportFragmentManager().findFragmentByTag(TAG_BOTTOM_FRAGMENT);
+        } else {
+            bottomFragment = CardDatabaseFragment.newInstance(mDeckId, mFactionId);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentContainer2, bottomFragment, TAG_BOTTOM_FRAGMENT)
+                    .hide(bottomFragment)
+                    .commit();
+        }
+
+        if (mDeckBuilderOpen) {
+            openDeckBuilderMenu();
+        } else {
+            closeDeckBuilderMenu();
         }
     }
 
@@ -56,7 +55,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (mDeckBuilderOpen) {
-                    mFragment.closeDeckBuilderMenu();
+                    closeDeckBuilderMenu();
                     return true;
                 } else {
                     return super.onOptionsItemSelected(item);
@@ -75,21 +74,33 @@ public class UserDeckDetailActivity extends DeckDetailActivity
     @Override
     public void onBackPressed() {
         if (mDeckBuilderOpen) {
-            mFragment.closeDeckBuilderMenu();
+            closeDeckBuilderMenu();
         } else {
             super.onBackPressed();
         }
     }
 
-    @Override
-    public void onDeckBuilderStateChanged(boolean open) {
-        invalidateOptionsMenu();
-        mDeckBuilderOpen = open;
+    protected void closeDeckBuilderMenu() {
+        mDeckBuilderOpen = false;
+        mAddCardButton.show();
+        getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back, getTheme()));
 
-        if (mDeckBuilderOpen) {
-            getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
-        } else {
-            getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back, getTheme()));
-        }
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down)
+                .show(fragment)
+                .hide(bottomFragment)
+                .commit();
+    }
+
+    protected void openDeckBuilderMenu() {
+        mDeckBuilderOpen = true;
+        mAddCardButton.hide();
+        getSupportActionBar().setHomeAsUpIndicator(VectorDrawableCompat.create(getResources(), R.drawable.ic_close, getTheme()));
+
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down)
+                .show(bottomFragment)
+                .hide(fragment)
+                .commit();
     }
 }

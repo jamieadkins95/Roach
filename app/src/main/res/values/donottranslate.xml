@@ -34,13 +34,35 @@
         <item>es-MX</item>
         <item>fr-FR</item>
         <item>it-IT</item>
-        <item>jp-JP</item>
+        <item>ja-JP</item>
         <item>pl-PL</item>
         <item>pt-BR</item>
         <item>ru-RU</item>
-        <item>zh-CN</item>
-        <item>zh-TW</item>
     </array>
+
+    <array translatable="false" name="locales_readable">
+        <item>@string/english_en</item>
+        <item>@string/german_de</item>
+        <item>@string/spanish_es</item>
+        <item>@string/spanish_mx</item>
+        <item>@string/french_fr</item>
+        <item>@string/italian_it</item>
+        <item>@string/japanese_ja</item>
+        <item>@string/polish_pl</item>
+        <item>@string/portuguese_br</item>
+        <item>@string/russian_ru</item>
+    </array>
+
+    <string name="english_en" translatable="false">English</string>
+    <string name="german_de" translatable="false">Deutsch</string>
+    <string name="spanish_es" translatable="false">Español</string>
+    <string name="spanish_mx" translatable="false">Español (AL)</string>
+    <string name="french_fr" translatable="false">Français</string>
+    <string name="italian_it" translatable="false">Italiano</string>
+    <string name="japanese_ja" translatable="false">日本語</string>
+    <string name="polish_pl" translatable="false">Polski</string>
+    <string name="portuguese_br" translatable="false">Português do Brasil</string>
+    <string name="russian_ru" translatable="false">Pусский</string>
 
     <string name="en" translatable="false">en</string>
     <string name="de" translatable="false">de</string>
@@ -67,15 +89,15 @@
 
     <array translatable="false" name="locales_news_readable">
         <item>@string/none</item>
-        <item>English</item>
-        <item>Deutsch</item>
-        <item>Español</item>
-        <item>Français</item>
-        <item>Italiano</item>
-        <item>日本語</item>
-        <item>Polski</item>
-        <item>Português (Brazil)</item>
-        <item>Pусский</item>
+        <item>@string/english_en</item>
+        <item>@string/german_de</item>
+        <item>@string/spanish_es</item>
+        <item>@string/french_fr</item>
+        <item>@string/italian_it</item>
+        <item>@string/japanese_ja</item>
+        <item>@string/polish_pl</item>
+        <item>@string/portuguese_br</item>
+        <item>@string/russian_ru</item>
     </array>
 
     <string translatable="false" name="default_locale">en-US</string>
@@ -85,6 +107,7 @@
 
     <string translatable="false" name="pref_news_notifications_key">com.jamieadkins.gwent.notifications.news</string>
     <string translatable="false" name="pref_patch_notifications_key">com.jamieadkins.gwent.notifications.patch</string>
+    <string translatable="false" name="pref_patch_notifications_topic_key">com.jamieadkins.gwent.notifications.patch.topic</string>
     <string translatable="false" name="notification_channel_id">com.jamieadkins.gwent</string>
     <string translatable="false" name="notification_channel_name">Gwent</string>
 </resources>

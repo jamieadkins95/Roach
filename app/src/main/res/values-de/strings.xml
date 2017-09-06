@@ -117,4 +117,16 @@
     <string name="flag_error_message">Falls es einen Fehler bei den Karten gibt, beschreibe bitte was falsch ist, damit wir ihn schnellstmöglich beheben können!</string>
     <string name="mistake_reported">Fehler gemeldet!</string>
     <string name="update_patch">Update</string>
+    <string name="pref_appearance">Aussehen</string>
+    <string name="pref_notifications">Benachrichtigungen</string>
+    <string name="news_notifications">Nachrichten</string>
+    <string name="news_notifications_summary">Benachrichtigung über Gwent News erhalten.</string>
+    <string name="none">Keiner</string>
+    <string name="patch_notifications_summary">Empfangen Sie Benachrichtigungen, wenn Roach auf einen neuen Gwent Patch aktualisiert wird.</string>
+    <string name="patch_notifications">Neue Patches</string>
+    <string name="loyalty">Loyalität</string>
+    <string name="loyal">Treu</string>
+    <string name="disloyal">Illoyal</string>
+    <string name="no_results">Keine Ergebnisse :(</string>
+    <string name="italian">Italienisch</string>
 </resources>

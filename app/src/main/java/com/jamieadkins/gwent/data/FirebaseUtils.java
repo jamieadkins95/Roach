@@ -87,11 +87,15 @@ public class FirebaseUtils {
     }
 
     public static void logAnalytics(Context context, String id, String name, String contentType) {
+        logAnalytics(context, id, name, contentType, FirebaseAnalytics.Event.SELECT_CONTENT);
+    }
+
+    public static void logAnalytics(Context context, String id, String name, String contentType, String eventType) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType);
         FirebaseAnalytics.getInstance(context)
-                .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                .logEvent(eventType, bundle);
     }
 }

@@ -14,14 +14,10 @@ import io.reactivex.Observable;
 
 public interface CollectionContract {
     interface View extends CardsContract.View {
-        // Don't need any additional methods.
+        void showCollection(String cardId, Map<String, Long> collection);
     }
 
     interface Presenter extends CardsContract.Presenter {
-        Observable<RxDatabaseEvent<Map<String, Long>>> getCollection();
-
-        void addCard(String cardId, String variationId);
-
-        void removeCard(String cardId, String variationId);
+        // Nothing extra here.
     }
 }

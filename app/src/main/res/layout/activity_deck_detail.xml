@@ -9,10 +9,29 @@
     <include layout="@layout/appbar_layout_with_deck_summary" />
 
     <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/contentContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/deck_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/white"
+        app:layout_anchor="@id/contentContainer"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.jamieadkins.gwent.deck.detail.ScrollAwareFabBehavior"
+        app:srcCompat="@drawable/ic_add_cards" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -9,14 +9,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +52,18 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
+
+    }
+
+    @Override
+    public void showEmptyView() {
+
+    }
+
+    @Override
+    public void showGenericErrorMessage() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error))));
     }
 
     @Override
@@ -67,7 +83,7 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
                 new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new GwentRecyclerViewAdapter.Builder().build();
-        mAdapter.addItem(0, new SubHeader(getString(R.string.related_cards)));
+        //mAdapter.addItem(0, new SubHeader(getString(R.string.related_cards)));
         mRecyclerView.setAdapter(mAdapter);
 
         mRefreshContainer = (SwipeRefreshLayout) contentView.findViewById(R.id.refreshContainer);
@@ -79,46 +95,18 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        CardFilter cardFilter = new CardFilter();
-        for (String id : mCardIds) {
-            cardFilter.addCardId(id);
-        }
         mRefreshContainer.setEnabled(true);
         mRefreshContainer.setRefreshing(true);
-        mPresenter.getCards(cardFilter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<CardDetails>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<CardDetails> value) {
-                        switch (value.getEventType()) {
-                            case ADDED:
-                                mAdapter.addItem(value.getValue());
-                                break;
-                            case REMOVED:
-                                mAdapter.removeItem(value.getValue());
-                                break;
-                            case CHANGED:
-                                mAdapter.updateItem(value.getValue());
-                                break;
-                            case COMPLETE:
-                                mRefreshContainer.setRefreshing(false);
-                                mRefreshContainer.setEnabled(false);
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        mRefreshContainer.setRefreshing(false);
-                        mRefreshContainer.setEnabled(false);
-                    }
-                });
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList(STATE_CARD_IDS, mCardIds);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean loading) {
+        mRefreshContainer.setRefreshing(true);
     }
 }

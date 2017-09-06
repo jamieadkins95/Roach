@@ -5,13 +5,10 @@ import android.view.ViewGroup;
 
 import com.jamieadkins.commonutils.ui.BaseRecyclerViewAdapter;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
-import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
 import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Collection;
-import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckSummaryViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckViewHolder;
@@ -43,8 +40,6 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
     private Controls mControls = Controls.NONE;
-    private CollectionCardViewHolder.CollectionButtonListener mCollectionButtonListener;
-    private DeckDetailCardViewHolder.DeckDetailButtonListener mDeckButtonListener;
     private Map<String, Map<String, Long>> mCollection;
     private Map<String, Integer> mDeckCardCounts = new HashMap<>();
 
@@ -69,8 +64,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
                     case TYPE_CARD_LEADER:
                         return new CollectionCardViewHolder(
                                 LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.card_collection_layout, parent, false),
-                                mCollectionButtonListener);
+                                        .inflate(R.layout.card_collection_layout, parent, false));
                     case TYPE_DECK:
                         return new DeckViewHolder(LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.item_deck, parent, false));
@@ -81,8 +75,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
                 switch (viewType) {
                     case TYPE_CARD:
                         return new DeckDetailCardViewHolder(LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.card_deck_detail_layout, parent, false),
-                                mDeckButtonListener);
+                                .inflate(R.layout.card_deck_detail_layout, parent, false));
                     case TYPE_CARD_LEADER:
                         return new BaseCardViewHolder(LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.card_detail_layout, parent, false));
@@ -176,14 +169,14 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
                     @Override
                     public void onSuccess(Integer value) {
                         if (value != -1) {
-                            removeItem(value);
+                            removeItemAt(value);
                         }
                     }
                 });
     }
 
     private void bindDeckCardCounts(DeckDetailCardViewHolder holder, int position) {
-        CardDetails cardDetails = (CardDetails) getItemAt(position);
+        CardDetails cardDetails = (CardDetails) getItems().get(position);
         if (mDeckCardCounts != null &&
                 mDeckCardCounts.containsKey(cardDetails.getIngameId())) {
             holder.setItemCount(mDeckCardCounts.get(cardDetails.getIngameId()));
@@ -193,7 +186,7 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
     private void bindCollection(CollectionCardViewHolder holder, int position) {
-        CardDetails cardDetails = (CardDetails) getItemAt(position);
+        CardDetails cardDetails = (CardDetails) getItems().get(position);
         if (mCollection != null &&
                 mCollection.containsKey(cardDetails.getIngameId())) {
 
@@ -220,17 +213,8 @@ public class GwentRecyclerViewAdapter extends BaseRecyclerViewAdapter {
             mAdapter = new GwentRecyclerViewAdapter();
         }
 
-        public Builder withCollectionControls(
-                CollectionCardViewHolder.CollectionButtonListener listener) {
-            mAdapter.mControls = Controls.COLLECTION;
-            mAdapter.mCollectionButtonListener = listener;
-            return this;
-        }
-
-        public Builder withDeckControls(
-                DeckDetailCardViewHolder.DeckDetailButtonListener listener) {
-            mAdapter.mControls = Controls.DECK;
-            mAdapter.mDeckButtonListener = listener;
+        public Builder withControls(Controls controls) {
+            mAdapter.mControls = controls;
             return this;
         }
 

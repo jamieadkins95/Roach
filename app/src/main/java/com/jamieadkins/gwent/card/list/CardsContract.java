@@ -1,28 +1,16 @@
 package com.jamieadkins.gwent.card.list;
 
-import com.jamieadkins.commonutils.mvp.BasePresenter;
-import com.jamieadkins.commonutils.mvp.BaseView;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
-
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import com.jamieadkins.commonutils.mvp2.BaseListView;
 
 /**
  * Specifies the contract between the view and the presenter.
  */
 
 public interface CardsContract {
-    interface View extends BaseView<Presenter> {
-        // No additional methods required.
+    interface View extends BaseListView {
     }
 
-    interface Presenter extends BasePresenter {
-        void stop();
-
-        Observable<RxDatabaseEvent<CardDetails>> getCards(CardFilter cardFilter);
-
-        Single<RxDatabaseEvent<CardDetails>> getCard(String cardId);
+    interface Presenter {
+        // Nothing here.
     }
 }

@@ -27,7 +27,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initialiseContentView() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail);
     }
 
     @Override
@@ -55,13 +55,7 @@ public class DetailActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, fragment, fragment.getClass().getSimpleName())
                     .commit();
-        } else {
-            fragment = getSupportFragmentManager().findFragmentByTag(DetailFragment.class.getSimpleName());
         }
-
-        new DetailPresenter(
-                (DetailContract.View) fragment,
-                CardsInteractorFirebase.Companion.getInstance());
     }
 
     @Override

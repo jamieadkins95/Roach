@@ -3,18 +3,23 @@ package com.jamieadkins.gwent.data.interactor
 import com.google.firebase.database.*
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.FirebaseUtils
 import io.reactivex.*
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import kotlin.collections.ArrayList
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
+import com.jamieadkins.commonutils.mvp2.applyComputationSchedulers
+import com.jamieadkins.commonutils.mvp2.applySchedulers
+import com.jamieadkins.gwent.data.*
 
 /**
  * Deals with firebase.
  */
 
-class CardsInteractorFirebase private constructor() : CardsInteractor {
+class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
 
     private val mDatabase = FirebaseUtils.getDatabase()
     private var mCardsReference: DatabaseReference? = null
@@ -23,7 +28,8 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     private var mCardsQuery: Query? = null
     private var mCardListener: ValueEventListener? = null
-    private var mLocale = "en-US"
+
+    private var currentPatch: String = ""
 
     init {
         mPatchReference = mDatabase.getReference(PATCH_PATH)
@@ -32,10 +38,16 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
     }
 
     private fun onPatchUpdated(patch: String?) {
-        patch.let {
+        patch?.let {
             mCardsReference = mDatabase.getReference("card-data/" + patch)
             // Keep Cards data in cache at all times.
             mCardsReference?.keepSynced(true)
+
+            if (currentPatch != patch) {
+                CardCache.clear()
+            }
+
+            currentPatch = patch
         }
     }
 
@@ -60,54 +72,90 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
             })
         }
 
-    override fun setLocale(locale: String) {
-        mLocale = locale
+    override fun getCards(filter: CardFilter): Single<CardListResult> {
+        return getCards(filter, null, null)
     }
 
-    override fun getCards(filter: CardFilter): Observable<RxDatabaseEvent<CardDetails>> {
-        return latestPatch.flatMapObservable { patch ->
-            onPatchUpdated(patch)
-            mCardsQuery = mCardsReference!!.orderByChild("name/" + mLocale)
+    override fun getCards(filter: CardFilter?, cardIds: List<String>): Single<CardListResult> {
+        return getCards(filter, null, cardIds)
+    }
 
-            if (filter.searchQuery != null) {
-                val query = filter.searchQuery
-                val charValue = query[query.length - 1].toInt()
-                var endQuery = query.substring(0, query.length - 1)
-                endQuery += (charValue + 1).toChar()
+    override fun getCards(filter: CardFilter?, query: String?): Single<CardListResult> {
+        return getCards(filter, query, null)
+    }
 
-                mCardsQuery = mCardsQuery!!.startAt(query)
-                        // No 'contains' query so have to fudge it.
-                        .endAt(endQuery)
+    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Single<CardListResult> {
+        var source: Single<MutableList<CardDetails>> = getCards()
+
+        if (query != null) {
+            source = getCards().applyComputationSchedulers().flatMap { cardList ->
+                val searchResults = searchCards(query, cardList, locale)
+                recordSearchQuery(query, searchResults)
+                getCards(searchResults)
             }
-            cardDataSnapshot.flatMapObservable { dataSnapshot ->
-                Observable.create(ObservableOnSubscribe<RxDatabaseEvent<CardDetails>> { emitter ->
+        } else if (cardIds != null) {
+            source = getCards(cardIds)
+        }
+
+        filter?.let {
+            source = source.applyComputationSchedulers().map { cardList ->
+                val iterator = cardList.listIterator()
+                while (iterator.hasNext()) {
+                    val card = iterator.next()
+                    if (!filter.doesCardMeetFilter(card)) iterator.remove()
+                }
+                cardList
+            }
+        }
+
+        return Single.defer {
+            source.map { content -> CardListResult.Success(content) }
+        }
+    }
+
+    private fun getCards(cardIds: List<String>): Single<MutableList<CardDetails>> {
+        val singles: ArrayList<Single<CardDetails>> = ArrayList()
+        cardIds.forEach { singles.add(getCard(it)) }
+        return Single.merge(singles).toList()
+    }
+
+    private fun getCards(): Single<MutableList<CardDetails>> {
+        return latestPatch.flatMap { patch ->
+            onPatchUpdated(patch)
+            mCardsQuery = mCardsReference!!.orderByChild("name/" + locale)
+            cardDataSnapshot.applyComputationSchedulers().flatMap { dataSnapshot ->
+                Single.create(SingleOnSubscribe<MutableList<CardDetails>> { emitter ->
+                    val cardList = mutableListOf<CardDetails>()
                     for (cardSnapshot in dataSnapshot.children) {
                         val cardDetails = cardSnapshot.getValue(CardDetails::class.java)
 
                         if (cardDetails == null) {
                             emitter.onError(Throwable("Card doesn't exist."))
-                            emitter.onComplete()
-                            return@ObservableOnSubscribe
+                            continue
                         }
-
-                        // Only add card if the card meets all the filters.
-                        // Also check name and info are not null. Those are dud cards.
-                        if (filter.doesCardMeetFilter(cardDetails)) {
-                            emitter.onNext(
-                                    RxDatabaseEvent(
-                                            cardSnapshot.key,
-                                            cardDetails,
-                                            RxDatabaseEvent.EventType.ADDED
-                                    ))
-                        }
+                        CardCache.cardsById[cardDetails.ingameId] = cardDetails
+                        cardList.add(cardDetails)
                     }
 
-                    emitter.onComplete()
+                    emitter.onSuccess(cardList)
                 })
                         // IMPORTANT: Firebase forces us back onto UI thread.
-                        .subscribeOn(Schedulers.io())
+                        .applyComputationSchedulers()
             }
         }
+    }
+
+    private fun recordSearchQuery(query: String, results: List<String>): String {
+        val searchReference = mDatabase.getReference("/search/queries")
+        val key = searchReference.push().key
+        val firebaseUpdates = HashMap<String, Any>()
+        val queryMap = HashMap<String, Any>()
+        queryMap.put("query", query)
+        queryMap.put("results", results)
+        firebaseUpdates.put(key, queryMap)
+
+        searchReference.updateChildren(firebaseUpdates)
+        return key
     }
 
     private val cardDataSnapshot: Single<DataSnapshot>
@@ -133,11 +181,11 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
      * @param id id of the card to retrieve
      */
-    override fun getCard(id: String): Single<RxDatabaseEvent<CardDetails>> {
-        return latestPatch.flatMap { patch ->
-            onPatchUpdated(patch)
-            Single.defer {
-                Single.create(SingleOnSubscribe<RxDatabaseEvent<CardDetails>> { emitter ->
+    override fun getCard(id: String): Single<CardDetails> {
+        if (CardCache.cardsById[id] == null) {
+            return latestPatch.flatMap { patch ->
+                onPatchUpdated(patch)
+                Single.create(SingleOnSubscribe<CardDetails> { emitter ->
                     mCardsQuery = mCardsReference!!.child(id)
 
                     mCardListener = object : ValueEventListener {
@@ -149,12 +197,8 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                                 return
                             }
 
-                            emitter.onSuccess(
-                                    RxDatabaseEvent(
-                                            dataSnapshot.key,
-                                            cardDetails,
-                                            RxDatabaseEvent.EventType.ADDED
-                                    ))
+                            CardCache.cardsById[id] = cardDetails
+                            emitter.onSuccess(cardDetails)
                         }
 
                         override fun onCancelled(databaseError: DatabaseError?) {
@@ -163,7 +207,11 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
                     }
 
                     mCardsQuery!!.addListenerForSingleValueEvent(mCardListener)
-                })
+                }).applyComputationSchedulers()
+            }
+        } else {
+            return Single.defer {
+                Single.just(CardCache.cardsById[id])
             }
         }
     }
@@ -195,6 +243,5 @@ class CardsInteractorFirebase private constructor() : CardsInteractor {
 
     companion object {
         private val PATCH_PATH = "patch/" + BuildConfig.CARD_DATA_VERSION
-        val instance: CardsInteractorFirebase by lazy { CardsInteractorFirebase() }
     }
 }

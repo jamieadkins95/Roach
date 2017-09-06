@@ -6,16 +6,15 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.jamieadkins.gwent.BuildConfig;
@@ -26,19 +25,13 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
-import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.card.list.CardsPresenter;
-import com.jamieadkins.gwent.collection.CollectionContract;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.collection.CollectionPresenter;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
-import com.jamieadkins.gwent.data.interactor.DecksInteractorFirebase;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
-import com.jamieadkins.gwent.deck.list.DecksContract;
-import com.jamieadkins.gwent.deck.list.DecksPresenter;
+import com.jamieadkins.gwent.deck.list.DeckListPresenter;
+import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -73,11 +66,6 @@ public class MainActivity extends AuthenticationActivity implements
     private static final int SIGN_OUT_IDENTIFIER = 1002;
     private static final int NO_LAUNCH_ATTEMPT = -1;
 
-    private DecksPresenter mDecksPresenter;
-    private DecksPresenter mPublicDecksPresenter;
-    private CardsPresenter mCardsPresenter;
-    private CollectionPresenter mCollectionPresenter;
-
     private int mCurrentTab;
     private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
     private boolean newsItemShown = false;
@@ -94,6 +82,8 @@ public class MainActivity extends AuthenticationActivity implements
         }
     };
 
+    private FloatingActionButton buttonNewDeck;
+
     @Override
     public void initialiseContentView() {
         setContentView(R.layout.activity_main);
@@ -106,8 +96,18 @@ public class MainActivity extends AuthenticationActivity implements
             newsItemShown = savedInstanceState.getBoolean(STATE_NEWS_SHOWN, false);
         }
 
+        buttonNewDeck = findViewById(R.id.new_deck);
+        buttonNewDeck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewDeckDialog newDeckDialog = new NewDeckDialog();
+                newDeckDialog.show(getSupportFragmentManager(), newDeckDialog.getClass().getSimpleName());
+            }
+        });
+
         checkLanguage();
         checkIntent();
+        SettingsActivity.checkAndUpdatePatchTopic(PreferenceManager.getDefaultSharedPreferences(this), getResources());
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
                 .withEmail(getString(R.string.signed_out))
@@ -116,7 +116,7 @@ public class MainActivity extends AuthenticationActivity implements
         final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
                 .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme()))
                 .withIdentifier(SIGN_IN_IDENTIFIER)
-                .withName(getString(R.string.sign_in));
+                .withName(getString(R.string.sign_in_default));
 
         mAccountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(R.drawable.header)
@@ -153,15 +153,13 @@ public class MainActivity extends AuthenticationActivity implements
                 .withAccountHeader(mAccountHeader)
                 .addDrawerItems(
                         mDrawerItems.get(R.id.tab_card_db),
-                        mDrawerItems.get(R.id.tab_public_decks),
                         mDrawerItems.get(R.id.tab_news),
                         mDrawerItems.get(R.id.tab_helper),
                         new SectionDrawerItem()
                                 .withName(R.string.my_stuff)
                                 .withDivider(false),
                         mDrawerItems.get(R.id.tab_decks),
-                        mDrawerItems.get(R.id.tab_collection),
-                        mDrawerItems.get(R.id.tab_results)
+                        mDrawerItems.get(R.id.tab_collection)
                 )
                 .addStickyDrawerItems(
                         new PrimaryDrawerItem()
@@ -267,39 +265,19 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     private void setupFragment(Fragment fragment, String tag) {
-        CardsInteractor cardsInteractor = CardsInteractorFirebase.Companion.getInstance();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        cardsInteractor.setLocale(preferences.getString(
-                getString(R.string.pref_locale_key),
-                getString(R.string.default_locale)));
         switch (tag) {
             case TAG_CARD_DB:
                 mCurrentTab = R.id.tab_card_db;
-                mCardsPresenter = new CardsPresenter((CardsContract.View) fragment,
-                        cardsInteractor);
                 break;
             case TAG_PUBLIC_DECKS:
                 mCurrentTab = R.id.tab_public_decks;
-                mPublicDecksPresenter =
-                        new DecksPresenter(
-                                (DecksContract.View) fragment,
-                                new DecksInteractorFirebase(),
-                                cardsInteractor);
                 break;
             case TAG_COLLECTION:
                 mCurrentTab = R.id.tab_collection;
-                mCollectionPresenter = new CollectionPresenter(
-                        (CollectionContract.View) fragment,
-                        new CollectionInteractorFirebase(),
-                        cardsInteractor);
                 break;
             case TAG_USER_DECKS:
                 mCurrentTab = R.id.tab_decks;
-                mDecksPresenter =
-                        new DecksPresenter(
-                                (DecksContract.View) fragment,
-                                new DecksInteractorFirebase(),
-                                cardsInteractor);
+                buttonNewDeck.setVisibility(View.VISIBLE);
                 break;
             case TAG_RESULTS_TRACKER:
                 mCurrentTab = R.id.tab_results;
@@ -307,7 +285,7 @@ public class MainActivity extends AuthenticationActivity implements
         }
     }
 
-    private void launchFragment(Fragment fragment, String tag) {
+    private void launchFragment(final Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(
@@ -315,6 +293,12 @@ public class MainActivity extends AuthenticationActivity implements
         fragmentTransaction.commit();
 
         mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
+
+        if (fragment.getTag().equals(TAG_USER_DECKS)) {
+            buttonNewDeck.setVisibility(View.VISIBLE);
+        } else {
+            buttonNewDeck.setVisibility(View.GONE);
+        }
 
         // Our options menu will be different for different tabs.
         invalidateOptionsMenu();
@@ -349,7 +333,7 @@ public class MainActivity extends AuthenticationActivity implements
             mAccountHeader.addProfiles(
                     new ProfileSettingDrawerItem()
                             .withIdentifier(SIGN_IN_IDENTIFIER)
-                            .withName(getString(R.string.sign_in))
+                            .withName(getString(R.string.sign_in_default))
                             .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
 
             // If we are currently in an activity that requires authentication, switch to another.
@@ -414,7 +398,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.decks)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
@@ -429,7 +413,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.collection)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
@@ -454,7 +438,7 @@ public class MainActivity extends AuthenticationActivity implements
                     RxBus.INSTANCE.post(new SnackbarRequest(
                             new SnackbarBundle(
                                     String.format(getString(R.string.sign_in_to_view), getString(R.string.your_results)),
-                                    getString(R.string.sign_in),
+                                    getString(R.string.sign_in_default),
                                     signInClickListener)));
                     return false;
                 }
@@ -518,6 +502,8 @@ public class MainActivity extends AuthenticationActivity implements
                 return false;
         }
 
+
+        FirebaseUtils.logAnalytics(this, tag, tag, "Screen");
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         return false;

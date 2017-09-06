@@ -129,4 +129,10 @@
     <string name="none">None</string>
     <string name="patch_notifications">New Patches</string>
     <string name="patch_notifications_summary">Receive notifications when Roach is updated to a new Gwent patch.</string>
+    <string name="loyalty">Loyalty</string>
+    <string name="loyal">Loyal</string>
+    <string name="disloyal">Disloyal</string>
+    <string name="position">Position</string>
+    <string name="event">Special</string>
+    <string name="no_results">No results :(</string>
 </resources>

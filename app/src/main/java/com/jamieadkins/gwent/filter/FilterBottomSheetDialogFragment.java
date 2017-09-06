@@ -7,9 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,10 +48,10 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         FilterRecyclerViewAdapter adapter = new FilterRecyclerViewAdapter();
-        adapter.addItem(new SubHeader(mFilteringOn));
-        for (FilterableItem item : mItems) {
-            adapter.addItem(item);
-        }
+        ArrayList<RecyclerViewItem> items = new ArrayList<>();
+        items.add(new SubHeader(mFilteringOn));
+        items.addAll(mItems);
+        adapter.setItems(items);
         adapter.setFilterListener(mListener);
 
         recyclerView.setAdapter(adapter);

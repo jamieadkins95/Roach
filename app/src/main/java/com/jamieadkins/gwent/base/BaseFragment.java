@@ -3,6 +3,8 @@ package com.jamieadkins.gwent.base;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,18 +18,28 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.jamieadkins.commonutils.mvp2.BaseListView;
+import com.jamieadkins.commonutils.mvp2.BaseView;
+import com.jamieadkins.commonutils.mvp2.MvpFragment;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.SnackbarBundle;
+import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.CardFilterListener;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Loyalty;
+import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
 import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,35 +49,19 @@ import io.reactivex.Observer;
 /**
  * UI fragment that shows a list of the users decks.
  */
-public abstract class BaseFragment extends RxFragment
-        implements SwipeRefreshLayout.OnRefreshListener, CardFilterListener,
-        FilterBottomSheetDialogFragment.FilterUiListener {
+public abstract class BaseFragment<V> extends MvpFragment<V>
+        implements SwipeRefreshLayout.OnRefreshListener,
+        FilterBottomSheetDialogFragment.FilterUiListener, BaseListView {
     private static final String STATE_CARD_FILTER = "com.jamieadkins.gwent.card.filter";
+    private static final String STATE_CARD_QUERY = "com.jamieadkins.gwent.card.query";
     public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private GwentRecyclerViewAdapter mAdapter;
-    private boolean mLoading = false;
 
     private FilterBottomSheetDialogFragment mFilterMenu;
-    private CardFilter mCardFilter;
-
-    private Observer<RxDatabaseEvent<? extends RecyclerViewItem>> mObserver
-            = new BaseObserver<RxDatabaseEvent<? extends RecyclerViewItem>>() {
-        @Override
-        public void onNext(RxDatabaseEvent<? extends RecyclerViewItem> value) {
-            if (getActivity() == null) {
-                return;
-            }
-            onDataEvent(value);
-        }
-
-        @Override
-        public void onComplete() {
-            setLoading(false);
-        }
-    };
+    public BaseFilterPresenter<V> filterPresenter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -76,10 +72,13 @@ public abstract class BaseFragment extends RxFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        filterPresenter = (BaseFilterPresenter) getPresenter();
+
         if (savedInstanceState != null) {
-            mCardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
+            filterPresenter.cardFilter = (CardFilter) savedInstanceState.get(STATE_CARD_FILTER);
+            filterPresenter.updateSearchQuery(savedInstanceState.getString(STATE_CARD_QUERY, null));
         } else {
-            mCardFilter = initialiseCardFilter();
+            filterPresenter.cardFilter = initialiseCardFilter();
         }
     }
 
@@ -87,10 +86,6 @@ public abstract class BaseFragment extends RxFragment
         CardFilter filter = new CardFilter();
         filter.setCurrentFilterAsBase();
         return filter;
-    }
-
-    public CardFilter getCardFilter() {
-        return mCardFilter;
     }
 
     public void setupViews(View rootView) {
@@ -106,60 +101,33 @@ public abstract class BaseFragment extends RxFragment
         final LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (Build.VERSION.SDK_INT >= 17) {
-                    if (getActivity().isDestroyed()) {
-                        return;
-                    }
-                }
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(getActivity()).resumeRequests();
-                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    Glide.with(getActivity()).pauseRequests();
-                }
-            }
-        });
         mAdapter = onBuildRecyclerView();
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void onDataEvent(RxDatabaseEvent<? extends RecyclerViewItem> data) {
-        switch (data.getEventType()) {
-            case ADDED:
-                mAdapter.addItem(data.getValue());
-                break;
-            case REMOVED:
-                mAdapter.removeItem(data.getValue());
-                break;
-            case CHANGED:
-                mAdapter.updateItem(data.getValue());
-                break;
-            case COMPLETE:
-                setLoading(false);
-                break;
-        }
+    @Override
+    public void setLoadingIndicator(final boolean loading) {
+        mRefreshContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshContainer.setRefreshing(loading);
+            }
+        });
     }
 
-    public void onLoadData() {
-        setLoading(true);
+    @Override
+    public void showGenericErrorMessage() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error), Snackbar.LENGTH_LONG)));
     }
 
-    public void setLoading(boolean loading) {
-        mLoading = loading;
-        mRefreshContainer.setRefreshing(loading);
+    @Override
+    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
+        mAdapter.setItems(items);
     }
 
-    public void enableRefreshing(boolean enable) {
-        mRefreshContainer.setEnabled(enable);
-    }
-
-    public boolean isLoading() {
-        return mLoading;
+    @Override
+    public void showEmptyView() {
+        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.no_results), Snackbar.LENGTH_LONG)));
     }
 
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
@@ -171,13 +139,13 @@ public abstract class BaseFragment extends RxFragment
         return mAdapter;
     }
 
-    public Observer<RxDatabaseEvent<? extends RecyclerViewItem>> getObserver() {
-        return mObserver;
+    public SwipeRefreshLayout getRefreshLayout() {
+        return mRefreshContainer;
     }
 
     @Override
     public void onRefresh() {
-        onLoadData();
+        getPresenter().onRefresh();
     }
 
     @Override
@@ -185,7 +153,8 @@ public abstract class BaseFragment extends RxFragment
         if (mFilterMenu != null) {
             mFilterMenu.dismiss();
         }
-        outState.putParcelable(STATE_CARD_FILTER, mCardFilter);
+        outState.putParcelable(STATE_CARD_FILTER, filterPresenter.cardFilter);
+        outState.putString(STATE_CARD_QUERY, filterPresenter.getSearchQuery());
         super.onSaveInstanceState(outState);
     }
 
@@ -193,24 +162,16 @@ public abstract class BaseFragment extends RxFragment
         inflater.inflate(R.menu.search, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-        searchView.setQueryHint(getString(R.string.search_hint));
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                filterPresenter.updateSearchQuery(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if (query.equals("")) {
-                    // Don't search for everything!
-                    mCardFilter.setSearchQuery(null);
-                    return false;
-                }
-
-                mCardFilter.setSearchQuery(query);
-                onCardFilterUpdated();
                 return false;
             }
         });
@@ -218,14 +179,13 @@ public abstract class BaseFragment extends RxFragment
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                mCardFilter.setSearchQuery(null);
-                onCardFilterUpdated();
+                filterPresenter.updateSearchQuery(null);
                 return false;
             }
         });
 
-        if (mCardFilter.getSearchQuery() != null) {
-            searchView.setQuery(mCardFilter.getSearchQuery(), false);
+        if (filterPresenter.cardFilter.getSearchQuery() != null) {
+            searchView.setQuery(filterPresenter.cardFilter.getSearchQuery(), false);
         }
 
         inflater.inflate(R.menu.card_filters, menu);
@@ -238,8 +198,7 @@ public abstract class BaseFragment extends RxFragment
         Filterable[] filterItems;
         switch (item.getItemId()) {
             case R.id.filter_reset:
-                mCardFilter.clearFilters();
-                onCardFilterUpdated();
+                filterPresenter.clearFilters();
                 return true;
             case R.id.filter_faction:
                 filteringOn = getString(R.string.faction);
@@ -253,6 +212,14 @@ public abstract class BaseFragment extends RxFragment
                 filteringOn = getString(R.string.type);
                 filterItems = Type.ALL_TYPES;
                 break;
+            case R.id.filter_positions:
+                filteringOn = getString(R.string.position);
+                filterItems = Position.ALL_POSITIONS;
+                break;
+            case R.id.filter_loyalty:
+                filteringOn = getString(R.string.loyalty);
+                filterItems = Loyalty.ALL_LOYALTIES;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -261,7 +228,7 @@ public abstract class BaseFragment extends RxFragment
             filterableItems.add(new FilterableItem(
                     filterable.getId(),
                     getString(filterable.getName()),
-                    getCardFilter().get(filterable.getId())));
+                    filterPresenter.cardFilter.get(filterable.getId())));
         }
 
         showFilterMenu(filteringOn, filterableItems);
@@ -276,18 +243,13 @@ public abstract class BaseFragment extends RxFragment
 
     @Override
     public void onFilterChanged(String key, boolean checked) {
-        mCardFilter.put(key, checked);
+        filterPresenter.updateFilter(key, checked);
     }
 
     @Override
     public void onFilterDismissed(boolean filtersChanged) {
         if (filtersChanged) {
-            onCardFilterUpdated();
+            filterPresenter.onCardFilterUpdated();
         }
-    }
-
-    @Override
-    public void onCardFilterUpdated() {
-        onLoadData();
     }
 }
