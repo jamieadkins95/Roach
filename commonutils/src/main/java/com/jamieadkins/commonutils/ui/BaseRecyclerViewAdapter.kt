@@ -78,8 +78,10 @@ abstract class BaseRecyclerViewAdapter : RecyclerView.Adapter<BaseViewHolder>() 
             return
         }
 
-        (items as MutableList<RecyclerViewItem>).removeAt(position)
-        notifyItemRemoved(position)
+        if (position in 0..items.size) {
+            (items as MutableList<RecyclerViewItem>).removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
