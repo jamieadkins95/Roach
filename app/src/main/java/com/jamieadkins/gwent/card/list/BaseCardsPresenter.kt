@@ -34,7 +34,7 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         view?.setLoadingIndicator(true)
         mCardsInteractor.getCards(cardFilter, searchQuery)
                 .applySchedulers()
-                .timeout(10, TimeUnit.SECONDS)
+                .timeout(20, TimeUnit.SECONDS)
                 .subscribeWith(object : BaseDisposableSingle<CardListResult>() {
                     override fun onSuccess(result: CardListResult) {
                         when (result) {
