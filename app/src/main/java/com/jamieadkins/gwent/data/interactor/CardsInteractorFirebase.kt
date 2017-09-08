@@ -90,7 +90,6 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
         if (query != null) {
             source = getCards().applyComputationSchedulers().flatMap { cardList ->
                 val searchResults = searchCards(query, cardList, locale)
-                recordSearchQuery(query, searchResults)
                 getCards(searchResults)
             }
         } else if (cardIds != null) {
@@ -143,19 +142,6 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
                         .applyComputationSchedulers()
             }
         }
-    }
-
-    private fun recordSearchQuery(query: String, results: List<String>): String {
-        val searchReference = mDatabase.getReference("/search/queries")
-        val key = searchReference.push().key
-        val firebaseUpdates = HashMap<String, Any>()
-        val queryMap = HashMap<String, Any>()
-        queryMap.put("query", query)
-        queryMap.put("results", results)
-        firebaseUpdates.put(key, queryMap)
-
-        searchReference.updateChildren(firebaseUpdates)
-        return key
     }
 
     private val cardDataSnapshot: Single<DataSnapshot>
