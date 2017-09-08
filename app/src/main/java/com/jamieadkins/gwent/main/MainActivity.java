@@ -469,8 +469,6 @@ public class MainActivity extends AuthenticationActivity implements
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String url = getString(R.string.gwentify_helper);
-                                FirebaseUtils.logAnalytics(MainActivity.this, url,
-                                        "Gwentify", LAUNCH_EXTERNAL);
                                 showChromeCustomTab(url);
                             }
                         });
@@ -479,7 +477,6 @@ public class MainActivity extends AuthenticationActivity implements
                 return true;
             case R.id.tab_news:
                 String url = getString(R.string.news_url);
-                FirebaseUtils.logAnalytics(this, url, "News", LAUNCH_EXTERNAL);
                 showChromeCustomTab(url);
                 return true;
             case R.id.action_about:
@@ -502,8 +499,6 @@ public class MainActivity extends AuthenticationActivity implements
                 return false;
         }
 
-
-        FirebaseUtils.logAnalytics(this, tag, tag, "Screen");
         setupFragment(fragment, tag);
         launchFragment(fragment, tag);
         return false;

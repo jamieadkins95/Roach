@@ -61,16 +61,6 @@ public class DeckViewHolder extends BaseViewHolder {
                 intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, mDeck.getFactionId());
                 intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, mDeck.isPublicDeck());
                 getView().getContext().startActivity(intent);
-
-                // Log what deck has been viewed.
-                if (mDeck.isPublicDeck()) {
-                    FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "Public Deck", FirebaseAnalytics.Event.VIEW_ITEM);
-                } else {
-                    FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "User Deck", FirebaseAnalytics.Event.VIEW_ITEM);
-                }
-
             }
         });
 

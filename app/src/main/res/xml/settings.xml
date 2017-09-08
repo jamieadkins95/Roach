@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_general">
-
-        <CheckBoxPreference android:key="@string/pref_analytics_key"
-            android:title="@string/analytics"
-            android:summary="@string/analytics_summary"
-            android:defaultValue="false" />
-
-        <CheckBoxPreference android:key="@string/pref_crowd_sourcing_key"
-            android:title="@string/crowd_sourcing"
-            android:summary="@string/crowd_sourcing_summary"
-            android:defaultValue="false" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/pref_notifications">
 
         <CheckBoxPreference android:key="@string/pref_patch_notifications_key"

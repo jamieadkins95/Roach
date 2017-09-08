@@ -52,7 +52,6 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     protected void onSignedIn() {
         mSignedIn = true;
-        FirebaseUtils.askForAnalyticsPermission(this);
     }
 
     protected void onSignedOut() {
