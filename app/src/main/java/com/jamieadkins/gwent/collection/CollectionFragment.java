@@ -5,31 +5,35 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
-import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.Collection;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
+import com.jamieadkins.gwent.data.interactor.CollectionInteractorFirebase;
 
 import java.util.Map;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-public class CollectionFragment extends BaseCardListFragment implements CollectionContract.View {
-    CollectionContract.Presenter mPresenter;
+public class CollectionFragment extends BaseCardListFragment<CollectionContract.View> implements CollectionContract.View {
+    CollectionContract.Presenter collectionPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getString(R.string.my_collection));
+    }
+
+    @Override
+    public void setupPresenter() {
+        setPresenter(new CollectionPresenter(
+                Injection.INSTANCE.provideCollectionInteractor(),
+                Injection.INSTANCE.provideCardsInteractor(getContext())));
+        collectionPresenter = (CollectionContract.Presenter) getPresenter();
     }
 
     @Override
@@ -60,53 +64,14 @@ public class CollectionFragment extends BaseCardListFragment implements Collecti
     }
 
     @Override
-    public void onLoadData() {
-        super.onLoadData();
-        mPresenter.getCollection()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<RxDatabaseEvent<Map<String, Long>>>() {
-                    @Override
-                    public void onNext(RxDatabaseEvent<Map<String, Long>> value) {
-                        getRecyclerViewAdapter()
-                                .updateCollection(value.getKey(), value.getValue());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    @Override
-    public void setPresenter(CardsContract.Presenter presenter) {
-        super.setPresenter(presenter);
-        mPresenter = (CollectionContract.Presenter) presenter;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mPresenter != null) {
-            mPresenter.stop();
-        }
+    public void showCollection(String key, Map<String, Long> collection) {
+        getRecyclerViewAdapter().updateCollection(key, collection);
     }
 
     @Override
     public GwentRecyclerViewAdapter onBuildRecyclerView() {
         return new GwentRecyclerViewAdapter.Builder()
-                .withCollectionControls(new CollectionCardViewHolder.CollectionButtonListener() {
-                    @Override
-                    public void addCard(String cardId, String variationId) {
-                        mPresenter.addCard(cardId, variationId);
-                    }
-
-                    @Override
-                    public void removeCard(String cardId, String variationId) {
-                        mPresenter.removeCard(cardId, variationId);
-                    }
-                })
+                .withControls(GwentRecyclerViewAdapter.Controls.COLLECTION)
                 .build();
     }
 }

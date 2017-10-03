@@ -53,20 +53,13 @@ public class DeckBriefSummaryView extends LinearLayout {
         final int invalidColour = ContextCompat.getColor(getContext(), R.color.monsters);
         final int defaultColour = ContextCompat.getColor(getContext(), R.color.text_secondary_dark);
 
-        deck.getTotalCardCount()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSingleObserver<Integer>() {
-                    @Override
-                    public void onSuccess(Integer totalCardCount) {
-                        mDeckTotalCards.setText(String.format(
-                                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
-                                totalCardCount, Deck.MAX_CARD_COUNT));
-                        mDeckTotalCards.setTextColor(
-                                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
-                                        ? invalidColour : defaultColour);
-                    }
-                });
+        int totalCardCount = deck.getTotalCardCount();
+        mDeckTotalCards.setText(String.format(
+                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
+                totalCardCount, Deck.MAX_CARD_COUNT));
+        mDeckTotalCards.setTextColor(
+                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
+                        ? invalidColour : defaultColour);
 
         deck.getSilverCardCount()
                 .subscribeOn(Schedulers.computation())

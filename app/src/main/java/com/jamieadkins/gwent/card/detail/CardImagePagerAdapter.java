@@ -21,7 +21,7 @@ public class CardImagePagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private List<StorageReference> mItems;
+    private List<String> mItems;
 
     public CardImagePagerAdapter(Context context) {
         mContext = context;
@@ -46,16 +46,16 @@ public class CardImagePagerAdapter extends PagerAdapter {
         return mItems.size();
     }
 
-    public void addItem(StorageReference storageReference) {
+    public void addItem(String imageUrl) {
         boolean alreadyAdded = false;
-        for (StorageReference reference : mItems) {
-            if (reference.getPath().equals(storageReference.getPath())) {
+        for (String url : mItems) {
+            if (url.equals(imageUrl)) {
                 alreadyAdded = true;
             }
         }
 
         if (!alreadyAdded) {
-            mItems.add(storageReference);
+            mItems.add(imageUrl);
             notifyDataSetChanged();
         }
     }

@@ -52,7 +52,6 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     protected void onSignedIn() {
         mSignedIn = true;
-        FirebaseUtils.askForAnalyticsPermission(this);
     }
 
     protected void onSignedOut() {
@@ -71,7 +70,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
                 });
     }
 
-    public boolean isPlayServicesAvailable() {
+    public boolean checkGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int result = googleAPI.isGooglePlayServicesAvailable(this);
         if (result != ConnectionResult.SUCCESS) {
@@ -88,7 +87,7 @@ public abstract class AuthenticationActivity extends BaseActivity {
 
     public void startSignInProcess() {
 
-        if (!isPlayServicesAvailable()) {
+        if (!checkGooglePlayServices()) {
             return;
         }
 

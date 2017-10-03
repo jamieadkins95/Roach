@@ -9,18 +9,12 @@ import android.view.ViewGroup
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseFragment
-import com.jamieadkins.gwent.card.CardFilter
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-abstract class BaseCardListFragment : BaseFragment(), CardsContract.View {
-    private var mCardsPresenter: CardsContract.Presenter? = null
-
+abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(), CardsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -37,35 +31,5 @@ abstract class BaseCardListFragment : BaseFragment(), CardsContract.View {
         setupFilterMenu(menu, inflater)
     }
 
-    open val layoutId: Int
-        get() = R.layout.fragment_card_list
-
-    override fun onStart() {
-        super.onStart()
-        onLoadData()
-    }
-
-    override fun onCardFilterUpdated() {
-        recyclerViewAdapter.clear()
-        onLoadData()
-    }
-
-    override fun onLoadData() {
-        super.onLoadData()
-        onLoadCardData()
-    }
-
-    fun onLoadCardData() {
-        val cardFilter = cardFilter
-        mCardsPresenter?.let {
-            it.getCards(cardFilter)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer)
-        }
-    }
-
-    override fun setPresenter(presenter: CardsContract.Presenter) {
-        mCardsPresenter = presenter
-    }
+    open val layoutId: Int = R.layout.fragment_card_list
 }

@@ -7,16 +7,17 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.Deck;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
-import com.jamieadkins.gwent.deck.detail.PublicDeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
+
+import kotlin.NotImplementedError;
 
 /**
  * Holds much more detail about a card.
@@ -52,7 +53,7 @@ public class DeckViewHolder extends BaseViewHolder {
             public void onClick(View view) {
                 Intent intent;
                 if (mDeck.isPublicDeck()) {
-                    intent = new Intent(getView().getContext(), PublicDeckDetailActivity.class);
+                    throw new NotImplementedError();
                 } else {
                     intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
                 }
@@ -60,16 +61,6 @@ public class DeckViewHolder extends BaseViewHolder {
                 intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, mDeck.getFactionId());
                 intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, mDeck.isPublicDeck());
                 getView().getContext().startActivity(intent);
-
-                // Log what deck has been viewed.
-                if (mDeck.isPublicDeck()) {
-                    FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "View Public Deck");
-                } else {
-                    FirebaseUtils.logAnalytics(getView().getContext(),
-                            mDeck.getId(), mDeck.getName(), "View Deck");
-                }
-
             }
         });
 

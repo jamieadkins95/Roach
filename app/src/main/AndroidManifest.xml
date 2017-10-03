@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jamieadkins.gwent">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".main.GwentApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,11 +23,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel"
             android:value="@string/notification_channel_id"/>
-
-        <!-- Disable analytics collection. No user consent yet! -->
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
 
         <activity
             android:name=".main.MainActivity"
@@ -64,10 +62,6 @@
         </activity>
 
         <activity
-            android:name=".deck.detail.PublicDeckDetailActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar" />
-
-        <activity
             android:name=".deck.detail.user.UserDeckDetailActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
@@ -78,6 +72,11 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
+
+        <meta-data
+            tools:replace="android:value"
+            android:name="io.fabric.ApiKey"
+            android:value="7e4cba196ad21fc2d7f6bd83b49d8671a7cff512" />
     </application>
 
 </manifest>

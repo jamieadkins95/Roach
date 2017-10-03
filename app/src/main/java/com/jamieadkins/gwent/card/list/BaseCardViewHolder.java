@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.card.LargeCardView;
@@ -45,10 +46,6 @@ public class BaseCardViewHolder extends BaseViewHolder {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_CARD_ID, mCardDetails.getIngameId());
         getView().getContext().startActivity(intent);
-
-        // Log what card has been viewed.
-        FirebaseUtils.logAnalytics(getView().getContext(),
-                mCardDetails.getIngameId(), mCardDetails.getName(), "View Card");
     }
 
     public CardDetails getBoundCardDetails() {

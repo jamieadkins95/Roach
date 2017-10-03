@@ -12,7 +12,7 @@ import io.reactivex.Observable;
  * Collection manipulation class.
  */
 
-public interface CollectionInteractor extends BaseInteractor<CollectionContract.Presenter> {
+public interface CollectionInteractor extends BaseInteractor {
 
     void addCardToCollection(String cardId, String variationId);
 

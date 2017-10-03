@@ -61,28 +61,21 @@ public class DeckSummaryView extends LinearLayout {
 
     public void setDeck(Deck deck) {
 
-        mDeckMelee.setText(String.valueOf(deck.getStrengthForPosition(Position.MELEE)));
-        mDeckRanged.setText(String.valueOf(deck.getStrengthForPosition(Position.RANGED)));
-        mDeckSiege.setText(String.valueOf(deck.getStrengthForPosition(Position.SIEGE)));
+        mDeckMelee.setText(String.valueOf(deck.getStrengthForPosition(Position.MELEE_ID)));
+        mDeckRanged.setText(String.valueOf(deck.getStrengthForPosition(Position.RANGED_ID)));
+        mDeckSiege.setText(String.valueOf(deck.getStrengthForPosition(Position.SIEGE_ID)));
         mDeckTotalAttack.setText(String.valueOf(deck.getTotalStrength()));
 
         final int invalidColour = ContextCompat.getColor(getContext(), R.color.monsters);
         final int defaultColour = ContextCompat.getColor(getContext(), R.color.textSecondary);
 
-        deck.getTotalCardCount()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSingleObserver<Integer>() {
-                    @Override
-                    public void onSuccess(Integer totalCardCount) {
-                        mDeckTotalCards.setText(String.format(
-                                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
-                                totalCardCount, Deck.MAX_CARD_COUNT));
-                        mDeckTotalCards.setTextColor(
-                                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
-                                        ? invalidColour : defaultColour);
-                    }
-                });
+        int totalCardCount = deck.getTotalCardCount();
+        mDeckTotalCards.setText(String.format(
+                mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
+                totalCardCount, Deck.MAX_CARD_COUNT));
+        mDeckTotalCards.setTextColor(
+                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
+                        ? invalidColour : defaultColour);
 
         deck.getSilverCardCount()
                 .subscribeOn(Schedulers.computation())

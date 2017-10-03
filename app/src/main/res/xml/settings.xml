@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_general">
-
-        <CheckBoxPreference android:key="@string/pref_analytics_key"
-            android:title="@string/analytics"
-            android:summary="@string/analytics_summary"
-            android:defaultValue="false" />
-
-        <CheckBoxPreference android:key="@string/pref_crowd_sourcing_key"
-            android:title="@string/crowd_sourcing"
-            android:summary="@string/crowd_sourcing_summary"
-            android:defaultValue="false" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/pref_notifications">
 
         <CheckBoxPreference android:key="@string/pref_patch_notifications_key"
             android:title="@string/patch_notifications"
             android:summary="@string/patch_notifications_summary"
             android:defaultValue="true" />
+
+        <ListPreference android:key="@string/pref_news_notifications_key"
+            android:title="@string/news_notifications"
+            android:summary="@string/news_notifications_summary"
+            android:defaultValue="en"
+            android:entryValues="@array/locales_news"
+            android:entries="@array/locales_news_readable"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -31,7 +24,7 @@
             android:title="@string/pref_locale"
             android:summary="@string/pref_locale_summary"
             android:dialogTitle="@string/pref_locale"
-            android:entries="@array/locales"
+            android:entries="@array/locales_readable"
             android:entryValues="@array/locales"
             android:defaultValue="@string/default_locale" />
 

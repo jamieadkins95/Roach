@@ -22,6 +22,14 @@
                 android:title="@string/rarity" />
 
             <item
+                android:id="@+id/filter_positions"
+                android:title="@string/position" />
+
+            <item
+                android:id="@+id/filter_loyalty"
+                android:title="@string/loyalty" />
+
+            <item
                 android:id="@+id/filter_reset"
                 android:title="@string/reset_filters" />
 

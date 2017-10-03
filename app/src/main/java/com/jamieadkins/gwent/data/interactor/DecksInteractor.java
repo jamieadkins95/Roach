@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.data.interactor;
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.deck.list.DecksContract;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -13,21 +12,21 @@ import io.reactivex.Single;
  * Deck manipulation class.
  */
 
-public interface DecksInteractor extends BaseInteractor<DecksContract.Presenter> {
+public interface DecksInteractor extends BaseInteractor {
 
-    Observable<RxDatabaseEvent<Deck>> createNewDeck(String name, String faction, CardDetails leader, String patch);
+    String createNewDeck(String name, String faction);
 
-    Completable addCardToDeck(String deckId, CardDetails card);
+    void addCardToDeck(String deckId, CardDetails card);
 
-    void setLeader(Deck deck, CardDetails leader);
+    void setLeader(String deckId, String leaderId);
 
-    Completable renameDeck(String deckId, String newName);
+    void renameDeck(String deckId, String newName);
 
-    Completable removeCardFromDeck(String deckId, CardDetails card);
+    void removeCardFromDeck(String deckId, CardDetails card);
 
-    void publishDeck(Deck deck);
+    void publishDeck(String deckId);
 
-    Completable deleteDeck(String deckId);
+    void deleteDeck(String deckId);
 
     Observable<RxDatabaseEvent<Deck>> getUserDecks();
 

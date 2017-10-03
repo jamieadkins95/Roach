@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.jamieadkins.gwent.data.CardDetails;
 import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Filterable;
+import com.jamieadkins.gwent.data.Loyalty;
+import com.jamieadkins.gwent.data.Position;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 
@@ -20,7 +22,6 @@ import java.util.List;
 public class CardFilter implements Parcelable {
     private String mSearchQuery;
     private HashMap<String, Boolean> mFilters;
-    private List<String> mCardIds;
 
     private boolean mCollectibleOnly = false;
 
@@ -29,7 +30,6 @@ public class CardFilter implements Parcelable {
     public CardFilter() {
         mSearchQuery = null;
         mFilters = new HashMap<>();
-        mCardIds = null;
 
         for (Filterable rarity : Rarity.ALL_RARITIES) {
             mFilters.put(rarity.getId(), true);
@@ -41,6 +41,14 @@ public class CardFilter implements Parcelable {
 
         for (Filterable faction : Faction.ALL_FACTIONS) {
             mFilters.put(faction.getId(), true);
+        }
+
+        for (Filterable loyalty : Loyalty.ALL_LOYALTIES) {
+            mFilters.put(loyalty.getId(), true);
+        }
+
+        for (Filterable position : Position.ALL_POSITIONS) {
+            mFilters.put(position.getId(), true);
         }
     }
 
@@ -93,30 +101,32 @@ public class CardFilter implements Parcelable {
         mFilters.put(key, filter);
     }
 
-    public void addCardId(String cardId) {
-        if (mCardIds == null) {
-            mCardIds = new ArrayList<>();
-        }
-
-        mCardIds.add(cardId);
-    }
-
     public boolean doesCardMeetFilter(CardDetails card) {
-        if (mCardIds != null) {
-            // If there are card ids specified, use them only.
-            return mCardIds.contains(card.getIngameId());
-        } else {
-            boolean collectible = false;
-            for (String variationId : card.getVariations().keySet()) {
-                if (card.getVariations().get(variationId).isCollectible()) {
-                    collectible = true;
-                }
+        boolean collectible = false;
+        for (String variationId : card.getVariations().keySet()) {
+            if (card.getVariations().get(variationId).isCollectible()) {
+                collectible = true;
             }
-
-            boolean include = !mCollectibleOnly || collectible;
-            return get(card.getFaction()) && get(card.getRarity())
-                    && get(card.getType()) && card.isReleased() && include;
         }
+
+        boolean loyalty = get(Loyalty.DISLOYAL_ID) && get(Loyalty.LOYAL_ID);
+        if (card.getLoyalties() != null) {
+            for (String l : card.getLoyalties()) {
+                loyalty = loyalty || get(l);
+            }
+        }
+
+        boolean position = get(Position.MELEE_ID) && get(Position.RANGED_ID)
+                && get(Position.SIEGE_ID) && get(Position.EVENT_ID);
+        if (card.getPositions() != null) {
+            for (String p : card.getPositions()) {
+                position = position || get(p);
+            }
+        }
+
+        boolean include = !mCollectibleOnly || collectible;
+        return get(card.getFaction()) && get(card.getRarity())
+                && get(card.getType()) && card.isReleased() && loyalty && position && include;
     }
 
     @Override
@@ -129,9 +139,7 @@ public class CardFilter implements Parcelable {
         parcel.writeString(mSearchQuery);
         parcel.writeSerializable(mFilters);
         parcel.writeSerializable(mCollectibleOnly);
-        parcel.writeStringList(mCardIds);
     }
-
 
     public static final Parcelable.Creator<CardFilter> CREATOR
             = new Parcelable.Creator<CardFilter>() {
@@ -148,12 +156,11 @@ public class CardFilter implements Parcelable {
         mSearchQuery = parcel.readString();
         mFilters = (HashMap<String, Boolean>) parcel.readSerializable();
         mCollectibleOnly = (Boolean) parcel.readSerializable();
-        mCardIds = parcel.createStringArrayList();
 
     }
 
     @Override
     public String toString() {
-        return mSearchQuery + "," + mCollectibleOnly + "," + mCardIds + "," + mFilters;
+        return mSearchQuery + "," + mCollectibleOnly + "," + mFilters;
     }
 }

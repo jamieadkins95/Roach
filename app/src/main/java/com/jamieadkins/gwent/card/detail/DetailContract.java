@@ -1,32 +1,25 @@
 package com.jamieadkins.gwent.card.detail;
 
-import com.jamieadkins.commonutils.mvp.BasePresenter;
-import com.jamieadkins.commonutils.mvp.BaseView;
-import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import android.content.Context;
 
-import io.reactivex.Completable;
-import io.reactivex.Single;
+import com.jamieadkins.commonutils.mvp2.BaseView;
+import com.jamieadkins.gwent.data.CardDetails;
 
 /**
  * Specifies the contract between the view and the presenter.
  */
 
 public interface DetailContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
+
+        Context getContext();
+
+        void showCard(CardDetails card);
     }
 
-    interface Presenter extends CardsContract.Presenter {
-
-        Single<RxDatabaseEvent<CardDetails>> getCard(String cardId);
-
-        void setCardId(String id);
-
-        String getCardId();
-
-        Completable reportMistake(String cardId, String description);
+    interface Presenter {
+        void reportMistake(String cardId, String description);
     }
 }

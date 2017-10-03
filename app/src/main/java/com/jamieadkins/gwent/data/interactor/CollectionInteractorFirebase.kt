@@ -156,6 +156,8 @@ class CollectionInteractorFirebase : CollectionInteractor {
     }
 
     override fun stopCollectionUpdates() {
-        mCollectionReference.removeEventListener(mCollectionListener!!)
+        mCollectionListener?.let {
+            mCollectionReference.removeEventListener(it)
+        }
     }
 }

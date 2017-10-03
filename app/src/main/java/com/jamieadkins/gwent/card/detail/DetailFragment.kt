@@ -14,32 +14,22 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.jamieadkins.commonutils.mvp2.MvpFragment
 import com.jamieadkins.gwent.BuildConfig
+import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.base.BaseCompletableObserver
-import com.jamieadkins.gwent.base.BaseSingleObserver
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.FirebaseUtils
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
-import com.trello.rxlifecycle2.components.support.RxFragment
-
-import java.util.ArrayList
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
 
 /**
  * Shows picture and details of a card.
  */
 
-class DetailFragment : RxFragment(), DetailContract.View {
-    private var mDetailPresenter: DetailContract.Presenter? = null
+class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
     private var mCardPicture: ImageView? = null
     private var mLargeCardView: LargeCardView? = null
     private var mViewPager: ViewPager? = null
@@ -53,51 +43,14 @@ class DetailFragment : RxFragment(), DetailContract.View {
 
     private var mUseLowData = false
 
-    private val mObserver = object : BaseSingleObserver<RxDatabaseEvent<CardDetails>>() {
-        override fun onSuccess(value: RxDatabaseEvent<CardDetails>) {
-            if (activity == null) {
-                return
-            }
-
-            activity.invalidateOptionsMenu()
-            val card = value.value
-            mCard = card
-
-            // Update UI with card details.
-            activity.title = card.getName(mLocale)
-
-            val storage = FirebaseStorage.getInstance()
-
-            for (variationId in card.variations.keys) {
-                val variation = card.variations[variationId]
-                var storageReference: StorageReference? = null
-                variation?.let {
-                    if (mUseLowData) {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.lowImage)
-                    } else {
-                        storageReference = storage.getReferenceFromUrl(
-                                FirebaseUtils.STORAGE_BUCKET + it.art?.mediumImage)
-                    }
-                }
-
-                mAdapter?.addItem(storageReference)
-            }
-
-            mLargeCardView?.setCardDetails(card)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
             mCardId = savedInstanceState.getString(STATE_CARD_ID)
         }
+
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
 
         val key = getString(R.string.pref_locale_key)
         mLocale = PreferenceManager.getDefaultSharedPreferences(context)
@@ -123,6 +76,10 @@ class DetailFragment : RxFragment(), DetailContract.View {
         return rootView
     }
 
+    override fun setupPresenter() {
+        presenter = DetailPresenter(Injection.provideCardsInteractor(context), mCardId!!)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
@@ -135,16 +92,6 @@ class DetailFragment : RxFragment(), DetailContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
             when (it.itemId) {
-                R.id.action_related -> {
-                    mCard?.let {
-                        val relatedCards = ArrayList<String>()
-                        relatedCards.addAll(it.related)
-                        val fragment = CardListBottomSheetFragment.newInstance(relatedCards)
-                        fragment.setPresenter(mDetailPresenter)
-                        fragment.show(childFragmentManager, "related")
-                        return true
-                    }
-                }
                 R.id.action_flag_error -> {
                     val builder = AlertDialog.Builder(activity)
                     val inflater = activity.layoutInflater
@@ -154,15 +101,8 @@ class DetailFragment : RxFragment(), DetailContract.View {
                     builder.setView(view)
                             .setTitle(R.string.flag_error_title)
                             .setMessage(R.string.flag_error_message)
-                            .setPositiveButton(R.string.send) { dialog, which ->
-                                mDetailPresenter?.reportMistake(mCardId, input.text.toString())
-                                        ?.subscribeOn(Schedulers.io())
-                                        ?.observeOn(AndroidSchedulers.mainThread())
-                                        ?.subscribe(object : BaseCompletableObserver() {
-                                            override fun onComplete() {
-                                                RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.mistake_reported))))
-                                            }
-                                        })
+                            .setPositiveButton(R.string.send) { _, _ ->
+                                (presenter as DetailContract.Presenter).reportMistake(mCardId, input.text.toString())
                             }
                             .setNegativeButton(android.R.string.cancel, null)
                             .create()
@@ -175,18 +115,31 @@ class DetailFragment : RxFragment(), DetailContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mDetailPresenter?.getCard(mCardId)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.compose(bindToLifecycle())
-                ?.subscribe(mObserver)
-    }
+    override fun showCard(card: CardDetails) {
+        activity?.invalidateOptionsMenu()
+        mCard = card
 
-    override fun onStop() {
-        super.onStop()
-        mDetailPresenter?.stop()
+        // Update UI with card details.
+        activity.title = card.getName(mLocale)
+
+        for (variationId in card.variations.keys) {
+            val variation = card.variations[variationId]
+            var image: String? = null
+            variation?.let {
+                if (mUseLowData) {
+                    it.art?.low?.let {
+                        image = it
+                    }
+                } else {
+                    it.art?.medium?.let {
+                        image = it
+                    }
+                }
+            }
+            mAdapter?.addItem(image)
+        }
+
+        mLargeCardView?.setCardDetails(card)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -194,12 +147,12 @@ class DetailFragment : RxFragment(), DetailContract.View {
         super.onSaveInstanceState(outState)
     }
 
-    override fun setLoadingIndicator(active: Boolean) {
+    override fun setLoadingIndicator(loading: Boolean) {
 
     }
 
-    override fun setPresenter(presenter: DetailContract.Presenter) {
-        mDetailPresenter = presenter
+    override fun showGenericErrorMessage() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.general_error))))
     }
 
     companion object {

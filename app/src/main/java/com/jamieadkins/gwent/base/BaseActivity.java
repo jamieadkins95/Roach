@@ -59,6 +59,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
                                     snackbarRequest.getData().getAction());
                         }
 
+                        if (snackbarRequest.getData().getLength() != null) {
+                            snackbar.setDuration(snackbarRequest.getData().getLength());
+                        }
+
                         snackbar.show();
                     }
 
@@ -71,7 +75,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        onSettingsChange(sharedPreferences, key);
+        onSettingsChange(sharedPreferences, getResources(), key);
     }
 
     public abstract void initialiseContentView();

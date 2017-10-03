@@ -28,7 +28,7 @@
     <string name="create">Crea</string>
     <string name="new_deck">Nuovo Mazzo</string>
     <string name="filter">Filtro</string>
-    <string name="reset_filters">Pulisci filtro</string>
+    <string name="reset_filters">Ripristina Filtro</string>
     <string name="faction">Fazione</string>
     <string name="northern_realms">Regni Settentrionali</string>
     <string name="monster">Mostri</string>
@@ -117,4 +117,16 @@
     <string name="flag_error_message">Se trovi un errore, per favore fornisci una descrizione di ciò che è errato affinchè si possa risolvere al più presto!</string>
     <string name="mistake_reported">Errore segnalato!</string>
     <string name="update_patch">Aggiorna</string>
+    <string name="pref_notifications">Notifiche</string>
+    <string name="news_notifications">News</string>
+    <string name="news_notifications_summary">Ricevi notifiche riguardo a Gwent.</string>
+    <string name="none">Nessuna</string>
+    <string name="patch_notifications">Nuovi Aggiornamenti</string>
+    <string name="patch_notifications_summary">Ricevi una notifica quando Roach viene aggiornato per un nuovo aggiornamento di Gwent</string>
+    <string name="loyalty">Lealtà</string>
+    <string name="loyal">Leale</string>
+    <string name="disloyal">Sleale</string>
+    <string name="position">Posizione</string>
+    <string name="event">Speciale</string>
+    <string name="no_results">Nessun risultato :(</string>
 </resources>

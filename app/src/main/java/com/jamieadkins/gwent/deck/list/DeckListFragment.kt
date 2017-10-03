@@ -2,35 +2,24 @@ package com.jamieadkins.gwent.deck.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.jamieadkins.commonutils.ui.RecyclerViewItem
-import com.jamieadkins.commonutils.ui.SubHeader
+import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseFragment
-import com.jamieadkins.gwent.base.BaseObserver
-import com.jamieadkins.gwent.base.BaseSingleObserver
-import com.jamieadkins.gwent.card.detail.DetailActivity
-import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.data.Deck
-import com.jamieadkins.gwent.data.FirebaseUtils
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity
-
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * UI fragment that shows a list of the users decks.
  */
 
-class DeckListFragment : BaseFragment(), DecksContract.View, NewDeckDialog.NewDeckDialogListener {
-    private var mDecksPresenter: DecksContract.Presenter? = null
+class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract.View {
 
     // Set up to show user decks by default.
     private var mPublicDecks = false
@@ -55,66 +44,27 @@ class DeckListFragment : BaseFragment(), DecksContract.View, NewDeckDialog.NewDe
 
         setupViews(rootView)
 
-        val buttonNewDeck = rootView?.findViewById<View>(R.id.new_deck) as FloatingActionButton
-
-        if (savedInstanceState != null) {
-            val dialog = activity.supportFragmentManager
-                    .findFragmentByTag(NewDeckDialog::class.java.simpleName) as NewDeckDialog?
-            dialog?.setPresenter(mDecksPresenter)
-        }
-
-        if (!mPublicDecks) {
-            buttonNewDeck.setOnClickListener {
-                val newFragment = NewDeckDialog()
-                newFragment.setPresenter(mDecksPresenter)
-                newFragment.setTargetFragment(this@DeckListFragment, REQUEST_CODE)
-                newFragment.show(activity.supportFragmentManager,
-                        newFragment.javaClass.simpleName)
-            }
-        } else {
-            buttonNewDeck.visibility = View.GONE
-            buttonNewDeck.isEnabled = false
-        }
-
         return rootView
     }
 
-    override fun onStart() {
-        super.onStart()
-        onLoadData()
+    override fun setupPresenter() {
+        presenter = DeckListPresenter(Injection.provideDecksInteractor(context))
     }
 
-    override fun onLoadData() {
-        super.onLoadData()
-        val decks: Observable<RxDatabaseEvent<Deck>>?
-        if (!mPublicDecks) {
-            decks = mDecksPresenter?.userDecks
-        } else {
-            decks = mDecksPresenter?.publicDecks
-        }
-        decks?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.compose(bindToLifecycle())
-                ?.subscribe(observer)
-
-        if (mPublicDecks) {
-            mDecksPresenter?.deckOfTheWeek
-                    ?.subscribeOn(Schedulers.io())
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.compose(bindToLifecycle())
-                    ?.subscribe(object : BaseSingleObserver<RxDatabaseEvent<Deck>>() {
-                        override fun onSuccess(value: RxDatabaseEvent<Deck>) {
-                            recyclerViewAdapter.addItem(0, SubHeader("Deck of the Week"))
-                            recyclerViewAdapter.addItem(1, value.value)
-                            recyclerViewAdapter.addItem(2, SubHeader("Featured Decks"))
-                        }
-                    })
-        }
+    override fun showDeck(deck: Deck) {
+        recyclerViewAdapter.addItem(deck)
     }
 
-    override fun onStop() {
-        super.onStop()
-        mDecksPresenter?.stop()
+    override fun showDeckDetails(deckId: String, factionId: String) {
+        val intent = Intent(activity, UserDeckDetailActivity::class.java)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deckId)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, factionId)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, false)
+        context?.startActivity(intent)
+    }
+
+    override fun removeDeck(deck: Deck) {
+        recyclerViewAdapter.removeItem(deck)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -122,41 +72,18 @@ class DeckListFragment : BaseFragment(), DecksContract.View, NewDeckDialog.NewDe
         super.onSaveInstanceState(outState)
     }
 
-    override fun setPresenter(presenter: DecksContract.Presenter) {
-        mDecksPresenter = presenter
+    override fun setLoadingIndicator(loading: Boolean) {
+        if (!loading) {
+            refreshLayout.isEnabled = false
+        }
     }
 
-    override fun createNewDeck(name: String, faction: String, leader: CardDetails) {
-        mDecksPresenter?.createNewDeck(name, faction, leader, "v0-8-60-2-images")
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.compose(bindToLifecycle())
-                ?.subscribe(object : BaseObserver<RxDatabaseEvent<Deck>>() {
-                    override fun onNext(value: RxDatabaseEvent<Deck>) {
-                        val deck = value.value
-
-                        val intent = Intent(activity, UserDeckDetailActivity::class.java)
-                        intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deck.id)
-                        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, deck.factionId)
-                        intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, deck.isPublicDeck)
-                        view?.context?.startActivity(intent)
-
-                        FirebaseUtils.logAnalytics(view?.context,
-                                deck.factionId, deck.name, "Create Deck")
-                    }
-
-                    override fun onComplete() {
-
-                    }
-                })
-    }
-
-    override fun setLoadingIndicator(active: Boolean) {
-        isLoading = active
+    override fun showGenericErrorMessage() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.general_error))))
     }
 
     companion object {
-        private val REQUEST_CODE = 3414
+        const val REQUEST_CODE = 3414
         private val STATE_PUBLIC_DECKS = "com.jamieadkins.gwent.user.decks"
 
         fun newInstance(userDecks: Boolean): DeckListFragment {

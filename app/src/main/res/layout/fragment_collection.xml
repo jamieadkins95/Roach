@@ -16,6 +16,6 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@color/white"
-        android:src="@drawable/ic_keg" />
+        app:srcCompat="@drawable/ic_keg" />
 
 </RelativeLayout>

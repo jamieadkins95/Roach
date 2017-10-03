@@ -10,11 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
         app:popupTheme="@style/Theme.Gwent.PopupOverlay" />
 
     <com.jamieadkins.gwent.deck.list.DeckBriefSummaryView
         android:id="@+id/deck_summary_brief"
         android:layout_width="match_parent"
+        android:paddingTop="4dp"
         android:layout_height="48dp"
         style="@style/Theme.Gwent.AppBarOverlay"/>
 

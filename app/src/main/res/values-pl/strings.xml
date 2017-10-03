@@ -117,4 +117,18 @@
     <string name="flag_error_message">Jeśli w bazie kart znajduje się błąd, to, proszę, napisz co jest nie tak, więc będziemy mogli to naprawić tak szybko, jak to możliwe!</string>
     <string name="mistake_reported">Błąd zgłoszony!</string>
     <string name="update_patch">Aktualizacja</string>
+    <string name="italian">Włoski</string>
+    <string name="pref_notifications">Powiadomienia</string>
+    <string name="news_notifications">Aktualności</string>
+    <string name="news_notifications_summary">Otrzymuj powiadomienia o nowościach Gwint.</string>
+    <string name="none">Żaden</string>
+    <string name="patch_notifications">Nowe poprawki</string>
+    <string name="patch_notifications_summary">Otrzymuj powiadomienia, gdy Roach jest zaktualizowany do nowej poprawki Gwenta.</string>
+    <string name="loyalty">Lojalność</string>
+    <string name="loyal">Wierny</string>
+    <string name="disloyal">Nielojalny</string>
+    <string name="position">Pozycja</string>
+    <string name="event">Specjalny</string>
+    <string name="no_results">Brak wyników :(</string>
+    <string name="pref_appearance">Wygląd</string>
 </resources>
