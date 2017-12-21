@@ -143,10 +143,12 @@ public class CardDetails implements RecyclerViewItem {
     @Exclude
     public String getImage() {
         for (String key : variations.keySet()) {
-            return variations.get(key).getArt().getLow();
+            if (variations.get(key).getArt() != null) {
+                return variations.get(key).getArt().getLow();
+            }
         }
 
-        return "http://media-seawolf.cursecdn.com/avatars/thumbnails/3/910/800/1048/0icon.png";
+        return null;
     }
 
     @Exclude
