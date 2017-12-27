@@ -1,18 +1,24 @@
 package com.jamieadkins.gwent.data
 
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.main.GwentApplication
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 
-fun searchCards(query: String, cardList: List<CardDetails>, locale: String): List<String> {
+fun searchCards(query: String, cardList: List<CardDetails>): List<String> {
+    val MIN_SCORE = 50
     val searchResults = ArrayList<CardSearchResult>()
     val cardIds = ArrayList<String>()
     var maxScore = 0
     cardList.forEach { card ->
         if (card.isReleased) {
             val scores = ArrayList<Int>()
-            scores.add(FuzzySearch.partialRatio(query, card.getName(locale)))
-            scores.add(FuzzySearch.partialRatio(query, card.getInfo(locale)))
+            GwentApplication.INSTANCE.resources.getStringArray(R.array.locales).forEach {
+                locale ->
+                scores.add(FuzzySearch.partialRatio(query, card.getName(locale)))
+                scores.add(FuzzySearch.partialRatio(query, card.getInfo(locale)))
+            }
             card.categories?.forEach {
                 scores.add(FuzzySearch.partialRatio(query, it))
             }
@@ -29,7 +35,7 @@ fun searchCards(query: String, cardList: List<CardDetails>, locale: String): Lis
     val cutOff = maxScore - maxScore / 20
     searchResults.forEach {
         // Catch anything within 20%
-        if (it.score >= cutOff) {
+        if (it.score >= cutOff && it.score >= MIN_SCORE) {
             cardIds.add(it.cardId)
         } else {
             // The list is sorted, so by the time we drop below the cutoff, there is no point

@@ -54,7 +54,7 @@ class CachedCardsInteractor() : CardsInteractor {
 
         if (query != null) {
             source = getAllCards().flatMap { cardList ->
-                val searchResults = searchCards(query, cardList.toList(), "en-US")
+                val searchResults = searchCards(query, cardList.toList())
                 Answers.getInstance().logSearch(SearchEvent()
                         .putQuery(query)
                         .putCustomAttribute("hits", searchResults.size))
