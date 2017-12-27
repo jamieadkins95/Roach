@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Flowable
 import okhttp3.ResponseBody
+import java.lang.reflect.Type
 
 object StoreManager {
     private val storeMap = hashMapOf<BarCode, Store<*, BarCode>>()
@@ -30,7 +31,7 @@ object StoreManager {
         return id
     }
 
-    fun <T> getData(barCode: BarCode, observable: Single<ResponseBody>, expirationTime: Long): Flowable<T> {
+    fun <T> getData(barCode: BarCode, observable: Single<ResponseBody>, type: Type, expirationTime: Long): Flowable<T> {
         var store = storeMap[barCode] as Store<T, BarCode>?
         if (store == null) {
             val storeBuilder = StoreBuilder.parsedWithKey<BarCode, BufferedSource, T>()
@@ -40,10 +41,10 @@ object StoreManager {
                             .setExpireAfterWrite(expirationTime)
                             .setExpireAfterTimeUnit(TimeUnit.SECONDS)
                             .build())
-                    .parser(GsonParserFactory.createSourceParser<T>(provideGson(), genericType<T>()) as Parser<BufferedSource, T>)
+                    .parser(GsonParserFactory.createSourceParser<T>(provideGson(), type))
             try {
                 storeBuilder.persister(SourcePersisterFactory.create(GwentApplication.INSTANCE.applicationContext.cacheDir))
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e(StoreManager.javaClass.simpleName, "Failed to get file store.", e)
             }
 

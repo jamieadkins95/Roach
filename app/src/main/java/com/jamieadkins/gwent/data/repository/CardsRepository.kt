@@ -24,15 +24,16 @@ class CardsRepository() : CardsDataSource {
             .build()
             .create(CardsApi::class.java)
 
-    override fun getAllCards(): Flowable<List<CardDetails>> {
-        val patchBarCode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("patch", BuildConfig.CARD_DATA_VERSION))
-        val patchSource = StoreManager.getData<String>(patchBarCode,
-                cardsApi.fetchPatch(BuildConfig.CARD_DATA_VERSION), 10)
+    private fun getLatestPatch() : Flowable<String> {
+        val barcode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("patch", BuildConfig.CARD_DATA_VERSION))
+        return StoreManager.getData(barcode, cardsApi.fetchPatch(BuildConfig.CARD_DATA_VERSION), String::class.java, 10)
+    }
 
-        return patchSource
+    override fun getAllCards(): Flowable<List<CardDetails>> {
+        return getLatestPatch()
                 .flatMap { patch ->
                     val barcode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("card-data", patch))
-                    StoreManager.getData<Map<String, CardDetails>>(barcode, cardsApi.fetchCards(patch), 10)
+                    StoreManager.getData<FirebaseCardResult>(barcode, cardsApi.fetchCards(patch), FirebaseCardResult::class.java, 10)
                 }
                 .map { it.values.toList() }
     }
