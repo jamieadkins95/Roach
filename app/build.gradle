@@ -14,20 +14,19 @@ android {
         versionName "v2.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
             debuggable false
             minifyEnabled true
-            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "CARD_DATA_VERSION", '"3"'
         }
 
         debug {
             debuggable true
-            minifyEnabled true
-            useProguard true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
@@ -109,6 +108,7 @@ dependencies {
     compile 'com.nytimes.android:middleware3:3.0.0-beta'
     compile 'com.nytimes.android:filesystem3:3.0.0-beta'
 
+    compile 'com.android.support:multidex:1.0.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
