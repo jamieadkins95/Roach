@@ -13,6 +13,9 @@ interface CardsApi {
     @GET("card-data/{patch}.json")
     fun fetchCards(@Path("patch") patch: String): Single<ResponseBody>
 
+    @GET("card-data/{patch}/{cardId}.json")
+    fun fetchCard(@Path("patch") patch: String, @Path("cardId") cardId: String): Single<ResponseBody>
+
     @GET("patch/{version}.json")
     fun fetchPatch(@Path("version") version: String): Single<ResponseBody>
 }

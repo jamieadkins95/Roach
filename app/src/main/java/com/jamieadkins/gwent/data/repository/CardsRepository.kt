@@ -73,7 +73,11 @@ class CardsRepository() : CardsDataSource {
     }
 
     override fun getCard(id: String): Flowable<CardDetails> {
-        return Flowable.empty()
+        return getLatestPatch()
+                .flatMap { patch ->
+                    val barcode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("card-data", patch, id))
+                    StoreManager.getData<CardDetails>(barcode, cardsApi.fetchCard(patch, id), CardDetails::class.java, 10)
+                }
     }
 
 }
