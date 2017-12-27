@@ -17,14 +17,17 @@ android {
     }
     buildTypes {
         release {
+            debuggable false
             minifyEnabled true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "CARD_DATA_VERSION", '"3"'
         }
 
         debug {
+            debuggable true
             minifyEnabled true
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
