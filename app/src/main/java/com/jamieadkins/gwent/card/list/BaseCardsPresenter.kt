@@ -4,8 +4,8 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber
 import com.jamieadkins.gwent.base.BaseFilterPresenter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.interactor.CardsInteractor
+import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.data.card.CardsInteractor
 import java.util.concurrent.TimeoutException
 
 /**

@@ -3,11 +3,11 @@ package com.jamieadkins.gwent;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.Rarity;
-import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.card.Faction;
+import com.jamieadkins.gwent.data.card.Rarity;
+import com.jamieadkins.gwent.data.card.Type;
+import com.jamieadkins.gwent.data.card.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import org.junit.Before;

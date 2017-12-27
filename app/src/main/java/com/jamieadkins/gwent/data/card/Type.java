@@ -1,6 +1,7 @@
-package com.jamieadkins.gwent.data;
+package com.jamieadkins.gwent.data.card;
 
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.Filterable;
 
 /**
  * Contains all of the possible groups.

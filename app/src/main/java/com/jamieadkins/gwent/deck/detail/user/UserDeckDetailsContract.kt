@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.deck.detail.user
 
-import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.data.card.CardDetails
 import com.jamieadkins.gwent.deck.detail.DeckDetailsContract
 
 /**

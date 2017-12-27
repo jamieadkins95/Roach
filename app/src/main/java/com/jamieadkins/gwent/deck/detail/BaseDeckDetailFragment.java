@@ -11,9 +11,9 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.deck.Deck;
+import com.jamieadkins.gwent.data.card.Type;
 
 import java.util.HashMap;
 import java.util.Map;

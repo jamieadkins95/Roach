@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data;
+package com.jamieadkins.gwent.data.card;
 
 import com.jamieadkins.gwent.R;
 

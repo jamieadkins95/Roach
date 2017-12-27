@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data.interactor;
+package com.jamieadkins.gwent.data.deck;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -11,11 +11,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.jamieadkins.gwent.base.BaseCompletableObserver;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.data.FirebaseUtils;
-import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.data.card.Type;
+import com.jamieadkins.gwent.data.card.CardsInteractor;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -37,11 +34,6 @@ import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.NotImplementedError;
-
-import static com.jamieadkins.gwent.data.Deck.MAX_CARD_COUNT;
-import static com.jamieadkins.gwent.data.Deck.MAX_EACH_BRONZE;
-import static com.jamieadkins.gwent.data.Deck.MAX_EACH_GOLD;
-import static com.jamieadkins.gwent.data.Deck.MAX_EACH_SILVER;
 
 /**
  * Deals with firebase.
@@ -570,7 +562,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
             count += cards.get(cardId);
         }
 
-        if (count >= MAX_CARD_COUNT) {
+        if (count >= Deck.MAX_CARD_COUNT) {
             return false;
         }
 
@@ -579,11 +571,11 @@ public class DecksInteractorFirebase implements DecksInteractor {
             long currentCardCount = cards.get(cardDetails.getIngameId());
             switch (cardDetails.getType()) {
                 case Type.BRONZE_ID:
-                    return currentCardCount < MAX_EACH_BRONZE;
+                    return currentCardCount < Deck.MAX_EACH_BRONZE;
                 case Type.SILVER_ID:
-                    return currentCardCount < MAX_EACH_SILVER;
+                    return currentCardCount < Deck.MAX_EACH_SILVER;
                 case Type.GOLD_ID:
-                    return currentCardCount < MAX_EACH_GOLD;
+                    return currentCardCount < Deck.MAX_EACH_GOLD;
                 default:
                     return false;
             }

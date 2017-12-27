@@ -1,9 +1,9 @@
 package com.jamieadkins.gwent
 
 import android.content.Context
-import com.jamieadkins.gwent.data.interactor.CardsInteractor
-import com.jamieadkins.gwent.data.interactor.CollectionInteractor
-import com.jamieadkins.gwent.data.interactor.DecksInteractor
+import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.data.collection.CollectionInteractor
+import com.jamieadkins.gwent.data.deck.DecksInteractor
 
 interface Injector {
     fun provideCardsInteractor(context: Context): CardsInteractor

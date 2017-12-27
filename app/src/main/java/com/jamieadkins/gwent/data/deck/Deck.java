@@ -1,13 +1,13 @@
-package com.jamieadkins.gwent.data;
+package com.jamieadkins.gwent.data.deck;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber;
-import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
-import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.data.interactor.CardsInteractor;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.card.CardsInteractor;
+import com.jamieadkins.gwent.data.card.Type;
 
 import java.util.*;
 import java.util.Collection;
@@ -16,7 +16,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableSource;
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;

@@ -1,8 +1,7 @@
-package com.jamieadkins.gwent.data.interactor;
+package com.jamieadkins.gwent.data.collection;
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
-import com.jamieadkins.gwent.collection.CollectionContract;
-import com.jamieadkins.gwent.data.Collection;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import java.util.Map;
 

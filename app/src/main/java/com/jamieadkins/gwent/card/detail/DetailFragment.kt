@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.card.detail
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,7 +10,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 
 import com.jamieadkins.commonutils.mvp2.MvpFragment
@@ -22,7 +20,7 @@ import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
-import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.data.card.CardDetails
 
 /**
  * Shows picture and details of a card.

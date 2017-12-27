@@ -1,10 +1,9 @@
-package com.jamieadkins.gwent.data.interactor;
+package com.jamieadkins.gwent.data.deck;
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

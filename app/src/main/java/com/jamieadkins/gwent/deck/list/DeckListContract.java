@@ -4,8 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.jamieadkins.commonutils.mvp2.BaseListView;
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.deck.Deck;
 
 /**
  * Specifies the contract between the view and the presenter.

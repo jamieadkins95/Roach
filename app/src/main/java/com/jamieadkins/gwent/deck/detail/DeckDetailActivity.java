@@ -2,16 +2,13 @@ package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter;
-import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
 

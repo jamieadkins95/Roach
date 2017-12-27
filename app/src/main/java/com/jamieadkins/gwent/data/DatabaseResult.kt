@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.data
 
+import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 sealed class DatabaseResult {

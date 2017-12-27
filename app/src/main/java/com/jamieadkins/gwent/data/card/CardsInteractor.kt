@@ -1,13 +1,9 @@
-package com.jamieadkins.gwent.data.interactor
+package com.jamieadkins.gwent.data.card
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.CardListResult
 
-import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 
 /**
  * Card manipulation class.

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
-import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.deck.Deck;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.base.BaseFragment
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
-import com.jamieadkins.gwent.data.Deck
+import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity
 
 /**

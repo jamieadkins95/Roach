@@ -4,8 +4,8 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.data.interactor.DecksInteractor
-import com.jamieadkins.gwent.data.*
+import com.jamieadkins.gwent.data.deck.DecksInteractor
+import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 class DeckSummaryPresenter(private val deckId: String, private val decksInteractor: DecksInteractor) :

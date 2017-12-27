@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.card.detail;
 import android.content.Context;
 
 import com.jamieadkins.commonutils.mvp2.BaseView;
-import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.card.CardDetails;
 
 /**
  * Specifies the contract between the view and the presenter.

@@ -9,7 +9,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.bus.CollectionEvent;
 import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
-import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.card.CardDetails;
 
 import java.util.HashMap;
 import java.util.Map;

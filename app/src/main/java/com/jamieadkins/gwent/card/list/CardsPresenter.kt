@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.card.list
 
-import com.jamieadkins.gwent.data.interactor.CardsInteractor
+import com.jamieadkins.gwent.data.card.CardsInteractor
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the

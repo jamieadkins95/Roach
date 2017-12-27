@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.NewDeckBundle
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.data.Faction
+import com.jamieadkins.gwent.data.card.Faction
 
 /**
  * Prompts user for new deck name and faction.

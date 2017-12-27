@@ -1,12 +1,8 @@
 package com.jamieadkins.gwent.collection;
 
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.Collection;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import java.util.Map;
-
-import io.reactivex.Observable;
 
 /**
  * Specifies the contract between the view and the presenter.

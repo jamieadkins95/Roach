@@ -11,10 +11,10 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.Faction
-import com.jamieadkins.gwent.data.Rarity
-import com.jamieadkins.gwent.data.Type
+import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.data.card.Faction
+import com.jamieadkins.gwent.data.card.Rarity
+import com.jamieadkins.gwent.data.card.Type
 
 /**
  * Wrapper for our card detail view.

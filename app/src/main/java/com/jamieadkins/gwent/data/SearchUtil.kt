@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data
 
+import com.jamieadkins.gwent.data.card.CardDetails
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 

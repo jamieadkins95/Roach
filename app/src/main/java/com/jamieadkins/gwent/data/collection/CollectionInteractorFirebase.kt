@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data.interactor
+package com.jamieadkins.gwent.data.collection
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
@@ -7,13 +7,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
-import com.jamieadkins.gwent.data.Collection
 import com.jamieadkins.gwent.data.FirebaseUtils
+import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 import java.util.HashMap
 
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 
 /**

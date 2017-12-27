@@ -3,15 +3,11 @@ package com.jamieadkins.gwent.card.list;
 import android.content.Intent;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.card.LargeCardView;
-import com.jamieadkins.gwent.card.SimpleCardView;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.card.CardDetails;
 
 /**
  * ViewHolder for general yearns

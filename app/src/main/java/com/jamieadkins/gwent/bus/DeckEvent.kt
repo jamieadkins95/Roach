@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.bus
 
-import com.jamieadkins.gwent.data.CardDetails
+import com.jamieadkins.gwent.data.card.CardDetails
 
 class DeckEvent(bundle: DeckEventBundle) : BaseBusEvent<DeckEvent.DeckEventBundle>(bundle) {
     enum class Event {

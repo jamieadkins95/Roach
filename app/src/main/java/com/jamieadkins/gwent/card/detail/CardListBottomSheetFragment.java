@@ -10,25 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.base.BaseObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
-import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows a list of cards in a bottom sheet.

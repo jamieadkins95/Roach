@@ -1,8 +1,12 @@
 package com.jamieadkins.gwent
 
 import android.content.Context
-import android.support.v7.preference.PreferenceManager
-import com.jamieadkins.gwent.data.interactor.*
+import com.jamieadkins.gwent.data.card.CachedCardsInteractor
+import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.data.collection.CollectionInteractor
+import com.jamieadkins.gwent.data.collection.CollectionInteractorFirebase
+import com.jamieadkins.gwent.data.deck.DecksInteractor
+import com.jamieadkins.gwent.data.deck.DecksInteractorFirebase
 
 object Injection : Injector {
     override fun provideCardsInteractor(context: Context): CardsInteractor {

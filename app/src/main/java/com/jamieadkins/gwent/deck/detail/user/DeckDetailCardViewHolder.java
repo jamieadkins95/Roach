@@ -8,9 +8,8 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.bus.DeckEvent;
 import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.data.deck.Deck;
+import com.jamieadkins.gwent.data.card.Type;
 
 /**
  * Includes buttons to add and remove cards from a collection.

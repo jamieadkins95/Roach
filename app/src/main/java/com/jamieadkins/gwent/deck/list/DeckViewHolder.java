@@ -7,13 +7,11 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.Deck;
-import com.jamieadkins.gwent.data.Faction;
-import com.jamieadkins.gwent.data.FirebaseUtils;
+import com.jamieadkins.gwent.data.deck.Deck;
+import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
 

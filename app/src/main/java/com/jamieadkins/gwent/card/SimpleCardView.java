@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.card.CardDetails;
 
 /**
  * Wrapper for our card detail view.

@@ -1,9 +1,7 @@
-package com.jamieadkins.gwent.data;
+package com.jamieadkins.gwent.data.card;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.jamieadkins.commonutils.ui.RecyclerViewItem;
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 
 import java.util.List;
 import java.util.Map;

@@ -1,14 +1,9 @@
 package com.jamieadkins.gwent.base;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.preference.BuildConfig;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -17,9 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
 import com.jamieadkins.commonutils.mvp2.BaseListView;
-import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.commonutils.mvp2.MvpFragment;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
@@ -27,24 +20,19 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.card.CardFilterListener;
-import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.Loyalty;
-import com.jamieadkins.gwent.data.Position;
-import com.jamieadkins.gwent.data.Rarity;
-import com.jamieadkins.gwent.data.Type;
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.data.card.Loyalty;
+import com.jamieadkins.gwent.data.card.Position;
+import com.jamieadkins.gwent.data.card.Rarity;
+import com.jamieadkins.gwent.data.card.Type;
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
-import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observer;
 
 /**
  * UI fragment that shows a list of the users decks.

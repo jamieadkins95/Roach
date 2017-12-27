@@ -12,9 +12,9 @@ import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.Faction
-import com.jamieadkins.gwent.data.Type
+import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.data.card.Faction
+import com.jamieadkins.gwent.data.card.Type
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment
 
 /**

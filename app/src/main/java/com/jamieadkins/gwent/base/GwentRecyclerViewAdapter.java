@@ -8,21 +8,13 @@ import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.card.list.BaseCardViewHolder;
 import com.jamieadkins.gwent.collection.CollectionCardViewHolder;
-import com.jamieadkins.gwent.data.CardDetails;
+import com.jamieadkins.gwent.data.card.CardDetails;
 import com.jamieadkins.gwent.deck.detail.user.DeckDetailCardViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckSummaryViewHolder;
 import com.jamieadkins.gwent.deck.list.DeckViewHolder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
-
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.SingleSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Is able to contain different Gwent elements in a list (cards, decks, etc.).

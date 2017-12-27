@@ -5,7 +5,7 @@ import android.view.View;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.Deck;
+import com.jamieadkins.gwent.data.deck.Deck;
 
 /**
  * Holds much more detail about a card.

@@ -6,10 +6,8 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.Deck
-import com.jamieadkins.gwent.data.interactor.CardsInteractor
-import com.jamieadkins.gwent.data.interactor.DecksInteractor
+import com.jamieadkins.gwent.data.deck.Deck
+import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 
 /**

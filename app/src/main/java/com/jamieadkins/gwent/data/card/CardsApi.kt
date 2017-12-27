@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data
+package com.jamieadkins.gwent.data.card
 
 import io.reactivex.Single
 import okhttp3.ResponseBody

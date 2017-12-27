@@ -3,17 +3,15 @@ package com.jamieadkins.gwent.card;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.jamieadkins.gwent.data.CardDetails;
-import com.jamieadkins.gwent.data.Faction;
+import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.Loyalty;
-import com.jamieadkins.gwent.data.Position;
-import com.jamieadkins.gwent.data.Rarity;
-import com.jamieadkins.gwent.data.Type;
+import com.jamieadkins.gwent.data.card.Loyalty;
+import com.jamieadkins.gwent.data.card.Position;
+import com.jamieadkins.gwent.data.card.Rarity;
+import com.jamieadkins.gwent.data.card.Type;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Used to filter cards.

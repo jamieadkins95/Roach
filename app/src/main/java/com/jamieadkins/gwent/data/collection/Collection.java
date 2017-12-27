@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data;
+package com.jamieadkins.gwent.data.collection;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;

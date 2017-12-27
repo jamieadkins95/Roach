@@ -1,8 +1,7 @@
-package com.jamieadkins.gwent.data.interactor
+package com.jamieadkins.gwent.data.card
 
 import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.answers.SearchEvent
-import com.google.firebase.database.*
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.Constants
 import com.jamieadkins.gwent.StoreManager
@@ -10,13 +9,10 @@ import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.*
 import com.jamieadkins.gwent.data.repository.FirebaseCardResult
 import com.nytimes.android.external.store3.base.impl.BarCode
-import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.HashMap
 
 class CachedCardsInteractor() : CardsInteractor {
     private val cardsApi = Retrofit.Builder()
