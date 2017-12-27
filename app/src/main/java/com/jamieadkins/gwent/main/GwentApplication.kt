@@ -6,8 +6,13 @@ import io.fabric.sdk.android.Fabric
 
 class GwentApplication : Application() {
 
+    companion object {
+        lateinit var INSTANCE: GwentApplication
+    }
+
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         Fabric.with(this, Crashlytics())
     }
 }

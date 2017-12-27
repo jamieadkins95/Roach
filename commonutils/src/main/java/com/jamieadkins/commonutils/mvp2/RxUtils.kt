@@ -1,6 +1,7 @@
 package com.jamieadkins.commonutils.mvp2
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -15,6 +16,10 @@ fun <T> Observable<T>.applySchedulers(): Observable<T> {
 }
 
 fun <T> Single<T>.applySchedulers(): Single<T> {
+    return subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
+}
+
+fun <T> Flowable<T>.applySchedulers(): Flowable<T> {
     return subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
 }
 

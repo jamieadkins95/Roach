@@ -97,11 +97,15 @@ dependencies {
         transitive = true
     }
 
-    // Testing.
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.nytimes.android:cache3:3.0.0-beta'
+    compile 'com.nytimes.android:store3:3.0.0-beta'
+    compile 'com.nytimes.android:middleware3:3.0.0-beta'
+    compile 'com.nytimes.android:filesystem3:3.0.0-beta'
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
