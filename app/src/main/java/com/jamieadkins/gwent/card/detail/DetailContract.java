@@ -20,6 +20,6 @@ public interface DetailContract {
     }
 
     interface Presenter {
-        void reportMistake(String cardId, String description);
+
     }
 }

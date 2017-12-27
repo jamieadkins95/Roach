@@ -6,9 +6,7 @@ import com.jamieadkins.gwent.data.interactor.*
 
 object Injection : Injector {
     override fun provideCardsInteractor(context: Context): CardsInteractor {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val locale = preferences.getString(context.getString(R.string.pref_locale_key), context.getString(R.string.default_locale))
-        return CardsInteractorFirebase(locale)
+        return CachedCardsInteractor()
     }
 
     override fun provideCollectionInteractor(): CollectionInteractor {

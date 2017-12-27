@@ -8,7 +8,6 @@ import com.jamieadkins.gwent.data.Faction;
 import com.jamieadkins.gwent.data.Rarity;
 import com.jamieadkins.gwent.data.Type;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
 
 import org.junit.Before;

@@ -3,19 +3,20 @@ package com.jamieadkins.gwent.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
+import com.jamieadkins.gwent.base.BaseDisposableSubscriber;
 import com.jamieadkins.gwent.base.BaseSingleObserver;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.data.interactor.CardsInteractor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Collection;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableSource;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
@@ -170,11 +171,16 @@ public class Deck implements RecyclerViewItem {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseSingleObserver<CardDetails>() {
+                                new BaseDisposableSubscriber<CardDetails>() {
                                     @Override
-                                    public void onSuccess(CardDetails value) {
-                                        leader = value;
+                                    public void onNext(CardDetails cardDetails) {
+                                        leader = cardDetails;
                                         leader.setPatch(patch);
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        super.onComplete();
                                         if (cards.keySet().size() == cardCount.keySet().size()) {
                                             emitter.onComplete();
                                         }
@@ -194,16 +200,20 @@ public class Deck implements RecyclerViewItem {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseSingleObserver<CardListResult>() {
+                                new BaseDisposableSubscriber<Collection<CardDetails>>() {
                                     @Override
-                                    public void onSuccess(CardListResult result) {
-                                        if (result instanceof CardListResult.Success) {
-                                            for (CardDetails card : ((CardListResult.Success) result).getCards()) {
-                                                cards.put(card.getIngameId(), card);
-                                            }
-                                            if (leader != null) {
-                                                emitter.onComplete();
-                                            }
+                                    public void onNext(Collection<CardDetails> result) {
+                                        for (CardDetails card : result) {
+                                            cards.put(card.getIngameId(), card);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        super.onComplete();
+
+                                        if (leader != null) {
+                                            emitter.onComplete();
                                         }
                                     }
                                 });

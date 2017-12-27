@@ -23,7 +23,6 @@ import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase
 
 /**
  * Shows picture and details of a card.
@@ -92,23 +91,6 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
             when (it.itemId) {
-                R.id.action_flag_error -> {
-                    val builder = AlertDialog.Builder(activity)
-                    val inflater = activity.layoutInflater
-                    val view = inflater.inflate(R.layout.dialog_edit_text, null)
-                    val input = view.findViewById<View>(R.id.edit_text) as EditText
-                    input.setHint(R.string.error_description)
-                    builder.setView(view)
-                            .setTitle(R.string.flag_error_title)
-                            .setMessage(R.string.flag_error_message)
-                            .setPositiveButton(R.string.send) { _, _ ->
-                                (presenter as DetailContract.Presenter).reportMistake(mCardId, input.text.toString())
-                            }
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create()
-                            .show()
-                    return true
-                }
                 else -> return super.onOptionsItemSelected(item)
             }
         }

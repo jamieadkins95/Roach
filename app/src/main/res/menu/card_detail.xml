@@ -7,9 +7,4 @@
         android:visible="false"
         app:showAsAction="ifRoom"
         android:title="@string/related_cards"/>
-    <item
-        android:id="@+id/action_flag_error"
-        android:icon="@drawable/ic_flag"
-        app:showAsAction="ifRoom"
-        android:title="@string/flag_error"/>
 </menu>

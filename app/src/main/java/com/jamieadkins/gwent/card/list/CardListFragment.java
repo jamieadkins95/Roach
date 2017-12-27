@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.interactor.CardsInteractorFirebase;
 
 /**
  * UI fragment that shows a list of the users decks.

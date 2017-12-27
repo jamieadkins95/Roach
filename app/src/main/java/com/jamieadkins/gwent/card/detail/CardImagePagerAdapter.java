@@ -47,14 +47,7 @@ public class CardImagePagerAdapter extends PagerAdapter {
     }
 
     public void addItem(String imageUrl) {
-        boolean alreadyAdded = false;
-        for (String url : mItems) {
-            if (url.equals(imageUrl)) {
-                alreadyAdded = true;
-            }
-        }
-
-        if (!alreadyAdded) {
+        if (!mItems.contains(imageUrl)) {
             mItems.add(imageUrl);
             notifyDataSetChanged();
         }

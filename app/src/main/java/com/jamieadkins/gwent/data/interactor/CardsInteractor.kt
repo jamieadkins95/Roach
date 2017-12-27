@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.CardDetails
 import com.jamieadkins.gwent.data.CardListResult
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -14,15 +15,13 @@ import io.reactivex.Single
 
 interface CardsInteractor : BaseInteractor {
 
-    fun getCards(filter: CardFilter): Single<CardListResult>
+    fun getAllCards(): Flowable<Collection<CardDetails>>
 
-    fun getCards(filter: CardFilter?, cardIds: List<String>): Single<CardListResult>
+    fun getCards(filter: CardFilter): Flowable<Collection<CardDetails>>
 
-    fun getCards(filter: CardFilter?, query: String?): Single<CardListResult>
+    fun getCards(filter: CardFilter?, cardIds: List<String>): Flowable<Collection<CardDetails>>
 
-    fun getCard(id: String): Single<CardDetails>
+    fun getCards(filter: CardFilter?, query: String?): Flowable<Collection<CardDetails>>
 
-    fun reportMistake(cardid: String, description: String): Completable
-
-    fun removeListeners()
+    fun getCard(id: String): Flowable<CardDetails>
 }

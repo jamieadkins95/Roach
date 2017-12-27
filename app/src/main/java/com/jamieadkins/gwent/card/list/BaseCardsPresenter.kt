@@ -2,14 +2,10 @@ package com.jamieadkins.gwent.card.list
 
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.base.BaseDisposableSingle
+import com.jamieadkins.gwent.base.BaseDisposableSubscriber
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.data.CardDetails
-import com.jamieadkins.gwent.data.CardListResult
 import com.jamieadkins.gwent.data.interactor.CardsInteractor
-import com.jamieadkins.gwent.data.repository.CardsRepository
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 /**
@@ -19,8 +15,6 @@ import java.util.concurrent.TimeoutException
 
 abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInteractor: CardsInteractor) :
         BaseFilterPresenter<T>(), CardsContract.Presenter {
-
-    val repository = CardsRepository()
 
     override fun onRefresh() {
         onLoadData()
@@ -38,15 +32,18 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
 
-        repository.getCards(cardFilter, searchQuery)
-                .toObservable()
+        mCardsInteractor.getCards(cardFilter, searchQuery)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableObserver<Collection<CardDetails>>() {
+                .subscribeWith(object : BaseDisposableSubscriber<Collection<CardDetails>>() {
                     override fun onNext(result: Collection<CardDetails>) {
                         view?.showItems(result.toList())
                         if (result.isEmpty()) {
                             view?.showEmptyView()
                         }
+                    }
+
+                    override fun onComplete() {
+                        super.onComplete()
                         view?.setLoadingIndicator(false)
                     }
 
