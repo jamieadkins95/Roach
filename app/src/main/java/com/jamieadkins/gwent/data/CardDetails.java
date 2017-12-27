@@ -12,7 +12,7 @@ import java.util.Map;
  * Class that models what a deck is.
  */
 @IgnoreExtraProperties
-public class CardDetails implements RecyclerViewItem {
+public class CardDetails {
     private static final String DEFAULT_LOCALE = "en-US";
 
     private List<String> categories;
@@ -247,20 +247,5 @@ public class CardDetails implements RecyclerViewItem {
         public String getThumbnail() {
             return thumbnail;
         }
-    }
-
-    @Override
-    public int getItemType() {
-        if (type.equals(Type.LEADER_ID)) {
-            return GwentRecyclerViewAdapter.TYPE_CARD_LEADER;
-        } else {
-            return GwentRecyclerViewAdapter.TYPE_CARD;
-        }
-    }
-
-    @Override
-    public boolean areContentsTheSame(RecyclerViewItem other) {
-        return other instanceof CardDetails
-                && getInfo(DEFAULT_LOCALE).equals(((CardDetails) other).getInfo(DEFAULT_LOCALE));
     }
 }

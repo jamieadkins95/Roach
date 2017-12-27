@@ -10,8 +10,21 @@ class Card : RecyclerViewItem {
     var info = mutableMapOf<String, String>()
     var flavor = mutableMapOf<String, String>()
     var name = mutableMapOf<String, String>()
+    var categories = listOf<String>()
+    var loyalties = listOf<Loyalty>()
     var type: CardColour? = null
     var faction: Faction? = null
+    var strength: Int? = null
+    var colour: CardColour? = null
+    var rarity: Rarity? = null
+    var collectible = false
+
+    var craftValues = mutableMapOf<String, Int>()
+    var millValues = mutableMapOf<String, Int>()
+
+    var relatedCards = listOf<String>()
+
+    var cardArt: CardArt? = null
 
     override fun getItemType(): Int {
         return if (type == CardColour.LEADER) {
