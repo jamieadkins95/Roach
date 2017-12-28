@@ -83,9 +83,9 @@ class CardFilter() : Parcelable {
     }
 
     fun doesCardMeetFilter(card: GwentCard): Boolean {
-        var loyalty = (loyaltyFilter[Loyalty.DISLOYAL]) ?: false && (loyaltyFilter[Loyalty.DISLOYAL] ?: false)
+        var loyalty = (loyaltyFilter[Loyalty.LOYAL] ?: false) && (loyaltyFilter[Loyalty.DISLOYAL] ?: false)
         for (l in card.loyalties) {
-            loyalty = loyalty || loyaltyFilter[l] ?: false
+            loyalty = loyalty || (loyaltyFilter[l] ?: false)
         }
 
         val include = !isCollectibleOnly || card.collectible

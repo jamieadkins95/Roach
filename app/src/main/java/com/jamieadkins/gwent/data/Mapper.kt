@@ -28,6 +28,12 @@ object Mapper {
             artist = variation?.art?.artist
         }
 
+        cardDetails.loyalties?.forEach { id ->
+            loyaltyIdToLoyalty(id)?.let {
+                card.loyalties.add(it)
+            }
+        }
+
         return card
     }
 
@@ -68,6 +74,14 @@ object Mapper {
             com.jamieadkins.gwent.data.card.Rarity.RARE_ID -> Rarity.RARE
             com.jamieadkins.gwent.data.card.Rarity.EPIC_ID -> Rarity.EPIC
             com.jamieadkins.gwent.data.card.Rarity.LEGENDARY_ID -> Rarity.LEGENDARY
+            else -> null
+        }
+    }
+
+    fun loyaltyIdToLoyalty(loyalty: String): Loyalty? {
+        return when (loyalty) {
+            com.jamieadkins.gwent.data.card.Loyalty.LOYAL_ID -> Loyalty.LOYAL
+            com.jamieadkins.gwent.data.card.Loyalty.DISLOYAL_ID -> Loyalty.DISLOYAL
             else -> null
         }
     }
