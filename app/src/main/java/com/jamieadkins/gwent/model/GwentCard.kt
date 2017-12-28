@@ -10,8 +10,8 @@ class GwentCard : RecyclerViewItem {
     var info = mutableMapOf<String, String>()
     var flavor = mutableMapOf<String, String>()
     var name = mutableMapOf<String, String>()
-    var categories = listOf<String>()
-    var loyalties = listOf<Loyalty>()
+    var categories = mutableListOf<String>()
+    var loyalties = mutableListOf<Loyalty>()
     var faction: GwentFaction? = null
     var strength: Int? = null
     var colour: CardColour? = null
@@ -39,5 +39,9 @@ class GwentCard : RecyclerViewItem {
 
     override fun areContentsTheSame(other: RecyclerViewItem): Boolean {
         return other is GwentCard && info[DEFAULT_LOCALE] == other.info[DEFAULT_LOCALE]
+    }
+
+    override fun toString(): String {
+        return name[DEFAULT_LOCALE] ?: id ?: super.toString()
     }
 }
