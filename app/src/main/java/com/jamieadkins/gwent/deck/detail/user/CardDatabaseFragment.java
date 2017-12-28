@@ -80,6 +80,7 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
             }
         }
         filter.getFactionFilter().put(GwentFaction.NEUTRAL, true);
+        filter.setCollectibleOnly(true);
         filter.setCurrentFilterAsBase();
         return filter;
     }

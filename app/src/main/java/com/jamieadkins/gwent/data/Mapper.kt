@@ -18,8 +18,9 @@ object Mapper {
         card.rarity = rarityIdToRarity(cardDetails.rarity)
         card.colour = typeToColour(cardDetails.type)
 
+        val variation = cardDetails.variations.values.firstOrNull()
+        card.collectible = variation?.isCollectible ?: false
         card.cardArt = CardArt().apply {
-            val variation = cardDetails.variations.values.firstOrNull()
             original = variation?.art?.original
             high = variation?.art?.high
             medium = variation?.art?.medium

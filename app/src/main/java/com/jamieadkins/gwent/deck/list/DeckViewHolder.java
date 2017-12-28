@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.Mapper;
 import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
@@ -56,7 +57,7 @@ public class DeckViewHolder extends BaseViewHolder {
                     intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
                 }
                 intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, mDeck.getId());
-                intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, mDeck.getFactionId());
+                intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, Mapper.INSTANCE.factionIdToFaction(mDeck.getFactionId()));
                 intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, mDeck.isPublicDeck());
                 getView().getContext().startActivity(intent);
             }
