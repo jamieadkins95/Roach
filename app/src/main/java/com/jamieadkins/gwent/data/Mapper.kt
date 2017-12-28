@@ -54,6 +54,7 @@ object Mapper {
             Faction.SCOIATAEL_ID -> GwentFaction.SCOIATAEL
             Faction.SKELLIGE_ID -> GwentFaction.SKELLIGE
             Faction.NILFGAARD_ID -> GwentFaction.NILFGAARD
+            Faction.NEUTRAL_ID -> GwentFaction.NEUTRAL
             else -> null
         }
     }
