@@ -1,9 +1,10 @@
-package com.jamieadkins.gwent.card
+package com.jamieadkins.gwent.filter
 
 import android.content.Context
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.model.CardColour
 import com.jamieadkins.gwent.model.GwentFaction
+import com.jamieadkins.gwent.model.Loyalty
 import com.jamieadkins.gwent.model.Rarity
 
 object GwentStringHelper {
@@ -36,6 +37,14 @@ object GwentStringHelper {
             GwentFaction.SKELLIGE -> context.getString(R.string.skellige)
             GwentFaction.NILFGAARD -> context.getString(R.string.nilfgaard)
             GwentFaction.NEUTRAL -> context.getString(R.string.neutral)
+            else -> null
+        }
+    }
+
+    fun getLoyaltyString(context: Context, colour: Loyalty?): String? {
+        return when(colour) {
+            Loyalty.LOYAL -> context.getString(R.string.loyal)
+            Loyalty.DISLOYAL -> context.getString(R.string.disloyal)
             else -> null
         }
     }

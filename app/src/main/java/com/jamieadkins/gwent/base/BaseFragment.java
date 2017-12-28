@@ -236,4 +236,24 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
             filterPresenter.onCardFilterUpdated();
         }
     }
+
+    @Override
+    public void onFactionFilterChanged(GwentFaction filter, boolean enabled) {
+        filterPresenter.onFactionFilterChanged(filter, enabled);
+    }
+
+    @Override
+    public void onColourFilterChanged(CardColour filter, boolean enabled) {
+        filterPresenter.onColourFilterChanged(filter, enabled);
+    }
+
+    @Override
+    public void onRarityFilterChanged(Rarity filter, boolean enabled) {
+        filterPresenter.onRarityFilterChanged(filter, enabled);
+    }
+
+    @Override
+    public void onLoyaltyFilterChanged(Loyalty filter, boolean enabled) {
+        filterPresenter.onLoyaltyFilterChanged(filter, enabled);
+    }
 }

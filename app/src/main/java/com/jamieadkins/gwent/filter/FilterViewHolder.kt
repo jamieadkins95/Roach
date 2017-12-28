@@ -7,6 +7,10 @@ import android.widget.TextView
 import com.jamieadkins.commonutils.ui.BaseViewHolder
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.model.CardColour
+import com.jamieadkins.gwent.model.GwentFaction
+import com.jamieadkins.gwent.model.Loyalty
+import com.jamieadkins.gwent.model.Rarity
 
 /**
  * Holds much more detail about a card.
@@ -35,15 +39,24 @@ class FilterViewHolder<F>(view: View, private val mListener: FilterBottomSheetDi
             this@FilterViewHolder.onClick(v)
         }
 
-        mFilterName.text = mFilter?.filterable.toString()
+        mFilter?.filterable?.let {
+            when (it) {
+                is Rarity -> mFilterName.text = GwentStringHelper.getRarityString(mFilterName.context, it)
+                is GwentFaction -> mFilterName.text = GwentStringHelper.getFactionString(mFilterName.context, it)
+                is CardColour -> mFilterName.text = GwentStringHelper.getColourString(mFilterName.context, it)
+                is Loyalty -> mFilterName.text = GwentStringHelper.getLoyaltyString(mFilterName.context, it)
+            }
+        }
     }
 
     override fun onClick(v: View) {
-        when (mFilter?.filterable) {
-            /*is Rarity -> mListener.onRarityFilterChanged(it, mCheckbox.isChecked)
-            is GwentFaction -> mListener.onFactionFilterChanged(it, mCheckbox.isChecked)
-            is CardColour -> mListener.onColourFilterChanged(it, mCheckbox.isChecked)
-            is Loyalty -> mListener.onLoyaltyFilterChanged(it, mCheckbox.isChecked)*/
+        mFilter?.filterable?.let {
+            when (it) {
+                is Rarity -> mListener.onRarityFilterChanged(it, mCheckbox.isChecked)
+                is GwentFaction -> mListener.onFactionFilterChanged(it, mCheckbox.isChecked)
+                is CardColour -> mListener.onColourFilterChanged(it, mCheckbox.isChecked)
+                is Loyalty -> mListener.onLoyaltyFilterChanged(it, mCheckbox.isChecked)
+            }
         }
     }
 }

@@ -10,6 +10,10 @@ import android.view.View;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.model.CardColour;
+import com.jamieadkins.gwent.model.GwentFaction;
+import com.jamieadkins.gwent.model.Loyalty;
+import com.jamieadkins.gwent.model.Rarity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,10 @@ public class FilterBottomSheetDialogFragment<F> extends BottomSheetDialogFragmen
 
     public interface FilterUiListener {
         void onFilterDismissed(boolean filtersChanged);
+        void onFactionFilterChanged(GwentFaction filter, boolean enabled);
+        void onColourFilterChanged(CardColour filter, boolean enabled);
+        void onRarityFilterChanged(Rarity filter, boolean enabled);
+        void onLoyaltyFilterChanged(Loyalty filter, boolean enabled);
     }
 
     public static FilterBottomSheetDialogFragment newInstance(String filteringOn,
