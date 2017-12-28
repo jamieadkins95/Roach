@@ -33,6 +33,10 @@ class GwentCard : RecyclerViewItem {
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is GwentCard && other.id == id
+    }
+
     override fun areContentsTheSame(other: RecyclerViewItem): Boolean {
         return other is GwentCard && info[DEFAULT_LOCALE] == other.info[DEFAULT_LOCALE]
     }
