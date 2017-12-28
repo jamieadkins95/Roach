@@ -18,13 +18,12 @@ import java.util.List;
  * Holds card filter checkboxes.
  */
 
-public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class FilterBottomSheetDialogFragment<F> extends BottomSheetDialogFragment {
     private FilterUiListener mListener;
-    private List<FilterableItem> mItems;
+    private List<FilterableItem<F>> mItems;
     private String mFilteringOn;
 
     public interface FilterUiListener {
-        void onFilterChanged(String key, boolean checked);
         void onFilterDismissed(boolean filtersChanged);
     }
 
@@ -40,7 +39,6 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
         View contentView = View.inflate(getContext(), R.layout.recycler_view_only, null);
         RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recycler_view);
         final LinearLayoutManager linearLayoutManager =

@@ -53,14 +53,14 @@ public class DeckDetailCardViewHolder extends BaseCardViewHolder {
 
         int maxCount = 0;
 
-        switch (getBoundCardDetails().getType()) {
-            case Type.BRONZE_ID:
+        switch (getBoundCardDetails().getColour()) {
+            case BRONZE:
                 maxCount = Deck.MAX_EACH_BRONZE;
                 break;
-            case Type.SILVER_ID:
+            case SILVER:
                 maxCount = Deck.MAX_EACH_SILVER;
                 break;
-            case Type.GOLD_ID:
+            case GOLD:
                 maxCount = Deck.MAX_EACH_GOLD;
                 break;
         }

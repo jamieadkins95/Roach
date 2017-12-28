@@ -37,10 +37,10 @@ class CollectionPresenter(private val collectionInteractor: CollectionInteractor
                     override fun onNext(event: CollectionEvent) {
                         when (event.data.event) {
                             CollectionEvent.Event.ADD_CARD -> {
-                                collectionInteractor.addCardToCollection(event.data.cardId, event.data.variationId)
+                                collectionInteractor.addCardToCollection(event.data.cardId)
                             }
                             CollectionEvent.Event.REMOVE_CARD -> {
-                                collectionInteractor.removeCardFromCollection(event.data.cardId, event.data.variationId)
+                                collectionInteractor.removeCardFromCollection(event.data.cardId)
                             }
                         }
                     }

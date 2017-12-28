@@ -19,15 +19,12 @@ import java.util.Map;
  */
 
 public class CollectionCardViewHolder extends BaseCardViewHolder {
-    private Map<String, Button> mAddButtons;
-    private Map<String, Button> mRemoveButtons;
-    private Map<String, TextView> mCollectionCounts;
+    private Button mAddButton;
+    private Button mRemoveButton;
+    private TextView mCollectionCount;
 
     public CollectionCardViewHolder(View view) {
         super(view);
-        mAddButtons = new HashMap<>();
-        mRemoveButtons = new HashMap<>();
-        mCollectionCounts = new HashMap<>();
     }
 
     @Override
@@ -36,47 +33,28 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
 
         resetViews();
 
-        for (final String variationId : getBoundCardDetails().getVariations().keySet()) {
-            int variationNumber = CardDetails.Variation.getVariationNumber(variationId);
-            switch (variationNumber) {
-                case 1:
-                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_1));
-                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_1));
-                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_1));
-                    getView().findViewById(R.id.collection_controls_1).setVisibility(View.VISIBLE);
-                    break;
-                case 2:
-                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_2));
-                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_2));
-                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_2));
-                    getView().findViewById(R.id.collection_controls_2).setVisibility(View.VISIBLE);
-                    break;
-                case 3:
-                    mAddButtons.put(variationId, (Button) getView().findViewById(R.id.add_variation_3));
-                    mRemoveButtons.put(variationId, (Button) getView().findViewById(R.id.remove_variation_3));
-                    mCollectionCounts.put(variationId, (TextView) getView().findViewById(R.id.collection_count_3));
-                    getView().findViewById(R.id.collection_controls_3).setVisibility(View.VISIBLE);
-                    break;
+        mAddButton = (Button) getView().findViewById(R.id.add_variation_1);
+        mRemoveButton = (Button) getView().findViewById(R.id.remove_variation_1);
+        mCollectionCount = (TextView) getView().findViewById(R.id.collection_count_1);
+        getView().findViewById(R.id.collection_controls_1).setVisibility(View.VISIBLE);
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RxBus.INSTANCE.post(new CollectionEvent(
+                        new CollectionEvent.CollectionEventBundle(
+                                CollectionEvent.Event.ADD_CARD, getBoundCardDetails().getId())));
+
             }
-
-            mAddButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    RxBus.INSTANCE.post(new CollectionEvent(
-                            new CollectionEvent.CollectionEventBundle(
-                                    CollectionEvent.Event.ADD_CARD, getBoundCardDetails().getIngameId(), variationId)));
-
-                }
-            });
-            mRemoveButtons.get(variationId).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    RxBus.INSTANCE.post(new CollectionEvent(
-                            new CollectionEvent.CollectionEventBundle(
-                                    CollectionEvent.Event.REMOVE_CARD, getBoundCardDetails().getIngameId(), variationId)));
-                }
-            });
-        }
+        });
+        mRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RxBus.INSTANCE.post(new CollectionEvent(
+                        new CollectionEvent.CollectionEventBundle(
+                                CollectionEvent.Event.REMOVE_CARD, getBoundCardDetails().getId())));
+            }
+        });
     }
 
     private void resetViews() {
@@ -92,23 +70,17 @@ public class CollectionCardViewHolder extends BaseCardViewHolder {
         getView().findViewById(R.id.remove_variation_1).setOnClickListener(null);
         getView().findViewById(R.id.remove_variation_2).setOnClickListener(null);
         getView().findViewById(R.id.remove_variation_3).setOnClickListener(null);
-
-        mAddButtons = new HashMap<>();
-        mRemoveButtons = new HashMap<>();
-        mCollectionCounts = new HashMap<>();
     }
 
-    public void setItemCount(String variationId, int count) {
+    public void setItemCount(int count) {
 
         // Hide remove button if there are already 0 cards in collection.
         if (count > 0) {
-            mRemoveButtons.get(variationId).setVisibility(View.VISIBLE);
+            mRemoveButton.setVisibility(View.VISIBLE);
         } else {
-            mRemoveButtons.get(variationId).setVisibility(View.INVISIBLE);
+            mRemoveButton.setVisibility(View.INVISIBLE);
         }
 
-        mCollectionCounts.get(variationId).setText(String.format(
-                mCollectionCounts.get(variationId).getContext().getString(R.string.in_collection),
-                CardDetails.Variation.getVariationNumber(variationId), count));
+        mCollectionCount.setText(mCollectionCount.getContext().getString(R.string.in_collection, 1, count));
     }
 }

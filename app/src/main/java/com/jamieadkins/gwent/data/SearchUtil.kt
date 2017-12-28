@@ -1,32 +1,32 @@
 package com.jamieadkins.gwent.data
 
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.data.card.CardDetails
 import com.jamieadkins.gwent.main.GwentApplication
+import com.jamieadkins.gwent.model.GwentCard
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 
-fun searchCards(query: String, cardList: List<CardDetails>): List<String> {
+fun searchCards(query: String, cardList: List<GwentCard>): List<String> {
     val MIN_SCORE = 50
     val searchResults = ArrayList<CardSearchResult>()
     val cardIds = ArrayList<String>()
     var maxScore = 0
     cardList.forEach { card ->
-        if (card.isReleased) {
-            val scores = ArrayList<Int>()
-            GwentApplication.INSTANCE.resources.getStringArray(R.array.locales).forEach {
-                locale ->
-                scores.add(FuzzySearch.partialRatio(query, card.getName(locale)))
-                scores.add(FuzzySearch.partialRatio(query, card.getInfo(locale)))
-            }
-            card.categories?.forEach {
-                scores.add(FuzzySearch.partialRatio(query, it))
-            }
-            val score = Collections.max(scores)
-            if (score > maxScore) {
-                maxScore = score
-            }
-            val result = CardSearchResult(card.ingameId, score)
+        val scores = ArrayList<Int>()
+        GwentApplication.INSTANCE.resources.getStringArray(R.array.locales).forEach {
+            locale ->
+            scores.add(FuzzySearch.partialRatio(query, card.name[locale]))
+            scores.add(FuzzySearch.partialRatio(query, card.info[locale]))
+        }
+        card.categories?.forEach {
+            scores.add(FuzzySearch.partialRatio(query, it))
+        }
+        val score = Collections.max(scores)
+        if (score > maxScore) {
+            maxScore = score
+        }
+        card.id?.let {
+            val result = CardSearchResult(it, score)
             searchResults.add(result)
         }
     }

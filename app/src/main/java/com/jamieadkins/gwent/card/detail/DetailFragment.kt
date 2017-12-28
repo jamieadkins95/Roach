@@ -21,6 +21,7 @@ import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.LargeCardView
 import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.model.GwentCard
 
 /**
  * Shows picture and details of a card.
@@ -36,7 +37,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
 
     private var mLocale: String? = null
 
-    private var mCard: CardDetails? = null
+    private var mCard: GwentCard? = null
 
     private var mUseLowData = false
 
@@ -82,7 +83,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
 
         mCard?.let {
             inflater?.inflate(R.menu.card_detail, menu)
-            menu?.findItem(R.id.action_related)?.isVisible = it.related != null && BuildConfig.DEBUG
+            menu?.findItem(R.id.action_related)?.isVisible = it.relatedCards.isNotEmpty() && BuildConfig.DEBUG
         }
     }
 
@@ -95,28 +96,17 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showCard(card: CardDetails) {
+    override fun showCard(card: GwentCard) {
         activity?.invalidateOptionsMenu()
         mCard = card
 
         // Update UI with card details.
-        activity.title = card.getName(mLocale)
+        activity.title = card.name[mLocale]
 
-        for (variationId in card.variations.keys) {
-            val variation = card.variations[variationId]
-            var image: String? = null
-            variation?.let {
-                if (mUseLowData) {
-                    it.art?.low?.let {
-                        image = it
-                    }
-                } else {
-                    it.art?.medium?.let {
-                        image = it
-                    }
-                }
-            }
-            mAdapter?.addItem(image)
+        if (mUseLowData) {
+            mAdapter?.addItem(card.cardArt?.low)
+        } else {
+            mAdapter?.addItem(card.cardArt?.medium)
         }
 
         mLargeCardView?.setCardDetails(card)

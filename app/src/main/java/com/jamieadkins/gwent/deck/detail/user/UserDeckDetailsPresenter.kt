@@ -10,19 +10,18 @@ import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.card.CardDetails
-import com.jamieadkins.gwent.data.card.Faction
-import com.jamieadkins.gwent.data.card.Type
 import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
-
+import com.jamieadkins.gwent.model.CardColour
+import com.jamieadkins.gwent.model.GwentFaction
+import com.jamieadkins.gwent.model.GwentCard
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
 class UserDeckDetailsPresenter(private val deckId: String,
-                               private val factionId: String,
+                               private val faction: com.jamieadkins.gwent.model.GwentFaction,
                                private val decksInteractor: DecksInteractor,
                                private val cardsInteractor: CardsInteractor) :
         BaseFilterPresenter<UserDeckDetailsContract.View>(), UserDeckDetailsContract.Presenter {
@@ -97,17 +96,17 @@ class UserDeckDetailsPresenter(private val deckId: String,
         val cardFilter = CardFilter()
 
         // Set filter to leaders of this faction only.
-        Faction.ALL_FACTIONS
-                .filter { it.id != factionId }
-                .forEach { cardFilter.put(it.id, false) }
-        cardFilter.put(Type.BRONZE_ID, false)
-        cardFilter.put(Type.SILVER_ID, false)
-        cardFilter.put(Type.GOLD_ID, false)
+        GwentFaction.values()
+                .filter { it != faction }
+                .forEach { cardFilter.factionFilter.put(it, false) }
+        cardFilter.colourFilter.put(CardColour.BRONZE, false)
+        cardFilter.colourFilter.put(CardColour.SILVER, false)
+        cardFilter.colourFilter.put(CardColour.GOLD, false)
 
         cardsInteractor.getCards(cardFilter)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSubscriber<Collection<CardDetails>>() {
-                    override fun onNext(result: Collection<CardDetails>) {
+                .subscribeWith(object : BaseDisposableSubscriber<Collection<GwentCard>>() {
+                    override fun onNext(result: Collection<GwentCard>) {
                         view?.showPotentialLeaders(result.toList())
                     }
                 })

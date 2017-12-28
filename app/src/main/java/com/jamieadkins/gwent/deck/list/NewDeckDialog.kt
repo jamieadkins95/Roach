@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.NewDeckBundle
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.data.card.Faction
+import com.jamieadkins.gwent.model.GwentFaction
 
 /**
  * Prompts user for new deck name and faction.
@@ -37,7 +37,7 @@ class NewDeckDialog : DialogFragment() {
                     val deckName = rootView.findViewById<EditText>(R.id.deck_name) as EditText
                     val faction = rootView.findViewById<Spinner>(R.id.factions) as Spinner
                     RxBus.post(NewDeckRequest(NewDeckBundle(deckName.text.toString(),
-                            Faction.ALL_FACTIONS[faction.selectedItemPosition].id)))
+                            GwentFaction.values()[faction.selectedItemPosition])))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
         return builder.create()

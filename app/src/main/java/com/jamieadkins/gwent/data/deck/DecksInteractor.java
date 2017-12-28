@@ -1,8 +1,9 @@
 package com.jamieadkins.gwent.data.deck;
 
 import com.jamieadkins.commonutils.mvp.BaseInteractor;
-import com.jamieadkins.gwent.data.card.CardDetails;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.model.GwentFaction;
+import com.jamieadkins.gwent.model.GwentCard;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -13,15 +14,15 @@ import io.reactivex.Single;
 
 public interface DecksInteractor extends BaseInteractor {
 
-    String createNewDeck(String name, String faction);
+    String createNewDeck(String name, GwentFaction faction);
 
-    void addCardToDeck(String deckId, CardDetails card);
+    void addCardToDeck(String deckId, GwentCard card);
 
     void setLeader(String deckId, String leaderId);
 
     void renameDeck(String deckId, String newName);
 
-    void removeCardFromDeck(String deckId, CardDetails card);
+    void removeCardFromDeck(String deckId, GwentCard card);
 
     void publishDeck(String deckId);
 

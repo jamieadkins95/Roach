@@ -8,6 +8,7 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.card.LargeCardView;
 import com.jamieadkins.gwent.card.detail.DetailActivity;
 import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.model.GwentCard;
 
 /**
  * ViewHolder for general yearns
@@ -15,7 +16,7 @@ import com.jamieadkins.gwent.data.card.CardDetails;
 
 public class BaseCardViewHolder extends BaseViewHolder {
     private final LargeCardView mCardView;
-    private CardDetails mCardDetails;
+    private GwentCard mCardDetails;
 
     public BaseCardViewHolder(View view) {
         super(view);
@@ -25,7 +26,7 @@ public class BaseCardViewHolder extends BaseViewHolder {
     @Override
     public void bindItem(final RecyclerViewItem item) {
         super.bindItem(item);
-        mCardDetails = (CardDetails) item;
+        mCardDetails = (GwentCard) item;
 
         mCardView.setCardDetails(mCardDetails);
         mCardView.loadImage();
@@ -40,11 +41,11 @@ public class BaseCardViewHolder extends BaseViewHolder {
 
     public void launchDetailActivity() {
         Intent intent = new Intent(getView().getContext(), DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_CARD_ID, mCardDetails.getIngameId());
+        intent.putExtra(DetailActivity.EXTRA_CARD_ID, mCardDetails.getId());
         getView().getContext().startActivity(intent);
     }
 
-    public CardDetails getBoundCardDetails() {
+    public GwentCard getBoundCardDetails() {
         return mCardDetails;
     }
 }

@@ -8,13 +8,11 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.card.CardFilter;
 import com.jamieadkins.gwent.card.list.BaseCardListFragment;
-import com.jamieadkins.gwent.data.card.Faction;
-import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.card.Rarity;
-import com.jamieadkins.gwent.data.card.Type;
 import com.jamieadkins.gwent.deck.detail.DeckBuilderContract;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.filter.FilterableItem;
+import com.jamieadkins.gwent.model.CardColour;
+import com.jamieadkins.gwent.model.GwentFaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ import java.util.List;
 public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContract.CardDatabaseView>
         implements DeckBuilderContract.CardDatabaseView {
 
-    private String factionId;
+    private GwentFaction faction;
     private String deckId;
 
     @Override
@@ -38,7 +36,7 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            factionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
+            faction = (GwentFaction) savedInstanceState.getSerializable(DeckDetailActivity.EXTRA_FACTION_ID);
             deckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
         }
         super.onCreate(savedInstanceState);
@@ -52,10 +50,10 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
                 Injection.INSTANCE.provideCardsInteractor(getContext())));
     }
 
-    public static CardDatabaseFragment newInstance(String deckId, String factionId) {
+    public static CardDatabaseFragment newInstance(String deckId, GwentFaction faction) {
         CardDatabaseFragment fragment = new CardDatabaseFragment();
         fragment.deckId = deckId;
-        fragment.factionId = factionId;
+        fragment.faction = faction;
         return fragment;
     }
 
@@ -74,21 +72,21 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     @Override
     public CardFilter initialiseCardFilter() {
         CardFilter filter = new CardFilter();
-        filter.put(Type.LEADER_ID, false);
+        filter.getColourFilter().put(CardColour.LEADER, false);
         filter.setCollectibleOnly(true);
-        for (Filterable faction : Faction.ALL_FACTIONS) {
-            if (!faction.getId().equals(factionId)) {
-                filter.put(faction.getId(), false);
+        for (GwentFaction f : GwentFaction.values()) {
+            if (!f.equals(faction)) {
+                filter.getFactionFilter().put(f, false);
             }
         }
-        filter.put(Faction.NEUTRAL_ID, true);
+        filter.getFactionFilter().put(GwentFaction.NEUTRAL, true);
         filter.setCurrentFilterAsBase();
         return filter;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(DeckDetailActivity.EXTRA_FACTION_ID, factionId);
+        outState.putSerializable(DeckDetailActivity.EXTRA_FACTION_ID, faction);
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, deckId);
         super.onSaveInstanceState(outState);
     }
@@ -97,7 +95,6 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     public boolean onOptionsItemSelected(MenuItem item) {
         List<FilterableItem> filterableItems = new ArrayList<>();
         String filteringOn;
-        Filterable[] filterItems;
 
         switch (item.getItemId()) {
             case R.id.filter_reset:
@@ -105,43 +102,22 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
                 return true;
             case R.id.filter_faction:
                 filteringOn = getString(R.string.faction);
-                Filterable faction = Faction.NORTHERN_REALMS;
-                switch (factionId) {
-                    case Faction.MONSTERS_ID:
-                        faction = Faction.MONSTERS;
-                        break;
-                    case Faction.NORTHERN_REALMS_ID:
-                        faction = Faction.NORTHERN_REALMS;
-                        break;
-                    case Faction.SCOIATAEL_ID:
-                        faction = Faction.SCOIATAEL;
-                        break;
-                    case Faction.SKELLIGE_ID:
-                        faction = Faction.SKELLIGE;
-                        break;
-                    case Faction.NILFGAARD_ID:
-                        faction = Faction.NILFGAARD;
-                        break;
+                for (GwentFaction faction : new GwentFaction[]{faction, GwentFaction.NEUTRAL}) {
+                    filterableItems.add(new FilterableItem<GwentFaction>(
+                            faction,
+                            filterPresenter.cardFilter.getFactionFilter().get(faction)));
                 }
-                filterItems = new Filterable[]{faction, Faction.NEUTRAL};
-                break;
-            case R.id.filter_rarity:
-                filteringOn = getString(R.string.rarity);
-                filterItems = Rarity.ALL_RARITIES;
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                filterItems = new Filterable[]{Type.BRONZE, Type.SILVER, Type.GOLD};
+                for (CardColour colour : new CardColour[]{CardColour.BRONZE, CardColour.SILVER, CardColour.GOLD}) {
+                    filterableItems.add(new FilterableItem<CardColour>(
+                            colour,
+                            filterPresenter.cardFilter.getColourFilter().get(colour)));
+                }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-
-        for (Filterable filterable : filterItems) {
-            filterableItems.add(new FilterableItem(
-                    filterable.getId(),
-                    getString(filterable.getName()),
-                    filterPresenter.cardFilter.get(filterable.getId())));
         }
 
         showFilterMenu(filteringOn, filterableItems);

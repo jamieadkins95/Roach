@@ -4,8 +4,8 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber
 import com.jamieadkins.gwent.base.BaseFilterPresenter
-import com.jamieadkins.gwent.data.card.CardDetails
 import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.model.GwentCard
 import java.util.concurrent.TimeoutException
 
 /**
@@ -34,8 +34,8 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
 
         mCardsInteractor.getCards(cardFilter, searchQuery)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSubscriber<Collection<CardDetails>>() {
-                    override fun onNext(result: Collection<CardDetails>) {
+                .subscribeWith(object : BaseDisposableSubscriber<Collection<GwentCard>>() {
+                    override fun onNext(result: Collection<GwentCard>) {
                         view?.showItems(result.toList())
                         if (result.isEmpty()) {
                             view?.showEmptyView()

@@ -13,9 +13,9 @@ import io.reactivex.Observable;
 
 public interface CollectionInteractor extends BaseInteractor {
 
-    void addCardToCollection(String cardId, String variationId);
+    void addCardToCollection(String cardId);
 
-    void removeCardFromCollection(String cardId, String variationId);
+    void removeCardFromCollection(String cardId);
 
     Observable<RxDatabaseEvent<Map<String, Long>>> getCollection();
 

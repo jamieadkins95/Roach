@@ -13,7 +13,7 @@ public class RxDatabaseEvent<T> {
     /**
      * Special Event that says initial loading has been completed.
      */
-    protected static RxDatabaseEvent INITIAL_LOAD_COMPLETE =
+    public static RxDatabaseEvent INITIAL_LOAD_COMPLETE =
             new RxDatabaseEvent(KEY_LOAD_COMPLETE, null, EventType.COMPLETE);
 
     private EventType eventType;

@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.StoreManager
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.*
 import com.jamieadkins.gwent.data.repository.FirebaseCardResult
+import com.jamieadkins.gwent.model.GwentCard
 import com.nytimes.android.external.store3.base.impl.BarCode
 import io.reactivex.Flowable
 import retrofit2.Retrofit
@@ -28,29 +29,29 @@ class CachedCardsInteractor() : CardsInteractor {
         return StoreManager.getData(barcode, cardsApi.fetchPatch(BuildConfig.CARD_DATA_VERSION), String::class.java, 10)
     }
 
-    override fun getAllCards(): Flowable<Collection<CardDetails>> {
+    override fun getAllCards(): Flowable<Collection<GwentCard>> {
         return getLatestPatch()
                 .flatMap { patch ->
                     val barcode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("card-data", patch))
                     StoreManager.getData<FirebaseCardResult>(barcode, cardsApi.fetchCards(patch), FirebaseCardResult::class.java, 10)
                 }
-                .map { it.values }
+                .map { Mapper.cardDetailsListToGwentCardList(it.values.toList()) }
     }
 
-    override fun getCards(filter: CardFilter): Flowable<Collection<CardDetails>> {
+    override fun getCards(filter: CardFilter): Flowable<Collection<GwentCard>> {
         return getCards(filter, null, null)
     }
 
-    override fun getCards(filter: CardFilter?, cardIds: List<String>): Flowable<Collection<CardDetails>> {
+    override fun getCards(filter: CardFilter?, cardIds: List<String>): Flowable<Collection<GwentCard>> {
         return getCards(filter, null, cardIds)
     }
 
-    override fun getCards(filter: CardFilter?, query: String?): Flowable<Collection<CardDetails>> {
+    override fun getCards(filter: CardFilter?, query: String?): Flowable<Collection<GwentCard>> {
         return getCards(filter, query, null)
     }
 
-    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Flowable<Collection<CardDetails>> {
-        var source: Flowable<Collection<CardDetails>> = getAllCards()
+    private fun getCards(filter: CardFilter?, query: String?, cardIds: List<String>?): Flowable<Collection<GwentCard>> {
+        var source: Flowable<Collection<GwentCard>> = getAllCards()
 
         if (query != null) {
             source = getAllCards().flatMap { cardList ->
@@ -58,10 +59,10 @@ class CachedCardsInteractor() : CardsInteractor {
                 Answers.getInstance().logSearch(SearchEvent()
                         .putQuery(query)
                         .putCustomAttribute("hits", searchResults.size))
-                getAllCards().map { it.filter { searchResults.contains(it.ingameId) } }
+                getAllCards().map { it.filter { searchResults.contains(it.id) } }
             }
         } else if (cardIds != null) {
-            source = getAllCards().map { it.filter { cardIds.contains(it.ingameId) } }
+            source = getAllCards().map { it.filter { cardIds.contains(it.id) } }
         }
 
         filter?.let { cardFilter ->
@@ -71,11 +72,12 @@ class CachedCardsInteractor() : CardsInteractor {
         return source
     }
 
-    override fun getCard(id: String): Flowable<CardDetails> {
+    override fun getCard(id: String): Flowable<GwentCard> {
         return getLatestPatch()
                 .flatMap { patch ->
                     val barcode = BarCode(Constants.CACHE_KEY, StoreManager.generateId("card-data", patch, id))
                     StoreManager.getData<CardDetails>(barcode, cardsApi.fetchCard(patch, id), CardDetails::class.java, 10)
                 }
+                .map { Mapper.cardDetailsToGwentCard(it) }
     }
 }

@@ -63,7 +63,7 @@ public class DeckViewHolder extends BaseViewHolder {
         });
 
         mDeckName.setText(mDeck.getName());
-        mDeckLeader.setText(mDeck.getLeader().getName(mLocale));
+        mDeckLeader.setText(mDeck.getLeader().getName().get(mLocale));
 
         mDeckSummary.setDeck(mDeck);
 

@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
+import com.jamieadkins.gwent.model.GwentFaction;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
 
     protected String mDeckId;
-    protected String mFactionId;
+    protected GwentFaction mFaction;
     private boolean mIsPublicDeck;
 
     private DeckBriefSummaryView mSummaryView;
@@ -51,19 +52,19 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
-            mFactionId = savedInstanceState.getString(EXTRA_FACTION_ID);
+            mFaction = (GwentFaction) savedInstanceState.getSerializable(EXTRA_FACTION_ID);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
 
             fragment = getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         } else {
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
-            mFactionId = getIntent().getStringExtra(EXTRA_FACTION_ID);
+            mFaction = (GwentFaction) getIntent().getSerializableExtra(EXTRA_FACTION_ID);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
             if (mIsPublicDeck) {
                 throw new NotImplementedError();
             } else {
-                fragment = UserDeckDetailFragment.Companion.newInstance(mDeckId, mFactionId);
+                fragment = UserDeckDetailFragment.Companion.newInstance(mDeckId, mFaction);
             }
 
             getSupportFragmentManager()
@@ -110,7 +111,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
         outState.putString(EXTRA_DECK_ID, mDeckId);
-        outState.putString(EXTRA_FACTION_ID, mFactionId);
+        outState.putSerializable(EXTRA_FACTION_ID, mFaction);
         super.onSaveInstanceState(outState);
     }
 }

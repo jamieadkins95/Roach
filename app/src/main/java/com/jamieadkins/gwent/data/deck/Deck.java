@@ -8,6 +8,8 @@ import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.card.CardDetails;
 import com.jamieadkins.gwent.data.card.CardsInteractor;
 import com.jamieadkins.gwent.data.card.Type;
+import com.jamieadkins.gwent.model.CardColour;
+import com.jamieadkins.gwent.model.GwentCard;
 
 import java.util.*;
 import java.util.Collection;
@@ -40,12 +42,12 @@ public class Deck implements RecyclerViewItem {
     private String name;
     private String author;
     private String factionId;
-    private CardDetails leader;
+    private GwentCard leader;
     private String leaderId;
     private String patch = "v0-8-60-2";
     // Map of card ids to card count.
     private Map<String, Integer> cardCount;
-    private Map<String, CardDetails> cards;
+    private Map<String, GwentCard> cards;
 
     private boolean deleted = false;
 
@@ -137,7 +139,7 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public Map<String, CardDetails> getCards() {
+    public Map<String, GwentCard> getCards() {
         if (cards != null && cards.keySet().size() == cardCount.keySet().size()) {
             return cards;
         } else {
@@ -146,7 +148,7 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public CardDetails getLeader() {
+    public GwentCard getLeader() {
         if (leader != null) {
             return leader;
         } else {
@@ -163,18 +165,17 @@ public class Deck implements RecyclerViewItem {
                     @Override
                     protected void subscribeActual(final CompletableObserver emitter) {
                         if (cards == null) {
-                            cards = new HashMap<String, CardDetails>();
+                            cards = new HashMap<String, GwentCard>();
                         }
 
                         cardsInteractor.getCard(leaderId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseDisposableSubscriber<CardDetails>() {
+                                new BaseDisposableSubscriber<GwentCard>() {
                                     @Override
-                                    public void onNext(CardDetails cardDetails) {
+                                    public void onNext(GwentCard cardDetails) {
                                         leader = cardDetails;
-                                        leader.setPatch(patch);
                                     }
 
                                     @Override
@@ -199,11 +200,11 @@ public class Deck implements RecyclerViewItem {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseDisposableSubscriber<Collection<CardDetails>>() {
+                                new BaseDisposableSubscriber<Collection<GwentCard>>() {
                                     @Override
-                                    public void onNext(Collection<CardDetails> result) {
-                                        for (CardDetails card : result) {
-                                            cards.put(card.getIngameId(), card);
+                                    public void onNext(Collection<GwentCard> result) {
+                                        for (GwentCard card : result) {
+                                            cards.put(card.getId(), card);
                                         }
                                     }
 
@@ -225,12 +226,6 @@ public class Deck implements RecyclerViewItem {
     @Exclude
     public int getStrengthForPosition(String position) {
         int strength = 0;
-        for (String cardId : getCards().keySet()) {
-            CardDetails card = getCards().get(cardId);
-            if (card.getPositions().contains(position)) {
-                strength += card.getStrength() * cardCount.get(cardId);
-            }
-        }
         return strength;
     }
 
@@ -238,7 +233,7 @@ public class Deck implements RecyclerViewItem {
     public int getTotalStrength() {
         int strength = 0;
         for (String cardId : getCards().keySet()) {
-            CardDetails card = getCards().get(cardId);
+            GwentCard card = getCards().get(cardId);
             strength += card.getStrength() * cardCount.get(cardId);
         }
         return strength;
@@ -255,16 +250,16 @@ public class Deck implements RecyclerViewItem {
 
     @Exclude
     public Single<Integer> getSilverCardCount() {
-        return getCardCount(Type.SILVER_ID);
+        return getCardCount(CardColour.SILVER);
     }
 
     @Exclude
     public Single<Integer> getGoldCardCount() {
-        return getCardCount(Type.GOLD_ID);
+        return getCardCount(CardColour.GOLD);
     }
 
     @Exclude
-    private Single<Integer> getCardCount(final String type) {
+    private Single<Integer> getCardCount(final CardColour colour) {
         return Single.defer(new Callable<SingleSource<? extends Integer>>() {
             @Override
             public SingleSource<? extends Integer> call() throws Exception {
@@ -273,7 +268,7 @@ public class Deck implements RecyclerViewItem {
                     protected void subscribeActual(SingleObserver<? super Integer> observer) {
                         int count = 0;
                         for (String cardId : cardCount.keySet()) {
-                            if (getCards().get(cardId).getType().equals(type)) {
+                            if (getCards().get(cardId).getColour().equals(colour)) {
                                 count += cardCount.get(cardId);
                             }
                         }

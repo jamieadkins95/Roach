@@ -12,10 +12,10 @@ import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.card.CardDetails
-import com.jamieadkins.gwent.data.card.Faction
-import com.jamieadkins.gwent.data.card.Type
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment
+import com.jamieadkins.gwent.model.CardColour
+import com.jamieadkins.gwent.model.GwentFaction
+import com.jamieadkins.gwent.model.GwentCard
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -27,19 +27,19 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
     override fun setupPresenter() {
         val newPresenter = UserDeckDetailsPresenter(
                 mDeckId,
-                mFactionId,
+                mFaction,
                 Injection.provideDecksInteractor(context),
                 Injection.provideCardsInteractor(context))
         deckDetailsPresenter = newPresenter
         presenter = newPresenter
     }
 
-    override fun showPotentialLeaders(potentialLeaders: List<CardDetails>) {
+    override fun showPotentialLeaders(potentialLeaders: List<GwentCard>) {
         mPotentialLeaders = potentialLeaders
         activity.invalidateOptionsMenu()
     }
 
-    private var mPotentialLeaders: List<CardDetails>? = null
+    private var mPotentialLeaders: List<GwentCard>? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -58,14 +58,14 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
 
     override fun initialiseCardFilter(): CardFilter {
         val filter = CardFilter()
-        filter.put(Type.LEADER_ID, false)
+        filter.colourFilter.put(CardColour.LEADER, false)
         filter.isCollectibleOnly = true
-        for (faction in Faction.ALL_FACTIONS) {
-            if (faction.id != mFactionId) {
-                filter.put(faction.id, false)
+        for (faction in GwentFaction.values()) {
+            if (faction != mFaction) {
+                filter.factionFilter.put(faction, false)
             }
         }
-        filter.put(Faction.NEUTRAL_ID, true)
+        filter.factionFilter.put(GwentFaction.NEUTRAL, true)
         filter.setCurrentFilterAsBase()
         return filter
     }
@@ -81,9 +81,9 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
             inflater.inflate(R.menu.deck_builder, menu)
             val subMenu = menu.findItem(R.id.action_change_leader).subMenu
             for (leader in mPotentialLeaders!!) {
-                subMenu.add(leader.getName(locale))
+                subMenu.add(leader.name[locale])
                         .setOnMenuItemClickListener {
-                            deckDetailsPresenter?.changeLeader(leader.ingameId)
+                            deckDetailsPresenter?.changeLeader(leader.id!!)
                             true
                         }
             }
@@ -124,10 +124,10 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
     }
 
     companion object {
-        fun newInstance(deckId: String, factionId: String): UserDeckDetailFragment {
+        fun newInstance(deckId: String, factionId: GwentFaction): UserDeckDetailFragment {
             val fragment = UserDeckDetailFragment()
             fragment.mDeckId = deckId
-            fragment.mFactionId = factionId
+            fragment.mFaction = factionId
             return fragment
         }
     }

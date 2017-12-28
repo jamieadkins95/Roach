@@ -14,6 +14,7 @@ import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity
+import com.jamieadkins.gwent.model.GwentFaction
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -55,10 +56,10 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
         recyclerViewAdapter.addItem(deck)
     }
 
-    override fun showDeckDetails(deckId: String, factionId: String) {
+    override fun showDeckDetails(deckId: String, faction: GwentFaction) {
         val intent = Intent(activity, UserDeckDetailActivity::class.java)
         intent.putExtra(UserDeckDetailActivity.EXTRA_DECK_ID, deckId)
-        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, factionId)
+        intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, faction)
         intent.putExtra(UserDeckDetailActivity.EXTRA_IS_PUBLIC_DECK, false)
         context?.startActivity(intent)
     }

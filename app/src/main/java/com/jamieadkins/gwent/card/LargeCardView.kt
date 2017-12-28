@@ -11,10 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.data.card.CardDetails
-import com.jamieadkins.gwent.data.card.Faction
-import com.jamieadkins.gwent.data.card.Rarity
-import com.jamieadkins.gwent.data.card.Type
+import com.jamieadkins.gwent.model.*
 
 /**
  * Wrapper for our card detail view.
@@ -54,20 +51,19 @@ open class LargeCardView : SimpleCardView {
         View.inflate(context, R.layout.item_card_large, this)
     }
 
-    override fun setCardDetails(cardDetails: CardDetails) {
-        super.setCardDetails(cardDetails)
-        setDescription(cardDetails.getInfo(locale))
-        setFaction(cardDetails.faction)
-        setRarity(cardDetails.rarity)
-        if (cardDetails.loyalties != null) {
-            setLoyalty(cardDetails.loyalties[0])
-        }
-        if (cardDetails.type != null) {
-            setType(cardDetails.type)
-        }
+    override fun setCardDetails(card: GwentCard) {
+        super.setCardDetails(card)
+        setDescription(card.info[locale])
 
-        setStrength(cardDetails.strength.toString())
-        mImageUrl = cardDetails.image
+        setFaction(card.faction)
+        setRarity(card.rarity)
+        if (card.loyalties.isNotEmpty()) {
+            setLoyalty(card.loyalties[0])
+        }
+        setColour(card.colour)
+
+        setStrength(card.strength.toString())
+        mImageUrl = card.cardArt?.medium
     }
 
     fun loadImage() {
@@ -87,31 +83,30 @@ open class LargeCardView : SimpleCardView {
         }
     }
 
-    private fun setType(type: String) {
+    private fun setColour(cardColour: CardColour?) {
         mCardType?.let {
-            it.text = type
+            it.text = cardColour.toString()
             val typeColor: Int
-            when (type) {
-                Type.BRONZE_ID -> typeColor = ContextCompat.getColor(it.context, R.color.bronze)
-                Type.SILVER_ID -> typeColor = ContextCompat.getColor(it.context, R.color.silver)
-                Type.GOLD_ID -> typeColor = ContextCompat.getColor(it.context, R.color.gold)
-                Type.LEADER_ID -> typeColor = ContextCompat.getColor(it.context, R.color.gold)
-                else -> typeColor = ContextCompat.getColor(it.context, R.color.common)
+            when (cardColour) {
+                CardColour.BRONZE -> typeColor = ContextCompat.getColor(it.context, R.color.bronze)
+                CardColour.SILVER -> typeColor = ContextCompat.getColor(it.context, R.color.silver)
+                CardColour.GOLD -> typeColor = ContextCompat.getColor(it.context, R.color.gold)
+                CardColour.LEADER -> typeColor = ContextCompat.getColor(it.context, R.color.gold)
+                else -> typeColor = ContextCompat.getColor(it.context, R.color.bronze)
             }
             it.setTextColor(typeColor)
         }
-
     }
 
-    private fun setLoyalty(loyalty: String?) {
+    private fun setLoyalty(loyalty: Loyalty?) {
         if (loyalty != null) {
-            mCardLoyalty?.text = loyalty
+            mCardLoyalty?.text = loyalty.toString()
         } else {
             mCardLoyalty?.visibility = View.GONE
         }
     }
 
-    private fun setDescription(description: String) {
+    private fun setDescription(description: String?) {
         mCardDescription?.text = description
     }
 
@@ -119,33 +114,33 @@ open class LargeCardView : SimpleCardView {
         mCardStrength?.text = strength
     }
 
-    private fun setRarity(rarity: String) {
+    private fun setRarity(rarity: Rarity?) {
         mCardRarity?.let {
-            it.text = rarity
+            it.text = rarity.toString()
 
             val rarityColor: Int
             when (rarity) {
-                Rarity.COMMON_ID -> rarityColor = ContextCompat.getColor(it.context, R.color.common)
-                Rarity.RARE_ID -> rarityColor = ContextCompat.getColor(it.context, R.color.rare)
-                Rarity.EPIC_ID -> rarityColor = ContextCompat.getColor(it.context, R.color.epic)
-                Rarity.LEGENDARY_ID -> rarityColor = ContextCompat.getColor(it.context, R.color.legendary)
+                Rarity.COMMON -> rarityColor = ContextCompat.getColor(it.context, R.color.common)
+                Rarity.RARE -> rarityColor = ContextCompat.getColor(it.context, R.color.rare)
+                Rarity.EPIC -> rarityColor = ContextCompat.getColor(it.context, R.color.epic)
+                Rarity.LEGENDARY -> rarityColor = ContextCompat.getColor(it.context, R.color.legendary)
                 else -> rarityColor = ContextCompat.getColor(it.context, R.color.common)
             }
             it.setTextColor(rarityColor)
         }
     }
 
-    private fun setFaction(faction: String) {
+    private fun setFaction(faction: GwentFaction?) {
         mCardFaction?.let {
-            it.text = faction
+            it.text = faction.toString()
             val factionColor: Int
             when (faction) {
-                Faction.MONSTERS_ID -> factionColor = ContextCompat.getColor(it.context, R.color.monsters)
-                Faction.NORTHERN_REALMS_ID -> factionColor = ContextCompat.getColor(it.context, R.color.northernRealms)
-                Faction.SCOIATAEL_ID -> factionColor = ContextCompat.getColor(it.context, R.color.scoiatael)
-                Faction.SKELLIGE_ID -> factionColor = ContextCompat.getColor(it.context, R.color.skellige)
-                Faction.NEUTRAL_ID -> factionColor = ContextCompat.getColor(it.context, R.color.neutral)
-                Faction.NILFGAARD_ID -> factionColor = ContextCompat.getColor(it.context, R.color.nilfgaard)
+                GwentFaction.MONSTER -> factionColor = ContextCompat.getColor(it.context, R.color.monsters)
+                GwentFaction.NORTHERN_REALMS -> factionColor = ContextCompat.getColor(it.context, R.color.northernRealms)
+                GwentFaction.SCOIATAEL -> factionColor = ContextCompat.getColor(it.context, R.color.scoiatael)
+                GwentFaction.SKELLIGE -> factionColor = ContextCompat.getColor(it.context, R.color.skellige)
+                GwentFaction.NEUTRAL -> factionColor = ContextCompat.getColor(it.context, R.color.neutral)
+                GwentFaction.NILFGAARD -> factionColor = ContextCompat.getColor(it.context, R.color.nilfgaard)
                 else -> factionColor = ContextCompat.getColor(it.context, R.color.neutral)
             }
             it.setTextColor(factionColor)

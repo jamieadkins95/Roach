@@ -20,14 +20,12 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.CardFilter;
-import com.jamieadkins.gwent.data.card.Faction;
-import com.jamieadkins.gwent.data.Filterable;
-import com.jamieadkins.gwent.data.card.Loyalty;
-import com.jamieadkins.gwent.data.card.Position;
-import com.jamieadkins.gwent.data.card.Rarity;
-import com.jamieadkins.gwent.data.card.Type;
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment;
 import com.jamieadkins.gwent.filter.FilterableItem;
+import com.jamieadkins.gwent.model.CardColour;
+import com.jamieadkins.gwent.model.GwentFaction;
+import com.jamieadkins.gwent.model.Loyalty;
+import com.jamieadkins.gwent.model.Rarity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -183,40 +181,44 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     public boolean onOptionsItemSelected(MenuItem item) {
         List<FilterableItem> filterableItems = new ArrayList<>();
         String filteringOn;
-        Filterable[] filterItems;
         switch (item.getItemId()) {
             case R.id.filter_reset:
                 filterPresenter.clearFilters();
                 return true;
             case R.id.filter_faction:
                 filteringOn = getString(R.string.faction);
-                filterItems = Faction.ALL_FACTIONS;
+                for (GwentFaction faction : GwentFaction.values()) {
+                    filterableItems.add(new FilterableItem<GwentFaction>(
+                            faction,
+                            filterPresenter.cardFilter.getFactionFilter().get(faction)));
+                }
                 break;
             case R.id.filter_rarity:
                 filteringOn = getString(R.string.rarity);
-                filterItems = Rarity.ALL_RARITIES;
+                for (Rarity rarity : Rarity.values()) {
+                    filterableItems.add(new FilterableItem<Rarity>(
+                            rarity,
+                            filterPresenter.cardFilter.getRarityFilter().get(rarity)));
+                }
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                filterItems = Type.ALL_TYPES;
-                break;
-            case R.id.filter_positions:
-                filteringOn = getString(R.string.position);
-                filterItems = Position.ALL_POSITIONS;
+                for (CardColour colour : new CardColour[]{CardColour.BRONZE, CardColour.SILVER, CardColour.GOLD}) {
+                    filterableItems.add(new FilterableItem<CardColour>(
+                            colour,
+                            filterPresenter.cardFilter.getColourFilter().get(colour)));
+                }
                 break;
             case R.id.filter_loyalty:
                 filteringOn = getString(R.string.loyalty);
-                filterItems = Loyalty.ALL_LOYALTIES;
+                for (Loyalty loyalty : Loyalty.values()) {
+                    filterableItems.add(new FilterableItem<Loyalty>(
+                            loyalty,
+                            filterPresenter.cardFilter.getLoyaltyFilter().get(loyalty)));
+                }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-
-        for (Filterable filterable : filterItems) {
-            filterableItems.add(new FilterableItem(
-                    filterable.getId(),
-                    getString(filterable.getName()),
-                    filterPresenter.cardFilter.get(filterable.getId())));
         }
 
         showFilterMenu(filteringOn, filterableItems);
@@ -227,11 +229,6 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         mFilterMenu = FilterBottomSheetDialogFragment
                 .newInstance(filteringOn, items, this);
         mFilterMenu.show(getChildFragmentManager(), TAG_FILTER_MENU);
-    }
-
-    @Override
-    public void onFilterChanged(String key, boolean checked) {
-        filterPresenter.updateFilter(key, checked);
     }
 
     @Override

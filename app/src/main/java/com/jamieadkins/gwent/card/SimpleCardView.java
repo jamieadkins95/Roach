@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.card.CardDetails;
+import com.jamieadkins.gwent.model.GwentCard;
 
 /**
  * Wrapper for our card detail view.
@@ -49,8 +50,8 @@ public class SimpleCardView extends CardView {
         inflate(getContext(), R.layout.item_card_small, this);
     }
 
-    public void setCardDetails(CardDetails cardDetails) {
-        setName(cardDetails.getName(mLocale));
+    public void setCardDetails(GwentCard cardDetails) {
+        setName(cardDetails.getName().get(mLocale));
     }
 
     private void setName(String name) {

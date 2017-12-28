@@ -11,9 +11,9 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.commonutils.ui.SubHeader;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseFragment;
-import com.jamieadkins.gwent.data.card.CardDetails;
 import com.jamieadkins.gwent.data.deck.Deck;
-import com.jamieadkins.gwent.data.card.Type;
+import com.jamieadkins.gwent.model.GwentFaction;
+import com.jamieadkins.gwent.model.GwentCard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     private static final int LEADER_INDEX = 0;
     protected String mDeckId;
     protected Deck mDeck;
-    protected String mFactionId;
+    protected GwentFaction mFaction;
 
     private Map<String, SubHeader> mRowHeaders = new HashMap<>();
 
@@ -35,7 +35,7 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
-            mFactionId = savedInstanceState.getString(DeckDetailActivity.EXTRA_FACTION_ID);
+            mFaction = (GwentFaction) savedInstanceState.getSerializable(DeckDetailActivity.EXTRA_FACTION_ID);
         }
         super.onCreate(savedInstanceState);
         mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
@@ -64,7 +64,7 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
-        outState.putString(DeckDetailActivity.EXTRA_FACTION_ID, mFactionId);
+        outState.putSerializable(DeckDetailActivity.EXTRA_FACTION_ID, mFaction);
         super.onSaveInstanceState(outState);
     }
 
@@ -77,17 +77,17 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     }
 
     @Override
-    public void onCardAdded(CardDetails card) {
-        switch (card.getType()) {
-            case Type.BRONZE_ID:
+    public void onCardAdded(GwentCard card) {
+        switch (card.getColour()) {
+            case BRONZE:
                 getRecyclerViewAdapter().addItem(card);
                 break;
-            case Type.SILVER_ID:
+            case SILVER:
                 int bronzeIndex = getRecyclerViewAdapter().getItems()
                         .indexOf(mRowHeaders.get(getString(R.string.bronze)));
                 getRecyclerViewAdapter().addItem(bronzeIndex, card);
                 break;
-            case Type.GOLD_ID:
+            case GOLD:
                 int silverIndex = getRecyclerViewAdapter().getItems()
                         .indexOf(mRowHeaders.get(getString(R.string.silver)));
                 getRecyclerViewAdapter().addItem(silverIndex, card);
@@ -96,11 +96,11 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     }
 
     @Override
-    public void onLeaderChanged(CardDetails newLeader) {
+    public void onLeaderChanged(GwentCard newLeader) {
         int leaderIndex = getRecyclerViewAdapter().getItems()
                 .indexOf(mRowHeaders.get(getString(R.string.leader))) + 1;
         RecyclerViewItem oldLeader = getRecyclerViewAdapter().getItems().get(leaderIndex);
-        if (oldLeader instanceof CardDetails && !oldLeader.equals(newLeader)) {
+        if (oldLeader instanceof GwentCard && !oldLeader.equals(newLeader)) {
             getRecyclerViewAdapter().removeItemAt(leaderIndex);
         }
         getRecyclerViewAdapter().addItem(leaderIndex, newLeader);

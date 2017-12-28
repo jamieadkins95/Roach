@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.deck.detail
 
 import com.jamieadkins.gwent.data.card.CardDetails
 import com.jamieadkins.gwent.data.deck.Deck
+import com.jamieadkins.gwent.model.GwentCard
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -9,9 +10,9 @@ import com.jamieadkins.gwent.data.deck.Deck
 
 interface DeckDetailsContract {
     interface DeckDetailsView : DeckSummaryView, DeckBuilderContract.View {
-        fun onCardAdded(card: CardDetails)
+        fun onCardAdded(card: GwentCard)
 
-        fun onLeaderChanged(newLeader: CardDetails)
+        fun onLeaderChanged(newLeader: GwentCard)
     }
 
     interface DeckSummaryView {

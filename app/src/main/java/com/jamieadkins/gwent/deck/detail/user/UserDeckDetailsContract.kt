@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.deck.detail.user
 
-import com.jamieadkins.gwent.data.card.CardDetails
 import com.jamieadkins.gwent.deck.detail.DeckDetailsContract
+import com.jamieadkins.gwent.model.GwentCard
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -9,7 +9,7 @@ import com.jamieadkins.gwent.deck.detail.DeckDetailsContract
 
 interface UserDeckDetailsContract {
     interface View : DeckDetailsContract.DeckDetailsView {
-        fun showPotentialLeaders(potentialLeaders: List<CardDetails>)
+        fun showPotentialLeaders(potentialLeaders: List<GwentCard>)
     }
 
     interface Presenter : DeckDetailsContract.Presenter {

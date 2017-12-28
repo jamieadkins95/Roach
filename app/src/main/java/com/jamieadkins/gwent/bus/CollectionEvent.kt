@@ -6,5 +6,5 @@ class CollectionEvent(bundle: CollectionEventBundle) : BaseBusEvent<CollectionEv
         REMOVE_CARD
     }
 
-    class CollectionEventBundle(val event: Event, val cardId: String, val variationId: String)
+    class CollectionEventBundle(val event: Event, val cardId: String)
 }

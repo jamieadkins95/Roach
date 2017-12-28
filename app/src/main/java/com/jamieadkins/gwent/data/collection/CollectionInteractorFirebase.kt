@@ -32,7 +32,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
         mCollectionReference = mDatabase.getReference(databasePath)
     }
 
-    override fun addCardToCollection(cardId: String, variationId: String) {
+    override fun addCardToCollection(cardId: String) {
         // Transactions will ensure concurrency errors don't occur.
         mCollectionReference.runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
@@ -43,6 +43,7 @@ class CollectionInteractorFirebase : CollectionInteractor {
                     storedCollection = Collection()
                 }
 
+                val variationId = cardId + "00"
                 var variations = storedCollection.cards[cardId]
                 if (variations != null) {
                     // If the user already has at least one of these cards in their deck.
@@ -75,12 +76,13 @@ class CollectionInteractorFirebase : CollectionInteractor {
         })
     }
 
-    override fun removeCardFromCollection(cardId: String, variationId: String) {
+    override fun removeCardFromCollection(cardId: String) {
         // Transactions will ensure concurrency errors don't occur.
         mCollectionReference.runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
                 val storedCollection = mutableData.getValue<Collection>(Collection::class.java) ?: return Transaction.success(mutableData)
 
+                val variationId = cardId + "00"
                 val variations = storedCollection.cards[cardId]
                 if (variations != null) {
                     // If the user already has at least one of these cards in their deck.

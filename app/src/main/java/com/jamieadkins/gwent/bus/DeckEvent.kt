@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.bus
 
 import com.jamieadkins.gwent.data.card.CardDetails
+import com.jamieadkins.gwent.model.GwentCard
 
 class DeckEvent(bundle: DeckEventBundle) : BaseBusEvent<DeckEvent.DeckEventBundle>(bundle) {
     enum class Event {
@@ -8,5 +9,5 @@ class DeckEvent(bundle: DeckEventBundle) : BaseBusEvent<DeckEvent.DeckEventBundl
         REMOVE_CARD
     }
 
-    class DeckEventBundle(val event: Event, val card: CardDetails)
+    class DeckEventBundle(val event: Event, val card: GwentCard)
 }

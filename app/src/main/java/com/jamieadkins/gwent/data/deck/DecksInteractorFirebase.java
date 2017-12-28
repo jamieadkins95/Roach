@@ -17,6 +17,9 @@ import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.card.Type;
 import com.jamieadkins.gwent.data.card.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.model.CardColour;
+import com.jamieadkins.gwent.model.GwentCard;
+import com.jamieadkins.gwent.model.GwentFaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -415,29 +418,35 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public String createNewDeck(String name, String faction) {
+    public String createNewDeck(String name, GwentFaction faction) {
         String key = mUserReference.push().getKey();
         String author = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         String leaderId = null;
+        String factionId = null;
         switch (faction) {
-            case Faction.MONSTERS_ID:
+            case MONSTER:
                 leaderId = "131101";
+                factionId = Faction.MONSTERS_ID;
                 break;
-            case Faction.NILFGAARD_ID:
+            case NILFGAARD:
+                factionId = Faction.NILFGAARD_ID;
                 leaderId = "200162";
                 break;
-            case Faction.NORTHERN_REALMS_ID:
+            case NORTHERN_REALMS:
+                factionId = Faction.NORTHERN_REALMS_ID;
                 leaderId = "200168";
                 break;
-            case Faction.SKELLIGE_ID:
+            case SKELLIGE:
+                factionId = Faction.SKELLIGE_ID;
                 leaderId = "200160";
                 break;
-            case Faction.SCOIATAEL_ID:
+            case SCOIATAEL:
+                factionId = Faction.SCOIATAEL_ID;
                 leaderId = "200165";
                 break;
         }
-        Deck deck = new Deck(key, name, faction, leaderId, author);
+        Deck deck = new Deck(key, name, factionId, leaderId, author);
         Map<String, Object> deckValues = deck.toMap();
 
         Map<String, Object> firebaseUpdates = new HashMap<>();
@@ -517,7 +526,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     }
 
     @Override
-    public void addCardToDeck(final String deckId, final CardDetails card) {
+    public void addCardToDeck(final String deckId, final GwentCard card) {
         DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
@@ -534,13 +543,13 @@ public class DecksInteractorFirebase implements DecksInteractor {
                     return Transaction.success(mutableData);
                 }
 
-                if (cards.containsKey(card.getIngameId())) {
+                if (cards.containsKey(card.getId())) {
                     // If the user already has at least one of these cards in their deck.
-                    long currentCardCount = cards.get(card.getIngameId());
-                    cards.put(card.getIngameId(), currentCardCount + 1);
+                    long currentCardCount = cards.get(card.getId());
+                    cards.put(card.getId(), currentCardCount + 1);
                 } else {
                     // Else add one card to the deck.
-                    cards.put(card.getIngameId(), 1L);
+                    cards.put(card.getId(), 1L);
                 }
 
                 // Set value and report transaction success.
@@ -556,7 +565,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
         });
     }
 
-    public boolean canAddCard(Map<String, Long> cards, CardDetails cardDetails) {
+    public boolean canAddCard(Map<String, Long> cards, GwentCard cardDetails) {
         int count = 0;
         for (String cardId : cards.keySet()) {
             count += cards.get(cardId);
@@ -566,27 +575,27 @@ public class DecksInteractorFirebase implements DecksInteractor {
             return false;
         }
 
-        if (cards.containsKey(cardDetails.getIngameId())) {
+        if (cards.containsKey(cardDetails.getId())) {
             // If the user already has at least one of these cards in their deck.
-            long currentCardCount = cards.get(cardDetails.getIngameId());
-            switch (cardDetails.getType()) {
-                case Type.BRONZE_ID:
+            long currentCardCount = cards.get(cardDetails.getId());
+            switch (cardDetails.getColour()) {
+                case BRONZE:
                     return currentCardCount < Deck.MAX_EACH_BRONZE;
-                case Type.SILVER_ID:
+                case SILVER:
                     return currentCardCount < Deck.MAX_EACH_SILVER;
-                case Type.GOLD_ID:
+                case GOLD:
                     return currentCardCount < Deck.MAX_EACH_GOLD;
                 default:
                     return false;
             }
         } else {
             // Deck doesn't contain this card yet, can add as long as the card isn't a leader card.
-            return !cardDetails.getType().equals(Type.LEADER_ID);
+            return !cardDetails.getColour().equals(CardColour.LEADER);
         }
     }
 
     @Override
-    public void removeCardFromDeck(final String deckId, final CardDetails card) {
+    public void removeCardFromDeck(final String deckId, final GwentCard card) {
         DatabaseReference deckReference = mUserReference.child(deckId).child("cardCount");
 
         // Transactions will ensure concurrency errors don't occur.
@@ -595,15 +604,15 @@ public class DecksInteractorFirebase implements DecksInteractor {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Map<String, Long> cards = (Map<String, Long>) mutableData.getValue();
 
-                if (cards.containsKey(card.getIngameId())) {
+                if (cards.containsKey(card.getId())) {
                     // If the user already has at least one of these cards in their deck.
-                    long currentCardCount = cards.get(card.getIngameId());
+                    long currentCardCount = cards.get(card.getId());
                     long newCount = currentCardCount - 1;
 
                     if (newCount == 0) {
-                        cards.remove(card.getIngameId());
+                        cards.remove(card.getId());
                     } else {
-                        cards.put(card.getIngameId(), newCount);
+                        cards.put(card.getId(), newCount);
                     }
                 } else {
                     // This deck doesn't have that card in it.
