@@ -106,8 +106,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
         RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.general_error), Snackbar.LENGTH_LONG)));
     }
 
-    @Override
-    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
+    public void showItems(@NotNull List<RecyclerViewItem> items) {
         mAdapter.setItems(items);
     }
 

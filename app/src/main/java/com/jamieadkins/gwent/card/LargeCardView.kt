@@ -85,7 +85,7 @@ open class LargeCardView : SimpleCardView {
 
     private fun setColour(cardColour: CardColour?) {
         mCardType?.let {
-            it.text = cardColour.toString()
+            it.text = GwentStringHelper.getColourString(context, cardColour)
             val typeColor: Int
             when (cardColour) {
                 CardColour.BRONZE -> typeColor = ContextCompat.getColor(it.context, R.color.bronze)
@@ -116,7 +116,7 @@ open class LargeCardView : SimpleCardView {
 
     private fun setRarity(rarity: Rarity?) {
         mCardRarity?.let {
-            it.text = rarity.toString()
+            it.text = GwentStringHelper.getRarityString(context, rarity)
 
             val rarityColor: Int
             when (rarity) {
@@ -132,7 +132,7 @@ open class LargeCardView : SimpleCardView {
 
     private fun setFaction(faction: GwentFaction?) {
         mCardFaction?.let {
-            it.text = faction.toString()
+            it.text = GwentStringHelper.getFactionString(context, faction)
             val factionColor: Int
             when (faction) {
                 GwentFaction.MONSTER -> factionColor = ContextCompat.getColor(it.context, R.color.monsters)

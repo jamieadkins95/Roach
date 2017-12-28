@@ -16,6 +16,7 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardsContract;
+import com.jamieadkins.gwent.model.GwentCard;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +45,7 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void showItems(@NotNull List<? extends RecyclerViewItem> items) {
+    public void showCards(@NotNull List<GwentCard> cards) {
 
     }
 

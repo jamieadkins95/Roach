@@ -36,7 +36,7 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
                 .applySchedulers()
                 .subscribeWith(object : BaseDisposableSubscriber<Collection<GwentCard>>() {
                     override fun onNext(result: Collection<GwentCard>) {
-                        view?.showItems(result.toList())
+                        view?.showCards(result.toList())
                         if (result.isEmpty()) {
                             view?.showEmptyView()
                         }
