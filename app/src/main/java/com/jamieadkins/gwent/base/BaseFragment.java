@@ -202,7 +202,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
                 break;
             case R.id.filter_type:
                 filteringOn = getString(R.string.type);
-                for (CardColour colour : new CardColour[]{CardColour.BRONZE, CardColour.SILVER, CardColour.GOLD}) {
+                for (CardColour colour : new CardColour[]{CardColour.BRONZE, CardColour.SILVER, CardColour.GOLD, CardColour.LEADER}) {
                     filterableItems.add(new FilterableItem<CardColour>(
                             colour,
                             filterPresenter.cardFilter.getColourFilter().get(colour)));
