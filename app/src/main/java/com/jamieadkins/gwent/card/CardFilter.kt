@@ -7,7 +7,6 @@ import com.jamieadkins.gwent.model.*
 /**
  * Used to filter cards.
  */
-
 class CardFilter() : Parcelable {
     var searchQuery: String? = null
     var rarityFilter = mutableMapOf<Rarity, Boolean>()
@@ -158,16 +157,13 @@ class CardFilter() : Parcelable {
         return "$searchQuery,$isCollectibleOnly"
     }
 
-    companion object {
+    companion object CREATOR : Parcelable.Creator<CardFilter> {
+        override fun createFromParcel(parcel: Parcel): CardFilter {
+            return CardFilter(parcel)
+        }
 
-        val CREATOR: Parcelable.Creator<CardFilter> = object : Parcelable.Creator<CardFilter> {
-            override fun createFromParcel(`in`: Parcel): CardFilter {
-                return CardFilter(`in`)
-            }
-
-            override fun newArray(size: Int): Array<CardFilter?> {
-                return arrayOfNulls(size)
-            }
+        override fun newArray(size: Int): Array<CardFilter?> {
+            return arrayOfNulls(size)
         }
     }
 }
