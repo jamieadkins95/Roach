@@ -1,15 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'io.fabric'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.jamieadkins.gwent"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 47
         versionName "v2.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,12 +37,15 @@ android {
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
         }
     }
+
+    flavorDimensions "injection"
+
     productFlavors {
         prod {
-
+            dimension "injection"
         }
         mock {
-
+            dimension "injection"
         }
     }
 
@@ -83,7 +91,7 @@ dependencies {
     compile 'me.xdrop:fuzzywuzzy:1.1.8'
 
     // RxJava.
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.0'
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
@@ -108,7 +116,7 @@ dependencies {
     compile 'com.nytimes.android:middleware3:3.0.0-beta'
     compile 'com.nytimes.android:filesystem3:3.0.0-beta'
 
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 

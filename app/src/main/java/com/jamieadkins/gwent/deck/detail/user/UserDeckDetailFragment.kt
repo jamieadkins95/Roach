@@ -25,18 +25,20 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
     private var deckDetailsPresenter: UserDeckDetailsContract.Presenter? = null
 
     override fun setupPresenter() {
-        val newPresenter = UserDeckDetailsPresenter(
-                mDeckId,
-                mFaction,
-                Injection.provideDecksInteractor(context),
-                Injection.provideCardsInteractor(context))
-        deckDetailsPresenter = newPresenter
-        presenter = newPresenter
+        context?.let {
+            val newPresenter = UserDeckDetailsPresenter(
+                    mDeckId,
+                    mFaction,
+                    Injection.provideDecksInteractor(it),
+                    Injection.provideCardsInteractor(it))
+            deckDetailsPresenter = newPresenter
+            presenter = newPresenter
+        }
     }
 
     override fun showPotentialLeaders(potentialLeaders: List<GwentCard>) {
         mPotentialLeaders = potentialLeaders
-        activity.invalidateOptionsMenu()
+        activity?.invalidateOptionsMenu()
     }
 
     private var mPotentialLeaders: List<GwentCard>? = null
@@ -93,30 +95,35 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_rename -> {
-                val builder = AlertDialog.Builder(activity)
-                val inflater = activity.layoutInflater
-                val view = inflater.inflate(R.layout.dialog_edit_text, null)
-                val input = view.findViewById<EditText>(R.id.edit_text) as EditText
-                input.setText(mDeck.name)
-                input.setHint(R.string.new_name)
-                builder.setView(view)
-                        .setTitle(R.string.rename)
-                        .setPositiveButton(R.string.rename) { dialog, which -> deckDetailsPresenter?.renameDeck(input.text.toString()) }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create()
-                        .show()
+                activity?.let { activity ->
+                    val builder = AlertDialog.Builder(activity)
+                    val inflater = activity.layoutInflater
+                    val view = inflater.inflate(R.layout.dialog_edit_text, null)
+                    val input: EditText = view.findViewById<EditText>(R.id.edit_text) as EditText
+                    input.setText(mDeck.name)
+                    input.setHint(R.string.new_name)
+                    builder.setView(view)
+                            .setTitle(R.string.rename)
+                            .setPositiveButton(R.string.rename) { dialog, which -> deckDetailsPresenter?.renameDeck(input.text.toString()) }
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create()
+                            .show()
+                }
+
                 return true
             }
             R.id.action_delete -> {
-                AlertDialog.Builder(activity)
-                        .setMessage(R.string.confirm_delete)
-                        .setPositiveButton(R.string.delete) { dialog, which ->
-                            deckDetailsPresenter?.deleteDeck()
-                            activity.finish()
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create()
-                        .show()
+                activity?.let { activity ->
+                    AlertDialog.Builder(activity)
+                            .setMessage(R.string.confirm_delete)
+                            .setPositiveButton(R.string.delete) { dialog, which ->
+                                deckDetailsPresenter?.deleteDeck()
+                                activity.finish()
+                            }
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create()
+                            .show()
+                }
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

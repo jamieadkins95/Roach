@@ -55,7 +55,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
                 .getString(key, getString(R.string.default_locale))
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater?.inflate(R.layout.fragment_detail, container, false)
         mCardPicture = rootView?.findViewById<View>(R.id.card_image) as ImageView
@@ -75,7 +75,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
     }
 
     override fun setupPresenter() {
-        presenter = DetailPresenter(Injection.provideCardsInteractor(context), mCardId!!)
+        presenter = DetailPresenter(Injection.provideCardsInteractor(context!!), mCardId!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -101,7 +101,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
         mCard = card
 
         // Update UI with card details.
-        activity.title = card.name[mLocale]
+        activity?.title = card.name[mLocale]
 
         if (mUseLowData) {
             mAdapter?.addItem(card.cardArt?.low)
@@ -112,8 +112,8 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
         mLargeCardView?.setCardDetails(card)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString(STATE_CARD_ID, mCardId)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(STATE_CARD_ID, mCardId)
         super.onSaveInstanceState(outState)
     }
 

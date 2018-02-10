@@ -18,13 +18,10 @@ import com.jamieadkins.gwent.model.GwentCard
  */
 
 abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(), CardsContract.View {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(layoutId, container, false)
+        val rootView = inflater.inflate(layoutId, container, false)
         setupViews(rootView)
         return rootView
     }
@@ -35,11 +32,13 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
     }
 
     override fun showCards(cards: MutableList<GwentCard>) {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val locale = preferences.getString(context.getString(R.string.pref_locale_key), context.getString(R.string.default_locale))
-        val items = mutableListOf<RecyclerViewItem>()
-        items.addAll(cards.sortedBy { it.name[locale] })
-        showItems(items)
+        context?.let { context ->
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val locale = preferences.getString(context.getString(R.string.pref_locale_key), context.getString(R.string.default_locale))
+            val items = mutableListOf<RecyclerViewItem>()
+            items.addAll(cards.sortedBy { it.name[locale] })
+            showItems(items)
+        }
     }
 
     open val layoutId: Int = R.layout.fragment_card_list

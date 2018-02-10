@@ -33,15 +33,15 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
         }
 
         if (!mPublicDecks) {
-            activity.title = getString(R.string.my_decks)
+            activity?.title = getString(R.string.my_decks)
         } else {
-            activity.title = getString(R.string.public_decks)
+            activity?.title = getString(R.string.public_decks)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.fragment_deck_list, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_deck_list, container, false)
 
         setupViews(rootView)
 
@@ -49,7 +49,9 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
     }
 
     override fun setupPresenter() {
-        presenter = DeckListPresenter(Injection.provideDecksInteractor(context))
+        context?.let {
+            presenter = DeckListPresenter(Injection.provideDecksInteractor(it))
+        }
     }
 
     override fun showDeck(deck: Deck) {
@@ -68,8 +70,8 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
         recyclerViewAdapter.removeItem(deck)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putBoolean(STATE_PUBLIC_DECKS, mPublicDecks)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(STATE_PUBLIC_DECKS, mPublicDecks)
         super.onSaveInstanceState(outState)
     }
 

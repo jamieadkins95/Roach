@@ -21,8 +21,8 @@ import com.jamieadkins.gwent.model.GwentFaction
 class NewDeckDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity)
-        val inflater = activity.layoutInflater
+        val builder = AlertDialog.Builder(activity!!)
+        val inflater = activity!!.layoutInflater
         val rootView = inflater.inflate(R.layout.dialog_new_deck, null)
 
         val factionSpinner = rootView.findViewById<Spinner>(R.id.factions) as Spinner
