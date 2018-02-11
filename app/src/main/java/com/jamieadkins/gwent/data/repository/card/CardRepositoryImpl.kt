@@ -1,8 +1,12 @@
 package com.jamieadkins.gwent.data.repository.card
 
+import android.util.Log
+import com.jamieadkins.commonutils.mvp2.addToComposite
+import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.Constants
 import com.jamieadkins.gwent.StoreManager
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.data.card.CardsApi
@@ -10,6 +14,7 @@ import com.jamieadkins.gwent.data.repository.FirebaseCardResult
 import com.jamieadkins.gwent.data.repository.FirebasePatchResult
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
 import com.jamieadkins.gwent.database.entity.PatchVersionEntity
+import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.model.GwentCard
 import com.jamieadkins.gwent.model.patch.PatchState
@@ -36,14 +41,14 @@ class CardRepositoryImpl : CardRepository {
                 .map { newPatch ->
                     val storedPatch = getCachedPatch(newPatch.patch)
                     when {
-                        newPatch.patch != storedPatch.patch -> PatchState.NewPatch(newPatch.name)
+                        storedPatch == null || newPatch.patch != storedPatch.patch -> PatchState.NewPatch(newPatch.name)
                         newPatch.version > storedPatch.version -> PatchState.NewVersion(newPatch.name, newPatch.version)
                         else -> PatchState.NoUpdate()
                     }
                 }
     }
 
-    override fun performUpdate(patch: String): Completable {
+    override fun performUpdate(): Completable {
         return getLatestPatch()
                 .flatMap { latestPatch -> getCardsFromApi(latestPatch.patch).map { Pair(latestPatch, it) } }
                 .flatMapCompletable {
@@ -56,7 +61,7 @@ class CardRepositoryImpl : CardRepository {
         return StoreManager.getDataOnce(barcode, cardsApi.fetchPatch(BuildConfig.CARD_DATA_VERSION), FirebasePatchResult::class.java, 10)
     }
 
-    private fun getCachedPatch(patch: String): PatchVersionEntity {
+    private fun getCachedPatch(patch: String): PatchVersionEntity? {
         val cached = database.patchDao().getPatchVersion(patch)
         return cached
     }
@@ -71,7 +76,6 @@ class CardRepositoryImpl : CardRepository {
             database.cardDao().insertCards(CardMapper.cardEntityListFromApiResult(cardList))
             database.patchDao().insertPatchVersion(newPatch)
         }
-
     }
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
@@ -80,11 +84,17 @@ class CardRepositoryImpl : CardRepository {
     }
 
     override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
-        return if (cardFilter == null) {
-            getAllCards()
-        } else {
-            getAllCards().map { it.filter { cardFilter.doesCardMeetFilter(it) } }
-        }
+        return checkForUpdates()
+                .flatMapCompletable {
+                    when (it) {
+                        is PatchState.NewPatch, is PatchState.NewVersion -> { performUpdate() }
+                        else -> Completable.complete()
+                    }
+                }
+                .andThen(getAllCards())
+                .map {
+                    it.filter { cardFilter?.doesCardMeetFilter(it) ?: true }
+                }
     }
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {

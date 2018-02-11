@@ -1,11 +1,19 @@
 package com.jamieadkins.gwent.card.list
 
+import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.base.BaseDisposableSubscriber
-import com.jamieadkins.gwent.base.BaseFilterPresenter
+import com.jamieadkins.gwent.Injection
+import com.jamieadkins.gwent.base.*
+import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.model.GwentCard
+import com.jamieadkins.gwent.model.patch.PatchState
+import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
 import java.util.concurrent.TimeoutException
 
 /**
@@ -16,47 +24,43 @@ import java.util.concurrent.TimeoutException
 abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInteractor: CardsInteractor) :
         BaseFilterPresenter<T>(), CardsContract.Presenter {
 
+    val cardRepository = Injection.provideCardRepository()
+
     override fun onRefresh() {
         onLoadData()
     }
 
     override fun onAttach(newView: T) {
         super.onAttach(newView)
-        onRefresh()
-    }
-
-    override fun onCardFilterUpdated() {
-        onLoadData()
-    }
-
-    open fun onLoadData() {
-        view?.setLoadingIndicator(true)
-
-        mCardsInteractor.getCards(cardFilter, searchQuery)
+        FilterProvider.getCardFilter()
+                .flatMapSingle { cardRepository.getCards(it) }
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSubscriber<Collection<GwentCard>>() {
-                    override fun onNext(result: Collection<GwentCard>) {
-                        view?.showCards(result.toList())
-                        if (result.isEmpty()) {
-                            view?.showEmptyView()
-                        }
-                        view?.setLoadingIndicator(false)
+                .subscribeWith(object : BaseDisposableObserver<Collection<GwentCard>>() {
+                    override fun onNext(t: Collection<GwentCard>) {
+                        onNewCardList(t)
                     }
 
                     override fun onComplete() {
                         super.onComplete()
                         view?.setLoadingIndicator(false)
                     }
-
-                    override fun onError(e: Throwable) {
-                        super.onError(e)
-                        if (e is TimeoutException) {
-                            view?.showGenericErrorMessage()
-                            view?.setLoadingIndicator(false)
-                        }
-                    }
-
                 })
                 .addToComposite(disposable)
+    }
+
+    open fun onLoadData() {
+        view?.setLoadingIndicator(true)
+    }
+
+    private fun onNewCardList(cardList: Collection<GwentCard>) {
+        view?.showCards(cardList.toList())
+        if (cardList.isEmpty()) {
+            view?.showEmptyView()
+        }
+        view?.setLoadingIndicator(false)
+    }
+
+    override fun onCardFilterUpdated() {
+        FilterProvider.updateFilter(cardFilter)
     }
 }

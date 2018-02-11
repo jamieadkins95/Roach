@@ -14,6 +14,8 @@ import java.util.List;
 public interface CardsContract {
     interface View extends BaseListView {
         void showCards(@NotNull List<GwentCard> cards);
+
+        void showNewPatch(@NotNull String patchName);
     }
 
     interface Presenter {

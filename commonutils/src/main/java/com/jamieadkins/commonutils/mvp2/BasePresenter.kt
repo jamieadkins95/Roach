@@ -8,6 +8,7 @@ abstract class BasePresenter<V> {
 
     open fun onAttach(newView: V) {
         view = newView
+        onRefresh()
     }
 
     open fun onDetach() {

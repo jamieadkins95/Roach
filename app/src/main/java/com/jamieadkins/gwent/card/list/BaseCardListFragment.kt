@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.card.list
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +12,9 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.BaseFragment
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.model.GwentCard
 
 /**
@@ -39,6 +43,10 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
             items.addAll(cards.sortedBy { it.name[locale] })
             showItems(items)
         }
+    }
+
+    override fun showNewPatch(patchName: String) {
+        RxBus.post(SnackbarRequest(SnackbarBundle(patchName, Snackbar.LENGTH_LONG)))
     }
 
     open val layoutId: Int = R.layout.fragment_card_list

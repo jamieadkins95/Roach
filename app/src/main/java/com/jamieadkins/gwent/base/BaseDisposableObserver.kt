@@ -11,6 +11,7 @@ abstract class BaseDisposableObserver<T> : DisposableObserver<T>() {
 
     override fun onError(e: Throwable) {
         Crashlytics.logException(e)
+        Log.e(javaClass.simpleName, "onError", e)
     }
 
     override fun onComplete() {

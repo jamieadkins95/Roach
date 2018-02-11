@@ -10,7 +10,7 @@ interface CardRepository {
 
     fun checkForUpdates(): Single<PatchState>
 
-    fun performUpdate(patch: String): Completable
+    fun performUpdate(): Completable
 
     fun getCards(cardFilter: CardFilter? = null): Single<Collection<GwentCard>>
 
