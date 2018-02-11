@@ -16,7 +16,16 @@ interface CardDao {
     fun insertCards(items: Collection<CardEntity>)
 
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE)
-    fun getCards(): Flowable<List<CardEntity>>
+    fun getCards(): Single<List<CardEntity>>
+
+    @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE)
+    fun subscribeToCards(): Flowable<List<CardEntity>>
+
+    @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + " WHERE id=:cardId")
+    fun getCard(cardId: String): Single<CardEntity>
+
+    @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + "  WHERE id IN(:ids)")
+    fun getCards(ids: List<String>): Single<List<CardEntity>>
 
     @Query("SELECT * FROM " + GwentDatabase.ART_TABLE + " WHERE cardId=:cardId")
     fun getCardArt(cardId: String): Single<List<ArtEntity>>

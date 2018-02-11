@@ -91,7 +91,7 @@ class CardsInteractorImpl : CardsInteractor {
                         // Do nothing
                     }
                 })
-        return database.cardDao().getCards()
+        return database.cardDao().subscribeToCards()
                 .flatMapSingle { cards ->
                     database.cardDao().getCardArt().map { artList ->
                         val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
@@ -127,7 +127,7 @@ class CardsInteractorImpl : CardsInteractor {
 
         if (query != null) {
             source = getAllCards().flatMap { cardList ->
-                val searchResults = searchCards(query, cardList.toList())
+                val searchResults = CardSearch.searchCards(query, cardList.toList())
                 Answers.getInstance().logSearch(SearchEvent()
                         .putQuery(query)
                         .putCustomAttribute("hits", searchResults.size))
