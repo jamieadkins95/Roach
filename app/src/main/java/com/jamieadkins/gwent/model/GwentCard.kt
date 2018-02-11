@@ -7,9 +7,9 @@ class GwentCard : RecyclerViewItem {
     private val DEFAULT_LOCALE = "en-US"
 
     var id: String? = null
-    var info = mutableMapOf<String, String>()
-    var flavor = mutableMapOf<String, String>()
-    var name = mutableMapOf<String, String>()
+    var info = mapOf<String, String>()
+    var flavor = mapOf<String, String>()
+    var name = mapOf<String, String>()
     var categories = mutableListOf<String>()
     var loyalties = mutableListOf<Loyalty>()
     var faction: GwentFaction? = null

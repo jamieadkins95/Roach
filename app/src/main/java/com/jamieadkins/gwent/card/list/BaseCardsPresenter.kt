@@ -40,6 +40,7 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
                         if (result.isEmpty()) {
                             view?.showEmptyView()
                         }
+                        view?.setLoadingIndicator(false)
                     }
 
                     override fun onComplete() {

@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.database.GwentDatabase
         tableName = GwentDatabase.ART_TABLE)
 data class ArtEntity(
         @PrimaryKey val artId: String,
+        val cardId: String,
         val original: String? = null,
         val high: String? = null,
         val medium: String? = null,

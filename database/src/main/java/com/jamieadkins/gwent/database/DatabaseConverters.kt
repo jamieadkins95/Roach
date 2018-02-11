@@ -8,8 +8,19 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.util.Collections
 
-class MapConverters {
+class DatabaseConverters {
     private var gson = Gson()
+
+    @TypeConverter
+    fun stringToList(data: String): List<String> {
+        val listType = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(data, listType)
+    }
+
+    @TypeConverter
+    fun listToString(someObjects: List<String>): String {
+        return gson.toJson(someObjects)
+    }
 
     @TypeConverter
     fun stringToMap(data: String): Map<String, String> {
