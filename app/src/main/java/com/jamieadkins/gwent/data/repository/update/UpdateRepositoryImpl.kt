@@ -97,6 +97,7 @@ class UpdateRepositoryImpl : UpdateRepository {
             val cards = CardMapper.cardEntityListFromApiResult(cardList)
             log("Inserting " + cards.size + " cards into database.")
             database.cardDao().insertCards(cards)
+            database.cardDao().insertArt(CardMapper.artEntityListFromApiResult(cardList))
         }
     }
 

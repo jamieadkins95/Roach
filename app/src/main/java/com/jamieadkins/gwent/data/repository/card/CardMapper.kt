@@ -2,7 +2,9 @@ package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.data.Mapper
 import com.jamieadkins.gwent.data.repository.FirebaseCardResult
+import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
+import com.jamieadkins.gwent.model.CardArt
 import com.jamieadkins.gwent.model.GwentCard
 
 object CardMapper {
@@ -26,6 +28,7 @@ object CardMapper {
         card.faction = Mapper.factionIdToFaction(cardEntity.faction)
         card.colour = Mapper.typeToColour(cardEntity.color)
         card.rarity = Mapper.rarityIdToRarity(cardEntity.rarity)
+        card.cardArt = cardEntity.art?.firstOrNull()?.let { artEntityToCardArt(it) }
         return card
     }
 
@@ -53,5 +56,38 @@ object CardMapper {
             }
         }
         return cardList
+    }
+
+    fun artEntityListFromApiResult(result: FirebaseCardResult): Collection<ArtEntity> {
+        val artList = mutableListOf<ArtEntity>()
+        result.values.forEach { card ->
+            if (card.isReleased) {
+                val variation = card.variations.values.firstOrNull()
+                variation?.let { variation ->
+                    artList.add(
+                            ArtEntity(
+                                    variation.variationId,
+                                    card.ingameId,
+                                    variation.art.original,
+                                    variation.art.high,
+                                    variation.art.medium,
+                                    variation.art.low,
+                                    variation.art.thumbnail
+                            )
+                    )
+                }
+            }
+        }
+        return artList
+    }
+
+    private fun artEntityToCardArt(artEntity: ArtEntity): CardArt {
+        val art = CardArt()
+        art.original = artEntity.original
+        art.high = artEntity.high
+        art.medium = artEntity.medium
+        art.low= artEntity.low
+        art.thumbnail = artEntity.thumbnail
+        return art
     }
 }

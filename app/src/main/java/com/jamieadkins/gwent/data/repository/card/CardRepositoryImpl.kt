@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.data.repository.card
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
+import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.model.GwentCard
 import io.reactivex.Single
@@ -13,6 +14,21 @@ class CardRepositoryImpl : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
         return database.cardDao().getCards()
+                .flatMap { cards ->
+                    database.cardDao().getCardArt().map { artList ->
+                        val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
+                        artList.forEach {
+                            if (artMap[it.cardId] == null) {
+                                artMap[it.cardId] = mutableListOf()
+                            }
+                            artMap[it.cardId]?.add(it)
+                        }
+                        cards.forEach {
+                            it.art = artMap[it.id]
+                        }
+                        cards
+                    }
+                }
                 .map { CardMapper.gwentCardListFromCardEntityList(it) }
     }
 
