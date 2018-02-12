@@ -14,8 +14,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: BaseSchedulerProvider,
-                                                          private val cardRepository: CardRepository,
-                                                          private val updateRepository: UpdateRepository) :
+                                                          val cardRepository: CardRepository,
+                                                          val updateRepository: UpdateRepository) :
         BaseFilterPresenter<T>(schedulerProvider), CardsContract.Presenter {
 
     override fun onRefresh() {
@@ -40,16 +40,6 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: Bas
 
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
-        updateRepository.isUpdateAvailable()
-                .applySchedulers()
-                .subscribeWith(object : BaseDisposableSingle<Boolean>() {
-                    override fun onSuccess(update: Boolean) {
-                        if (update) {
-                            view?.showUpdateAvailable()
-                        }
-                    }
-                })
-                .addToComposite(disposable)
 
         cardRepository.getCards(cardFilter)
                 .applySchedulers()

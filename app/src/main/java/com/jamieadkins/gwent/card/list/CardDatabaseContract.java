@@ -11,9 +11,9 @@ import java.util.List;
  * Specifies the contract between the view and the presenter.
  */
 
-public interface CardsContract {
-    interface View extends BaseListView {
-        void showCards(@NotNull List<GwentCard> cards);
+public interface CardDatabaseContract {
+    interface View extends CardsContract.View {
+        void showUpdateAvailable();
     }
 
     interface Presenter {

@@ -45,9 +45,5 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
         }
     }
 
-    override fun showUpdateAvailable() {
-        RxBus.post(SnackbarRequest(SnackbarBundle("Update Available", Snackbar.LENGTH_LONG)))
-    }
-
     open val layoutId: Int = R.layout.fragment_card_list
 }
