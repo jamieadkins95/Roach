@@ -1,23 +1,20 @@
 package com.jamieadkins.gwent.card.list
 
-import android.util.Log
-import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.Injection
-import com.jamieadkins.gwent.base.*
+import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
+import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
+import com.jamieadkins.gwent.base.BaseFilterPresenter
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.card.CardsInteractor
-import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.model.GwentCard
-import com.jamieadkins.gwent.model.patch.PatchState
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscriber
-import java.util.concurrent.TimeoutException
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
@@ -53,11 +50,21 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
         updateRepository.isUpdateAvailable()
-                .flatMapCompletable { update -> if (update) updateRepository.performUpdate() else Completable.complete() }
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableCompletableObserver() {
-                    override fun onComplete() {
-                        view?.setLoadingIndicator(false)
+                .subscribeWith(object : BaseDisposableSingle<Boolean>() {
+                    override fun onSuccess(update: Boolean) {
+                        if (update) {
+                            view?.showUpdateAvailable()
+                        }
+                    }
+                })
+                .addToComposite(disposable)
+
+        cardRepository.getCards(cardFilter)
+                .applySchedulers()
+                .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
+                    override fun onSuccess(t: Collection<GwentCard>) {
+                        onNewCardList(t)
                     }
                 })
                 .addToComposite(disposable)
@@ -65,9 +72,6 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
 
     private fun onNewCardList(cardList: Collection<GwentCard>) {
         view?.showCards(cardList.toList())
-        if (cardList.isEmpty()) {
-            view?.showEmptyView()
-        }
         view?.setLoadingIndicator(false)
     }
 

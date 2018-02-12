@@ -8,10 +8,6 @@ object FilterProvider {
 
     private val latestFilter: BehaviorSubject<CardFilter> = BehaviorSubject.create()
 
-    init {
-        latestFilter.onNext(CardFilter())
-    }
-
     fun updateFilter(filter: CardFilter) {
         latestFilter.onNext(filter)
     }

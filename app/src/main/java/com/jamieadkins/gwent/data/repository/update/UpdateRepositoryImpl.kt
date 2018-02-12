@@ -21,10 +21,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.FileReader
+import java.lang.reflect.Type
 
 
 class UpdateRepositoryImpl : UpdateRepository {
@@ -37,9 +39,10 @@ class UpdateRepositoryImpl : UpdateRepository {
 
     private val storage = FirebaseStorage.getInstance()
     private val database = GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext)
+    val gson = Gson()
     private val cardsApi = Retrofit.Builder()
             .baseUrl(Constants.CARDS_API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(StoreManager.provideGson()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .validateEagerly(BuildConfig.DEBUG)
             .build()
@@ -77,22 +80,34 @@ class UpdateRepositoryImpl : UpdateRepository {
     }
 
     override fun performUpdate(): Completable {
+        return performCardDatabaseUpdate()
+                .andThen(performPatchDatabaseUpdate())
+    }
+
+    private fun performCardDatabaseUpdate(): Completable {
         return getLatestPatch()
                 .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME)) }
-                .flatMapCompletable { performUpdate(it) }
+                .observeOn(Schedulers.io())
+                .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
+                .flatMapCompletable { updateCardDatabase(it) }
     }
 
-    private fun performUpdate(file: File): Completable {
-        return getLatestPatch()
-                .flatMap { patch -> parseJsonFile(file).map { Pair(patch, it) } }
-                .flatMapCompletable { updateDatabase(it.first, it.second) }
-    }
-
-    private fun updateDatabase(newPatch: PatchVersionEntity, cardList: FirebaseCardResult): Completable {
+    private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
         return Completable.fromCallable {
             val cards = CardMapper.cardEntityListFromApiResult(cardList)
             log("Inserting " + cards.size + " cards into database.")
             database.cardDao().insertCards(cards)
+        }
+    }
+
+    private fun performPatchDatabaseUpdate(): Completable {
+        return getLatestPatch()
+                .flatMapCompletable { updatePatchDatabase(it) }
+    }
+
+    private fun updatePatchDatabase(newPatch: PatchVersionEntity): Completable {
+        return Completable.fromCallable {
+            log("Inserting patch " + newPatch.name + " into database.")
             database.patchDao().insertPatchVersion(newPatch)
         }
     }
@@ -137,13 +152,15 @@ class UpdateRepositoryImpl : UpdateRepository {
         return storage.reference.child("card-data").child(patch).child("$fileName.json")
     }
 
-    private fun parseJsonFile(file: File): Single<FirebaseCardResult> {
+    private fun <T> parseJsonFile(file: File, type: Type = genericType<T>()): Single<T> {
         return Single.fromCallable {
             log("Parsing JSON from ${file.absolutePath}")
             val bufferedReader = BufferedReader(FileReader(file))
-            Gson().fromJson(bufferedReader, FirebaseCardResult::class.java)
+            gson.fromJson<T>(bufferedReader, type)
         }
     }
+
+    fun <T> genericType() = object : TypeToken<T>() {}.type
 
     private fun log(message: String) {
         Crashlytics.log(message)

@@ -91,8 +91,6 @@ object StoreManager {
                 .create()
     }
 
-    fun <T> genericType() = object : TypeToken<T>() {}.type
-
     private class BarCodePathResolver : PathResolver<BarCode> {
         override fun resolve(key: BarCode): String {
             return key.toString()

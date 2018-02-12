@@ -15,7 +15,7 @@ public interface CardsContract {
     interface View extends BaseListView {
         void showCards(@NotNull List<GwentCard> cards);
 
-        void showNewPatch(@NotNull String patchName);
+        void showUpdateAvailable();
     }
 
     interface Presenter {
