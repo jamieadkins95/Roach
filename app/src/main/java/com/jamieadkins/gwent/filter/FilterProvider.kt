@@ -6,7 +6,7 @@ import io.reactivex.subjects.BehaviorSubject
 
 object FilterProvider {
 
-    private val latestFilter = BehaviorSubject.create<CardFilter>()
+    private val latestFilter: BehaviorSubject<CardFilter> = BehaviorSubject.create()
 
     init {
         latestFilter.onNext(CardFilter())

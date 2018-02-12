@@ -33,11 +33,10 @@ abstract class BaseFilterPresenter<V> : BasePresenter<V>(), CardFilterListener {
         cardFilter.loyaltyFilter[filter] = checked
     }
 
-    fun updateSearchQuery(query: String?) {
+    open fun updateSearchQuery(query: String?) {
         searchQuery = if (query == "") null else query
         searchQuery?.let {
             searchQuery = it.substring(0, 1).toUpperCase() + it.substring(1)
         }
-        onCardFilterUpdated()
     }
 }

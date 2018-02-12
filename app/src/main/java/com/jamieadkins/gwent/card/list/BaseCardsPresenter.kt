@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.model.GwentCard
 import com.jamieadkins.gwent.model.patch.PatchState
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Subscriber
@@ -36,6 +37,9 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
     override fun onAttach(newView: T) {
         super.onAttach(newView)
         FilterProvider.getCardFilter()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { view?.setLoadingIndicator(true) }
+                .observeOn(Schedulers.io())
                 .flatMapSingle { cardRepository.getCards(it) }
                 .applySchedulers()
                 .subscribeWith(object : BaseDisposableObserver<Collection<GwentCard>>() {
@@ -69,5 +73,22 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
 
     override fun onCardFilterUpdated() {
         FilterProvider.updateFilter(cardFilter)
+    }
+
+    override fun updateSearchQuery(query: String?) {
+        super.updateSearchQuery(query)
+        view?.setLoadingIndicator(true)
+        val source = if (!searchQuery.isNullOrEmpty()) {
+            cardRepository.searchCards(searchQuery!!)
+        } else {
+            cardRepository.getCards(cardFilter)
+        }
+        source.applySchedulers()
+                .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
+                    override fun onSuccess(t: Collection<GwentCard>) {
+                        onNewCardList(t)
+                    }
+                })
+                .addToComposite(disposable)
     }
 }
