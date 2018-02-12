@@ -135,4 +135,7 @@
     <string name="position">Position</string>
     <string name="event">Special</string>
     <string name="no_results">No results :(</string>
+
+    <string name="update_check">Checking for Card Data Updates</string>
+    <string name="update_database">Updating Card Database</string>
 </resources>

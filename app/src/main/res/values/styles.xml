@@ -55,6 +55,7 @@
 
     <style name="Theme.Gwent.NoActionBar.Full">
         <item name="android:windowBackground">@color/gwentGreen</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
