@@ -1,17 +1,16 @@
 package com.jamieadkins.gwent.card.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.view.View
 
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
-
-/**
- * UI fragment that shows a list of the users decks.
- */
+import com.jamieadkins.gwent.update.UpdateActivity
 
 class CardListFragment : BaseCardListFragment<CardDatabaseContract.View>(), CardDatabaseContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +25,13 @@ class CardListFragment : BaseCardListFragment<CardDatabaseContract.View>(), Card
     }
 
     override fun showUpdateAvailable() {
-        RxBus.post(SnackbarRequest(SnackbarBundle("Update Available", Snackbar.LENGTH_LONG)))
+        val message = getString(R.string.update_available)
+        val actionMessage = getString(R.string.update)
+        val action = View.OnClickListener {
+            val i = Intent(activity, UpdateActivity::class.java)
+            startActivity(i)
+            activity?.finish()
+        }
+        RxBus.post(SnackbarRequest(SnackbarBundle(message, actionMessage, action, Snackbar.LENGTH_INDEFINITE)))
     }
 }
