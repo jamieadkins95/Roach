@@ -30,7 +30,6 @@ class CardListFragment : BaseCardListFragment<CardDatabaseContract.View>(), Card
         val action = View.OnClickListener {
             val i = Intent(activity, UpdateActivity::class.java)
             startActivity(i)
-            activity?.finish()
         }
         RxBus.post(SnackbarRequest(SnackbarBundle(message, actionMessage, action, Snackbar.LENGTH_INDEFINITE)))
     }

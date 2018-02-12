@@ -29,7 +29,14 @@
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Gwent.NoActionBar.Drawer" />
+            android:theme="@style/Theme.Gwent.NoActionBar.Drawer">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".card.detail.DetailActivity"
             android:theme="@style/Theme.Gwent.NoActionBar">
@@ -72,13 +79,7 @@
             tools:replace="android:value" />
 
         <activity android:name=".update.UpdateActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar.Full">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.Gwent.NoActionBar.Full" />
     </application>
 
 </manifest>

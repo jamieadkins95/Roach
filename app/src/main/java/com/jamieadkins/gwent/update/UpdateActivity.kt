@@ -1,12 +1,10 @@
 package com.jamieadkins.gwent.update
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import com.jamieadkins.commonutils.mvp2.MvpActivity
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.main.MainActivity
 import com.jamieadkins.gwent.model.patch.UpdateState
 
 class UpdateActivity : MvpActivity<UpdateContract.View>(), UpdateContract.View {
@@ -25,9 +23,6 @@ class UpdateActivity : MvpActivity<UpdateContract.View>(), UpdateContract.View {
     }
 
     override fun openCardDatabase() {
-        val i = Intent(this, MainActivity::class.java)
-                .replaceExtras(intent)
-        startActivity(i)
         finish()
     }
 
