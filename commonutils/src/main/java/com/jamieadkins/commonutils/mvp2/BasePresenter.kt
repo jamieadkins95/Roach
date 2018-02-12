@@ -2,7 +2,7 @@ package com.jamieadkins.commonutils.mvp2
 
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<V> {
+abstract class BasePresenter<V>(val schedulerProvider: BaseSchedulerProvider) {
     var view: V? = null
     val disposable: CompositeDisposable = CompositeDisposable()
 

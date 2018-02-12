@@ -30,7 +30,8 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
                     mDeckId,
                     mFaction,
                     Injection.provideDecksInteractor(it),
-                    Injection.provideCardsInteractor(it))
+                    Injection.provideCardsInteractor(it),
+                    Injection.provideSchedulerProvider())
             deckDetailsPresenter = newPresenter
             presenter = newPresenter
         }

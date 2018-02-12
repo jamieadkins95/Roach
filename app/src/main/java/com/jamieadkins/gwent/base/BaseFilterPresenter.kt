@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.base
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.card.CardFilterListener
 import com.jamieadkins.gwent.model.CardColour
@@ -8,7 +9,7 @@ import com.jamieadkins.gwent.model.GwentFaction
 import com.jamieadkins.gwent.model.Loyalty
 import com.jamieadkins.gwent.model.Rarity
 
-abstract class BaseFilterPresenter<V> : BasePresenter<V>(), CardFilterListener {
+abstract class BaseFilterPresenter<V>(schedulerProvider: BaseSchedulerProvider) : BasePresenter<V>(schedulerProvider), CardFilterListener {
     lateinit var cardFilter: CardFilter
     var searchQuery: String? = null
 

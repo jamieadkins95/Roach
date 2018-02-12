@@ -73,7 +73,8 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
                     .commit();
         }
 
-        presenter = new DeckSummaryPresenter(mDeckId, Injection.INSTANCE.provideDecksInteractor(this));
+        presenter = new DeckSummaryPresenter(mDeckId, Injection.INSTANCE.provideDecksInteractor(this),
+                Injection.INSTANCE.provideSchedulerProvider());
     }
 
     @Override

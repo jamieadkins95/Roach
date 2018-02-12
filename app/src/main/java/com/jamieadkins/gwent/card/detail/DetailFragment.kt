@@ -75,7 +75,7 @@ class DetailFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
     }
 
     override fun setupPresenter() {
-        presenter = DetailPresenter(Injection.provideCardsInteractor(context!!), mCardId!!)
+        presenter = DetailPresenter(Injection.provideCardsInteractor(context!!), mCardId!!, Injection.provideSchedulerProvider())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

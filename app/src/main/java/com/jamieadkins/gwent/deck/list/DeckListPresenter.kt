@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.list
 
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
@@ -14,8 +15,8 @@ import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
-class DeckListPresenter(private val decksInteractor: DecksInteractor) :
-        BaseFilterPresenter<DeckListContract.View>(), DeckListContract.Presenter {
+class DeckListPresenter(private val decksInteractor: DecksInteractor, schedulerProvider: BaseSchedulerProvider) :
+        BaseFilterPresenter<DeckListContract.View>(schedulerProvider), DeckListContract.Presenter {
 
     override fun onAttach(newView: DeckListContract.View) {
         super.onAttach(newView)

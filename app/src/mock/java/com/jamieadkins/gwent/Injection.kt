@@ -2,6 +2,8 @@ package com.jamieadkins.gwent
 
 import android.content.Context
 import android.support.v7.preference.PreferenceManager
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
+import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.data.card.CachedCardsInteractor
 import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.card.CardsInteractorImpl
@@ -38,5 +40,9 @@ object Injection : Injector {
 
     override fun provideUpdateRepository(): UpdateRepository {
         return UpdateRepositoryImpl()
+    }
+
+    override fun provideSchedulerProvider(): BaseSchedulerProvider {
+        return SchedulerProvider
     }
 }

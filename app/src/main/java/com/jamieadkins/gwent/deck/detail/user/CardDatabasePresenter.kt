@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.detail.user
 
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
@@ -7,6 +8,8 @@ import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 import com.jamieadkins.gwent.deck.detail.DeckBuilderContract
 
 /**
@@ -15,8 +18,10 @@ import com.jamieadkins.gwent.deck.detail.DeckBuilderContract
  */
 class CardDatabasePresenter(private val deckId: String,
                             private val decksInteractor: DecksInteractor,
-                            private val cardsInteractor: CardsInteractor) :
-        BaseCardsPresenter<DeckBuilderContract.CardDatabaseView>(cardsInteractor), DeckBuilderContract.Presenter {
+                            schedulerProvider: BaseSchedulerProvider,
+                            cardRepository: CardRepository,
+                            updateRepository: UpdateRepository) :
+        BaseCardsPresenter<DeckBuilderContract.CardDatabaseView>(schedulerProvider, cardRepository, updateRepository), DeckBuilderContract.Presenter {
 
     override fun onAttach(newView: DeckBuilderContract.CardDatabaseView) {
         super.onAttach(newView)

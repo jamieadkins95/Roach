@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.detail.user
 
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
@@ -23,8 +24,9 @@ import com.jamieadkins.gwent.model.GwentCard
 class UserDeckDetailsPresenter(private val deckId: String,
                                private val faction: com.jamieadkins.gwent.model.GwentFaction,
                                private val decksInteractor: DecksInteractor,
-                               private val cardsInteractor: CardsInteractor) :
-        BaseFilterPresenter<UserDeckDetailsContract.View>(), UserDeckDetailsContract.Presenter {
+                               private val cardsInteractor: CardsInteractor,
+                               schedulerProvider: BaseSchedulerProvider) :
+        BaseFilterPresenter<UserDeckDetailsContract.View>(schedulerProvider), UserDeckDetailsContract.Presenter {
 
     override fun onAttach(newView: UserDeckDetailsContract.View) {
         super.onAttach(newView)

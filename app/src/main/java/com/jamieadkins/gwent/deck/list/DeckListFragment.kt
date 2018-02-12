@@ -50,7 +50,8 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
 
     override fun setupPresenter() {
         context?.let {
-            presenter = DeckListPresenter(Injection.provideDecksInteractor(it))
+            presenter = DeckListPresenter(Injection.provideDecksInteractor(it),
+                    Injection.provideSchedulerProvider())
         }
     }
 

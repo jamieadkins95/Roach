@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.collection
 
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
@@ -9,14 +10,19 @@ import com.jamieadkins.gwent.card.list.BaseCardsPresenter
 import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.collection.CollectionInteractor
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
 
-class CollectionPresenter(private val collectionInteractor: CollectionInteractor, cardsInteractor: CardsInteractor) :
-        BaseCardsPresenter<CollectionContract.View>(cardsInteractor), CollectionContract.Presenter {
+class CollectionPresenter(private val collectionInteractor: CollectionInteractor,
+                          schedulerProvider: BaseSchedulerProvider,
+                          cardRepository: CardRepository,
+                          updateRepository: UpdateRepository) :
+        BaseCardsPresenter<CollectionContract.View>(schedulerProvider, cardRepository, updateRepository), CollectionContract.Presenter {
 
     override fun onLoadData() {
         super.onLoadData()

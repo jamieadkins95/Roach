@@ -55,8 +55,8 @@ public class CardListBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void showNewPatch(@NotNull String patchName) {
-
+    public void showUpdateAvailable() {
+        
     }
 
     @Override

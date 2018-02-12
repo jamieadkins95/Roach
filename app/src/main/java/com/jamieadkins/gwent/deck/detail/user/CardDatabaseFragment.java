@@ -47,7 +47,9 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
         setPresenter(new CardDatabasePresenter(
                 deckId,
                 Injection.INSTANCE.provideDecksInteractor(getContext()),
-                Injection.INSTANCE.provideCardsInteractor(getContext())));
+                Injection.INSTANCE.provideSchedulerProvider(),
+                Injection.INSTANCE.provideCardRepository(),
+                Injection.INSTANCE.provideUpdateRepository()));
     }
 
     public static CardDatabaseFragment newInstance(String deckId, GwentFaction faction) {

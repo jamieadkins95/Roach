@@ -1,31 +1,22 @@
 package com.jamieadkins.gwent.card.list
 
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.Injection
-import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
-import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.model.GwentCard
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-/**
- * Listens to user actions from the UI, retrieves the data and updates the
- * UI as required.
- */
-
-abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInteractor: CardsInteractor) :
-        BaseFilterPresenter<T>(), CardsContract.Presenter {
-
-    val cardRepository = Injection.provideCardRepository()
-    val updateRepository = Injection.provideUpdateRepository()
+abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: BaseSchedulerProvider,
+                                                          private val cardRepository: CardRepository,
+                                                          private val updateRepository: UpdateRepository) :
+        BaseFilterPresenter<T>(schedulerProvider), CardsContract.Presenter {
 
     override fun onRefresh() {
         onLoadData()

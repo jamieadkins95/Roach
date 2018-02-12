@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.card.detail
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber
@@ -13,7 +14,9 @@ import com.jamieadkins.gwent.model.GwentCard
  * UI as required.
  */
 
-class DetailPresenter(private val mDetailInteractor: CardsInteractor, var cardId: String) : BasePresenter<DetailContract.View>(),
+class DetailPresenter(private val mDetailInteractor: CardsInteractor,
+                      var cardId: String,
+                      schedulerProvider: BaseSchedulerProvider) : BasePresenter<DetailContract.View>(schedulerProvider),
         DetailContract.Presenter {
     override fun onAttach(newView: DetailContract.View) {
         super.onAttach(newView)

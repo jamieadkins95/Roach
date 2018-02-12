@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent
 
 import android.content.Context
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.collection.CollectionInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
@@ -17,4 +18,6 @@ interface Injector {
     fun provideCardRepository(): CardRepository
 
     fun provideUpdateRepository(): UpdateRepository
+
+    fun provideSchedulerProvider(): BaseSchedulerProvider
 }
