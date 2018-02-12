@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.deck.detail.user
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.Menu
@@ -11,6 +12,9 @@ import android.widget.EditText
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.bus.SnackbarBundle
+import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.deck.detail.BaseDeckDetailFragment
 import com.jamieadkins.gwent.model.CardColour
@@ -51,6 +55,10 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
 
     public override fun getLayoutId(): Int {
         return R.layout.fragment_user_deck_detail
+    }
+
+    override fun showEmptyView() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_results), Snackbar.LENGTH_LONG)))
     }
 
     override fun onBuildRecyclerView(): GwentRecyclerViewAdapter {

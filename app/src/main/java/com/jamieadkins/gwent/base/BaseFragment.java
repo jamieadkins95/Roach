@@ -42,7 +42,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     private static final String STATE_CARD_QUERY = "com.jamieadkins.gwent.card.query";
     public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
 
-    private RecyclerView mRecyclerView;
+    public RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshContainer;
     private GwentRecyclerViewAdapter mAdapter;
 
@@ -108,11 +108,6 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
 
     public void showItems(@NotNull List<RecyclerViewItem> items) {
         mAdapter.setItems(items);
-    }
-
-    @Override
-    public void showEmptyView() {
-        RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.no_results), Snackbar.LENGTH_LONG)));
     }
 
     public GwentRecyclerViewAdapter onBuildRecyclerView() {

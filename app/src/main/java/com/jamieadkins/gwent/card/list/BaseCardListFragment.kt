@@ -23,9 +23,12 @@ import com.jamieadkins.gwent.model.GwentCard
 
 abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(), CardsContract.View {
 
+    lateinit var emptyView: View
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(layoutId, container, false)
+        emptyView = rootView.findViewById(R.id.empty)
         setupViews(rootView)
         return rootView
     }
@@ -36,13 +39,26 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
     }
 
     override fun showCards(cards: MutableList<GwentCard>) {
-        context?.let { context ->
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val locale = preferences.getString(context.getString(R.string.pref_locale_key), context.getString(R.string.default_locale))
-            val items = mutableListOf<RecyclerViewItem>()
-            items.addAll(cards.sortedBy { it.name[locale] })
-            showItems(items)
+        if (cards.size > 0) {
+            context?.let { context ->
+                val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+                val locale = preferences.getString(context.getString(R.string.pref_locale_key), context.getString(R.string.default_locale))
+                val items = mutableListOf<RecyclerViewItem>()
+                items.addAll(cards.sortedBy { it.name[locale] })
+                showItems(items)
+
+                emptyView.visibility = View.GONE
+                mRecyclerView.visibility = View.VISIBLE
+            }
+        } else {
+            emptyView.visibility = View.VISIBLE
+            mRecyclerView.visibility = View.GONE
         }
+
+    }
+
+    override fun showEmptyView() {
+
     }
 
     open val layoutId: Int = R.layout.fragment_card_list

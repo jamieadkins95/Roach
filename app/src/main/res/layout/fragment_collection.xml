@@ -7,6 +7,12 @@
 
     <include layout="@layout/recycler_view_loading" />
 
+    <include
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/empty" />
+
     <android.support.design.widget.FloatingActionButton
         android:visibility="gone"
         android:id="@+id/new_keg"

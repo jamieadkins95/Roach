@@ -140,4 +140,7 @@
     <string name="update_database">Updating Card Database</string>
     <string name="update_available">Card database update available</string>
     <string name="update">Update</string>
+
+    <string name="empty_cards">No cards</string>
+    <string name="empty_cards_message">Try changing your filters or updating the card database.</string>
 </resources>

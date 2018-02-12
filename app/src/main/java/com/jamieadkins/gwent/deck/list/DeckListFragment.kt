@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.deck.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,6 +81,10 @@ class DeckListFragment : BaseFragment<DeckListContract.View>(), DeckListContract
         if (!loading) {
             refreshLayout.isEnabled = false
         }
+    }
+
+    override fun showEmptyView() {
+        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.no_results), Snackbar.LENGTH_LONG)))
     }
 
     override fun showGenericErrorMessage() {
