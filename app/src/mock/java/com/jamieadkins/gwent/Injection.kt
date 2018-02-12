@@ -12,6 +12,8 @@ import com.jamieadkins.gwent.data.deck.DecksInteractorFirebase
 import com.jamieadkins.gwent.data.interactor.*
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.card.CardRepositoryImpl
+import com.jamieadkins.gwent.data.repository.update.UpdateRepository
+import com.jamieadkins.gwent.data.repository.update.UpdateRepositoryImpl
 
 object Injection : Injector {
     override fun provideCardsInteractor(context: Context): CardsInteractor {
@@ -32,5 +34,9 @@ object Injection : Injector {
 
     override fun provideCardRepository(): CardRepository {
         return CardRepositoryImpl()
+    }
+
+    override fun provideUpdateRepository(): UpdateRepository {
+        return UpdateRepositoryImpl()
     }
 }

@@ -5,4 +5,4 @@ import android.arch.persistence.room.PrimaryKey
 import com.jamieadkins.gwent.database.GwentDatabase
 
 @Entity(tableName = GwentDatabase.PATCH_VERSION_TABLE)
-data class PatchVersionEntity(@PrimaryKey val patch: String, val version: Int)
+data class PatchVersionEntity(@PrimaryKey val patch: String, val name: String, val lastUpdated: Long)

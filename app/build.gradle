@@ -103,6 +103,7 @@ dependencies {
     compile "com.google.firebase:firebase-database:$google_services_version"
     compile "com.google.firebase:firebase-storage:$google_services_version"
     compile "com.google.firebase:firebase-messaging:$google_services_version"
+    implementation 'com.jakewharton.timber:timber:4.6.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
     }

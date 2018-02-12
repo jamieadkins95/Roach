@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.list
 
+import android.util.Log
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
@@ -12,6 +13,7 @@ import com.jamieadkins.gwent.filter.FilterProvider
 import com.jamieadkins.gwent.model.GwentCard
 import com.jamieadkins.gwent.model.patch.PatchState
 import io.reactivex.Completable
+import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Subscriber
 import java.util.concurrent.TimeoutException
@@ -25,6 +27,7 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
         BaseFilterPresenter<T>(), CardsContract.Presenter {
 
     val cardRepository = Injection.provideCardRepository()
+    val updateRepository = Injection.provideUpdateRepository()
 
     override fun onRefresh() {
         onLoadData()
@@ -39,17 +42,21 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(private val mCardsInte
                     override fun onNext(t: Collection<GwentCard>) {
                         onNewCardList(t)
                     }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        view?.setLoadingIndicator(false)
-                    }
                 })
                 .addToComposite(disposable)
     }
 
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
+        updateRepository.isUpdateAvailable()
+                .flatMapCompletable { update -> if (update) updateRepository.performUpdate() else Completable.complete() }
+                .applySchedulers()
+                .subscribeWith(object : BaseDisposableCompletableObserver() {
+                    override fun onComplete() {
+                        view?.setLoadingIndicator(false)
+                    }
+                })
+                .addToComposite(disposable)
     }
 
     private fun onNewCardList(cardList: Collection<GwentCard>) {

@@ -8,10 +8,6 @@ import io.reactivex.Single
 
 interface CardRepository {
 
-    fun checkForUpdates(): Single<PatchState>
-
-    fun performUpdate(): Completable
-
     fun getCards(cardFilter: CardFilter? = null): Single<Collection<GwentCard>>
 
     fun getCards(cardIds: List<String>): Single<Collection<GwentCard>>

@@ -80,17 +80,6 @@ class CardsInteractorImpl : CardsInteractor {
     }
 
     override fun getAllCards(): Flowable<Collection<GwentCard>> {
-        getLatestPatch()
-                .filter { it.version > getCachedPatch(it.patch) }
-                .flatMap { getCardsFromApi(it.patch).toMaybe() }
-                .flatMapCompletable { updateDatabase(it) }
-                .andThen(getLatestPatch().flatMapCompletable { updateCachedPatch(it.patch, it.version) })
-                .subscribeOn(Schedulers.io())
-                .subscribeWith(object : BaseCompletableObserver() {
-                    override fun onComplete() {
-                        // Do nothing
-                    }
-                })
         return database.cardDao().subscribeToCards()
                 .flatMapSingle { cards ->
                     database.cardDao().getCardArt().map { artList ->
