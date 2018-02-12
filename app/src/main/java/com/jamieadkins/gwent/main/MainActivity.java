@@ -25,12 +25,8 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardListFragment;
-import com.jamieadkins.gwent.card.list.CardsPresenter;
 import com.jamieadkins.gwent.collection.CollectionFragment;
-import com.jamieadkins.gwent.collection.CollectionPresenter;
-import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
-import com.jamieadkins.gwent.deck.list.DeckListPresenter;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
@@ -106,7 +102,7 @@ public class MainActivity extends AuthenticationActivity implements
         });
 
         checkLanguage();
-        checkIntent();
+        checkIntentForNews();
         SettingsActivity.checkAndUpdatePatchTopic(PreferenceManager.getDefaultSharedPreferences(this), getResources());
         mProfile = new ProfileDrawerItem()
                 .withIdentifier(ACCOUNT_IDENTIFIER)
@@ -190,7 +186,7 @@ public class MainActivity extends AuthenticationActivity implements
         }
     }
 
-    private void checkIntent() {
+    private void checkIntentForNews() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             String url = intent.getExtras().getString("url");
