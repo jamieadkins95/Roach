@@ -13,11 +13,6 @@ class DetailPresenter(var cardId: String,
                       schedulerProvider: BaseSchedulerProvider) :
         BasePresenter<DetailContract.View>(schedulerProvider), DetailContract.Presenter {
 
-    override fun onAttach(newView: DetailContract.View) {
-        super.onAttach(newView)
-        onRefresh()
-    }
-
     override fun onRefresh() {
         cardRepository.getCard(cardId)
                 .applySchedulers()
