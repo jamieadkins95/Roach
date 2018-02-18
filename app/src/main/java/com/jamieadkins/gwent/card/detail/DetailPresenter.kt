@@ -4,30 +4,25 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.base.BaseDisposableSubscriber
-import com.jamieadkins.gwent.data.card.CardDetails
-import com.jamieadkins.gwent.data.card.CardsInteractor
+import com.jamieadkins.gwent.base.BaseDisposableSingle
+import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.model.GwentCard
 
-/**
- * Listens to user actions from the UI, retrieves the data and updates the
- * UI as required.
- */
+class DetailPresenter(var cardId: String,
+                      private val cardRepository: CardRepository,
+                      schedulerProvider: BaseSchedulerProvider) :
+        BasePresenter<DetailContract.View>(schedulerProvider), DetailContract.Presenter {
 
-class DetailPresenter(private val mDetailInteractor: CardsInteractor,
-                      var cardId: String,
-                      schedulerProvider: BaseSchedulerProvider) : BasePresenter<DetailContract.View>(schedulerProvider),
-        DetailContract.Presenter {
     override fun onAttach(newView: DetailContract.View) {
         super.onAttach(newView)
         onRefresh()
     }
 
     override fun onRefresh() {
-        mDetailInteractor.getCard(cardId)
+        cardRepository.getCard(cardId)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSubscriber<GwentCard>() {
-                    override fun onNext(result: GwentCard) {
+                .subscribeWith(object : BaseDisposableSingle<GwentCard>() {
+                    override fun onSuccess(result: GwentCard) {
                         view?.showCard(result)
                     }
                 })

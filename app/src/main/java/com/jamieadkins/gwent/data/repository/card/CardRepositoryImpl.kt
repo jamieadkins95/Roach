@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.repository.card
 
+import android.util.Log
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
@@ -7,6 +8,7 @@ import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.model.GwentCard
 import io.reactivex.Single
+import timber.log.Timber
 
 class CardRepositoryImpl : CardRepository {
 
@@ -52,6 +54,19 @@ class CardRepositoryImpl : CardRepository {
 
     override fun getCard(id: String): Single<GwentCard> {
         return database.cardDao().getCard(id)
+                .flatMap {
+                    database.cardDao().getCardArt(id).map { artList ->
+                        val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
+                        artList.forEach {
+                            if (artMap[it.cardId] == null) {
+                                artMap[it.cardId] = mutableListOf()
+                            }
+                            artMap[it.cardId]?.add(it)
+                        }
+                        it.art = artMap[it.id]
+                        it
+                    }
+                }
                 .map { CardMapper.cardEntityToGwentCard(it) }
     }
 }
