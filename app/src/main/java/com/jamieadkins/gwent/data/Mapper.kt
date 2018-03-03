@@ -60,6 +60,17 @@ object Mapper {
         }
     }
 
+    fun factionToFactionId(faction: GwentFaction): String {
+        return when (faction) {
+            GwentFaction.MONSTER -> Faction.MONSTERS_ID
+            GwentFaction.NORTHERN_REALMS -> Faction.NORTHERN_REALMS_ID
+            GwentFaction.SCOIATAEL -> Faction.SCOIATAEL_ID
+            GwentFaction.SKELLIGE -> Faction.SKELLIGE_ID
+            GwentFaction.NILFGAARD -> Faction.NILFGAARD_ID
+            GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
+        }
+    }
+
     fun typeToColour(type: String): CardColour? {
         return when (type) {
             Type.BRONZE_ID -> CardColour.BRONZE

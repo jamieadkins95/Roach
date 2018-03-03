@@ -32,4 +32,15 @@ class DatabaseConverters {
     fun mapToString(map: Map<String, String>): String {
         return gson.toJson(map)
     }
+
+    @TypeConverter
+    fun stringToIntMap(data: String): Map<String, Int> {
+        val mapType = object : TypeToken<Map<String, Int>>() {}.type
+        return gson.fromJson(data, mapType)
+    }
+
+    @TypeConverter
+    fun intMapToString(map: Map<String, Int>): String {
+        return gson.toJson(map)
+    }
 }
