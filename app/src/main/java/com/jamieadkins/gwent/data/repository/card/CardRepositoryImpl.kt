@@ -1,14 +1,13 @@
 package com.jamieadkins.gwent.data.repository.card
 
-import android.util.Log
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
 import com.jamieadkins.gwent.database.entity.ArtEntity
+import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.model.GwentCard
 import io.reactivex.Single
-import timber.log.Timber
 
 class CardRepositoryImpl : CardRepository {
 
@@ -16,22 +15,25 @@ class CardRepositoryImpl : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
         return database.cardDao().getCards()
-                .flatMap { cards ->
-                    database.cardDao().getCardArt().map { artList ->
-                        val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
-                        artList.forEach {
-                            if (artMap[it.cardId] == null) {
-                                artMap[it.cardId] = mutableListOf()
-                            }
-                            artMap[it.cardId]?.add(it)
-                        }
-                        cards.forEach {
-                            it.art = artMap[it.id]
-                        }
-                        cards
-                    }
-                }
+                .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
                 .map { CardMapper.gwentCardListFromCardEntityList(it) }
+    }
+
+    private fun mergeCardEntitiesWithCardArt(cards: List<CardEntity>): Single<List<CardEntity>> {
+        val cardIds = cards.map { it.id }
+        return database.cardDao().getCardArt(cardIds).map { artList ->
+            val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
+            artList.forEach {
+                if (artMap[it.cardId] == null) {
+                    artMap[it.cardId] = mutableListOf()
+                }
+                artMap[it.cardId]?.add(it)
+            }
+            cards.forEach {
+                it.art = artMap[it.id]
+            }
+            cards
+        }
     }
 
     override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
@@ -42,7 +44,9 @@ class CardRepositoryImpl : CardRepository {
     }
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
-        return database.cardDao().getCards(cardIds).map { CardMapper.gwentCardListFromCardEntityList(it) }
+        return database.cardDao().getCards(cardIds)
+                .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
+                .map { CardMapper.gwentCardListFromCardEntityList(it) }
     }
 
     override fun searchCards(query: String): Single<Collection<GwentCard>> {
@@ -54,19 +58,8 @@ class CardRepositoryImpl : CardRepository {
 
     override fun getCard(id: String): Single<GwentCard> {
         return database.cardDao().getCard(id)
-                .flatMap {
-                    database.cardDao().getCardArt(id).map { artList ->
-                        val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
-                        artList.forEach {
-                            if (artMap[it.cardId] == null) {
-                                artMap[it.cardId] = mutableListOf()
-                            }
-                            artMap[it.cardId]?.add(it)
-                        }
-                        it.art = artMap[it.id]
-                        it
-                    }
-                }
+                .flatMap { mergeCardEntitiesWithCardArt(listOf(it)) }
+                .map { it.first() }
                 .map { CardMapper.cardEntityToGwentCard(it) }
     }
 }

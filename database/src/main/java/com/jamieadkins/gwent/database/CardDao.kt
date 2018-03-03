@@ -30,6 +30,9 @@ interface CardDao {
     @Query("SELECT * FROM " + GwentDatabase.ART_TABLE + " WHERE cardId=:cardId")
     fun getCardArt(cardId: String): Single<List<ArtEntity>>
 
+    @Query("SELECT * FROM " + GwentDatabase.ART_TABLE + "  WHERE cardId IN(:cardIds)")
+    fun getCardArt(cardIds: List<String>): Single<List<ArtEntity>>
+
     @Query("SELECT * FROM " + GwentDatabase.ART_TABLE)
     fun getCardArt(): Single<List<ArtEntity>>
 
