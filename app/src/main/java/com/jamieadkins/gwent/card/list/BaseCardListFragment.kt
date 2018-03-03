@@ -16,6 +16,9 @@ import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.model.GwentCard
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 /**
  * UI fragment that shows a list of the users decks.
@@ -49,6 +52,11 @@ abstract class BaseCardListFragment<T : CardsContract.View> : BaseFragment<T>(),
 
                 emptyView.visibility = View.GONE
                 mRecyclerView.visibility = View.VISIBLE
+
+                // Have to post this since we have to wait for diff util to finish.
+                mRecyclerView.post({
+                    mRecyclerView.scrollToPosition(0)
+                })
             }
         } else {
             emptyView.visibility = View.VISIBLE
