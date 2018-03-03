@@ -17,6 +17,7 @@ import com.jamieadkins.gwent.data.FirebaseUtils;
 import com.jamieadkins.gwent.data.card.Type;
 import com.jamieadkins.gwent.data.card.CardsInteractor;
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent;
+import com.jamieadkins.gwent.data.repository.card.CardRepository;
 import com.jamieadkins.gwent.model.CardColour;
 import com.jamieadkins.gwent.model.GwentCard;
 import com.jamieadkins.gwent.model.GwentFaction;
@@ -52,7 +53,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
     private final DatabaseReference mPublicReference;
     private DatabaseReference mUserReference;
 
-    private CardsInteractor cardsInteractor;
+    private CardRepository cardRepository;
 
     private List<ChildEventListener> mDeckListListeners = new ArrayList<>();
     private List<ValueEventListener> mDeckDetailListeners = new ArrayList<>();
@@ -77,8 +78,8 @@ public class DecksInteractorFirebase implements DecksInteractor {
         return deck;
     }
 
-    public void setCardsInteractor(CardsInteractor cardsInteractor) {
-        this.cardsInteractor = cardsInteractor;
+    public void setCardRepository(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
     }
 
     private Observable<RxDatabaseEvent<Deck>> getDecks(Query query) {
@@ -106,7 +107,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildAdded(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(cardsInteractor)
+                                deck.evaluateDeck(cardRepository)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -130,7 +131,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildChanged(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(cardsInteractor)
+                                deck.evaluateDeck(cardRepository)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -154,7 +155,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildRemoved(DataSnapshot deckSnapshot) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(cardsInteractor)
+                                deck.evaluateDeck(cardRepository)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -173,7 +174,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                             public void onChildMoved(DataSnapshot deckSnapshot, String s) {
                                 final Deck deck = checkLegacy(deckSnapshot);
 
-                                deck.evaluateDeck(cardsInteractor)
+                                deck.evaluateDeck(cardRepository)
                                         .subscribe(
                                                 new BaseCompletableObserver() {
                                                     @Override
@@ -358,7 +359,7 @@ public class DecksInteractorFirebase implements DecksInteractor {
                                 }
 
                                 if (evaluate) {
-                                    deck.evaluateDeck(cardsInteractor)
+                                    deck.evaluateDeck(cardRepository)
                                             .subscribeOn(Schedulers.io())
                                             .subscribe(
                                                     new BaseCompletableObserver() {

@@ -30,7 +30,7 @@ object Injection : Injector {
 
     override fun provideDecksInteractor(context: Context): DecksInteractor {
         val interactor = DecksInteractorFirebase()
-        interactor.setCardsInteractor(provideCardsInteractor(context))
+        interactor.setCardRepository(provideCardRepository())
         return interactor
     }
 

@@ -4,6 +4,7 @@ import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.DeckEvent
@@ -13,6 +14,7 @@ import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.model.CardColour
 import com.jamieadkins.gwent.model.GwentFaction
 import com.jamieadkins.gwent.model.GwentCard
@@ -24,7 +26,7 @@ import com.jamieadkins.gwent.model.GwentCard
 class UserDeckDetailsPresenter(private val deckId: String,
                                private val faction: com.jamieadkins.gwent.model.GwentFaction,
                                private val decksInteractor: DecksInteractor,
-                               private val cardsInteractor: CardsInteractor,
+                               private val cardRepository: CardRepository,
                                schedulerProvider: BaseSchedulerProvider) :
         BaseFilterPresenter<UserDeckDetailsContract.View>(schedulerProvider), UserDeckDetailsContract.Presenter {
 
@@ -55,7 +57,7 @@ class UserDeckDetailsPresenter(private val deckId: String,
                         val deck = event.value
                         view?.onDeckUpdated(deck)
 
-                        cardsInteractor.getCard(deck.leaderId)
+                        cardRepository.getCard(deck.leaderId)
                                 .applySchedulers()
                                 .subscribe { leader ->
                                     view?.onLeaderChanged(leader)
@@ -73,7 +75,7 @@ class UserDeckDetailsPresenter(private val deckId: String,
                     override fun onNext(event: RxDatabaseEvent<Int>) {
                         when (event.eventType) {
                             RxDatabaseEvent.EventType.ADDED -> {
-                                cardsInteractor.getCard(event.key)
+                                cardRepository.getCard(event.key)
                                         .applySchedulers()
                                         .subscribe { card ->
                                             view?.onCardAdded(card)
@@ -105,10 +107,10 @@ class UserDeckDetailsPresenter(private val deckId: String,
         cardFilter.colourFilter.put(CardColour.SILVER, false)
         cardFilter.colourFilter.put(CardColour.GOLD, false)
 
-        cardsInteractor.getCards(cardFilter)
+        cardRepository.getCards(cardFilter)
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSubscriber<Collection<GwentCard>>() {
-                    override fun onNext(result: Collection<GwentCard>) {
+                .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
+                    override fun onSuccess(result: Collection<GwentCard>) {
                         view?.showPotentialLeaders(result.toList())
                     }
                 })

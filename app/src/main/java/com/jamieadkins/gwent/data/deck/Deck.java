@@ -3,11 +3,13 @@ package com.jamieadkins.gwent.data.deck;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
+import com.jamieadkins.gwent.base.BaseDisposableSingle;
 import com.jamieadkins.gwent.base.BaseDisposableSubscriber;
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter;
 import com.jamieadkins.gwent.data.card.CardDetails;
 import com.jamieadkins.gwent.data.card.CardsInteractor;
 import com.jamieadkins.gwent.data.card.Type;
+import com.jamieadkins.gwent.data.repository.card.CardRepository;
 import com.jamieadkins.gwent.model.CardColour;
 import com.jamieadkins.gwent.model.GwentCard;
 
@@ -157,7 +159,7 @@ public class Deck implements RecyclerViewItem {
     }
 
     @Exclude
-    public Completable evaluateDeck(final CardsInteractor cardsInteractor) {
+    public Completable evaluateDeck(final CardRepository cardRepository) {
         return Completable.defer(new Callable<CompletableSource>() {
             @Override
             public CompletableSource call() throws Exception {
@@ -168,19 +170,14 @@ public class Deck implements RecyclerViewItem {
                             cards = new HashMap<String, GwentCard>();
                         }
 
-                        cardsInteractor.getCard(leaderId)
+                        cardRepository.getCard(leaderId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseDisposableSubscriber<GwentCard>() {
+                                new BaseDisposableSingle<GwentCard>() {
                                     @Override
-                                    public void onNext(GwentCard cardDetails) {
+                                    public void onSuccess(GwentCard cardDetails) {
                                         leader = cardDetails;
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                        super.onComplete();
                                         if (cards.keySet().size() == cardCount.keySet().size()) {
                                             emitter.onComplete();
                                         }
@@ -196,21 +193,16 @@ public class Deck implements RecyclerViewItem {
                             cardIds.add(cardId);
                         }
 
-                        cardsInteractor.getCards(null, cardIds)
+                        cardRepository.getCards(cardIds)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
-                                new BaseDisposableSubscriber<Collection<GwentCard>>() {
+                                new BaseDisposableSingle<Collection<GwentCard>>() {
                                     @Override
-                                    public void onNext(Collection<GwentCard> result) {
+                                    public void onSuccess(Collection<GwentCard> result) {
                                         for (GwentCard card : result) {
                                             cards.put(card.getId(), card);
                                         }
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                        super.onComplete();
 
                                         if (leader != null) {
                                             emitter.onComplete();
