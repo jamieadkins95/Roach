@@ -21,8 +21,12 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: Bas
     open fun onLoadData() {
         view?.setLoadingIndicator(true)
 
-        cardRepository.getCards(cardFilter)
-                .applySchedulers()
+        val source = if (!searchQuery.isNullOrEmpty()) {
+            cardRepository.searchCards(searchQuery!!)
+        } else {
+            cardRepository.getCards(cardFilter)
+        }
+        source.applySchedulers()
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
                     override fun onSuccess(t: Collection<GwentCard>) {
                         onNewCardList(t)
