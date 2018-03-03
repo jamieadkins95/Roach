@@ -7,8 +7,10 @@ import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 
 object CardSearch {
+
+    private const val MIN_SCORE = 50
+
     fun searchCards(query: String, cardList: List<GwentCard>): List<String> {
-        val MIN_SCORE = 50
         val searchResults = ArrayList<CardSearchResult>()
         val cardIds = ArrayList<String>()
         var maxScore = 0
