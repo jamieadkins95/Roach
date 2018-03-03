@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.CardSearch
+import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
@@ -9,9 +10,7 @@ import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.model.GwentCard
 import io.reactivex.Single
 
-class CardRepositoryImpl : CardRepository {
-
-    private val database = GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext)
+class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
         return database.cardDao().getCards()

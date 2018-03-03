@@ -22,6 +22,7 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jamieadkins.gwent.database.GwentDatabase
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.BufferedReader
@@ -29,7 +30,7 @@ import java.io.FileReader
 import java.lang.reflect.Type
 
 
-class UpdateRepositoryImpl : UpdateRepository {
+class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateRepository {
 
     private companion object {
         const val CARD_FILE_NAME = "cards"
@@ -38,7 +39,6 @@ class UpdateRepositoryImpl : UpdateRepository {
     }
 
     private val storage = FirebaseStorage.getInstance()
-    private val database = GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext)
     val gson = Gson()
     private val cardsApi = Retrofit.Builder()
             .baseUrl(Constants.CARDS_API_BASE_URL)
