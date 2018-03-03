@@ -5,11 +5,9 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
-import com.jamieadkins.gwent.base.BaseDisposableSubscriber
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.DeckEvent
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.deck.Deck

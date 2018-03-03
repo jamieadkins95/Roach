@@ -7,7 +7,6 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.CollectionEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
-import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.collection.CollectionInteractor
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 import com.jamieadkins.gwent.data.repository.card.CardRepository

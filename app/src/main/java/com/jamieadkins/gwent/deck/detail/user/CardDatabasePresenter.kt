@@ -4,7 +4,6 @@ import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.data.card.CardsInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
 import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
