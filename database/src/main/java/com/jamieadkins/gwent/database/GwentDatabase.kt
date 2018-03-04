@@ -6,7 +6,7 @@ import android.arch.persistence.room.TypeConverters
 import com.jamieadkins.gwent.database.entity.*
 
 @Database(entities = [CardEntity::class, ArtEntity::class, PatchVersionEntity::class,
-    DeckEntity::class, DeckCardEntity::class], version = 1)
+    DeckEntity::class, DeckCardEntity::class, CollectionEntity::class], version = 1)
 @TypeConverters(DatabaseConverters::class)
 abstract class GwentDatabase : RoomDatabase() {
 
@@ -17,6 +17,7 @@ abstract class GwentDatabase : RoomDatabase() {
         const val PATCH_VERSION_TABLE = "patch"
         const val DECK_TABLE = "decks"
         const val DECK_CARD_TABLE = "deck_cards"
+        const val COLLECTION_TABLE = "collection"
     }
 
     abstract fun cardDao(): CardDao
@@ -26,4 +27,6 @@ abstract class GwentDatabase : RoomDatabase() {
     abstract fun deckDao(): DeckDao
 
     abstract fun deckCardDao(): DeckCardDao
+
+    abstract fun collectionDao(): CollectionDao
 }
