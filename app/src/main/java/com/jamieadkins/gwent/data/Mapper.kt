@@ -48,7 +48,7 @@ object Mapper {
         return cards
     }
 
-    fun factionIdToFaction(factionId: String): GwentFaction? {
+    fun factionIdToFaction(factionId: String): GwentFaction {
         return when (factionId) {
             Faction.MONSTERS_ID -> GwentFaction.MONSTER
             Faction.NORTHERN_REALMS_ID -> GwentFaction.NORTHERN_REALMS
@@ -56,7 +56,7 @@ object Mapper {
             Faction.SKELLIGE_ID -> GwentFaction.SKELLIGE
             Faction.NILFGAARD_ID -> GwentFaction.NILFGAARD
             Faction.NEUTRAL_ID -> GwentFaction.NEUTRAL
-            else -> null
+            else -> GwentFaction.NEUTRAL
         }
     }
 

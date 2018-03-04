@@ -5,19 +5,56 @@ import com.jamieadkins.gwent.data.repository.card.CardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
-import com.jamieadkins.gwent.model.CardColour
-import com.jamieadkins.gwent.model.GwentDeck
-import com.jamieadkins.gwent.model.GwentDeckSummary
-import com.jamieadkins.gwent.model.GwentFaction
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import com.jamieadkins.gwent.model.*
+import io.reactivex.*
+import io.reactivex.functions.BiFunction
 
 class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
-    override fun getDecks(): Single<Collection<GwentDeck>> {
+    override fun getDecks(): Single<List<GwentDeckSummary>> {
         return database.deckDao().getDecks()
-                .map { DeckMapper.deckEntityListToGwentDeckList(it) }
+                .map { DeckMapper.deckEntityListToGwentDeckList(it).toList() }
+                .flatMap {
+                    Observable.fromIterable(it)
+                            .flatMap { deck ->
+                                getLeader(deck.id)
+                                        .zipWith(getCardCounts(deck.id).toMaybe(),
+                                                BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
+                                                    -> GwentDeckSummary(deck, leader, cardCounts) })
+                                        .toObservable()
+                            }
+                            .toList()
+                }
+    }
+
+    override fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary> {
+        return database.deckDao().getDeckUpdates(deckId)
+                .map { DeckMapper.deckEntityToGwentDeck(it) }
+                .flatMap {
+                    getLeader(it.id)
+                            .zipWith(getCardCounts(it.id).toMaybe(),
+                                    BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
+                                        -> GwentDeckSummary(it, leader, cardCounts) })
+                            .toFlowable()
+                }
+    }
+
+    private fun getLeader(deckId: String): Maybe<GwentCard> {
+        return database.deckDao().getDeck(deckId)
+                .flatMapMaybe {
+                    if (it.leaderId != null) {
+                        database.cardDao().getCard(it.leaderId!!)
+                                .map { CardMapper.cardEntityToGwentCard(it) }
+                                .toMaybe()
+                    } else {
+                        Maybe.empty<GwentCard>()
+                    }
+                }
+    }
+
+    private fun getCardCounts(deckId: String): Single<GwentDeckCardCounts> {
+        return getDeckCardCounts(deckId)
+                .first(GwentDeckCardCounts(0, 0, 0))
     }
 
     override fun getDeckUpdates(deckId: String): Flowable<GwentDeck> {
@@ -30,7 +67,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 .map { DeckMapper.deckEntityToGwentDeck(it) }
     }
 
-    override fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary> {
+    override fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts> {
         return database.deckCardDao().getCardCounts(deckId)
                 // Get all card ids.
                 .map { it.map { it.cardId } }
@@ -38,7 +75,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 .flatMapSingle { database.cardDao().getCards(it) }
                 // Map entities to GwentCards.
                 .map { CardMapper.gwentCardListFromCardEntityList(it) }
-                // Map to GwentDeckSummary
+                // Map to GwentDeckCardCounts
                 .map { cards ->
                     var bronzeCount = 0
                     var silverCount = 0
@@ -50,7 +87,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                             CardColour.GOLD -> goldCount++
                         }
                     }
-                    GwentDeckSummary(bronzeCount, silverCount, goldCount)
+                    GwentDeckCardCounts(bronzeCount, silverCount, goldCount)
                 }
     }
 

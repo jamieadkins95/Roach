@@ -14,13 +14,10 @@ object DeckMapper {
     }
 
     fun deckEntityToGwentDeck(deckEntity: DeckEntity): GwentDeck {
-        val deck = GwentDeck()
-        deck.id = deckEntity.id.toString()
-        deck.name = deckEntity.name
-        deck.leaderId = deckEntity.leaderId
-        deck.cards = deckEntity.cards
-
-        deck.faction = Mapper.factionIdToFaction(deckEntity.factionId)
+        val deck = GwentDeck(deckEntity.id.toString(),
+                deckEntity.name,
+                Mapper.factionIdToFaction(deckEntity.factionId),
+                deckEntity.leaderId)
         return deck
     }
 }

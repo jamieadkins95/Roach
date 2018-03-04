@@ -10,7 +10,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
-import com.jamieadkins.gwent.deck.list.DeckBriefSummaryView;
+import com.jamieadkins.gwent.deck.list.DeckSummaryView;
 import com.jamieadkins.gwent.model.GwentFaction;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     protected GwentFaction mFaction;
     private boolean mIsPublicDeck;
 
-    private DeckBriefSummaryView mSummaryView;
+    private DeckSummaryView mSummaryView;
     private BasePresenter<DeckDetailsContract.DeckSummaryView> presenter;
 
     protected Fragment fragment;
@@ -86,7 +86,6 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     @Override
     public void onDeckUpdated(@NotNull Deck deck) {
         setTitle(deck.getName());
-        mSummaryView.setDeck(deck);
     }
 
     @Override

@@ -5,13 +5,14 @@ import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.data.collection.CollectionInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.data.repository.deck.DeckRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 
 interface Injector {
 
     fun provideCollectionInteractor(): CollectionInteractor
 
-    fun provideDecksInteractor(context: Context): DecksInteractor
+    fun provideDeckRepository(): DeckRepository
 
     fun provideCardRepository(): CardRepository
 

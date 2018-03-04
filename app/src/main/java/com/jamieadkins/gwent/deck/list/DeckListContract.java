@@ -4,8 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.jamieadkins.commonutils.mvp2.BaseListView;
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.data.deck.Deck;
-import com.jamieadkins.gwent.model.GwentFaction;
+import com.jamieadkins.gwent.model.GwentDeckSummary;
+
+import java.util.Collection;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -13,11 +14,9 @@ import com.jamieadkins.gwent.model.GwentFaction;
 
 public interface DeckListContract {
     interface View extends BaseListView {
-        void showDeck(@NonNull Deck deck);
+        void showDecks(@NonNull Collection<GwentDeckSummary> decks);
 
-        void showDeckDetails(@NonNull String deckId, @NonNull GwentFaction faction);
-
-        void removeDeck(@NonNull Deck deck);
+        void showDeckDetails(@NonNull String deckId);
     }
 
     interface Presenter extends CardsContract.Presenter {

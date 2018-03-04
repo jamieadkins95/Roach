@@ -10,20 +10,16 @@ import android.widget.TextView;
 import com.jamieadkins.commonutils.ui.BaseViewHolder;
 import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.Mapper;
-import com.jamieadkins.gwent.data.deck.Deck;
-import com.jamieadkins.gwent.data.card.Faction;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
-
-import kotlin.NotImplementedError;
+import com.jamieadkins.gwent.model.GwentDeckSummary;
 
 /**
  * Holds much more detail about a card.
  */
 
 public class DeckViewHolder extends BaseViewHolder {
-    private Deck mDeck;
+    private GwentDeckSummary mDeck;
     private final TextView mDeckName;
     private final TextView mDeckLeader;
     private final DeckSummaryView mDeckSummary;
@@ -45,44 +41,38 @@ public class DeckViewHolder extends BaseViewHolder {
     @Override
     public void bindItem(RecyclerViewItem item) {
         super.bindItem(item);
-        mDeck = (Deck) item;
+        mDeck = (GwentDeckSummary) item;
 
         getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
-                if (mDeck.isPublicDeck()) {
-                    throw new NotImplementedError();
-                } else {
-                    intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
-                }
-                intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, mDeck.getId());
-                intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, Mapper.INSTANCE.factionIdToFaction(mDeck.getFactionId()));
-                intent.putExtra(DeckDetailActivity.EXTRA_IS_PUBLIC_DECK, mDeck.isPublicDeck());
+                Intent intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
+                intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, mDeck.getDeck().getId());
+                intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, mDeck.getDeck().getFaction());
                 getView().getContext().startActivity(intent);
             }
         });
 
-        mDeckName.setText(mDeck.getName());
+        mDeckName.setText(mDeck.getDeck().getName());
         mDeckLeader.setText(mDeck.getLeader().getName().get(mLocale));
 
-        mDeckSummary.setDeck(mDeck);
+        mDeckSummary.setDeck(mDeck.getCardCounts());
 
         int color;
-        switch (mDeck.getFactionId()) {
-            case Faction.MONSTERS_ID:
+        switch (mDeck.getDeck().getFaction()) {
+            case MONSTER:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.monsters);
                 break;
-            case Faction.NORTHERN_REALMS_ID:
+            case NORTHERN_REALMS:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.northernRealms);
                 break;
-            case Faction.SCOIATAEL_ID:
+            case SCOIATAEL:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.scoiatael);
                 break;
-            case Faction.SKELLIGE_ID:
+            case SKELLIGE:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.skellige);
                 break;
-            case Faction.NILFGAARD_ID:
+            case NILFGAARD:
                 color = ContextCompat.getColor(mDeckLeader.getContext(), R.color.nilfgaard);
                 break;
             default:

@@ -2,20 +2,20 @@ package com.jamieadkins.gwent.deck.list
 
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
-import com.jamieadkins.commonutils.mvp2.applySchedulers
 import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.data.deck.Deck
-import com.jamieadkins.gwent.data.deck.DecksInteractor
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.jamieadkins.gwent.data.repository.deck.DeckRepository
+import com.jamieadkins.gwent.model.GwentDeckSummary
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the
  * UI as required.
  */
-class DeckListPresenter(private val decksInteractor: DecksInteractor, schedulerProvider: BaseSchedulerProvider) :
+class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
+                        private val deckRepository: DeckRepository) :
         BaseFilterPresenter<DeckListContract.View>(schedulerProvider), DeckListContract.Presenter {
 
     override fun onAttach(newView: DeckListContract.View) {
@@ -23,34 +23,25 @@ class DeckListPresenter(private val decksInteractor: DecksInteractor, schedulerP
         onRefresh()
 
         RxBus.register(NewDeckRequest::class.java)
-                .subscribeWith(object : BaseDisposableObserver<NewDeckRequest>() {
-                    override fun onNext(newDeckRequest: NewDeckRequest) {
-                        val id = decksInteractor.createNewDeck(newDeckRequest.data.name, newDeckRequest.data.faction)
-                        view?.showDeckDetails(id, newDeckRequest.data.faction)
+                .switchMapSingle { deckRepository.createNewDeck(it.data.name, it.data.faction) }
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribeWith(object : BaseDisposableObserver<String>() {
+                    override fun onNext(newDeckId: String) {
+                        view?.showDeckDetails(newDeckId)
                     }
                 })
                 .addToComposite(disposable)
     }
 
     override fun onRefresh() {
-        decksInteractor.userDecks
-                .applySchedulers()
-                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Deck>>() {
-                    override fun onNext(event: RxDatabaseEvent<Deck>) {
-                        when (event.eventType) {
-                            RxDatabaseEvent.EventType.ADDED,
-                            RxDatabaseEvent.EventType.CHANGED -> {
-                                view?.showDeck(event.value)
-                            }
-                            RxDatabaseEvent.EventType.REMOVED -> {
-                                view?.removeDeck(event.value)
-                            }
-                            RxDatabaseEvent.EventType.COMPLETE -> {
-                                view?.setLoadingIndicator(false)
-                            }
-                        }
+        deckRepository.getDecks()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribeWith(object : BaseDisposableSingle<Collection<GwentDeckSummary>>() {
+                    override fun onSuccess(decks: Collection<GwentDeckSummary>) {
+                        view?.showDecks(decks)
                     }
-
                 })
                 .addToComposite(disposable)
     }

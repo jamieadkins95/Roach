@@ -3,12 +3,12 @@ package com.jamieadkins.gwent.model
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
 
-class GwentDeck : RecyclerViewItem {
+data class GwentDeck(
+        val id: String,
+        var name: String? = null,
+        var faction: GwentFaction,
+        var leaderId: String? = null) : RecyclerViewItem {
 
-    var id: String? = null
-    var name: String? = null
-    var faction: GwentFaction? = null
-    var leaderId: String? = null
     var cards: Map<String, Int> = hashMapOf()
 
     override fun equals(other: Any?): Boolean {

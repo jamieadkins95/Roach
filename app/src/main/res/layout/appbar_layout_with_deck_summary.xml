@@ -13,7 +13,7 @@
         app:layout_scrollFlags="scroll|enterAlways|snap"
         app:popupTheme="@style/Theme.Gwent.PopupOverlay" />
 
-    <com.jamieadkins.gwent.deck.list.DeckBriefSummaryView
+    <com.jamieadkins.gwent.deck.list.DeckSummaryView
         android:id="@+id/deck_summary_brief"
         android:layout_width="match_parent"
         android:paddingTop="4dp"

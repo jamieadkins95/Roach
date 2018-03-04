@@ -9,6 +9,8 @@ import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractorFirebase
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.card.CardRepositoryImpl
+import com.jamieadkins.gwent.data.repository.deck.DeckRepository
+import com.jamieadkins.gwent.data.repository.deck.UserDeckRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepositoryImpl
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
@@ -22,10 +24,8 @@ object Injection : Injector {
         return CollectionInteractorFirebase()
     }
 
-    override fun provideDecksInteractor(context: Context): DecksInteractor {
-        val interactor = DecksInteractorFirebase()
-        interactor.setCardRepository(provideCardRepository())
-        return interactor
+    override fun provideDeckRepository(): DeckRepository {
+        return UserDeckRepository(database)
     }
 
     override fun provideCardRepository(): CardRepository {
