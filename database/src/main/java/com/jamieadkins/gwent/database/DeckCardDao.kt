@@ -26,5 +26,5 @@ interface DeckCardDao {
     fun getCardCount(deckId: String, cardId: String): Maybe<DeckCardEntity>
 
     @Query("SELECT * FROM ${GwentDatabase.DECK_CARD_TABLE} WHERE deckId = :deckId")
-    fun getCardCountUpdates(deckId: String): Flowable<List<DeckCardEntity>>
+    fun getCardCounts(deckId: String): Flowable<List<DeckCardEntity>>
 }

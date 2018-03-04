@@ -24,6 +24,6 @@ class GwentDeck : RecyclerViewItem {
     }
 
     override fun getItemType(): Int {
-        return GwentRecyclerViewAdapter.TYPE_DECK;
+        return GwentRecyclerViewAdapter.TYPE_DECK
     }
 }
