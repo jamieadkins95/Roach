@@ -8,7 +8,7 @@ import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.data.repository.deck.DeckRepository
-import com.jamieadkins.gwent.model.GwentDeckSummary
+import com.jamieadkins.gwent.model.deck.GwentDeckSummary
 
 /**
  * Listens to user actions from the UI, retrieves the data and updates the

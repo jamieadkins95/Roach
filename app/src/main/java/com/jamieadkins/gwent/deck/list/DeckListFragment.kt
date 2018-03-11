@@ -14,7 +14,7 @@ import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity
-import com.jamieadkins.gwent.model.GwentDeckSummary
+import com.jamieadkins.gwent.model.deck.GwentDeckSummary
 
 /**
  * UI fragment that shows a list of the users decks.

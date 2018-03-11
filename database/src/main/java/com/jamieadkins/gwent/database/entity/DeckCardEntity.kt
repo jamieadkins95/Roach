@@ -20,5 +20,5 @@ data class DeckCardEntity(
         val cardId: String,
         val count: Int = 0) {
 
-    @PrimaryKey(autoGenerate = true) val id: Long? = null
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
 }

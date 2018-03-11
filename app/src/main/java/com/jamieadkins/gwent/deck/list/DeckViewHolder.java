@@ -12,7 +12,7 @@ import com.jamieadkins.commonutils.ui.RecyclerViewItem;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.deck.detail.DeckDetailActivity;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailActivity;
-import com.jamieadkins.gwent.model.GwentDeckSummary;
+import com.jamieadkins.gwent.model.deck.GwentDeckSummary;
 
 /**
  * Holds much more detail about a card.

@@ -12,5 +12,5 @@ data class DeckEntity(
         val leaderId: String? = null,
         val deleted: Boolean = false) {
 
-    @PrimaryKey(autoGenerate = true) val id: Long? = null
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
 }

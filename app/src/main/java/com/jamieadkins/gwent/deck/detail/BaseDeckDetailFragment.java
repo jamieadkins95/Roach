@@ -14,8 +14,12 @@ import com.jamieadkins.gwent.base.BaseFragment;
 import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.model.GwentFaction;
 import com.jamieadkins.gwent.model.GwentCard;
+import com.jamieadkins.gwent.model.deck.GwentDeckCard;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,37 +66,14 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     protected abstract int getLayoutId();
 
     @Override
+    public void showCardsInDeck(@NotNull List<GwentDeckCard> cards) {
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
         outState.putSerializable(DeckDetailActivity.EXTRA_FACTION_ID, mFaction);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void updateCardCount(String cardId, int count) {
-        getRecyclerViewAdapter().updateCardCount(cardId, count);
-        if (count == 0) {
-            getRecyclerViewAdapter().removeCard(cardId);
-        }
-    }
-
-    @Override
-    public void onCardAdded(GwentCard card) {
-        switch (card.getColour()) {
-            case BRONZE:
-                getRecyclerViewAdapter().addItem(card);
-                break;
-            case SILVER:
-                int bronzeIndex = getRecyclerViewAdapter().getItems()
-                        .indexOf(mRowHeaders.get(getString(R.string.bronze)));
-                getRecyclerViewAdapter().addItem(bronzeIndex, card);
-                break;
-            case GOLD:
-                int silverIndex = getRecyclerViewAdapter().getItems()
-                        .indexOf(mRowHeaders.get(getString(R.string.silver)));
-                getRecyclerViewAdapter().addItem(silverIndex, card);
-                break;
-        }
     }
 
     @Override
@@ -104,10 +85,5 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
             getRecyclerViewAdapter().removeItemAt(leaderIndex);
         }
         getRecyclerViewAdapter().addItem(leaderIndex, newLeader);
-    }
-
-    @Override
-    public void onDeckUpdated(Deck deck) {
-        mDeck = deck;
     }
 }

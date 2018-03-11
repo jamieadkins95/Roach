@@ -1,7 +1,8 @@
-package com.jamieadkins.gwent.model
+package com.jamieadkins.gwent.model.deck
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
+import com.jamieadkins.gwent.model.GwentFaction
 
 data class GwentDeck(
         val id: String,

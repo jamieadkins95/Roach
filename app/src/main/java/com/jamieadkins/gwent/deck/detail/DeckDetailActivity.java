@@ -8,9 +8,9 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter;
 import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.deck.detail.user.UserDeckDetailFragment;
 import com.jamieadkins.gwent.deck.list.DeckSummaryView;
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts;
 import com.jamieadkins.gwent.model.GwentFaction;
 
 import org.jetbrains.annotations.NotNull;
@@ -73,7 +73,9 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
                     .commit();
         }
 
-        presenter = new DeckSummaryPresenter(mDeckId, Injection.INSTANCE.provideDecksInteractor(this),
+        presenter = new DeckSummaryPresenter(
+                mDeckId,
+                Injection.INSTANCE.provideDeckRepository(),
                 Injection.INSTANCE.provideSchedulerProvider());
     }
 
@@ -84,8 +86,8 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     }
 
     @Override
-    public void onDeckUpdated(@NotNull Deck deck) {
-        setTitle(deck.getName());
+    public void onDeckUpdated(@NotNull GwentDeckCardCounts deck) {
+        mSummaryView.setDeck(deck);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.data.repository.deck
 
 import com.jamieadkins.gwent.data.Mapper
 import com.jamieadkins.gwent.database.entity.DeckEntity
-import com.jamieadkins.gwent.model.GwentDeck
+import com.jamieadkins.gwent.model.deck.GwentDeck
 
 object DeckMapper {
     fun deckEntityListToGwentDeckList(entityList: Collection<DeckEntity>): Collection<GwentDeck> {

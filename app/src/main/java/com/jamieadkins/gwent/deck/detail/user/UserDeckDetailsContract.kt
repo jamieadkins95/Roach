@@ -14,8 +14,6 @@ interface UserDeckDetailsContract {
 
     interface Presenter : DeckDetailsContract.Presenter {
 
-        fun publishDeck()
-
         fun changeLeader(leaderId: String)
 
         fun renameDeck(name: String)

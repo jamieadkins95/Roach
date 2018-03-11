@@ -1,8 +1,8 @@
 package com.jamieadkins.gwent.data.repository.deck
 
-import com.jamieadkins.gwent.model.GwentDeck
-import com.jamieadkins.gwent.model.GwentDeckSummary
-import com.jamieadkins.gwent.model.GwentDeckCardCounts
+import com.jamieadkins.gwent.model.deck.GwentDeck
+import com.jamieadkins.gwent.model.deck.GwentDeckSummary
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
 import io.reactivex.Flowable
 
 import io.reactivex.Single

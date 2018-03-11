@@ -16,5 +16,5 @@ data class CollectionEntity(
         val variationId: String = "${cardId}00",
         val count: Int = 0) {
 
-    @PrimaryKey(autoGenerate = true) val id: Long? = null
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
 }

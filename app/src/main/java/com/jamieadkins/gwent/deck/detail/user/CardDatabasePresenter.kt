@@ -1,13 +1,9 @@
 package com.jamieadkins.gwent.deck.detail.user
 
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.commonutils.mvp2.addToComposite
-import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.card.list.BaseCardsPresenter
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
 import com.jamieadkins.gwent.data.repository.card.CardRepository
+import com.jamieadkins.gwent.data.repository.deck.DeckRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 import com.jamieadkins.gwent.deck.detail.DeckBuilderContract
 
@@ -16,7 +12,7 @@ import com.jamieadkins.gwent.deck.detail.DeckBuilderContract
  * UI as required.
  */
 class CardDatabasePresenter(private val deckId: String,
-                            private val decksInteractor: DecksInteractor,
+                            private val deckRepository: DeckRepository,
                             schedulerProvider: BaseSchedulerProvider,
                             cardRepository: CardRepository,
                             updateRepository: UpdateRepository) :
@@ -24,29 +20,5 @@ class CardDatabasePresenter(private val deckId: String,
 
     override fun onAttach(newView: DeckBuilderContract.CardDatabaseView) {
         super.onAttach(newView)
-        subscribeToCardUpdates()
-    }
-
-    private fun subscribeToCardUpdates() {
-        decksInteractor.subscribeToCardCountUpdates(deckId)
-                .applySchedulers()
-                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Int>>() {
-                    override fun onNext(event: RxDatabaseEvent<Int>) {
-                        val count = if (event.eventType == RxDatabaseEvent.EventType.REMOVED) 0 else event.value
-                        view?.updateCardCount(event.key, count)
-                    }
-
-                })
-                .addToComposite(disposable)
-
-        decksInteractor.getDeck(deckId, false)
-                .applySchedulers()
-                .subscribe()
-                .addToComposite(disposable)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        decksInteractor.stopData()
     }
 }

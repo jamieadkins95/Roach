@@ -33,7 +33,7 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
             val newPresenter = UserDeckDetailsPresenter(
                     mDeckId,
                     mFaction,
-                    Injection.provideDecksInteractor(it),
+                    Injection.provideDeckRepository(),
                     Injection.provideCardRepository(),
                     Injection.provideSchedulerProvider())
             deckDetailsPresenter = newPresenter
@@ -83,7 +83,7 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (mPotentialLeaders != null && mPotentialLeaders!!.size >= 3) {
+        if (mPotentialLeaders?.isEmpty() == false) {
 
             val key = getString(R.string.pref_locale_key)
             val locale = PreferenceManager.getDefaultSharedPreferences(context)

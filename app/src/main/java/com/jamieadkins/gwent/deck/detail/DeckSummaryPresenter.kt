@@ -3,23 +3,23 @@ package com.jamieadkins.gwent.deck.detail
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
-import com.jamieadkins.commonutils.mvp2.applySchedulers
-import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.data.deck.DecksInteractor
-import com.jamieadkins.gwent.data.deck.Deck
-import com.jamieadkins.gwent.data.interactor.RxDatabaseEvent
+import com.jamieadkins.gwent.base.BaseDisposableSubscriber
+import com.jamieadkins.gwent.data.repository.deck.DeckRepository
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
 
-class DeckSummaryPresenter(private val deckId: String, private val decksInteractor: DecksInteractor, schedulerProvider: BaseSchedulerProvider) :
+class DeckSummaryPresenter(private val deckId: String,
+                           private val deckRepository: DeckRepository,
+                           schedulerProvider: BaseSchedulerProvider) :
         BasePresenter<DeckDetailsContract.DeckSummaryView>(schedulerProvider), DeckDetailsContract.Presenter {
 
     override fun onAttach(newView: DeckDetailsContract.DeckSummaryView) {
         super.onAttach(newView)
 
-        decksInteractor.getDeck(deckId, false, true)
-                .applySchedulers()
-                .subscribeWith(object : BaseDisposableObserver<RxDatabaseEvent<Deck>>() {
-                    override fun onNext(event: RxDatabaseEvent<Deck>) {
-                        val deck = event.value
+        deckRepository.getDeckCardCounts(deckId)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribeWith(object : BaseDisposableSubscriber<GwentDeckCardCounts>() {
+                    override fun onNext(deck: GwentDeckCardCounts) {
                         view?.onDeckUpdated(deck)
                     }
 

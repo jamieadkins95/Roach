@@ -1,22 +1,18 @@
 package com.jamieadkins.gwent.deck.detail
 
-import com.jamieadkins.gwent.data.card.CardDetails
-import com.jamieadkins.gwent.data.deck.Deck
 import com.jamieadkins.gwent.model.GwentCard
-
-/**
- * Specifies the contract between the view and the presenter.
- */
+import com.jamieadkins.gwent.model.deck.GwentDeckCard
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
 
 interface DeckDetailsContract {
-    interface DeckDetailsView : DeckSummaryView, DeckBuilderContract.View {
-        fun onCardAdded(card: GwentCard)
-
+    interface DeckDetailsView : DeckBuilderContract.View {
         fun onLeaderChanged(newLeader: GwentCard)
+
+        fun showCardsInDeck(cards: List<GwentDeckCard>)
     }
 
     interface DeckSummaryView {
-        fun onDeckUpdated(deck: Deck)
+        fun onDeckUpdated(cardCounts: GwentDeckCardCounts)
     }
 
     interface Presenter : DeckBuilderContract.Presenter

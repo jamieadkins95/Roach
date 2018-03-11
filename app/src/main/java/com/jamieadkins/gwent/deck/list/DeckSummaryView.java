@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.deck.Deck;
-import com.jamieadkins.gwent.model.GwentDeckCardCounts;
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts;
 
 /**
  * Wrapper for our card detail view.

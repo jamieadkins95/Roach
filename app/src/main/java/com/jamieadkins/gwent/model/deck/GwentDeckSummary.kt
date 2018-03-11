@@ -1,7 +1,8 @@
-package com.jamieadkins.gwent.model
+package com.jamieadkins.gwent.model.deck
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
+import com.jamieadkins.gwent.model.GwentCard
 
 data class GwentDeckSummary(val deck: GwentDeck,
                             val leader: GwentCard,

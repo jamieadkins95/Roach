@@ -6,6 +6,9 @@ import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
 import com.jamieadkins.gwent.model.*
+import com.jamieadkins.gwent.model.deck.GwentDeck
+import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
+import com.jamieadkins.gwent.model.deck.GwentDeckSummary
 import io.reactivex.*
 import io.reactivex.functions.BiFunction
 
@@ -20,7 +23,9 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                                 getLeader(deck.id)
                                         .zipWith(getCardCounts(deck.id).toMaybe(),
                                                 BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
-                                                    -> GwentDeckSummary(deck, leader, cardCounts) })
+                                                    ->
+                                                    GwentDeckSummary(deck, leader, cardCounts)
+                                                })
                                         .toObservable()
                             }
                             .toList()
@@ -34,7 +39,9 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                     getLeader(it.id)
                             .zipWith(getCardCounts(it.id).toMaybe(),
                                     BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
-                                        -> GwentDeckSummary(it, leader, cardCounts) })
+                                        ->
+                                        GwentDeckSummary(it, leader, cardCounts)
+                                    })
                             .toFlowable()
                 }
     }
