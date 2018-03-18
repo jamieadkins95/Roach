@@ -23,8 +23,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                                 getLeader(deck.id)
                                         .zipWith(getCardCounts(deck.id).toMaybe(),
                                                 BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
-                                                    ->
-                                                    GwentDeckSummary(deck, leader, cardCounts)
+                                                    -> GwentDeckSummary(deck, leader, cardCounts)
                                                 })
                                         .toObservable()
                             }
@@ -39,8 +38,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                     getLeader(it.id)
                             .zipWith(getCardCounts(it.id).toMaybe(),
                                     BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
-                                        ->
-                                        GwentDeckSummary(it, leader, cardCounts)
+                                        -> GwentDeckSummary(it, leader, cardCounts)
                                     })
                             .toFlowable()
                 }
