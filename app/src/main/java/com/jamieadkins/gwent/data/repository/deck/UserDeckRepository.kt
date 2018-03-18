@@ -74,6 +74,11 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 .map { DeckMapper.deckEntityToGwentDeck(it) }
     }
 
+    override fun getDeckFaction(deckId: String): Single<GwentFaction> {
+        return database.deckDao().getDeck(deckId)
+                .map { Mapper.factionIdToFaction(it.factionId) }
+    }
+
     override fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts> {
         return database.deckCardDao().getCardCounts(deckId)
                 // Get all card ids.

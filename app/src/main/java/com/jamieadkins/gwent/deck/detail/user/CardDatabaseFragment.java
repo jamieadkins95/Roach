@@ -36,7 +36,6 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            faction = (GwentFaction) savedInstanceState.getSerializable(DeckDetailActivity.EXTRA_FACTION_ID);
             deckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
         }
         super.onCreate(savedInstanceState);
@@ -46,16 +45,15 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
     public void setupPresenter() {
         setPresenter(new CardDatabasePresenter(
                 deckId,
-                Injection.INSTANCE.provideDecksInteractor(getContext()),
+                Injection.INSTANCE.provideDeckRepository(),
                 Injection.INSTANCE.provideSchedulerProvider(),
                 Injection.INSTANCE.provideCardRepository(),
                 Injection.INSTANCE.provideUpdateRepository()));
     }
 
-    public static CardDatabaseFragment newInstance(String deckId, GwentFaction faction) {
+    public static CardDatabaseFragment newInstance(String deckId) {
         CardDatabaseFragment fragment = new CardDatabaseFragment();
         fragment.deckId = deckId;
-        fragment.faction = faction;
         return fragment;
     }
 
@@ -89,7 +87,6 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(DeckDetailActivity.EXTRA_FACTION_ID, faction);
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, deckId);
         super.onSaveInstanceState(outState);
     }
@@ -125,10 +122,5 @@ public class CardDatabaseFragment extends BaseCardListFragment<DeckBuilderContra
 
         showFilterMenu(filteringOn, filterableItems);
         return true;
-    }
-
-    @Override
-    public void updateCardCount(String cardId, int count) {
-        getRecyclerViewAdapter().updateCardCount(cardId, count);
     }
 }

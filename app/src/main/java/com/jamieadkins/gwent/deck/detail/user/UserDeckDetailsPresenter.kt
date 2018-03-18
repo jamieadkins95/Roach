@@ -16,7 +16,6 @@ import com.jamieadkins.gwent.model.GwentFaction
 import com.jamieadkins.gwent.model.GwentCard
 
 class UserDeckDetailsPresenter(private val deckId: String,
-                               private val faction: GwentFaction,
                                private val deckRepository: DeckRepository,
                                private val cardRepository: CardRepository,
                                schedulerProvider: BaseSchedulerProvider) :
@@ -44,18 +43,21 @@ class UserDeckDetailsPresenter(private val deckId: String,
     }
 
     private fun getPotentialLeaders() {
-        val cardFilter = CardFilter()
-
-        // Set filter to leaders of this faction only.
-        GwentFaction.values()
-                .filter { it != faction }
-                .forEach { cardFilter.factionFilter[it] = false }
-        cardFilter.colourFilter[CardColour.BRONZE] = false
-        cardFilter.colourFilter[CardColour.SILVER] = false
-        cardFilter.colourFilter[CardColour.GOLD] = false
-
-        cardRepository.getCards(cardFilter)
-                .applySchedulers()
+        deckRepository.getDeckFaction(deckId)
+                .map { faction ->
+                    CardFilter().apply {
+                        // Set filter to leaders of this faction only.
+                        GwentFaction.values()
+                                .filter { it != faction }
+                                .forEach { factionFilter[it] = false }
+                        colourFilter[CardColour.BRONZE] = false
+                        colourFilter[CardColour.SILVER] = false
+                        colourFilter[CardColour.GOLD] = false
+                    }
+                }
+                .flatMap { filter -> cardRepository.getCards(filter) }
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
                     override fun onSuccess(result: Collection<GwentCard>) {
                         view?.showPotentialLeaders(result.toList())

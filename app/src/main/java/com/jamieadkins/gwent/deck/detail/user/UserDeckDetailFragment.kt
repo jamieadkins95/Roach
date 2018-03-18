@@ -32,7 +32,6 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
         context?.let {
             val newPresenter = UserDeckDetailsPresenter(
                     mDeckId,
-                    mFaction,
                     Injection.provideDeckRepository(),
                     Injection.provideCardRepository(),
                     Injection.provideSchedulerProvider())
@@ -140,10 +139,9 @@ class UserDeckDetailFragment : BaseDeckDetailFragment<UserDeckDetailsContract.Vi
     }
 
     companion object {
-        fun newInstance(deckId: String, factionId: GwentFaction): UserDeckDetailFragment {
+        fun newInstance(deckId: String): UserDeckDetailFragment {
             val fragment = UserDeckDetailFragment()
             fragment.mDeckId = deckId
-            fragment.mFaction = factionId
             return fragment
         }
     }

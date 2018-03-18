@@ -48,7 +48,6 @@ public class DeckViewHolder extends BaseViewHolder {
             public void onClick(View view) {
                 Intent intent = new Intent(getView().getContext(), UserDeckDetailActivity.class);
                 intent.putExtra(DeckDetailActivity.EXTRA_DECK_ID, mDeck.getDeck().getId());
-                intent.putExtra(UserDeckDetailActivity.EXTRA_FACTION_ID, mDeck.getDeck().getFaction());
                 getView().getContext().startActivity(intent);
             }
         });

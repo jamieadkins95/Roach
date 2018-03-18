@@ -23,8 +23,8 @@ class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
         onRefresh()
 
         RxBus.register(NewDeckRequest::class.java)
+                .observeOn(schedulerProvider.io())
                 .switchMapSingle { deckRepository.createNewDeck(it.data.name, it.data.faction) }
-                .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : BaseDisposableObserver<String>() {
                     override fun onNext(newDeckId: String) {
@@ -41,6 +41,7 @@ class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentDeckSummary>>() {
                     override fun onSuccess(decks: Collection<GwentDeckSummary>) {
                         view?.showDecks(decks)
+                        view?.setLoadingIndicator(false)
                     }
                 })
                 .addToComposite(disposable)

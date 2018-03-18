@@ -36,7 +36,7 @@ public class UserDeckDetailActivity extends DeckDetailActivity {
             }
             bottomFragment = getSupportFragmentManager().findFragmentByTag(TAG_BOTTOM_FRAGMENT);
         } else {
-            bottomFragment = CardDatabaseFragment.newInstance(mDeckId, mFaction);
+            bottomFragment = CardDatabaseFragment.newInstance(mDeckId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer2, bottomFragment, TAG_BOTTOM_FRAGMENT)
                     .hide(bottomFragment)

@@ -23,14 +23,12 @@ import kotlin.NotImplementedError;
 
 public abstract class DeckDetailActivity extends BaseActivity implements DeckDetailsContract.DeckSummaryView {
     public static final String EXTRA_DECK_ID = "com.jamieadkins.gwent.deckid";
-    public static final String EXTRA_FACTION_ID = "com.jamieadkins.gwent.faction";
     public static final String EXTRA_IS_PUBLIC_DECK = "com.jamieadkins.gwent.public.deck";
     protected static final String TAG_DECK_DETAIL = "com.jamieadkins.gwent.deck.detail";
 
     private static final String TAG_FRAGMENT = "com.jamieadkins.gwent.deck.detail.fragment";
 
     protected String mDeckId;
-    protected GwentFaction mFaction;
     private boolean mIsPublicDeck;
 
     private DeckSummaryView mSummaryView;
@@ -52,19 +50,17 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
 
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(EXTRA_DECK_ID);
-            mFaction = (GwentFaction) savedInstanceState.getSerializable(EXTRA_FACTION_ID);
             mIsPublicDeck = savedInstanceState.getBoolean(EXTRA_IS_PUBLIC_DECK);
 
             fragment = getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         } else {
             mDeckId = getIntent().getStringExtra(EXTRA_DECK_ID);
-            mFaction = (GwentFaction) getIntent().getSerializableExtra(EXTRA_FACTION_ID);
             mIsPublicDeck = getIntent().getBooleanExtra(EXTRA_IS_PUBLIC_DECK, false);
 
             if (mIsPublicDeck) {
                 throw new NotImplementedError();
             } else {
-                fragment = UserDeckDetailFragment.Companion.newInstance(mDeckId, mFaction);
+                fragment = UserDeckDetailFragment.Companion.newInstance(mDeckId);
             }
 
             getSupportFragmentManager()
@@ -113,7 +109,6 @@ public abstract class DeckDetailActivity extends BaseActivity implements DeckDet
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(EXTRA_IS_PUBLIC_DECK, mIsPublicDeck);
         outState.putString(EXTRA_DECK_ID, mDeckId);
-        outState.putSerializable(EXTRA_FACTION_ID, mFaction);
         super.onSaveInstanceState(outState);
     }
 }

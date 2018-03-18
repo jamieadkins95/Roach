@@ -39,7 +39,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
-            mFaction = (GwentFaction) savedInstanceState.getSerializable(DeckDetailActivity.EXTRA_FACTION_ID);
         }
         super.onCreate(savedInstanceState);
         mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
@@ -72,7 +71,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(DeckDetailActivity.EXTRA_DECK_ID, mDeckId);
-        outState.putSerializable(DeckDetailActivity.EXTRA_FACTION_ID, mFaction);
         super.onSaveInstanceState(outState);
     }
 
