@@ -1,1 +1,1 @@
-include ':app', ':commonutils', ':database'
+include ':app', ':commonutils', ':database', ':view', ':core'

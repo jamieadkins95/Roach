@@ -122,6 +122,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(':database')
+    implementation project(':view')
 }
 
 repositories {

@@ -43,7 +43,7 @@ public abstract class BaseFragment<V> extends MvpFragment<V>
     public static final String TAG_FILTER_MENU = "com.jamieadkins.gwent.filter.menu";
 
     public RecyclerView mRecyclerView;
-    private SwipeRefreshLayout mRefreshContainer;
+    public SwipeRefreshLayout mRefreshContainer;
     private GwentRecyclerViewAdapter mAdapter;
 
     private FilterBottomSheetDialogFragment mFilterMenu;

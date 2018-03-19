@@ -2,6 +2,9 @@ package com.jamieadkins.gwent.deck.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +18,11 @@ import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.model.GwentFaction;
 import com.jamieadkins.gwent.model.GwentCard;
 import com.jamieadkins.gwent.model.deck.GwentDeckCard;
+import com.jamieadkins.gwent.view.DeckController;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +38,7 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
     protected Deck mDeck;
     protected GwentFaction mFaction;
 
-    private Map<String, SubHeader> mRowHeaders = new HashMap<>();
+    private DeckController deckController = new DeckController();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +46,6 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
             mDeckId = savedInstanceState.getString(DeckDetailActivity.EXTRA_DECK_ID);
         }
         super.onCreate(savedInstanceState);
-        mRowHeaders.put(getString(R.string.leader), new GoogleNowSubHeader(getString(R.string.leader), R.color.gold));
-        mRowHeaders.put(getString(R.string.gold), new GoogleNowSubHeader(getString(R.string.gold), R.color.gold));
-        mRowHeaders.put(getString(R.string.silver), new GoogleNowSubHeader(getString(R.string.silver), R.color.silver));
-        mRowHeaders.put(getString(R.string.bronze), new GoogleNowSubHeader(getString(R.string.bronze), R.color.bronze));
     }
 
     @Override
@@ -53,13 +54,23 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
         View rootView = inflater.inflate(getLayoutId(), container, false);
         setupViews(rootView);
 
-        getRecyclerViewAdapter().addItem(LEADER_INDEX, mRowHeaders.get(getString(R.string.leader)));
-        getRecyclerViewAdapter().addItem(1, mRowHeaders.get(getString(R.string.gold)));
-        getRecyclerViewAdapter().addItem(2, mRowHeaders.get(getString(R.string.silver)));
-        getRecyclerViewAdapter().addItem(3, mRowHeaders.get(getString(R.string.bronze)));
-
         getRefreshLayout().setEnabled(false);
         return rootView;
+    }
+
+    @Override
+    public void setupViews(View rootView) {
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        final LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(mRecyclerView.getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(deckController.getAdapter());
+        deckController.setData(new ArrayList<String>());
+
+        mRefreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.refreshContainer);
+        mRefreshContainer.setColorSchemeResources(R.color.gwentAccent);
+        mRefreshContainer.setOnRefreshListener(this);
     }
 
     protected abstract int getLayoutId();
@@ -76,12 +87,5 @@ public abstract class BaseDeckDetailFragment<T extends DeckDetailsContract.DeckD
 
     @Override
     public void onLeaderChanged(GwentCard newLeader) {
-        int leaderIndex = getRecyclerViewAdapter().getItems()
-                .indexOf(mRowHeaders.get(getString(R.string.leader))) + 1;
-        RecyclerViewItem oldLeader = getRecyclerViewAdapter().getItems().get(leaderIndex);
-        if (oldLeader instanceof GwentCard && !oldLeader.equals(newLeader)) {
-            getRecyclerViewAdapter().removeItemAt(leaderIndex);
-        }
-        getRecyclerViewAdapter().addItem(leaderIndex, newLeader);
     }
 }
