@@ -12,8 +12,6 @@ import java.util.Collection;
 public interface CardDatabaseContract {
     interface View extends CardsContract.View {
         void showUpdateAvailable();
-
-        void showCards2(@NotNull Collection<GwentCard> cards);
     }
 
     interface Presenter {

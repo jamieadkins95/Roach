@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.card.list;
 
 import com.jamieadkins.commonutils.mvp2.BaseListView;
-import com.jamieadkins.gwent.model.GwentCard;
+import com.jamieadkins.gwent.core.GwentCard;
 
 import org.jetbrains.annotations.NotNull;
 

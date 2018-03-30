@@ -1,8 +1,7 @@
 package com.jamieadkins.gwent.model.deck
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
-import com.jamieadkins.gwent.model.GwentCard
+import com.jamieadkins.gwent.core.GwentCard
 
 data class GwentDeckSummary(val deck: GwentDeck,
                             val leader: GwentCard,
@@ -13,7 +12,7 @@ data class GwentDeckSummary(val deck: GwentDeck,
     }
 
     override fun getItemType(): Int {
-        return GwentRecyclerViewAdapter.TYPE_DECK
+        return 0
     }
 
     override fun areContentsTheSame(other: RecyclerViewItem): Boolean {

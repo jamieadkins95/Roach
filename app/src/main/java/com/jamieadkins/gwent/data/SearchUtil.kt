@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.data
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.main.GwentApplication
-import com.jamieadkins.gwent.model.GwentCard
+import com.jamieadkins.gwent.database.entity.CardEntity
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import java.util.*
 
@@ -10,7 +10,7 @@ object CardSearch {
 
     private const val MIN_SCORE = 50
 
-    fun searchCards(query: String, cardList: List<GwentCard>): List<String> {
+    fun searchCards(query: String, cardList: List<CardEntity>): List<String> {
         val searchResults = ArrayList<CardSearchResult>()
         val cardIds = ArrayList<String>()
         var maxScore = 0
@@ -19,10 +19,7 @@ object CardSearch {
             GwentApplication.INSTANCE.resources.getStringArray(R.array.locales).forEach {
                 locale ->
                 scores.add(FuzzySearch.partialRatio(query, card.name[locale]))
-                scores.add(FuzzySearch.partialRatio(query, card.info[locale]))
-            }
-            card.categories?.forEach {
-                scores.add(FuzzySearch.partialRatio(query, it))
+                scores.add(FuzzySearch.partialRatio(query, card.tooltip[locale]))
             }
             val score = Collections.max(scores)
             if (score > maxScore) {

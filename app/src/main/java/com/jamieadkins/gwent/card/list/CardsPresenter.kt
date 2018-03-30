@@ -36,7 +36,7 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
                 .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
                     override fun onSuccess(list: Collection<GwentCard>) {
-                        view?.showCards2(list)
+                        view?.showCards(list.toMutableList())
                         view?.setLoadingIndicator(false)
                     }
                 })

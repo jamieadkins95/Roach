@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.jamieadkins.commonutils.mvp2.BaseView;
 import com.jamieadkins.gwent.data.card.CardDetails;
-import com.jamieadkins.gwent.model.GwentCard;
+import com.jamieadkins.gwent.core.GwentCard;
 
 /**
  * Specifies the contract between the view and the presenter.

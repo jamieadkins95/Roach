@@ -7,12 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.data.deck.Deck;
 import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts;
-
-/**
- * Wrapper for our card detail view.
- */
 
 public class DeckSummaryView extends LinearLayout {
 
@@ -53,21 +48,20 @@ public class DeckSummaryView extends LinearLayout {
         int totalCardCount = deck.getTotalCardCount();
         mDeckTotalCards.setText(String.format(
                 mDeckTotalCards.getContext().getString(R.string.deck_total_cards_value),
-                totalCardCount, Deck.MAX_CARD_COUNT));
+                totalCardCount, 40));
         mDeckTotalCards.setTextColor(
-                totalCardCount < Deck.MIN_CARD_COUNT || totalCardCount > Deck.MAX_CARD_COUNT
-                        ? invalidColour : defaultColour);
+                totalCardCount < 25 || totalCardCount > 40 ? invalidColour : defaultColour);
 
         int silverCardCount = deck.getSilverCardCount();
         mDeckSilver.setText(String.format(
                 getContext().getString(R.string.deck_total_cards_value),
-                silverCardCount, Deck.MAX_SILVER_COUNT));
-        mDeckSilver.setTextColor(silverCardCount > Deck.MAX_SILVER_COUNT ? invalidColour : defaultColour);
+                silverCardCount, 6));
+        mDeckSilver.setTextColor(silverCardCount > 6 ? invalidColour : defaultColour);
 
         int goldCardCount = deck.getGoldCardCount();
         mDeckGold.setText(String.format(
                 getContext().getString(R.string.deck_total_cards_value),
-                goldCardCount, Deck.MAX_GOLD_COUNT));
-        mDeckGold.setTextColor(goldCardCount > Deck.MAX_GOLD_COUNT ? invalidColour : defaultColour);
+                goldCardCount, 4));
+        mDeckGold.setTextColor(goldCardCount > 4 ? invalidColour : defaultColour);
     }
 }

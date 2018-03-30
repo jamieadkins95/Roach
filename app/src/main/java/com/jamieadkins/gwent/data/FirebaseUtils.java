@@ -33,13 +33,4 @@ public class FirebaseUtils {
 
         return FirebaseDatabase.getInstance();
     }
-
-    public static void logAnalytics(Context context, String id, String name, String contentType, String eventType) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType);
-        FirebaseAnalytics.getInstance(context)
-                .logEvent(eventType, bundle);
-    }
 }

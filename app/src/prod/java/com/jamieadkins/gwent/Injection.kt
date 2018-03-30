@@ -9,15 +9,15 @@ import com.jamieadkins.gwent.data.deck.DecksInteractor
 import com.jamieadkins.gwent.data.deck.DecksInteractorFirebase
 
 object Injection : Injector {
-    override fun provideCardsInteractor(context: Context): CardsInteractor {
+    fun provideCardsInteractor(context: Context): CardsInteractor {
         return CachedCardsInteractor()
     }
 
-    override fun provideCollectionInteractor(): CollectionInteractor {
+    fun provideCollectionInteractor(): CollectionInteractor {
         return CollectionInteractorFirebase()
     }
 
-    override fun provideDecksInteractor(context: Context): DecksInteractor {
+    fun provideDecksInteractor(context: Context): DecksInteractor {
         val interactor: DecksInteractorFirebase = DecksInteractorFirebase()
         interactor.setCardsInteractor(provideCardsInteractor(context))
         return interactor

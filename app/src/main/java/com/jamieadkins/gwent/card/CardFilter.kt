@@ -2,17 +2,17 @@ package com.jamieadkins.gwent.card
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.jamieadkins.gwent.model.*
+import com.jamieadkins.gwent.core.*
 
 /**
  * Used to filter cards.
  */
 class CardFilter() : Parcelable {
     var searchQuery: String? = null
-    var rarityFilter = mutableMapOf<Rarity, Boolean>()
-    var colourFilter = mutableMapOf<CardColour, Boolean>()
+    var rarityFilter = mutableMapOf<GwentCardRarity, Boolean>()
+    var colourFilter = mutableMapOf<GwentCardColour, Boolean>()
     var factionFilter = mutableMapOf<GwentFaction, Boolean>()
-    var loyaltyFilter = mutableMapOf<Loyalty, Boolean>()
+    var loyaltyFilter = mutableMapOf<GwentCardLoyalty, Boolean>()
 
     var isCollectibleOnly = false
 
@@ -43,11 +43,11 @@ class CardFilter() : Parcelable {
     }
 
     fun initFilters() {
-        for (rarity in Rarity.values()) {
+        for (rarity in GwentCardRarity.values()) {
             rarityFilter.put(rarity, true)
         }
 
-        for (colour in CardColour.values()) {
+        for (colour in GwentCardColour.values()) {
             colourFilter.put(colour, true)
         }
 
@@ -55,7 +55,7 @@ class CardFilter() : Parcelable {
             factionFilter.put(faction, true)
         }
 
-        for (loyalty in Loyalty.values()) {
+        for (loyalty in GwentCardLoyalty.values()) {
             loyaltyFilter.put(loyalty, true)
         }
 
@@ -82,7 +82,7 @@ class CardFilter() : Parcelable {
     }
 
     fun doesCardMeetFilter(card: GwentCard): Boolean {
-        var loyalty = (loyaltyFilter[Loyalty.LOYAL] ?: false) && (loyaltyFilter[Loyalty.DISLOYAL] ?: false)
+        var loyalty = (loyaltyFilter[GwentCardLoyalty.LOYAL] ?: false) && (loyaltyFilter[GwentCardLoyalty.DISLOYAL] ?: false)
         for (l in card.loyalties) {
             loyalty = loyalty || (loyaltyFilter[l] ?: false)
         }
@@ -127,13 +127,13 @@ class CardFilter() : Parcelable {
         searchQuery = parcel.readString()
         var size = parcel.readInt()
         for (i in 0 until size) {
-            val key = parcel.readSerializable() as Rarity
+            val key = parcel.readSerializable() as GwentCardRarity
             val value = parcel.readSerializable() as Boolean
             rarityFilter.put(key, value)
         }
         size = parcel.readInt()
         for (i in 0 until size) {
-            val key = parcel.readSerializable() as CardColour
+            val key = parcel.readSerializable() as GwentCardColour
             val value = parcel.readSerializable() as Boolean
             colourFilter.put(key, value)
         }
@@ -145,7 +145,7 @@ class CardFilter() : Parcelable {
         }
         size = parcel.readInt()
         for (i in 0 until size) {
-            val key = parcel.readSerializable() as Loyalty
+            val key = parcel.readSerializable() as GwentCardLoyalty
             val value = parcel.readSerializable() as Boolean
             loyaltyFilter.put(key, value)
         }

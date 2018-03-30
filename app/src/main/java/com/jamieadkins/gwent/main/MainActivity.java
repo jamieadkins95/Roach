@@ -25,8 +25,6 @@ import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
-import com.jamieadkins.gwent.collection.CollectionFragment;
-import com.jamieadkins.gwent.deck.list.DeckListFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
@@ -400,7 +398,7 @@ public class MainActivity extends AuthenticationActivity implements
                 }
 
                 // Else, if authenticated.
-                fragment = new DeckListFragment();
+                fragment = new CardDatabaseFragment();
                 tag = TAG_USER_DECKS;
                 break;
             case R.id.tab_collection:
@@ -415,7 +413,7 @@ public class MainActivity extends AuthenticationActivity implements
                 }
 
                 // Else, if authenticated.
-                fragment = new CollectionFragment();
+                fragment = new CardDatabaseFragment();
                 tag = TAG_COLLECTION;
                 break;
 
@@ -453,7 +451,7 @@ public class MainActivity extends AuthenticationActivity implements
                     return false;
                 }
 
-                fragment = new DeckListFragment();
+                fragment = new CardDatabaseFragment();
                 tag = TAG_PUBLIC_DECKS;
                 break;
             case R.id.tab_helper:

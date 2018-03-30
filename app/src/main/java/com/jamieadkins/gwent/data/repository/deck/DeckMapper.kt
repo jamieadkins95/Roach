@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.data.repository.deck
 
-import com.jamieadkins.gwent.data.Mapper
+import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.entity.DeckEntity
 import com.jamieadkins.gwent.model.deck.GwentDeck
 
@@ -16,7 +16,7 @@ object DeckMapper {
     fun deckEntityToGwentDeck(deckEntity: DeckEntity): GwentDeck {
         val deck = GwentDeck(deckEntity.id.toString(),
                 deckEntity.name,
-                Mapper.factionIdToFaction(deckEntity.factionId),
+                GwentCardMapper.factionIdToFaction(deckEntity.factionId),
                 deckEntity.leaderId)
         return deck
     }

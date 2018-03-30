@@ -1,22 +1,18 @@
 package com.jamieadkins.gwent.deck.list
 
+import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
-import com.jamieadkins.gwent.base.BaseFilterPresenter
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.data.repository.deck.DeckRepository
 import com.jamieadkins.gwent.model.deck.GwentDeckSummary
 
-/**
- * Listens to user actions from the UI, retrieves the data and updates the
- * UI as required.
- */
 class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                         private val deckRepository: DeckRepository) :
-        BaseFilterPresenter<DeckListContract.View>(schedulerProvider), DeckListContract.Presenter {
+        BasePresenter<DeckListContract.View>(schedulerProvider), DeckListContract.Presenter {
 
     override fun onAttach(newView: DeckListContract.View) {
         super.onAttach(newView)
@@ -45,9 +41,5 @@ class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                     }
                 })
                 .addToComposite(disposable)
-    }
-
-    override fun onCardFilterUpdated() {
-        // Do nothing.
     }
 }

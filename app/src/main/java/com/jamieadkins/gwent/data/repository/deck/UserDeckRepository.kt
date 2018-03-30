@@ -1,7 +1,9 @@
 package com.jamieadkins.gwent.data.repository.deck
 
-import com.jamieadkins.gwent.data.Mapper
-import com.jamieadkins.gwent.data.repository.card.CardMapper
+import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.core.GwentCardColour
+import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
@@ -49,7 +51,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 .flatMapMaybe {
                     if (it.leaderId != null) {
                         database.cardDao().getCard(it.leaderId!!)
-                                .map { CardMapper.cardEntityToGwentCard(it) }
+                                .map { GwentCardMapper.cardEntityToGwentCard(it) }
                                 .toMaybe()
                     } else {
                         Maybe.empty<GwentCard>()
@@ -74,7 +76,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun getDeckFaction(deckId: String): Single<GwentFaction> {
         return database.deckDao().getDeckOnce(deckId)
-                .map { Mapper.factionIdToFaction(it.factionId) }
+                .map { GwentCardMapper.factionIdToFaction(it.factionId) }
     }
 
     override fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts> {
@@ -84,7 +86,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 // Get all card entities.
                 .flatMapSingle { database.cardDao().getCards(it) }
                 // Map entities to GwentCards.
-                .map { CardMapper.gwentCardListFromCardEntityList(it) }
+                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
                 // Map to GwentDeckCardCounts
                 .map { cards ->
                     var bronzeCount = 0
@@ -92,9 +94,9 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                     var goldCount = 0
                     cards.forEach {
                         when (it.colour) {
-                            CardColour.BRONZE -> bronzeCount++
-                            CardColour.SILVER -> silverCount++
-                            CardColour.GOLD -> goldCount++
+                            GwentCardColour.BRONZE -> bronzeCount++
+                            GwentCardColour.SILVER -> silverCount++
+                            GwentCardColour.GOLD -> goldCount++
                         }
                     }
                     GwentDeckCardCounts(bronzeCount, silverCount, goldCount)
@@ -103,7 +105,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun createNewDeck(name: String, faction: GwentFaction): Single<String> {
         return Single.fromCallable {
-            val deck = DeckEntity(name, Mapper.factionToFactionId(faction))
+            val deck = DeckEntity(name, GwentCardMapper.factionToFactionId(faction))
             database.deckDao().insertDeck(deck).toString()
         }
     }

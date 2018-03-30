@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.commonutils.mvp2.BaseListView
 import com.jamieadkins.commonutils.mvp2.MvpFragment
-import com.jamieadkins.commonutils.ui.RecyclerViewItem
 
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
@@ -21,15 +19,12 @@ import com.jamieadkins.gwent.bus.RefreshEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.SnackbarBundle
 import com.jamieadkins.gwent.bus.SnackbarRequest
-import com.jamieadkins.gwent.model.GwentCard
+import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.update.UpdateActivity
 import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
-import android.support.v7.widget.DividerItemDecoration
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.util.DisplayMetrics
-
-
 
 
 class CardDatabaseFragment :
@@ -97,10 +92,6 @@ class CardDatabaseFragment :
     }
 
     override fun showCards(cards: MutableList<GwentCard>) {
-
-    }
-
-    override fun showCards2(cards: Collection<com.jamieadkins.gwent.core.GwentCard>) {
         if (cards.isNotEmpty()) {
             controller.setData(cards.toList())
             emptyView.visibility = View.GONE

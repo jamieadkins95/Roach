@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.data.repository.update
 
-import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.Constants
@@ -8,8 +7,6 @@ import com.jamieadkins.gwent.StoreManager
 import com.jamieadkins.gwent.data.card.CardsApi
 import com.jamieadkins.gwent.data.repository.FirebaseCardResult
 import com.jamieadkins.gwent.data.repository.FirebasePatchResult
-import com.jamieadkins.gwent.data.repository.card.CardMapper
-import com.jamieadkins.gwent.database.GwentDatabaseProvider
 import com.jamieadkins.gwent.database.entity.PatchVersionEntity
 import com.jamieadkins.gwent.main.GwentApplication
 import com.nytimes.android.external.store3.base.impl.BarCode
@@ -22,13 +19,13 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.FileReader
 import java.lang.reflect.Type
-
 
 class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateRepository {
 
@@ -94,10 +91,10 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
 
     private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
         return Completable.fromCallable {
-            val cards = CardMapper.cardEntityListFromApiResult(cardList)
+            val cards = GwentCardMapper.cardEntityListFromApiResult(cardList)
             log("Inserting " + cards.size + " cards into database.")
             database.cardDao().insertCards(cards)
-            database.cardDao().insertArt(CardMapper.artEntityListFromApiResult(cardList))
+            database.cardDao().insertArt(GwentCardMapper.artEntityListFromApiResult(cardList))
         }
     }
 

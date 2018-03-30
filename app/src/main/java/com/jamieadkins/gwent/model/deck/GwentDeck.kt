@@ -1,8 +1,7 @@
 package com.jamieadkins.gwent.model.deck
 
 import com.jamieadkins.commonutils.ui.RecyclerViewItem
-import com.jamieadkins.gwent.base.GwentRecyclerViewAdapter
-import com.jamieadkins.gwent.model.GwentFaction
+import com.jamieadkins.gwent.core.GwentFaction
 
 data class GwentDeck(
         val id: String,
@@ -25,6 +24,6 @@ data class GwentDeck(
     }
 
     override fun getItemType(): Int {
-        return GwentRecyclerViewAdapter.TYPE_DECK
+        return 0
     }
 }

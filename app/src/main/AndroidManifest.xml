@@ -38,32 +38,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".card.detail.DetailActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".main.MainActivity" />
-
-            <!-- Can't open gwentdb links at the moment as we are using data from elsewhere. -->
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:host="www.gwentdb.com"
-                    android:scheme="http"
-                    android:pathPrefix="/cards/" />
-
-                <data
-                    android:host="gwentdb.com"
-                    android:scheme="http"
-                    android:pathPrefix="/cards/ " />
-            </intent-filter>
-            -->
-
-        </activity>
-        <activity
             android:name=".deck.detail.user.UserDeckDetailActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
         <activity
