@@ -1,9 +1,11 @@
 package com.jamieadkins.gwent.view.card
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.airbnb.epoxy.ModelProp
@@ -11,6 +13,9 @@ import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.bumptech.glide.Glide
+import com.jamieadkins.gwent.core.GwentCardRarity
+import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.core.GwentStringHelper
 import com.jamieadkins.gwent.view.R
 import kotterknife.bindView
 
@@ -20,6 +25,9 @@ class GwentCardView : CardView {
     private val tvName by bindView<TextView>(R.id.name)
     private val tvTooltip by bindView<TextView>(R.id.tooltip)
     private val tvCategories by bindView<TextView>(R.id.categories)
+    private val tvStrength by bindView<TextView>(R.id.strength)
+    private val tvRarity by bindView<TextView>(R.id.rarity)
+    private val tvFaction by bindView<TextView>(R.id.faction)
     private val imgCard by bindView<ImageView>(R.id.card_image)
 
     constructor(context: Context) : super(context) { inflateView() }
@@ -51,15 +59,64 @@ class GwentCardView : CardView {
                 text += ", "
             }
         }
+
         tvCategories.text = text
+
+        if (text.isNotEmpty()) {
+            tvCategories.visibility = View.VISIBLE
+        } else {
+            tvCategories.visibility = View.GONE
+        }
     }
 
     @ModelProp
     fun setCardImage(imageUrl: String?) {
-        imageUrl?.let {
+        if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
+                    .fitCenter()
                     .into(imgCard)
+        } else {
+            imgCard.setImageDrawable(null)
         }
+    }
+
+    @ModelProp
+    fun setCardFaction(faction: GwentFaction) {
+        tvFaction.text = GwentStringHelper.getFactionString(context, faction)
+        val factionColor = when (faction) {
+            GwentFaction.MONSTER -> ContextCompat.getColor(context, R.color.monsters)
+            GwentFaction.NORTHERN_REALMS -> ContextCompat.getColor(context, R.color.northernRealms)
+            GwentFaction.SCOIATAEL -> ContextCompat.getColor(context, R.color.scoiatael)
+            GwentFaction.SKELLIGE -> ContextCompat.getColor(context, R.color.skellige)
+            GwentFaction.NEUTRAL -> ContextCompat.getColor(context, R.color.neutral)
+            GwentFaction.NILFGAARD -> ContextCompat.getColor(context, R.color.nilfgaard)
+            else -> ContextCompat.getColor(context, R.color.neutral)
+        }
+        tvFaction.setTextColor(factionColor)
+    }
+
+    @ModelProp
+    fun setCardRarity(rarity: GwentCardRarity) {
+        tvRarity.text = GwentStringHelper.getRarityString(context, rarity)
+        val rarityColor = when (rarity) {
+            GwentCardRarity.COMMON -> ContextCompat.getColor(context, R.color.common)
+            GwentCardRarity.RARE -> ContextCompat.getColor(context, R.color.rare)
+            GwentCardRarity.EPIC -> ContextCompat.getColor(context, R.color.epic)
+            GwentCardRarity.LEGENDARY -> ContextCompat.getColor(context, R.color.legendary)
+            else -> ContextCompat.getColor(context, R.color.common)
+        }
+        tvRarity.setTextColor(rarityColor)
+    }
+
+    @ModelProp
+    fun setCardStrength(strength: Int?) {
+        if (strength ?: 0 > 0) {
+            tvStrength.text = strength.toString()
+            tvStrength.visibility = View.VISIBLE
+        } else {
+            tvStrength.visibility = View.GONE
+        }
+
     }
 }

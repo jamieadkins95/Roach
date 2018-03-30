@@ -44,7 +44,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/text_hint_light"
-        tools:textColor="@color/monsters"
         android:textSize="12sp"
         android:textStyle="italic"
         android:text="Vampire"
@@ -70,6 +69,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/categories"
         app:layout_constraintStart_toEndOf="@id/center"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/layout_info" />
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:id="@+id/layout_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:divider="?android:listDivider"
+        android:dividerPadding="2.5dp"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Monsters"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/faction" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="Epic"
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/rarity" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/strength"
+            android:textSize="16sp"
+            tools:text="0" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

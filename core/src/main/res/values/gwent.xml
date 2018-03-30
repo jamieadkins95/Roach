@@ -15,4 +15,7 @@
     <string name="rare">Rare</string>
     <string name="epic">Epic</string>
     <string name="legendary">Legendary</string>
+    <string name="loyalty">Loyalty</string>
+    <string name="loyal">Loyal</string>
+    <string name="disloyal">Disloyal</string>
 </resources>

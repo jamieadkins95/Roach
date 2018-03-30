@@ -8,13 +8,23 @@ class CardDatabaseController : TypedEpoxyController<List<GwentCard>>() {
     override fun buildModels(cards: List<GwentCard>?) {
         cards?.forEach { card ->
             card.id?.let {
-                GwentCardViewModel_()
+                val model = GwentCardViewModel_()
                         .id(it)
                         .cardName(card.name ?: "")
                         .cardTooltip(card.tooltip ?: "")
                         .cardCategories(card.categories)
+                        .cardStrength(card.strength)
                         .cardImage(card.cardArt?.low)
-                        .addTo(this)
+
+                card.faction?.let {
+                    model.cardFaction(it)
+                }
+
+                card.rarity?.let {
+                    model.cardRarity(it)
+                }
+
+                model.addTo(this)
             }
         }
     }
