@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/card_image"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="547:731"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/center"
+        tools:src="@drawable/regis_medium" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Regis: Higher Vampire"
+        android:textSize="18sp"
+        android:textColor="@color/text_primary_light"
+        android:layout_marginTop="16sp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/center" />
+
+    <TextView
+        android:id="@+id/categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_hint_light"
+        tools:textColor="@color/monsters"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:text="Vampire"
+        android:lines="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintStart_toEndOf="@id/center" />
+
+    <TextView
+        android:id="@+id/tooltip"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:text="Look at 3 Bronze units from your opponent's deck. Consume 1, then boost self by its base power."
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary_light"
+        android:layout_marginTop="8sp"
+        android:layout_marginBottom="16sp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categories"
+        app:layout_constraintStart_toEndOf="@id/center"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</merge>
