@@ -20,7 +20,7 @@ import android.view.View;
 import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.base.AuthenticationActivity;
+import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AuthenticationActivity implements
+public class MainActivity extends BaseActivity implements
         Drawer.OnDrawerItemClickListener {
     private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
     private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
@@ -52,29 +52,14 @@ public class MainActivity extends AuthenticationActivity implements
     private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
     private static final String STATE_NEWS_SHOWN = "com.jamieadkins.gwent.news.shown";
-
-    private static final String LAUNCH_EXTERNAL = "external";
-
-    private static final int ACCOUNT_IDENTIFIER = 1000;
-    private static final int SIGN_IN_IDENTIFIER = 1001;
-    private static final int SIGN_OUT_IDENTIFIER = 1002;
     private static final int NO_LAUNCH_ATTEMPT = -1;
 
     private int mCurrentTab;
-    private int mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
     private boolean newsItemShown = false;
 
     private Drawer mNavigationDrawer;
     private AccountHeader mAccountHeader;
-    private ProfileDrawerItem mProfile;
     private Map<Integer, PrimaryDrawerItem> mDrawerItems;
-
-    private final View.OnClickListener signInClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startSignInProcess();
-        }
-    };
 
     private FloatingActionButton buttonNewDeck;
 
@@ -102,41 +87,10 @@ public class MainActivity extends AuthenticationActivity implements
         checkLanguage();
         checkIntentForNews();
         SettingsActivity.checkAndUpdatePatchTopic(PreferenceManager.getDefaultSharedPreferences(this), getResources());
-        mProfile = new ProfileDrawerItem()
-                .withIdentifier(ACCOUNT_IDENTIFIER)
-                .withEmail(getString(R.string.signed_out))
-                .withNameShown(false);
-
-        final ProfileSettingDrawerItem signIn = new ProfileSettingDrawerItem()
-                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme()))
-                .withIdentifier(SIGN_IN_IDENTIFIER)
-                .withName(getString(R.string.sign_in_default));
-
         mAccountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(R.drawable.header)
-                .withSelectionListEnabledForSingleProfile(true)
-                .addProfiles(
-                        mProfile,
-                        signIn)
                 .withProfileImagesVisible(false)
                 .withActivity(this)
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        switch ((int) profile.getIdentifier()) {
-                            case SIGN_IN_IDENTIFIER:
-                                startSignInProcess();
-                                break;
-                            case SIGN_OUT_IDENTIFIER:
-                                startSignOutProcess();
-                                break;
-                            case ACCOUNT_IDENTIFIER:
-                                // View Account.
-                                break;
-                        }
-                        return false;
-                    }
-                })
                 .build();
 
         initialiseDrawerItems();
@@ -169,8 +123,6 @@ public class MainActivity extends AuthenticationActivity implements
                 )
                 .withOnDrawerItemClickListener(this)
                 .build();
-
-        handleDrawerAuthentication();
 
         if (savedInstanceState == null) {
             // Cold start, launch card db fragment.
@@ -286,8 +238,6 @@ public class MainActivity extends AuthenticationActivity implements
                 R.id.contentContainer, fragment, tag);
         fragmentTransaction.commit();
 
-        mAttemptedToLaunchTab = NO_LAUNCH_ATTEMPT;
-
         if (fragment.getTag().equals(TAG_USER_DECKS)) {
             buttonNewDeck.setVisibility(View.VISIBLE);
         } else {
@@ -298,54 +248,6 @@ public class MainActivity extends AuthenticationActivity implements
         invalidateOptionsMenu();
     }
 
-    private void handleDrawerAuthentication() {
-        // Reset by removing both.
-        mAccountHeader.removeProfileByIdentifier(SIGN_IN_IDENTIFIER);
-        mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
-
-        if (isAuthenticated()) {
-            mAccountHeader.updateProfile(
-                    mProfile.withEmail(getCurrentUser().getEmail()));
-
-            mAccountHeader.addProfiles(
-                    new ProfileSettingDrawerItem()
-                            .withIdentifier(SIGN_OUT_IDENTIFIER)
-                            .withName(getString(R.string.sign_out))
-                            .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
-
-            mDrawerItems.get(R.id.tab_collection).withSelectable(true);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
-            mDrawerItems.get(R.id.tab_decks).withSelectable(true);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_decks));
-            mDrawerItems.get(R.id.tab_results).withSelectable(BuildConfig.DEBUG);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_results));
-        } else {
-            mAccountHeader.updateProfile(
-                    mProfile.withEmail(getString(R.string.signed_out)));
-
-            mAccountHeader.removeProfileByIdentifier(SIGN_OUT_IDENTIFIER);
-            mAccountHeader.addProfiles(
-                    new ProfileSettingDrawerItem()
-                            .withIdentifier(SIGN_IN_IDENTIFIER)
-                            .withName(getString(R.string.sign_in_default))
-                            .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, getTheme())));
-
-            // If we are currently in an activity that requires authentication, switch to another.
-            if (mCurrentTab == R.id.tab_collection ||
-                    mCurrentTab == R.id.tab_decks ||
-                    mCurrentTab == R.id.tab_results) {
-                mNavigationDrawer.setSelection(R.id.tab_card_db);
-            }
-
-            mDrawerItems.get(R.id.tab_collection).withSelectable(false);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_collection));
-            mDrawerItems.get(R.id.tab_decks).withSelectable(false);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_decks));
-            mDrawerItems.get(R.id.tab_results).withSelectable(false);
-            mNavigationDrawer.updateItem(mDrawerItems.get(R.id.tab_results));
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(STATE_NEWS_SHOWN, newsItemShown);
@@ -353,31 +255,10 @@ public class MainActivity extends AuthenticationActivity implements
     }
 
     @Override
-    protected void onSignedIn() {
-        super.onSignedIn();
-        invalidateOptionsMenu();
-        handleDrawerAuthentication();
-
-        // User tried to access a different tab before they tried to sign in.
-        if (mAttemptedToLaunchTab != NO_LAUNCH_ATTEMPT) {
-            mNavigationDrawer.setSelection(mAttemptedToLaunchTab);
-        }
-    }
-
-    @Override
-    protected void onSignedOut() {
-        super.onSignedOut();
-        invalidateOptionsMenu();
-        handleDrawerAuthentication();
-    }
-
-    @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         if (mCurrentTab == drawerItem.getIdentifier()) {
             return false;
         }
-
-        mAttemptedToLaunchTab = (int) drawerItem.getIdentifier();
 
         Fragment fragment;
         String tag;
@@ -387,32 +268,10 @@ public class MainActivity extends AuthenticationActivity implements
                 tag = TAG_CARD_DB;
                 break;
             case R.id.tab_decks:
-                // Stop authenticated only tabs from being selected.
-                if (!isAuthenticated()) {
-                    RxBus.INSTANCE.post(new SnackbarRequest(
-                            new SnackbarBundle(
-                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.decks)),
-                                    getString(R.string.sign_in_default),
-                                    signInClickListener)));
-                    return false;
-                }
-
-                // Else, if authenticated.
                 fragment = new CardDatabaseFragment();
                 tag = TAG_USER_DECKS;
                 break;
             case R.id.tab_collection:
-                // Stop authenticated only tabs from being selected.
-                if (!isAuthenticated()) {
-                    RxBus.INSTANCE.post(new SnackbarRequest(
-                            new SnackbarBundle(
-                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.collection)),
-                                    getString(R.string.sign_in_default),
-                                    signInClickListener)));
-                    return false;
-                }
-
-                // Else, if authenticated.
                 fragment = new CardDatabaseFragment();
                 tag = TAG_COLLECTION;
                 break;
@@ -424,16 +283,6 @@ public class MainActivity extends AuthenticationActivity implements
                             new SnackbarBundle(String.format(
                                     getString(R.string.is_coming_soon),
                                     getString(R.string.results)))));
-                    return false;
-                }
-
-                // Stop authenticated only tabs from being selected.
-                if (!isAuthenticated()) {
-                    RxBus.INSTANCE.post(new SnackbarRequest(
-                            new SnackbarBundle(
-                                    String.format(getString(R.string.sign_in_to_view), getString(R.string.your_results)),
-                                    getString(R.string.sign_in_default),
-                                    signInClickListener)));
                     return false;
                 }
 

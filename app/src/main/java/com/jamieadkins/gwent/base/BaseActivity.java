@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,7 +20,7 @@ import io.reactivex.annotations.NonNull;
 
 import static com.jamieadkins.gwent.settings.SettingsActivity.onSettingsChange;
 
-public abstract class BaseActivity extends RxAppCompatActivity
+public abstract class BaseActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
@@ -44,33 +45,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
             notificationManager.createNotificationChannel(new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
-
-        RxBus.INSTANCE.register(SnackbarRequest.class, this.<SnackbarRequest>bindToLifecycle())
-                .subscribe(new BaseObserver<SnackbarRequest>() {
-                    @Override
-                    public void onNext(@NonNull SnackbarRequest snackbarRequest) {
-                        Snackbar snackbar = Snackbar.make(
-                                findViewById(R.id.coordinator_layout),
-                                snackbarRequest.getData().getMessage(),
-                                Snackbar.LENGTH_LONG);
-
-                        if (snackbarRequest.getData().getAction() != null) {
-                            snackbar.setAction(snackbarRequest.getData().getActionMessage(),
-                                    snackbarRequest.getData().getAction());
-                        }
-
-                        if (snackbarRequest.getData().getLength() != null) {
-                            snackbar.setDuration(snackbarRequest.getData().getLength());
-                        }
-
-                        snackbar.show();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
     @Override

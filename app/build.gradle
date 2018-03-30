@@ -72,55 +72,50 @@ android {
 
 dependencies {
     // Support libraries.
-    compile "com.android.support:appcompat-v7:$support_library_version"
-    compile "com.android.support:design:$support_library_version"
-    compile "com.android.support:recyclerview-v7:$support_library_version"
-    compile "com.android.support:cardview-v7:$support_library_version"
-    compile "com.android.support:preference-v14:$support_library_version"
-    compile "com.android.support:palette-v7:$support_library_version"
-    compile "com.android.support:customtabs:$support_library_version"
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
+    implementation "com.android.support:recyclerview-v7:$support_library_version"
+    implementation "com.android.support:cardview-v7:$support_library_version"
+    implementation "com.android.support:preference-v14:$support_library_version"
+    implementation "com.android.support:palette-v7:$support_library_version"
+    implementation "com.android.support:customtabs:$support_library_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     // UI.
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-    compile('com.mikepenz:materialdrawer:5.8.1@aar') {
+    implementation('com.mikepenz:materialdrawer:5.8.1@aar') {
         transitive = true
     }
 
     // Utils.
-    compile project(':commonutils')
-    compile 'me.xdrop:fuzzywuzzy:1.1.8'
+    implementation project(':commonutils')
+    implementation 'me.xdrop:fuzzywuzzy:1.1.8'
 
     // RxJava.
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     // Firebase
-    compile "com.google.firebase:firebase-auth:$google_services_version"
-    compile "com.firebaseui:firebase-ui-auth:1.2.0"
-    compile "com.google.android.gms:play-services-auth:$google_services_version"
-    compile "com.google.firebase:firebase-database:$google_services_version"
-    compile "com.google.firebase:firebase-storage:$google_services_version"
-    compile "com.google.firebase:firebase-messaging:$google_services_version"
+    implementation "com.google.android.gms:play-services-auth:$google_services_version"
+    implementation "com.google.firebase:firebase-storage:$google_services_version"
+    implementation "com.google.firebase:firebase-messaging:$google_services_version"
     implementation 'com.jakewharton.timber:timber:4.6.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
     }
 
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.nytimes.android:cache3:3.0.0-beta'
-    compile 'com.nytimes.android:store3:3.0.0-beta'
-    compile 'com.nytimes.android:middleware3:3.0.0-beta'
-    compile 'com.nytimes.android:filesystem3:3.0.0-beta'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.nytimes.android:cache3:3.0.0-beta'
+    implementation 'com.nytimes.android:store3:3.0.0-beta'
+    implementation 'com.nytimes.android:middleware3:3.0.0-beta'
+    implementation 'com.nytimes.android:filesystem3:3.0.0-beta'
 
-    compile 'com.android.support:multidex:1.0.2'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(':database')
     implementation project(':view')
