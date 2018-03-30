@@ -12,7 +12,7 @@ interface DeckReadRepository {
 
     fun getDecks(): Single<List<GwentDeckSummary>>
 
-    fun getDeck(deckId: String): Single<GwentDeck>
+    fun getDeckOnce(deckId: String): Single<GwentDeck>
 
     fun getDeckFaction(deckId: String): Single<GwentFaction>
 

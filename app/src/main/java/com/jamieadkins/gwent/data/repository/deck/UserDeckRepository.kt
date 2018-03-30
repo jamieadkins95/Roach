@@ -15,7 +15,7 @@ import io.reactivex.functions.BiFunction
 class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun getDecks(): Single<List<GwentDeckSummary>> {
-        return database.deckDao().getDecks()
+        return database.deckDao().getDecksOnce()
                 .map { DeckMapper.deckEntityListToGwentDeckList(it).toList() }
                 .flatMap {
                     Observable.fromIterable(it)
@@ -32,7 +32,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
     }
 
     override fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary> {
-        return database.deckDao().getDeckUpdates(deckId)
+        return database.deckDao().getDeck(deckId)
                 .map { DeckMapper.deckEntityToGwentDeck(it) }
                 .flatMap {
                     getLeader(it.id)
@@ -45,7 +45,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
     }
 
     private fun getLeader(deckId: String): Maybe<GwentCard> {
-        return database.deckDao().getDeck(deckId)
+        return database.deckDao().getDeckOnce(deckId)
                 .flatMapMaybe {
                     if (it.leaderId != null) {
                         database.cardDao().getCard(it.leaderId!!)
@@ -62,18 +62,18 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 .first(GwentDeckCardCounts(0, 0, 0))
     }
 
-    override fun getDeckUpdates(deckId: String): Flowable<GwentDeck> {
-        return database.deckDao().getDeckUpdates(deckId)
+    override fun getDeck(deckId: String): Flowable<GwentDeck> {
+        return database.deckDao().getDeck(deckId)
                 .map { DeckMapper.deckEntityToGwentDeck(it) }
     }
 
-    override fun getDeck(deckId: String): Single<GwentDeck> {
-        return database.deckDao().getDeck(deckId)
+    override fun getDeckOnce(deckId: String): Single<GwentDeck> {
+        return database.deckDao().getDeckOnce(deckId)
                 .map { DeckMapper.deckEntityToGwentDeck(it) }
     }
 
     override fun getDeckFaction(deckId: String): Single<GwentFaction> {
-        return database.deckDao().getDeck(deckId)
+        return database.deckDao().getDeckOnce(deckId)
                 .map { Mapper.factionIdToFaction(it.factionId) }
     }
 

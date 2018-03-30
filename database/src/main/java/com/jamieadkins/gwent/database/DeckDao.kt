@@ -25,12 +25,12 @@ interface DeckDao {
     @Query("UPDATE ${GwentDatabase.DECK_TABLE} SET deleted = 1 WHERE id = :deckId")
     fun deleteDeck(deckId: String)
 
-    @Query("SELECT * FROM " + GwentDatabase.DECK_TABLE)
-    fun getDecks(): Single<List<DeckEntity>>
+    @Query("SELECT * FROM ${GwentDatabase.DECK_TABLE} WHERE deleted = 0")
+    fun getDecksOnce(): Single<List<DeckEntity>>
 
-    @Query("SELECT * FROM " + GwentDatabase.DECK_TABLE + " WHERE id=:deckId")
-    fun getDeck(deckId: String): Single<DeckEntity>
+    @Query("SELECT * FROM ${GwentDatabase.DECK_TABLE} WHERE id = :deckId")
+    fun getDeckOnce(deckId: String): Single<DeckEntity>
 
-    @Query("SELECT * FROM " + GwentDatabase.DECK_TABLE + " WHERE id=:deckId")
-    fun getDeckUpdates(deckId: String): Flowable<DeckEntity>
+    @Query("SELECT * FROM ${GwentDatabase.DECK_TABLE} WHERE id = :deckId")
+    fun getDeck(deckId: String): Flowable<DeckEntity>
 }

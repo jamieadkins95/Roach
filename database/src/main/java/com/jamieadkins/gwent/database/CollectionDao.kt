@@ -21,4 +21,7 @@ interface CollectionDao {
 
     @Query("SELECT * FROM ${GwentDatabase.COLLECTION_TABLE}")
     fun getCollection(): Flowable<List<CollectionEntity>>
+
+    @Query("SELECT * FROM ${GwentDatabase.COLLECTION_TABLE}")
+    fun getCollectionOnce(): Single<List<CollectionEntity>>
 }

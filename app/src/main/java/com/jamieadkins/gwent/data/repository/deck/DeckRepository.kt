@@ -9,7 +9,7 @@ import io.reactivex.Single
 
 interface DeckRepository : DeckReadRepository {
 
-    fun getDeckUpdates(deckId: String): Flowable<GwentDeck>
+    fun getDeck(deckId: String): Flowable<GwentDeck>
 
     fun createNewDeck(name: String, faction: GwentFaction): Single<String>
 
