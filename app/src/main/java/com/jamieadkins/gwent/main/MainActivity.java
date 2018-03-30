@@ -22,8 +22,6 @@ import com.jamieadkins.gwent.ComingSoonFragment;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.bus.RxBus;
-import com.jamieadkins.gwent.bus.SnackbarBundle;
-import com.jamieadkins.gwent.bus.SnackbarRequest;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.BasePreferenceActivity;
@@ -33,11 +31,8 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -275,31 +270,11 @@ public class MainActivity extends BaseActivity implements
                 fragment = new CardDatabaseFragment();
                 tag = TAG_COLLECTION;
                 break;
-
             case R.id.tab_results:
-                // Hide this feature in release versions for now.
-                if (!BuildConfig.DEBUG) {
-                    RxBus.INSTANCE.post(new SnackbarRequest(
-                            new SnackbarBundle(String.format(
-                                    getString(R.string.is_coming_soon),
-                                    getString(R.string.results)))));
-                    return false;
-                }
-
-                // Else, if authenticated.
                 fragment = new ComingSoonFragment();
                 tag = TAG_RESULTS_TRACKER;
                 break;
             case R.id.tab_public_decks:
-                // Hide this feature in release versions for now.
-                if (!BuildConfig.DEBUG) {
-                    RxBus.INSTANCE.post(new SnackbarRequest(
-                            new SnackbarBundle(String.format(
-                                    getString(R.string.are_coming_soon),
-                                    getString(R.string.public_decks)))));
-                    return false;
-                }
-
                 fragment = new CardDatabaseFragment();
                 tag = TAG_PUBLIC_DECKS;
                 break;
@@ -337,7 +312,6 @@ public class MainActivity extends BaseActivity implements
                 // Return true to not close the navigation drawer.
                 return true;
             default:
-                RxBus.INSTANCE.post(new SnackbarRequest(new SnackbarBundle(getString(R.string.coming_soon))));
                 // Don't display the item as the selected item.
                 return false;
         }

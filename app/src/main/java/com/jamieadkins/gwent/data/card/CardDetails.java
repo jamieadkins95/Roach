@@ -1,15 +1,8 @@
 package com.jamieadkins.gwent.data.card;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * Class that models what a deck is.
- */
-@IgnoreExtraProperties
 public class CardDetails {
     private static final String DEFAULT_LOCALE = "en-US";
 
@@ -33,7 +26,6 @@ public class CardDetails {
         // Required empty constructor for Firebase.
     }
 
-    @Exclude
     public String getName(String locale) {
         if (name != null) {
             return name.get(locale);
@@ -42,7 +34,6 @@ public class CardDetails {
         }
     }
 
-    @Exclude
     public String getInfo(String locale) {
         if (info != null) {
             return info.get(locale);
@@ -51,7 +42,6 @@ public class CardDetails {
         }
     }
 
-    @Exclude
     public String getFlavor(String locale) {
         if (flavor != null) {
             return flavor.get(locale);
@@ -88,7 +78,6 @@ public class CardDetails {
         return related;
     }
 
-    @Exclude
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CardDetails) {
@@ -98,18 +87,15 @@ public class CardDetails {
         }
     }
 
-    @Exclude
     @Override
     public String toString() {
         return name.get(DEFAULT_LOCALE);
     }
 
-    @Exclude
     public String getPatch() {
         return patch;
     }
 
-    @Exclude
     public void setPatch(String patch) {
         this.patch = patch;
     }
@@ -138,7 +124,7 @@ public class CardDetails {
         return positions;
     }
 
-    @Exclude
+
     public String getImage() {
         for (String key : variations.keySet()) {
             if (variations.get(key).getArt() != null) {
@@ -149,7 +135,6 @@ public class CardDetails {
         return null;
     }
 
-    @Exclude
     public String getRarity() {
         for (String key : variations.keySet()) {
             return variations.get(key).getRarity();
@@ -200,7 +185,7 @@ public class CardDetails {
             return variationId;
         }
 
-        @Exclude
+
         public static int getVariationNumber(String variationId) {
             return Integer.valueOf(variationId.substring(
                     Math.max(variationId.length() - 2, 0),

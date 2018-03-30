@@ -17,15 +17,12 @@ import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.RefreshEvent
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.bus.SnackbarBundle
-import com.jamieadkins.gwent.bus.SnackbarRequest
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.update.UpdateActivity
 import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.util.DisplayMetrics
-
 
 class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
@@ -101,10 +98,6 @@ class CardDatabaseFragment :
         }
     }
 
-    override fun showGenericErrorMessage() {
-        RxBus.post(SnackbarRequest(SnackbarBundle(getString(R.string.general_error), Snackbar.LENGTH_LONG)))
-    }
-
     override fun onRefresh() {
         RxBus.post(RefreshEvent())
     }
@@ -116,6 +109,5 @@ class CardDatabaseFragment :
             val i = Intent(activity, UpdateActivity::class.java)
             startActivity(i)
         }
-        RxBus.post(SnackbarRequest(SnackbarBundle(message, actionMessage, action, Snackbar.LENGTH_INDEFINITE)))
     }
 }

@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.bus
 
-import com.trello.rxlifecycle2.LifecycleTransformer
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
@@ -15,8 +14,4 @@ object RxBus {
     }
 
     fun <T> register(eventType: Class<T>): Observable<T> = publisher.ofType(eventType)
-
-    fun <T> register(eventType: Class<T>, transformer: LifecycleTransformer<T>): Observable<T> =
-            publisher.ofType(eventType)
-                    .compose(transformer)
 }
