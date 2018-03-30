@@ -24,7 +24,7 @@ import com.jamieadkins.gwent.base.AuthenticationActivity;
 import com.jamieadkins.gwent.bus.RxBus;
 import com.jamieadkins.gwent.bus.SnackbarBundle;
 import com.jamieadkins.gwent.bus.SnackbarRequest;
-import com.jamieadkins.gwent.card.list.CardListFragment;
+import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
 import com.jamieadkins.gwent.collection.CollectionFragment;
 import com.jamieadkins.gwent.deck.list.DeckListFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
@@ -385,7 +385,7 @@ public class MainActivity extends AuthenticationActivity implements
         String tag;
         switch ((int) drawerItem.getIdentifier()) {
             case R.id.tab_card_db:
-                fragment = new CardListFragment();
+                fragment = new CardDatabaseFragment();
                 tag = TAG_CARD_DB;
                 break;
             case R.id.tab_decks:

@@ -26,13 +26,13 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: Bas
         } else {
             cardRepository.getCards(cardFilter)
         }
-        source.applySchedulers()
+        /*source.applySchedulers()
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
                     override fun onSuccess(t: Collection<GwentCard>) {
                         onNewCardList(t)
                     }
                 })
-                .addToComposite(disposable)
+                .addToComposite(disposable)*/
     }
 
     private fun onNewCardList(cardList: Collection<GwentCard>) {
@@ -52,12 +52,12 @@ abstract class BaseCardsPresenter<T : CardsContract.View>(schedulerProvider: Bas
         } else {
             cardRepository.getCards(cardFilter)
         }
-        source.applySchedulers()
+        /*source.applySchedulers()
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
                     override fun onSuccess(t: Collection<GwentCard>) {
                         onNewCardList(t)
                     }
                 })
-                .addToComposite(disposable)
+                .addToComposite(disposable)*/
     }
 }

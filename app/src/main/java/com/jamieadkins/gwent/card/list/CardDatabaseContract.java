@@ -1,11 +1,9 @@
 package com.jamieadkins.gwent.card.list;
 
-import com.jamieadkins.commonutils.mvp2.BaseListView;
-import com.jamieadkins.gwent.model.GwentCard;
-
+import com.jamieadkins.gwent.core.GwentCard;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -14,6 +12,8 @@ import java.util.List;
 public interface CardDatabaseContract {
     interface View extends CardsContract.View {
         void showUpdateAvailable();
+
+        void showCards2(@NotNull Collection<GwentCard> cards);
     }
 
     interface Presenter {

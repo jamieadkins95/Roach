@@ -1,8 +1,5 @@
 package com.jamieadkins.gwent.core
 
-import com.jamieadkins.gwent.model.GwentCardRarity
-import com.jamieadkins.gwent.model.GwentFaction
-
 class GwentCard {
     var id: String? = null
     var tooltip: String? = null

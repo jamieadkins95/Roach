@@ -1,9 +1,7 @@
 package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.model.GwentCard
-import com.jamieadkins.gwent.model.patch.PatchState
-import io.reactivex.Completable
+import com.jamieadkins.gwent.core.GwentCard
 import io.reactivex.Single
 
 interface CardRepository {

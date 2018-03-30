@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.model
+package com.jamieadkins.gwent.core
 
 enum class GwentCardRarity {
     COMMON,

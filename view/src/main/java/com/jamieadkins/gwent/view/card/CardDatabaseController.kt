@@ -6,13 +6,16 @@ import com.jamieadkins.gwent.core.GwentCard
 class CardDatabaseController : TypedEpoxyController<List<GwentCard>>() {
 
     override fun buildModels(cards: List<GwentCard>?) {
-        cards?.forEach {
-            GwentCardViewModel_()
-                    .cardName(it.name ?: "")
-                    .cardTooltip(it.tooltip ?: "")
-                    .cardCategories(it.categories)
-                    .cardImage(it.cardArt?.medium)
-                    .addTo(this)
+        cards?.forEach { card ->
+            card.id?.let {
+                GwentCardViewModel_()
+                        .id(it)
+                        .cardName(card.name ?: "")
+                        .cardTooltip(card.tooltip ?: "")
+                        .cardCategories(card.categories)
+                        .cardImage(card.cardArt?.low)
+                        .addTo(this)
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ class UserDeckDetailsPresenter(private val deckId: String,
     }
 
     private fun getPotentialLeaders() {
-        deckRepository.getDeckFaction(deckId)
+        /*deckRepository.getDeckFaction(deckId)
                 .map { faction ->
                     CardFilter().apply {
                         // Set filter to leaders of this faction only.
@@ -63,7 +63,7 @@ class UserDeckDetailsPresenter(private val deckId: String,
                         view?.showPotentialLeaders(result.toList())
                     }
                 })
-                .addToComposite(disposable)
+                .addToComposite(disposable)*/
     }
 
     override fun onCardFilterUpdated() {

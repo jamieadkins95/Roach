@@ -166,7 +166,7 @@ public class Deck implements RecyclerViewItem {
                             cards = new HashMap<String, GwentCard>();
                         }
 
-                        cardRepository.getCard(leaderId)
+                        /*cardRepository.getCard(leaderId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
@@ -178,7 +178,7 @@ public class Deck implements RecyclerViewItem {
                                             emitter.onComplete();
                                         }
                                     }
-                                });
+                                });*/
 
                         if (cardCount.keySet().size() == 0) {
                             return;
@@ -189,7 +189,7 @@ public class Deck implements RecyclerViewItem {
                             cardIds.add(cardId);
                         }
 
-                        cardRepository.getCards(cardIds)
+                        /*cardRepository.getCards(cardIds)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(Schedulers.io())
                                 .subscribe(
@@ -204,7 +204,7 @@ public class Deck implements RecyclerViewItem {
                                             emitter.onComplete();
                                         }
                                     }
-                                });
+                                });*/
                     }
                 };
             }
