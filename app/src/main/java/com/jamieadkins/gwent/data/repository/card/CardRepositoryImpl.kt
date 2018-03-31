@@ -6,7 +6,11 @@ import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.data.CardSearchData
+import com.jamieadkins.gwent.database.entity.CategoryEntity
+import com.jamieadkins.gwent.database.entity.KeywordEntity
 import io.reactivex.Single
+import io.reactivex.functions.Function3
 
 class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
@@ -49,11 +53,14 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
     }
 
     override fun searchCards(query: String): Single<Collection<GwentCard>> {
-        return getAllCards()
-                /*.flatMap { cardList ->
-                    val searchResults = CardSearch.searchCards(query, cardList.toList())
-                    getCards(searchResults)
-                }*/
+        return Single.zip(
+                getCardEntities(),
+                database.keywordDao().getAllKeywords(),
+                database.categoryDao().getAllCategories(),
+                Function3<List<CardEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
+                { cards, keywords, categories -> CardSearchData(cards, keywords, categories) })
+                .flatMap { CardSearch.searchCards(query, it) }
+                .flatMap { getCards(it) }
     }
 
     override fun getCard(id: String): Single<GwentCard> {

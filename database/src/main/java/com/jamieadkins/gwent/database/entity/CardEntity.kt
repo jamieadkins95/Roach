@@ -17,6 +17,7 @@ data class CardEntity(
         val tooltip: Map<String, String>,
         val flavor: Map<String, String>,
         val categoryIds: List<String>,
+        val keywordIds: List<String>,
         val loyalties: List<String>,
         val related: List<String>) {
 

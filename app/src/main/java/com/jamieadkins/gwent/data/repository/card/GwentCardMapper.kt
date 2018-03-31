@@ -51,6 +51,7 @@ object GwentCardMapper {
                                 it.info ?: mapOf(),
                                 it.flavor ?: mapOf(),
                                 it.categories ?: listOf(),
+                                it.keywords ?: listOf(),
                                 it.loyalties ?: listOf(),
                                 it.related ?: listOf()
                         )

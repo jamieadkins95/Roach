@@ -11,5 +11,5 @@ data class CategoryEntity(
         val locale: String,
         val name: String) {
 
-    @PrimaryKey val id = categoryId + locale
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
 }

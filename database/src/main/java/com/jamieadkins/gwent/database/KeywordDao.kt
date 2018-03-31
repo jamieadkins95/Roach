@@ -16,9 +16,12 @@ interface KeywordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(items: Collection<KeywordEntity>)
 
-    @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE keywordId = :keywordId AND locale = :locale")
+    @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE} WHERE keywordId = :keywordId AND locale = :locale")
     fun getKeywordForLocale(keywordId: String, locale: String): Single<KeywordEntity>
 
-    @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE keywordId = :keywordId")
+    @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE} WHERE keywordId = :keywordId")
     fun getKeyword(keywordId: String): Single<List<KeywordEntity>>
+
+    @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE}")
+    fun getAllKeywords(): Single<List<KeywordEntity>>
 }

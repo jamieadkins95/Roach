@@ -21,4 +21,7 @@ interface CategoryDao {
 
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE categoryId = :categoryId")
     fun getCategory(categoryId: String): Single<List<CategoryEntity>>
+
+    @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE}")
+    fun getAllCategories(): Single<List<CategoryEntity>>
 }

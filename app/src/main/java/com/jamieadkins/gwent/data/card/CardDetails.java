@@ -7,6 +7,7 @@ public class CardDetails {
     private static final String DEFAULT_LOCALE = "en-US";
 
     private List<String> categories;
+    private List<String> keywords;
     private String faction;
     private Map<String, String> flavor;
     private Map<String, String> info;
@@ -102,6 +103,10 @@ public class CardDetails {
 
     public List<String> getCategories() {
         return categories;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
     }
 
     public Map<String, String> getFlavor() {

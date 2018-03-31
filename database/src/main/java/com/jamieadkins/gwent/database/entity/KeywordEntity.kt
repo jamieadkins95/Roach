@@ -12,5 +12,5 @@ data class KeywordEntity(
         val name: String,
         val description: String) {
 
-    @PrimaryKey val id = keywordId + locale
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
 }
