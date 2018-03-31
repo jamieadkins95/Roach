@@ -105,6 +105,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
     private fun performCategoriesUpdate(): Completable {
         return getLatestPatch()
                 .flatMap { getFileFromFirebase(getStorageReference(it.patch, CATEGORIES_FILE_NAME), CATEGORIES_FILE_NAME) }
+                .observeOn(Schedulers.io())
                 .flatMap { parseJsonFile<FirebaseCategoryResult>(it, FirebaseCategoryResult::class.java) }
                 .flatMapCompletable { updateCategoriesDatabase(it) }
     }
@@ -120,6 +121,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
     private fun performKeywordsUpdate(): Completable {
         return getLatestPatch()
                 .flatMap { getFileFromFirebase(getStorageReference(it.patch, KEYWORDS_FILE_NAME), KEYWORDS_FILE_NAME) }
+                .observeOn(Schedulers.io())
                 .flatMap { parseJsonFile<FirebaseKeywordResult>(it, FirebaseKeywordResult::class.java) }
                 .flatMapCompletable { updateKeywordDatabase(it) }
     }

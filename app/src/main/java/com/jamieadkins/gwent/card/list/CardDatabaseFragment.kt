@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
 import com.jamieadkins.commonutils.mvp2.BaseListView
-import com.jamieadkins.commonutils.mvp2.MvpFragment
+import com.jamieadkins.commonutils.mvp3.MvpFragment
 
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
@@ -23,6 +22,9 @@ import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.util.DisplayMetrics
+import android.view.*
+import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.gwent.base.PresenterFactory
 
 class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
@@ -34,6 +36,7 @@ class CardDatabaseFragment :
     val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     val controller = CardDatabaseController()
+    lateinit var cardsPresenter: CardsPresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -48,6 +51,32 @@ class CardDatabaseFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_card_list, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.search, menu)
+
+        val searchMenuItem = menu?.findItem(R.id.action_search)
+        val searchView = MenuItemCompat.getActionView(searchMenuItem) as SearchView
+        searchView.queryHint = getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                cardsPresenter.search(query)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                return false
+            }
+        })
+
+        searchView.setOnCloseListener {
+            cardsPresenter.clearSearch()
+            false
+        }
+
+        inflater?.inflate(R.menu.card_filters, menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,11 +101,16 @@ class CardDatabaseFragment :
         return px
     }
 
-    override fun setupPresenter() {
-        presenter = CardsPresenter(
-                Injection.provideSchedulerProvider(),
-                Injection.provideCardRepository(),
-                Injection.provideUpdateRepository())
+    override fun setupPresenter(): BasePresenter<CardDatabaseContract.View> {
+        val newPresenter = PresenterFactory.getPresenter(
+                javaClass.simpleName,
+                { CardsPresenter(
+                        Injection.provideSchedulerProvider(),
+                        Injection.provideCardRepository(),
+                        Injection.provideUpdateRepository())
+                })
+        cardsPresenter = newPresenter as CardsPresenter
+        return newPresenter
     }
 
     override fun setLoadingIndicator(loading: Boolean) {
@@ -109,5 +143,12 @@ class CardDatabaseFragment :
             val i = Intent(activity, UpdateActivity::class.java)
             startActivity(i)
         }
+
+        view?.let {
+            val snackbar = Snackbar.make(it, message, Snackbar.LENGTH_INDEFINITE)
+            snackbar.setAction(actionMessage, action)
+            snackbar.show()
+        }
+
     }
 }

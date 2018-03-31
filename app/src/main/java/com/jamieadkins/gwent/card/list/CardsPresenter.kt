@@ -4,6 +4,7 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableSingle
+import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
@@ -18,7 +19,10 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
                      val updateRepository: UpdateRepository) :
         BasePresenter<CardDatabaseContract.View>(schedulerProvider), CardDatabaseContract.Presenter {
 
+    private val cardFilter = CardFilter()
+
     override fun onRefresh() {
+        view?.setLoadingIndicator(true)
         updateRepository.isUpdateAvailable()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -31,7 +35,17 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
                 })
                 .addToComposite(disposable)
 
-        cardRepository.getCards()
+        loadCardData()
+    }
+
+    private fun loadCardData() {
+        view?.setLoadingIndicator(true)
+        val source = if (cardFilter.searchQuery != null) {
+            cardRepository.searchCards(cardFilter.searchQuery ?: "")
+        } else {
+            cardRepository.getCards(cardFilter)
+        }
+        source
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
@@ -41,5 +55,15 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
                     }
                 })
                 .addToComposite(disposable)
+    }
+
+    override fun search(query: String?) {
+        cardFilter.searchQuery = query
+        loadCardData()
+    }
+
+    override fun clearSearch() {
+        cardFilter.searchQuery = null
+        loadCardData()
     }
 }
