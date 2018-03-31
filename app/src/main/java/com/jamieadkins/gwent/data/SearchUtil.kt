@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
 import io.reactivex.Single
 import me.xdrop.fuzzywuzzy.FuzzySearch
+import timber.log.Timber
 import java.util.*
 
 object CardSearch {
@@ -18,6 +19,7 @@ object CardSearch {
             val searchResults = mutableListOf<CardSearchResult>()
             val cardIds = mutableListOf<String>()
             var maxScore = 0
+            val start = System.currentTimeMillis()
             cardSearchData.cards.forEach { card ->
                 val scores = ArrayList<Int>()
                 GwentApplication.INSTANCE.resources.getStringArray(R.array.locales).forEach {
@@ -44,6 +46,9 @@ object CardSearch {
                     searchResults.add(result)
                 }
             }
+
+            val timeTaken = System.currentTimeMillis() - start
+            Timber.d("Search took $timeTaken ms")
 
             searchResults.sortByDescending { result -> result.score }
             val cutOff = maxScore - maxScore / 20
