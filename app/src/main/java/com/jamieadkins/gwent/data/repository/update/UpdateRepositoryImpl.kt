@@ -19,6 +19,8 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jamieadkins.gwent.data.keyword.FirebaseCategoryResult
+import com.jamieadkins.gwent.data.keyword.FirebaseKeywordResult
 import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import io.reactivex.schedulers.Schedulers
@@ -30,9 +32,9 @@ import java.lang.reflect.Type
 class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateRepository {
 
     private companion object {
-        const val CARD_FILE_NAME = "cards"
-        const val CATEGORIES_FILE_NAME = "categories"
-        const val KEYWORDS_FILE_NAME = "keywords"
+        const val CARD_FILE_NAME = "cards.json"
+        const val CATEGORIES_FILE_NAME = "categories.json"
+        const val KEYWORDS_FILE_NAME = "keywords.json"
     }
 
     private val storage = FirebaseStorage.getInstance()
@@ -78,12 +80,14 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
 
     override fun performUpdate(): Completable {
         return performCardDatabaseUpdate()
+                .andThen(performKeywordsUpdate())
+                .andThen(performCategoriesUpdate())
                 .andThen(performPatchDatabaseUpdate())
     }
 
     private fun performCardDatabaseUpdate(): Completable {
         return getLatestPatch()
-                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME)) }
+                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME), CARD_FILE_NAME) }
                 .observeOn(Schedulers.io())
                 .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
                 .flatMapCompletable { updateCardDatabase(it) }
@@ -95,6 +99,36 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
             log("Inserting " + cards.size + " cards into database.")
             database.cardDao().insertCards(cards)
             database.cardDao().insertArt(GwentCardMapper.artEntityListFromApiResult(cardList))
+        }
+    }
+
+    private fun performCategoriesUpdate(): Completable {
+        return getLatestPatch()
+                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CATEGORIES_FILE_NAME), CATEGORIES_FILE_NAME) }
+                .flatMap { parseJsonFile<FirebaseCategoryResult>(it, FirebaseCategoryResult::class.java) }
+                .flatMapCompletable { updateCategoriesDatabase(it) }
+    }
+
+    private fun updateCategoriesDatabase(result: FirebaseCategoryResult): Completable {
+        return Completable.fromCallable {
+            val categories = GwentCategoryMapper.mapToCategoryEntityList(result)
+            log("Inserting ${categories.size} categories into database.")
+            database.categoryDao().insert(categories)
+        }
+    }
+
+    private fun performKeywordsUpdate(): Completable {
+        return getLatestPatch()
+                .flatMap { getFileFromFirebase(getStorageReference(it.patch, KEYWORDS_FILE_NAME), KEYWORDS_FILE_NAME) }
+                .flatMap { parseJsonFile<FirebaseKeywordResult>(it, FirebaseKeywordResult::class.java) }
+                .flatMapCompletable { updateKeywordDatabase(it) }
+    }
+
+    private fun updateKeywordDatabase(result: FirebaseKeywordResult): Completable {
+        return Completable.fromCallable {
+            val keywords = GwentKeywordMapper.mapToKeywordEntityList(result)
+            log("Inserting ${keywords.size} keywords into database.")
+            database.keywordDao().insert(keywords)
         }
     }
 
@@ -112,12 +146,12 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
 
     override fun getNewCardData(): Single<File> {
         return getLatestPatch()
-                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME)) }
+                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME), CARD_FILE_NAME) }
     }
 
-    private fun getFileFromFirebase(storageRef: StorageReference): Single<File> {
+    private fun getFileFromFirebase(storageRef: StorageReference, outputFileName: String): Single<File> {
         return Single.create<File> { emitter ->
-            val file = File(GwentApplication.INSTANCE.filesDir, "cards.json")
+            val file = File(GwentApplication.INSTANCE.filesDir, outputFileName)
             val taskSnapshotStorageTask = storageRef.getFile(file)
                     .addOnSuccessListener { _ ->
                         emitter.onSuccess(file)
@@ -147,7 +181,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
     }
 
     private fun getStorageReference(patch: String, fileName: String): StorageReference {
-        return storage.reference.child("card-data").child(patch).child("$fileName.json")
+        return storage.reference.child("card-data").child(patch).child(fileName)
     }
 
     private fun <T> parseJsonFile(file: File, type: Type = genericType<T>()): Single<T> {

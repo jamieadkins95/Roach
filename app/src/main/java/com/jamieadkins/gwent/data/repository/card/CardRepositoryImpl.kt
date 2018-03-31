@@ -11,9 +11,13 @@ import io.reactivex.Single
 class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
+        return getCardEntities()
+                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
+    }
+
+    private fun getCardEntities(): Single<List<CardEntity>> {
         return database.cardDao().getCards()
                 .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
-                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
     }
 
     private fun mergeCardEntitiesWithCardArt(cards: List<CardEntity>): Single<List<CardEntity>> {
@@ -35,9 +39,7 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
     override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
         return getAllCards()
-                /*.map {
-                    it.filter { cardFilter?.doesCardMeetFilter(it) ?: true }
-                }*/
+                .map { it.filter { cardFilter?.doesCardMeetFilter(it) ?: true } }
     }
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
