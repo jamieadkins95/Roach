@@ -14,8 +14,8 @@
                 android:title="@string/faction" />
 
             <item
-                android:id="@+id/filter_type"
-                android:title="@string/type" />
+                android:id="@+id/filter_colour"
+                android:title="@string/color" />
 
             <item
                 android:id="@+id/filter_rarity"

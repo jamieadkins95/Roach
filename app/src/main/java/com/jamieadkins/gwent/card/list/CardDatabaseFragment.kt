@@ -25,6 +25,10 @@ import android.util.DisplayMetrics
 import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.gwent.base.PresenterFactory
+import com.jamieadkins.gwent.bus.OpenFilterMenuEvent
+import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
+import com.jamieadkins.gwent.filter.FilterType
+import com.jamieadkins.gwent.filter.FilterableItem
 
 class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
@@ -113,6 +117,24 @@ class CardDatabaseFragment :
         return newPresenter
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.filter_faction -> {
+                RxBus.post(OpenFilterMenuEvent(FilterType.FACTION))
+                true
+            }
+            R.id.filter_rarity -> {
+                RxBus.post(OpenFilterMenuEvent(FilterType.RARITY))
+                true
+            }
+            R.id.filter_colour -> {
+                RxBus.post(OpenFilterMenuEvent(FilterType.COLOUR))
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun setLoadingIndicator(loading: Boolean) {
         refreshLayout.isRefreshing = loading
     }
@@ -130,6 +152,11 @@ class CardDatabaseFragment :
         } else {
             showEmptyView()
         }
+    }
+
+    override fun showFilterMenu(filters: MutableList<FilterableItem>) {
+        val dialog = FilterBottomSheetDialogFragment.newInstance(filters)
+        dialog.show(activity?.supportFragmentManager, null)
     }
 
     override fun onRefresh() {
