@@ -111,7 +111,8 @@ class CardDatabaseFragment :
                 { CardsPresenter(
                         Injection.provideSchedulerProvider(),
                         Injection.provideCardRepository(),
-                        Injection.provideUpdateRepository())
+                        Injection.provideUpdateRepository(),
+                        Injection.provideFilterRepository())
                 })
         cardsPresenter = newPresenter as CardsPresenter
         return newPresenter
