@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.card.CardFilter
+import com.jamieadkins.gwent.card.SortedBy
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.ArtEntity
@@ -41,9 +42,17 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
         }
     }
 
-    override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
+    override fun getCards(cardFilter: CardFilter?, sortedBy: SortedBy): Single<Collection<GwentCard>> {
         return getAllCards()
                 .map { it.filter { cardFilter?.doesCardMeetFilter(it) ?: true } }
+                .map {
+                    when (sortedBy) {
+                        SortedBy.ALPHABETICALLY_ASC -> it.sortedBy { it.name }
+                        SortedBy.ALPHABETICALLY_DESC -> it.sortedByDescending { it.name }
+                        SortedBy.STRENGTH_ASC -> it.sortedBy { it.strength ?: 0 }
+                        SortedBy.STRENGTH_DESC -> it.sortedByDescending { it.strength ?: 0 }
+                    }
+                }
     }
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
