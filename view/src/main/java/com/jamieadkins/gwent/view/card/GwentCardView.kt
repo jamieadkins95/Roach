@@ -7,17 +7,22 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.airbnb.epoxy.ModelProp
 
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.jamieadkins.gwent.core.GwentCardRarity
 import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.core.GwentStringHelper
 import com.jamieadkins.gwent.view.R
 import kotterknife.bindView
+import java.lang.Exception
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class GwentCardView : CardView {
@@ -29,6 +34,7 @@ class GwentCardView : CardView {
     private val tvRarity by bindView<TextView>(R.id.rarity)
     private val tvFaction by bindView<TextView>(R.id.faction)
     private val imgCard by bindView<ImageView>(R.id.card_image)
+    private val progress by bindView<ProgressBar>(R.id.progress)
 
     constructor(context: Context) : super(context) { inflateView() }
 
@@ -71,13 +77,31 @@ class GwentCardView : CardView {
 
     @ModelProp
     fun setCardImage(imageUrl: String?) {
+        imgCard.visibility = View.INVISIBLE
+        progress.visibility = View.VISIBLE
         if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
                     .fitCenter()
+                    .listener(object : RequestListener<String, GlideDrawable> {
+                        override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
+                            progress.visibility = View.GONE
+                            imgCard.visibility = View.VISIBLE
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                            progress.visibility = View.GONE
+                            imgCard.visibility = View.VISIBLE
+                            return false
+                        }
+
+                    })
                     .into(imgCard)
         } else {
             imgCard.setImageDrawable(null)
+            progress.visibility = View.GONE
+            imgCard.visibility = View.VISIBLE
         }
     }
 
