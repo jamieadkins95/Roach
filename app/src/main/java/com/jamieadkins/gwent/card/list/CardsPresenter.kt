@@ -3,7 +3,10 @@ package com.jamieadkins.gwent.card.list
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
+import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
+import com.jamieadkins.gwent.bus.RefreshEvent
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.data.repository.card.CardRepository
@@ -21,8 +24,19 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
 
     private val cardFilter = CardFilter()
 
+    override fun onAttach(newView: CardDatabaseContract.View) {
+        super.onAttach(newView)
+
+        RxBus.register(RefreshEvent::class.java)
+                .subscribeWith(object : BaseDisposableObserver<RefreshEvent>() {
+                    override fun onNext(t: RefreshEvent) {
+                        onRefresh()
+                    }
+                })
+                .addToComposite(disposable)
+    }
+
     override fun onRefresh() {
-        view?.setLoadingIndicator(true)
         updateRepository.isUpdateAvailable()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
