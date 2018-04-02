@@ -19,13 +19,16 @@ import java.util.List;
 public class FilterBottomSheetDialogFragment extends
         MvpBottomSheetDialogFragment<FilterContract.View> implements FilterContract.View {
     private FilterType filterType;
+    private String screenId;
     private FilterRecyclerViewAdapter adapter = new FilterRecyclerViewAdapter();
 
     private static final String KEY_FILTER_TYPE = "filter";
+    private static final String KEY_SCREEN_ID = "screen";
 
-    public static FilterBottomSheetDialogFragment newInstance(FilterType filterType) {
+    public static FilterBottomSheetDialogFragment newInstance(FilterType filterType, String screenId) {
         FilterBottomSheetDialogFragment dialogFragment = new FilterBottomSheetDialogFragment();
         dialogFragment.filterType = filterType;
+        dialogFragment.screenId = screenId;
         return dialogFragment;
     }
 
@@ -33,6 +36,7 @@ public class FilterBottomSheetDialogFragment extends
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             filterType = (FilterType) savedInstanceState.getSerializable(KEY_FILTER_TYPE);
+            screenId = savedInstanceState.getString(KEY_SCREEN_ID);
         }
         super.onCreate(savedInstanceState);
     }
@@ -52,6 +56,7 @@ public class FilterBottomSheetDialogFragment extends
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(KEY_FILTER_TYPE, filterType);
+        outState.putString(KEY_SCREEN_ID, screenId);
         super.onSaveInstanceState(outState);
     }
 
@@ -60,7 +65,7 @@ public class FilterBottomSheetDialogFragment extends
     public BasePresenter<FilterContract.View> setupPresenter() {
         return new FilterPresenter(filterType,
                 Injection.INSTANCE.provideSchedulerProvider(),
-                Injection.INSTANCE.provideFilterRepository());
+                Injection.INSTANCE.provideFilterRepository(screenId));
     }
 
     @Override

@@ -27,7 +27,6 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
-import com.jamieadkins.gwent.filter.FilterableItem
 
 class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
@@ -35,11 +34,13 @@ class CardDatabaseFragment :
         SwipeRefreshLayout.OnRefreshListener,
         BaseListView {
 
-    val emptyView by bindView<View>(R.id.empty)
-    val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
-    val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
-    val controller = CardDatabaseController()
-    lateinit var cardsPresenter: CardsPresenter
+    private val screenKey = javaClass.name
+
+    private val emptyView by bindView<View>(R.id.empty)
+    private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
+    private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
+    private val controller = CardDatabaseController()
+    private lateinit var cardsPresenter: CardsPresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -111,7 +112,7 @@ class CardDatabaseFragment :
                         Injection.provideSchedulerProvider(),
                         Injection.provideCardRepository(),
                         Injection.provideUpdateRepository(),
-                        Injection.provideFilterRepository())
+                        Injection.provideFilterRepository(screenKey))
                 })
         cardsPresenter = newPresenter as CardsPresenter
         return newPresenter
@@ -119,18 +120,14 @@ class CardDatabaseFragment :
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
-            R.id.filter_faction -> {
-                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.FACTION)
-                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
-                true
-            }
-            R.id.filter_rarity -> {
-                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.RARITY)
-                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
-                true
-            }
-            R.id.filter_colour -> {
-                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.COLOUR)
+            R.id.filter_faction, R.id.filter_rarity, R.id.filter_colour -> {
+                val filterType = when (item.itemId) {
+                    R.id.filter_faction -> FilterType.FACTION
+                    R.id.filter_rarity -> FilterType.RARITY
+                    R.id.filter_colour -> FilterType.COLOUR
+                    else -> throw Exception("Filter not supported")
+                }
+                val dialog = FilterBottomSheetDialogFragment.newInstance(filterType, screenKey)
                 dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }

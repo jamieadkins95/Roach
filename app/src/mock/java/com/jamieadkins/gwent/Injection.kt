@@ -17,6 +17,7 @@ import com.jamieadkins.gwent.main.GwentApplication
 object Injection {
 
     private val database by lazy { GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext) }
+    private val filterRepositories = mutableMapOf<String, FilterRepository>()
 
     fun provideDeckRepository(): DeckRepository {
         return UserDeckRepository(database)
@@ -30,8 +31,8 @@ object Injection {
         return UpdateRepositoryImpl(database)
     }
 
-    fun provideFilterRepository(): FilterRepository {
-        return FilterRepositoryImpl()
+    fun provideFilterRepository(key: String): FilterRepository {
+        return filterRepositories.getOrPut(key, { FilterRepositoryImpl() })
     }
 
     fun provideSchedulerProvider(): BaseSchedulerProvider {
