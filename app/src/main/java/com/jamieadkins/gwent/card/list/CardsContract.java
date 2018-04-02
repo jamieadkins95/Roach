@@ -15,8 +15,6 @@ import java.util.List;
 public interface CardsContract {
     interface View extends BaseListView {
         void showCards(@NotNull List<GwentCard> cards);
-
-        void showFilterMenu(@NotNull List<FilterableItem> filters);
     }
 
     interface Presenter {

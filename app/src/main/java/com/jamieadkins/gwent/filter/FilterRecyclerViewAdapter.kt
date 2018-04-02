@@ -19,6 +19,14 @@ class FilterRecyclerViewAdapter : RecyclerView.Adapter<FilterRecyclerViewAdapter
                 notifyDataSetChanged()
             }
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return filters[position].hashCode().toLong()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
         return FilterViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_checkable, parent, false))
@@ -26,12 +34,9 @@ class FilterRecyclerViewAdapter : RecyclerView.Adapter<FilterRecyclerViewAdapter
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         val filter = filters[position]
-
         holder.checkBox.isChecked = filter.isChecked
-
         holder.itemView.setOnClickListener {
             val newState = !holder.checkBox.isChecked
-            holder.checkBox.isChecked = newState
             when (filter) {
                 is FactionFilter -> RxBus.post(FilterChangeEvent(FactionFilter(filter.faction, newState)))
                 is ColourFilter -> RxBus.post(FilterChangeEvent(ColourFilter(filter.colour, newState)))

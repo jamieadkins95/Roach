@@ -1,25 +1,40 @@
 package com.jamieadkins.gwent.filter;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.support.design.widget.BottomSheetDialogFragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jamieadkins.commonutils.mvp2.BasePresenter;
+import com.jamieadkins.commonutils.mvp3.MvpBottomSheetDialogFragment;
+import com.jamieadkins.gwent.Injection;
 import com.jamieadkins.gwent.R;
-import com.jamieadkins.gwent.bus.CloseFilterMenuEvent;
-import com.jamieadkins.gwent.bus.RxBus;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    private List<FilterableItem> mItems;
+public class FilterBottomSheetDialogFragment extends
+        MvpBottomSheetDialogFragment<FilterContract.View> implements FilterContract.View {
+    private FilterType filterType;
+    private FilterRecyclerViewAdapter adapter = new FilterRecyclerViewAdapter();
 
-    public static FilterBottomSheetDialogFragment newInstance(List<FilterableItem> items) {
+    private static final String KEY_FILTER_TYPE = "filter";
+
+    public static FilterBottomSheetDialogFragment newInstance(FilterType filterType) {
         FilterBottomSheetDialogFragment dialogFragment = new FilterBottomSheetDialogFragment();
-        dialogFragment.mItems = items;
+        dialogFragment.filterType = filterType;
         return dialogFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            filterType = (FilterType) savedInstanceState.getSerializable(KEY_FILTER_TYPE);
+        }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -29,16 +44,27 @@ public class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        FilterRecyclerViewAdapter adapter = new FilterRecyclerViewAdapter();
-        adapter.setFilters(mItems);
         recyclerView.setAdapter(adapter);
 
         dialog.setContentView(contentView);
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        RxBus.INSTANCE.post(new CloseFilterMenuEvent());
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(KEY_FILTER_TYPE, filterType);
+        super.onSaveInstanceState(outState);
+    }
+
+    @NotNull
+    @Override
+    public BasePresenter<FilterContract.View> setupPresenter() {
+        return new FilterPresenter(filterType,
+                Injection.INSTANCE.provideSchedulerProvider(),
+                Injection.INSTANCE.provideFilterRepository());
+    }
+
+    @Override
+    public void showFilters(@NotNull List<? extends FilterableItem> filterableItems) {
+        adapter.setFilters(filterableItems);
     }
 }

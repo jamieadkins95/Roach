@@ -25,7 +25,6 @@ import android.util.DisplayMetrics
 import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.gwent.base.PresenterFactory
-import com.jamieadkins.gwent.bus.OpenFilterMenuEvent
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 import com.jamieadkins.gwent.filter.FilterableItem
@@ -121,15 +120,18 @@ class CardDatabaseFragment :
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.filter_faction -> {
-                RxBus.post(OpenFilterMenuEvent(FilterType.FACTION))
+                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.FACTION)
+                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }
             R.id.filter_rarity -> {
-                RxBus.post(OpenFilterMenuEvent(FilterType.RARITY))
+                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.RARITY)
+                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }
             R.id.filter_colour -> {
-                RxBus.post(OpenFilterMenuEvent(FilterType.COLOUR))
+                val dialog = FilterBottomSheetDialogFragment.newInstance(FilterType.COLOUR)
+                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -153,11 +155,6 @@ class CardDatabaseFragment :
         } else {
             showEmptyView()
         }
-    }
-
-    override fun showFilterMenu(filters: MutableList<FilterableItem>) {
-        val dialog = FilterBottomSheetDialogFragment.newInstance(filters)
-        dialog.show(activity?.supportFragmentManager, null)
     }
 
     override fun onRefresh() {

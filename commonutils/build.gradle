@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation "com.android.support:appcompat-v7:$support_library_version"
     implementation "com.android.support:recyclerview-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.8'
