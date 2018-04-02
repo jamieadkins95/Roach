@@ -51,8 +51,8 @@ class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
                     override fun onSuccess(update: Boolean) {
                         if (update) {
                             view?.showUpdateAvailable()
-                            view?.setLoadingIndicator(false)
                         }
+                        view?.setLoadingIndicator(false)
                     }
                 })
                 .addToComposite(disposable)
