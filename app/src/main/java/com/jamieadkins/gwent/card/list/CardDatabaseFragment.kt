@@ -25,6 +25,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.gwent.base.PresenterFactory
+import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 
@@ -129,6 +130,10 @@ class CardDatabaseFragment :
                 }
                 val dialog = FilterBottomSheetDialogFragment.newInstance(filterType, screenKey)
                 dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
+                true
+            }
+            R.id.filter_reset -> {
+                RxBus.post(ResetFiltersEvent())
                 true
             }
             else -> return super.onOptionsItemSelected(item)

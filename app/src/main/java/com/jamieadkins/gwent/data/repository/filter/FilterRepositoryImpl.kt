@@ -17,21 +17,7 @@ class FilterRepositoryImpl : FilterRepository {
     private var sortOrder = SortedBy.ALPHABETICALLY_ASC
     private var isCollectibleOnly = false
 
-    init {
-        for (rarity in GwentCardRarity.values()) {
-            rarityFilter[rarity] = true
-        }
-
-        for (colour in GwentCardColour.values()) {
-            colourFilter[colour] = true
-        }
-
-        for (faction in GwentFaction.values()) {
-            factionFilter[faction] = true
-        }
-
-        filter.onNext(createCardFilter())
-    }
+    private var defaultCollectibleOnly = false
 
     override fun getFilter(): Observable<CardFilter> = filter
 
@@ -55,20 +41,51 @@ class FilterRepositoryImpl : FilterRepository {
         filter.onNext(createCardFilter())
     }
 
-    override fun setFactionEnabled(faction: GwentFaction, enabled: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setRarityEnabled(rarity: GwentCardRarity, enabled: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setColourEnabled(colour: GwentCardColour, enabled: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun setCollectibleOnly(collectibleOnly: Boolean) {
         isCollectibleOnly = collectibleOnly
+        filter.onNext(createCardFilter())
+    }
+
+    override fun setDefaultFilters(rarities: List<GwentCardRarity>,
+                                  factions: List<GwentFaction>,
+                                  colours: List<GwentCardColour>,
+                                   collectibleOnly: Boolean) {
+        rarityFilter.clear()
+        rarities.forEach {
+            rarityFilter[it] = true
+        }
+
+        factionFilter.clear()
+        factions.forEach {
+            factionFilter[it] = true
+        }
+
+        colourFilter.clear()
+        colours.forEach {
+            colourFilter[it] = true
+        }
+
+        defaultCollectibleOnly = collectibleOnly
+        isCollectibleOnly = collectibleOnly
+
+        filter.onNext(createCardFilter())
+    }
+
+    override fun resetFilters() {
+        rarityFilter.keys.forEach {
+            rarityFilter[it] = true
+        }
+
+        factionFilter.keys.forEach {
+            factionFilter[it] = true
+        }
+
+        colourFilter.keys.forEach {
+            colourFilter[it] = true
+        }
+
+        isCollectibleOnly = defaultCollectibleOnly
+
         filter.onNext(createCardFilter())
     }
 

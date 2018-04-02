@@ -19,11 +19,12 @@ interface FilterRepository {
 
     fun updateRarityFilter(rarity: GwentCardRarity, checked: Boolean)
 
-    fun setFactionEnabled(faction: GwentFaction, enabled: Boolean)
-
-    fun setRarityEnabled(rarity: GwentCardRarity, enabled: Boolean)
-
-    fun setColourEnabled(colour: GwentCardColour, enabled: Boolean)
-
     fun setCollectibleOnly(collectibleOnly: Boolean)
+
+    fun setDefaultFilters(rarities: List<GwentCardRarity> = GwentCardRarity.values().toList(),
+                         factions: List<GwentFaction> = GwentFaction.values().toList(),
+                         colours: List<GwentCardColour> = GwentCardColour.values().toList(),
+                          collectibleOnly: Boolean = false)
+
+    fun resetFilters()
 }
