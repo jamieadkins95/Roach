@@ -9,16 +9,12 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class FilterRepositoryImpl : FilterRepository {
-    private val sort = BehaviorSubject.create<SortedBy>()
-            // Default to sorted Alphabetically.
-            .apply { startWith(SortedBy.ALPHABETICALLY_ASC) }
-
     private val filter = BehaviorSubject.create<CardFilter>()
 
     private val rarityFilter = mutableMapOf<GwentCardRarity, Boolean>()
     private val colourFilter = mutableMapOf<GwentCardColour, Boolean>()
     private val factionFilter = mutableMapOf<GwentFaction, Boolean>()
-
+    private var sortOrder = SortedBy.ALPHABETICALLY_ASC
     private var isCollectibleOnly = false
 
     init {
@@ -37,12 +33,11 @@ class FilterRepositoryImpl : FilterRepository {
         filter.onNext(createCardFilter())
     }
 
-    override fun getSortParameter(): Observable<SortedBy> = sort
-
     override fun getFilter(): Observable<CardFilter> = filter
 
     override fun updateSortParameter(sortedBy: SortedBy) {
-        sort.onNext(sortedBy)
+        sortOrder = sortedBy
+        filter.onNext(createCardFilter())
     }
 
     override fun updateFactionFilter(faction: GwentFaction, checked: Boolean) {

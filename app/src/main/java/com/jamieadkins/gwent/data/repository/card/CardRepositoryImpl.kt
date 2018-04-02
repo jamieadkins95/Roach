@@ -42,11 +42,11 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
         }
     }
 
-    override fun getCards(cardFilter: CardFilter?, sortedBy: SortedBy): Single<Collection<GwentCard>> {
+    override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
         return getAllCards()
-                .map { it.filter { cardFilter?.doesCardMeetFilter(it) ?: true } }
+                .map { it.filter { card -> cardFilter?.let { doesCardMeetFilter(cardFilter, card) } ?: true } }
                 .map {
-                    when (sortedBy) {
+                    when (cardFilter?.sortedBy ?: SortedBy.ALPHABETICALLY_ASC) {
                         SortedBy.ALPHABETICALLY_ASC -> it.sortedBy { it.name }
                         SortedBy.ALPHABETICALLY_DESC -> it.sortedByDescending { it.name }
                         SortedBy.STRENGTH_ASC -> it.sortedBy { it.strength ?: 0 }
@@ -77,5 +77,13 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
                 .flatMap { mergeCardEntitiesWithCardArt(listOf(it)) }
                 .map { it.first() }
                 .map { GwentCardMapper.cardEntityToGwentCard(it) }
+    }
+
+    fun doesCardMeetFilter(filter: CardFilter, card: GwentCard): Boolean {
+        val include = !filter.isCollectibleOnly || card.collectible
+        val faction = filter.factionFilter[card.faction] ?: false
+        val rarity = filter.rarityFilter[card.rarity] ?: false
+        val colour = filter.colourFilter[card.colour] ?: false
+        return (faction && rarity && colour && include)
     }
 }

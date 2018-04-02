@@ -9,8 +9,6 @@ import io.reactivex.Observable
 
 interface FilterRepository {
 
-    fun getSortParameter(): Observable<SortedBy>
-
     fun getFilter(): Observable<CardFilter>
 
     fun updateSortParameter(sortedBy: SortedBy)

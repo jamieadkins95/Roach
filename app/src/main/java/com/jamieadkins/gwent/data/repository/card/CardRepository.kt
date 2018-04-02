@@ -7,7 +7,7 @@ import io.reactivex.Single
 
 interface CardRepository {
 
-    fun getCards(cardFilter: CardFilter? = null, sortedBy: SortedBy = SortedBy.ALPHABETICALLY_ASC): Single<Collection<GwentCard>>
+    fun getCards(cardFilter: CardFilter? = null): Single<Collection<GwentCard>>
 
     fun getCards(cardIds: List<String>): Single<Collection<GwentCard>>
 
