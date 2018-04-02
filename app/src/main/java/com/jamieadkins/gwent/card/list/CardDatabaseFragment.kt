@@ -41,7 +41,7 @@ class CardDatabaseFragment :
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val controller = CardDatabaseController()
-    private lateinit var cardsPresenter: CardsPresenter
+    private lateinit var cardsPresenter: CardDatabasePresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -108,13 +108,13 @@ class CardDatabaseFragment :
     override fun setupPresenter(): BasePresenter<CardDatabaseContract.View> {
         val newPresenter = PresenterFactory.getPresenter(
                 javaClass.simpleName,
-                { CardsPresenter(
+                { CardDatabasePresenter(
                         Injection.provideSchedulerProvider(),
                         Injection.provideCardRepository(),
                         Injection.provideUpdateRepository(),
                         Injection.provideFilterRepository(screenKey))
                 })
-        cardsPresenter = newPresenter as CardsPresenter
+        cardsPresenter = newPresenter as CardDatabasePresenter
         return newPresenter
     }
 

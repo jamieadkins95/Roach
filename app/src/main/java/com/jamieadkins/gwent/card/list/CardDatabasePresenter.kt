@@ -12,10 +12,10 @@ import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.filter.FilterRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
 
-class CardsPresenter(schedulerProvider: BaseSchedulerProvider,
-                     val cardRepository: CardRepository,
-                     val updateRepository: UpdateRepository,
-                     val filterRepository: FilterRepository) :
+class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
+                            val cardRepository: CardRepository,
+                            val updateRepository: UpdateRepository,
+                            val filterRepository: FilterRepository) :
         BasePresenter<CardDatabaseContract.View>(schedulerProvider), CardDatabaseContract.Presenter {
 
     init {
