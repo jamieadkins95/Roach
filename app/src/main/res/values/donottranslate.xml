@@ -13,19 +13,10 @@
     <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
     <string name="email_subject" translatable="false">Roach for Android</string>
     <string name="email_template" translatable="false">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
-    <string name="gwentify_helper" translatable="false">http://gwentify.com/card-picker/</string>
+    <string name="deck_total_cards_value">%1$d/%2$d</string>
 
     <string name="me" translatable="false">Jamie Adkins</string>
     <string name="cook" translatable="false">Michael Cook</string>
-    <string name="hubert" translatable="false">Hubert Maciejewicz</string>
-    <string name="xlubec" translatable="false">Jakub Cebulski</string>
-    <string name="robert" translatable="false">Robert Schierl</string>
-    <string name="blank_space" translatable="false">Blank Space</string>
-    <string name="jaime" translatable="false">Jaime \"Zegma\" Torres</string>
-    <string name="joao" translatable="false">João Alexandre</string>
-    <string name="stefano" translatable="false">Stefano Sanitate</string>
-    <string name="raquel" translatable="false">Raquel Gesé Ponce</string>
-    <string name="andre" translatable="false">André Viegas</string>
 
     <array translatable="false" name="locales">
         <item>en-US</item>

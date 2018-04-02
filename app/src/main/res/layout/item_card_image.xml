@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.jamieadkins.gwent.card.detail.CardImageView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_image"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical"/>

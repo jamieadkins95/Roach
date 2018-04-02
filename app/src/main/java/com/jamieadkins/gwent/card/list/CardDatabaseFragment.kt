@@ -64,7 +64,6 @@ class CardDatabaseFragment :
 
         val searchMenuItem = menu?.findItem(R.id.action_search)
         val searchView = MenuItemCompat.getActionView(searchMenuItem) as SearchView
-        searchView.queryHint = getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 cardsPresenter.search(query)
