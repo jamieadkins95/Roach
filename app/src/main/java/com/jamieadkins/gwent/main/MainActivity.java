@@ -6,49 +6,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
-import com.jamieadkins.gwent.settings.BasePreferenceActivity;
 import com.jamieadkins.gwent.settings.SettingsActivity;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-public class MainActivity extends BaseActivity implements
-        Drawer.OnDrawerItemClickListener {
+public class MainActivity extends BaseActivity {
     private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
-    private static final String TAG_PUBLIC_DECKS = "com.jamieadkins.gwent.PublicDecks";
     private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
-    private static final String TAG_COLLECTION = "com.jamieadkins.gwent.Collection";
-    private static final String TAG_RESULTS_TRACKER = "com.jamieadkins.gwent.ResultsTracker";
 
     private static final String STATE_NEWS_SHOWN = "com.jamieadkins.gwent.news.shown";
-    private static final int NO_LAUNCH_ATTEMPT = -1;
 
-    private int mCurrentTab;
     private boolean newsItemShown = false;
-
-    private Drawer mNavigationDrawer;
-    private AccountHeader mAccountHeader;
-    private Map<Integer, PrimaryDrawerItem> mDrawerItems;
 
     private FloatingActionButton buttonNewDeck;
 
@@ -76,45 +55,10 @@ public class MainActivity extends BaseActivity implements
         checkLanguage();
         checkIntentForNews();
         SettingsActivity.checkAndUpdatePatchTopic(PreferenceManager.getDefaultSharedPreferences(this), getResources());
-        mAccountHeader = new AccountHeaderBuilder()
-                .withHeaderBackground(R.drawable.header)
-                .withProfileImagesVisible(false)
-                .withActivity(this)
-                .build();
-
-        initialiseDrawerItems();
-        mNavigationDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar((Toolbar) findViewById(R.id.toolbar))
-                .withShowDrawerOnFirstLaunch(true)
-                .withAccountHeader(mAccountHeader)
-                .addDrawerItems(
-                        mDrawerItems.get(1)
-                )
-                .addStickyDrawerItems(
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.action_settings).
-                                withName(R.string.settings)
-                                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_settings, getTheme()))
-                                .withSelectable(false),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.action_about).
-                                withName(R.string.about)
-                                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_info, getTheme()))
-                                .withSelectable(false)
-                )
-                .withOnDrawerItemClickListener(this)
-                .build();
 
         if (savedInstanceState == null) {
             // Cold start, launch card db fragment.
-            mNavigationDrawer.setSelection(1);
-        } else {
-            // Need to find out which fragment we have on screen.
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentContainer);
-            setupFragment(fragment, fragment.getTag());
-
-            mNavigationDrawer.setSelection(mCurrentTab);
+            launchFragment(new CardDatabaseFragment(), TAG_CARD_DB);
         }
     }
 
@@ -157,22 +101,6 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void initialiseDrawerItems() {
-        mDrawerItems = new HashMap<>();
-        mDrawerItems.put(1, new PrimaryDrawerItem()
-                .withIdentifier(1)
-                .withName(R.string.card_database)
-                .withIcon(VectorDrawableCompat.create(getResources(), R.drawable.ic_database, getTheme())));
-    }
-
-    private void setupFragment(Fragment fragment, String tag) {
-        switch (tag) {
-            case TAG_CARD_DB:
-                mCurrentTab = 1;
-                break;
-        }
-    }
-
     private void launchFragment(final Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -194,43 +122,6 @@ public class MainActivity extends BaseActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(STATE_NEWS_SHOWN, newsItemShown);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-        if (mCurrentTab == drawerItem.getIdentifier()) {
-            return false;
-        }
-
-        Fragment fragment;
-        String tag;
-        switch ((int) drawerItem.getIdentifier()) {
-            case 1:
-                fragment = new CardDatabaseFragment();
-                tag = TAG_CARD_DB;
-                break;
-            case R.id.action_about:
-                Intent about = new Intent(MainActivity.this, BasePreferenceActivity.class);
-                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.about);
-                about.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.about);
-                startActivity(about);
-                // Return true to not close the navigation drawer.
-                return true;
-            case R.id.action_settings:
-                Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
-                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT, R.xml.settings);
-                settings.putExtra(BasePreferenceActivity.EXTRA_PREFERENCE_TITLE, R.string.settings);
-                startActivity(settings);
-                // Return true to not close the navigation drawer.
-                return true;
-            default:
-                // Don't display the item as the selected item.
-                return false;
-        }
-
-        setupFragment(fragment, tag);
-        launchFragment(fragment, tag);
-        return false;
     }
 
     private void showChromeCustomTab(String url) {

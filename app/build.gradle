@@ -84,9 +84,6 @@ dependencies {
     // UI.
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-    implementation('com.mikepenz:materialdrawer:5.8.1@aar') {
-        transitive = true
-    }
 
     // Utils.
     implementation project(':commonutils')
