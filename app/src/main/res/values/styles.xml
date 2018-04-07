@@ -49,4 +49,8 @@
     <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Widget.BottomNavigationView.Gwent" parent="Widget.Design.BottomNavigationView">
+        <item name="android:fontFamily">@font/gwent</item>
+    </style>
 </resources>

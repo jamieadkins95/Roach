@@ -29,8 +29,6 @@ public class MainActivity extends BaseActivity {
 
     private boolean newsItemShown = false;
 
-    private FloatingActionButton buttonNewDeck;
-
     @Override
     public void initialiseContentView() {
         setContentView(R.layout.activity_main);
@@ -42,15 +40,6 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState != null) {
             newsItemShown = savedInstanceState.getBoolean(STATE_NEWS_SHOWN, false);
         }
-
-        buttonNewDeck = findViewById(R.id.new_deck);
-        buttonNewDeck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewDeckDialog newDeckDialog = new NewDeckDialog();
-                newDeckDialog.show(getSupportFragmentManager(), newDeckDialog.getClass().getSimpleName());
-            }
-        });
 
         checkLanguage();
         checkIntentForNews();
@@ -107,12 +96,6 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.replace(
                 R.id.contentContainer, fragment, tag);
         fragmentTransaction.commit();
-
-        if (fragment.getTag().equals(TAG_USER_DECKS)) {
-            buttonNewDeck.setVisibility(View.VISIBLE);
-        } else {
-            buttonNewDeck.setVisibility(View.GONE);
-        }
 
         // Our options menu will be different for different tabs.
         invalidateOptionsMenu();

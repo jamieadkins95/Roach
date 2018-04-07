@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_database"
+        android:title="@string/card_database" />
+    <item
+        android:id="@+id/navigation_favourite_team"
+        android:icon="@drawable/ic_cards_filled"
+        android:title="@string/decks" />
+    <item
+        android:id="@+id/navigation_video"
+        android:icon="@drawable/ic_cards_outline"
+        android:title="@string/collection" />
+    <item
+        android:id="@+id/navigation_fans"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/gwent" />
+</menu>
