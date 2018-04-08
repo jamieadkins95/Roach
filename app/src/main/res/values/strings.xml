@@ -68,4 +68,7 @@
 
     <string name="empty_cards">No cards</string>
     <string name="empty_cards_message">Try changing your filters or updating the card database.</string>
+    <string name="other">Other</string>
+    <string name="esports">Esports</string>
+    <string name="forums">Forums</string>
 </resources>

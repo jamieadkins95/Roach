@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference android:title="@string/news" android:icon="@drawable/ic_news">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://www.playgwent.com/news" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/esports" android:icon="@drawable/ic_swords">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://masters.playgwent.com/" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/forums" android:icon="@drawable/ic_forum">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://forums.cdprojektred.com/forum/en/gwent" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/reddit" android:icon="@drawable/ic_reddit">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://www.reddit.com/r/gwent/" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/discord" android:icon="@drawable/ic_discord">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://discord.gg/k9hcJRh" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/twitch" android:icon="@drawable/ic_twitch">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://www.twitch.tv/directory/game/Gwent%3A%20The%20Witcher%20Card%20Game" >
+        </intent>
+    </Preference>
+    <Preference android:title="@string/youtube" android:icon="@drawable/ic_youtube">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://www.youtube.com/channel/UCKS8WtM7U144j4fAU4xqiCw" >
+        </intent>
+    </Preference>
+</PreferenceScreen>
