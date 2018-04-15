@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.jamieadkins.gwent.R;
@@ -23,12 +26,11 @@ import com.jamieadkins.gwent.settings.SettingsActivity;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
-    private static final String TAG_CARD_DB = "com.jamieadkins.gwent.CardDb";
-    private static final String TAG_USER_DECKS = "com.jamieadkins.gwent.UserDecks";
-
     private static final String STATE_NEWS_SHOWN = "com.jamieadkins.gwent.news.shown";
 
     private boolean newsItemShown = false;
+
+    private BottomNavigationView navigationView;
 
     @Override
     public void initialiseContentView() {
@@ -48,8 +50,19 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             // Cold start, launch card db fragment.
-            launchFragment(PreferenceFragment.newInstance(R.xml.gwent), TAG_CARD_DB);
+            Fragment fragment = new CardDatabaseFragment();
+            launchFragment(fragment, fragment.getClass().getSimpleName());
         }
+
+        navigationView = findViewById(R.id.navigation);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = getFragmentForMenuItem(item.getItemId());
+                launchFragment(fragment, fragment.getClass().getSimpleName());
+                return true;
+            }
+        });
     }
 
     private void checkIntentForNews() {
@@ -88,6 +101,21 @@ public class MainActivity extends BaseActivity {
             }
             editor.putBoolean(getString(R.string.shown_news), true);
             editor.apply();
+        }
+    }
+
+    private Fragment getFragmentForMenuItem(int itemId) {
+        switch (itemId) {
+            case R.id.navigation_card_db:
+                return new CardDatabaseFragment();
+            case R.id.navigation_collection:
+                return new CardDatabaseFragment();
+            case R.id.navigation_decks:
+                return new CardDatabaseFragment();
+            case R.id.navigation_gwent:
+                return PreferenceFragment.newInstance(R.xml.gwent);
+            default:
+                return new CardDatabaseFragment();
         }
     }
 
