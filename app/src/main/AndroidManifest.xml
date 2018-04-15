@@ -38,9 +38,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="true"
             android:name=".settings.BasePreferenceActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
         <activity
+            android:exported="true"
             android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 

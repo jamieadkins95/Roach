@@ -17,6 +17,7 @@ import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
+import com.jamieadkins.gwent.settings.PreferenceFragment;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 
 import java.util.Locale;
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             // Cold start, launch card db fragment.
-            launchFragment(new CardDatabaseFragment(), TAG_CARD_DB);
+            launchFragment(PreferenceFragment.newInstance(R.xml.gwent), TAG_CARD_DB);
         }
     }
 
