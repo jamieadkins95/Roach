@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent
 
 
+import android.support.v7.preference.PreferenceManager
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.data.repository.card.CardRepository
@@ -28,7 +29,9 @@ object Injection {
     }
 
     fun provideUpdateRepository(): UpdateRepository {
-        return UpdateRepositoryImpl(database)
+        return UpdateRepositoryImpl(database,
+                PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext),
+                GwentApplication.INSTANCE.applicationContext.resources)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {

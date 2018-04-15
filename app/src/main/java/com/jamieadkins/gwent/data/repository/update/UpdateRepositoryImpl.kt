@@ -1,5 +1,8 @@
 package com.jamieadkins.gwent.data.repository.update
 
+import android.content.SharedPreferences
+import android.content.res.Resources
+import android.support.v7.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.Constants
@@ -19,17 +22,28 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jamieadkins.gwent.core.update.UpdateResult
 import com.jamieadkins.gwent.data.keyword.FirebaseCategoryResult
 import com.jamieadkins.gwent.data.keyword.FirebaseKeywordResult
 import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.FileReader
 import java.lang.reflect.Type
+import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.google.firebase.messaging.FirebaseMessaging
+import com.jamieadkins.gwent.R
+import java.util.*
 
-class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateRepository {
+
+class UpdateRepositoryImpl(private val database: GwentDatabase,
+                           sharedPreferences: SharedPreferences,
+                           private val resources: Resources) : UpdateRepository {
+
+    private val preferences = RxSharedPreferences.create(sharedPreferences)
 
     private companion object {
         const val CARD_FILE_NAME = "cards.json"
@@ -76,6 +90,66 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
         val cached = database.patchDao().getPatchVersion(patch)
         log("Database Patch: " + cached?.patch + " " + cached?.lastUpdated)
         return cached
+    }
+
+    override fun performFirstTimeSetup(): Observable<UpdateResult> {
+        return preferences.getBoolean("setup", false)
+                .asObservable()
+                .flatMap { done ->
+                    if (done) {
+                        performFirstTimeLanguageSetup()
+                                .concatWith { performFirstTimeNotificationSetup() }
+                    } else {
+                        Observable.empty()
+                    }
+                }
+                .doOnComplete {
+                    preferences.getBoolean("setup").set(true)
+                }
+    }
+
+    private fun performFirstTimeLanguageSetup(): Observable<UpdateResult> {
+        return Observable.fromCallable {
+            val language = Locale.getDefault().language
+            val cardLanguage = resources.getStringArray(R.array.locales).firstOrNull { it.contains(language) } ?: "en-US"
+            preferences.getString(resources.getString(R.string.pref_locale_key)).set(cardLanguage)
+            preferences.getBoolean(resources.getString(R.string.shown_language)).set(true)
+            UpdateResult.LanguageSetup
+        }
+    }
+
+    private fun performFirstTimeNotificationSetup(): Observable<UpdateResult> {
+        return Observable.fromCallable {
+            val language = Locale.getDefault().language
+            val newsLanguage = resources.getStringArray(R.array.locales_news).firstOrNull { it.contains(language) } ?: "en"
+            preferences.getString(resources.getString(R.string.pref_news_notifications_key)).set(newsLanguage)
+            preferences.getBoolean(resources.getString(R.string.shown_news)).set(true)
+            setupNewsNotifications(resources, newsLanguage)
+            UpdateResult.NotificationsSetup
+        }
+    }
+
+    private fun setupNewsNotifications(resources: Resources, locale: String = "none") {
+        unsubscribeFromAllNews(resources)
+
+        if (locale == "none") {
+            return
+        }
+
+        val topic = "news-$locale"
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+        if (BuildConfig.DEBUG) {
+            FirebaseMessaging.getInstance().subscribeToTopic("$topic-debug")
+        }
+    }
+
+    private fun unsubscribeFromAllNews(resources: Resources) {
+        for (key in resources.getStringArray(R.array.locales_news)) {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("news-$key")
+            if (BuildConfig.DEBUG) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("news-$key-debug")
+            }
+        }
     }
 
     override fun performUpdate(): Completable {
@@ -162,7 +236,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase) : UpdateReposito
                         if (!emitter.isDisposed) {
                             emitter.onError(e)
                         }
-            }
+                    }
 
             emitter.setCancellable { taskSnapshotStorageTask.cancel() }
         }
