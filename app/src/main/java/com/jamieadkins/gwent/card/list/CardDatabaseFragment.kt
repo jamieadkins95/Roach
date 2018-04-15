@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.support.v7.widget.Toolbar
 import com.jamieadkins.commonutils.mvp2.BaseListView
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 
@@ -40,17 +42,13 @@ class CardDatabaseFragment :
     private val emptyView by bindView<View>(R.id.empty)
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
+    private val toolbar by bindView<Toolbar>(R.id.toolbar)
     private val controller = CardDatabaseController()
     private lateinit var cardsPresenter: CardDatabasePresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.card_database)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +83,11 @@ class CardDatabaseFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(toolbar)
+            title = getString(R.string.card_database)
+        }
 
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
         refreshLayout.setOnRefreshListener(this)
