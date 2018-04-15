@@ -153,12 +153,18 @@ class CardDatabaseFragment :
 
     override fun showCards(cards: MutableList<GwentCard>) {
         if (cards.isNotEmpty()) {
-            controller.setData(cards.toList())
+            controller.setData(cards.toList(), false)
             emptyView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         } else {
             showEmptyView()
         }
+    }
+
+    override fun showSearchResults(query: String, cards: MutableList<GwentCard>) {
+        controller.setData(cards.toList(), true)
+        emptyView.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {

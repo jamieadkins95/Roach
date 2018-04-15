@@ -1,11 +1,21 @@
 package com.jamieadkins.gwent.view.card
 
+import com.airbnb.epoxy.AutoModel
+import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.view.R
 
-class CardDatabaseController : TypedEpoxyController<List<GwentCard>>() {
+class CardDatabaseController : Typed2EpoxyController<List<GwentCard>, Boolean>() {
 
-    override fun buildModels(cards: List<GwentCard>?) {
+    @AutoModel lateinit var headerView: HeaderViewModel_
+
+    override fun buildModels(cards: List<GwentCard>?, isSearchResults: Boolean) {
+
+        headerView
+                .title(R.string.gwent)
+                .addIf(isSearchResults, this)
+
         cards?.forEach { card ->
             card.id?.let {
                 val model = GwentCardViewModel_()

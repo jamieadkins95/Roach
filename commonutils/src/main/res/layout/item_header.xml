@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:paddingTop="@dimen/header_margin_top"
     android:paddingLeft="@dimen/header_margin_left"
+    android:paddingStart="@dimen/header_margin_left"
     android:paddingBottom="@dimen/header_margin_bottom"
     android:layout_height="wrap_content">
 
