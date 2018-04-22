@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.view
 
 import android.content.Context
-import android.support.annotation.ColorInt
 import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
@@ -31,7 +30,7 @@ class DividerView : LinearLayout {
     private fun inflateView() {
         orientation = VERTICAL
         gravity = Gravity.CENTER
-        LayoutInflater.from(context).inflate(R.layout.view_subheader, this, true)
+        LayoutInflater.from(context).inflate(R.layout.view_google_now_subheader, this, true)
     }
 
     @TextProp

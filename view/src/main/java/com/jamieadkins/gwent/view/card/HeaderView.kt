@@ -11,22 +11,24 @@ import com.jamieadkins.gwent.view.R
 import kotterknife.bindView
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
-class HeaderView : ConstraintLayout {
-
-    constructor(context: Context) : super(context) { inflateView() }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) { inflateView() }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) { inflateView() }
+class HeaderView @JvmOverloads constructor(context: Context,
+                                           attrs: AttributeSet? = null,
+                                           defStyleAttr: Int = 0): ConstraintLayout(context, attrs, defStyleAttr) {
 
     private val tvTitle by bindView<TextView>(R.id.header_primary_text)
+    private val tvSecondaryTitle by bindView<TextView>(R.id.header_secondary_text)
 
-    private fun inflateView() {
+    init {
         LayoutInflater.from(context).inflate(R.layout.view_header, this, true)
     }
 
     @TextProp
     fun setTitle(text: CharSequence) {
         tvTitle.text = text
+    }
+
+    @TextProp
+    fun setSecondaryText(text: CharSequence) {
+        tvSecondaryTitle.text = text
     }
 }

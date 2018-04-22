@@ -71,8 +71,18 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
                 .addToComposite(disposable)
     }
 
-    override fun search(query: String?) {
-
+    override fun search(query: String) {
+        view?.setLoadingIndicator(true)
+        cardRepository.searchCards(query)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
+                    override fun onSuccess(list: Collection<GwentCard>) {
+                        view?.showSearchResults(query, list.toMutableList())
+                        view?.setLoadingIndicator(false)
+                    }
+                })
+                .addToComposite(disposable)
     }
 
     override fun clearSearch() {

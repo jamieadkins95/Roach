@@ -51,7 +51,7 @@ object CardSearch {
             Timber.d("Search took $timeTaken ms")
 
             searchResults.sortByDescending { result -> result.score }
-            val cutOff = maxScore - maxScore / 20
+            val cutOff = maxScore - maxScore / 10
             searchResults.forEach {
                 // Catch anything within 20%
                 if (it.score >= cutOff && it.score >= MIN_SCORE) {

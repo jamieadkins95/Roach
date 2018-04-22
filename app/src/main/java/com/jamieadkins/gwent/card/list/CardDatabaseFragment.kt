@@ -43,12 +43,17 @@ class CardDatabaseFragment :
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
-    private val controller = CardDatabaseController()
+    private lateinit var controller: CardDatabaseController
     private lateinit var cardsPresenter: CardDatabasePresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        controller = CardDatabaseController(resources)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -153,7 +158,7 @@ class CardDatabaseFragment :
 
     override fun showCards(cards: MutableList<GwentCard>) {
         if (cards.isNotEmpty()) {
-            controller.setData(cards.toList(), false)
+            controller.setData(cards.toList(), null)
             emptyView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         } else {
@@ -162,9 +167,10 @@ class CardDatabaseFragment :
     }
 
     override fun showSearchResults(query: String, cards: MutableList<GwentCard>) {
-        controller.setData(cards.toList(), true)
+        controller.setData(cards.toList(), query)
         emptyView.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
+        recyclerView.scrollToPosition(0)
     }
 
     override fun onRefresh() {

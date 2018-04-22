@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.card.list;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public interface CardDatabaseContract {
     interface View extends CardsContract.View {
@@ -9,7 +9,7 @@ public interface CardDatabaseContract {
 
     interface Presenter {
 
-        void search(@Nullable String query);
+        void search(@NotNull String query);
 
         void clearSearch();
     }
