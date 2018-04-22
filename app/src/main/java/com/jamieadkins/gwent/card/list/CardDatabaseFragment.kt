@@ -100,10 +100,8 @@ class CardDatabaseFragment :
 
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
-        context?.let {
-            val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, it).toInt())
-            recyclerView.addItemDecoration(dividerItemDecoration)
-        }
+        val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
+        recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = controller.adapter
     }
 
@@ -162,6 +160,9 @@ class CardDatabaseFragment :
             controller.setData(result)
             emptyView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
+            recyclerView.post {
+                recyclerView.scrollToPosition(0)
+            }
         } else {
             showEmptyView()
         }

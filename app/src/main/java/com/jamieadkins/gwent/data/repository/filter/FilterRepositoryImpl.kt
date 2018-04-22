@@ -94,7 +94,7 @@ class FilterRepositoryImpl : FilterRepository {
     }
 
     override fun updateSearchQuery(query: String) {
-        if (searchQuery.isEmpty()) {
+        if (query.isEmpty()) {
             clearSearchQuery()
         } else {
             searchQuery = query

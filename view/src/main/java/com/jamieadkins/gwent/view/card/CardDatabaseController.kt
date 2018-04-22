@@ -20,7 +20,7 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                 .secondaryText(resources.getString(R.string.results_found, result.cards.size, result.searchQuery))
                 .addIf(result.searchQuery.isNotEmpty(), this)
 
-        val filtersApplied = 2
+        val filtersApplied = 0
 
         subheaderView
                 .title(resources.getString(R.string.filters_applied, filtersApplied))
