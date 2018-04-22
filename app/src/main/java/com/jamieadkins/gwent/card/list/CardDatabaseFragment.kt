@@ -28,6 +28,7 @@ import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
+import com.jamieadkins.gwent.core.CardDatabaseResult
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 
@@ -66,8 +67,8 @@ class CardDatabaseFragment :
         inflater?.inflate(R.menu.search, menu)
 
         val searchMenuItem = menu?.findItem(R.id.action_search)
-        val searchView = MenuItemCompat.getActionView(searchMenuItem) as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        val searchView = searchMenuItem?.actionView as? SearchView
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 cardsPresenter.search(query)
                 return false
@@ -78,7 +79,7 @@ class CardDatabaseFragment :
             }
         })
 
-        searchView.setOnCloseListener {
+        searchView?.setOnCloseListener {
             cardsPresenter.clearSearch()
             false
         }
@@ -156,21 +157,14 @@ class CardDatabaseFragment :
         recyclerView.visibility = View.GONE
     }
 
-    override fun showCards(cards: MutableList<GwentCard>) {
-        if (cards.isNotEmpty()) {
-            controller.setData(cards.toList(), null)
+    override fun showCards(result: CardDatabaseResult) {
+        if (result.cards.isNotEmpty()) {
+            controller.setData(result)
             emptyView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         } else {
             showEmptyView()
         }
-    }
-
-    override fun showSearchResults(query: String, cards: MutableList<GwentCard>) {
-        controller.setData(cards.toList(), query)
-        emptyView.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-        recyclerView.scrollToPosition(0)
     }
 
     override fun onRefresh() {

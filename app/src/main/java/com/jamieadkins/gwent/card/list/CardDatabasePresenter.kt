@@ -6,6 +6,7 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.*
+import com.jamieadkins.gwent.core.CardDatabaseResult
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.data.repository.card.CardRepository
@@ -47,9 +48,9 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
                 .observeOn(schedulerProvider.io())
                 .switchMapSingle { cardRepository.getCards(it) }
                 .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableObserver<Collection<GwentCard>>() {
-                    override fun onNext(list: Collection<GwentCard>) {
-                        view?.showCards(list.toMutableList())
+                .subscribeWith(object : BaseDisposableObserver<CardDatabaseResult>() {
+                    override fun onNext(result: CardDatabaseResult) {
+                        view?.showCards(result)
                         view?.setLoadingIndicator(false)
                     }
                 })
@@ -72,20 +73,10 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
     }
 
     override fun search(query: String) {
-        view?.setLoadingIndicator(true)
-        cardRepository.searchCards(query)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableSingle<Collection<GwentCard>>() {
-                    override fun onSuccess(list: Collection<GwentCard>) {
-                        view?.showSearchResults(query, list.toMutableList())
-                        view?.setLoadingIndicator(false)
-                    }
-                })
-                .addToComposite(disposable)
+        filterRepository.updateSearchQuery(query)
     }
 
     override fun clearSearch() {
-
+        filterRepository.clearSearchQuery()
     }
 }

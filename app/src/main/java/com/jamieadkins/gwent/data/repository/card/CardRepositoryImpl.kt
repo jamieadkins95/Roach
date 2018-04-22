@@ -1,7 +1,8 @@
 package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.card.SortedBy
+import com.jamieadkins.gwent.core.CardDatabaseResult
+import com.jamieadkins.gwent.core.SortedBy
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.ArtEntity
@@ -42,16 +43,42 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
         }
     }
 
-    override fun getCards(cardFilter: CardFilter?): Single<Collection<GwentCard>> {
-        return getAllCards()
-                .map { it.filter { card -> cardFilter?.let { doesCardMeetFilter(cardFilter, card) } ?: true } }
+    override fun getCards(cardFilter: CardFilter): Single<CardDatabaseResult> {
+        val source = if (cardFilter.searchQuery.isNotEmpty()) {
+            Single.zip(
+                    getCardEntities(),
+                    database.keywordDao().getAllKeywords(),
+                    database.categoryDao().getAllCategories(),
+                    Function3<List<CardEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
+                    { cards, keywords, categories -> CardSearchData(cards, keywords, categories) })
+                    .flatMap { CardSearch.searchCards(cardFilter.searchQuery, it) }
+                    .flatMap { getCards(it) }
+        } else {
+            getAllCards()
+        }
+        return source
+                .map { it.filter { card -> cardFilter.let { doesCardMeetFilter(cardFilter, card) } } }
                 .map {
-                    when (cardFilter?.sortedBy ?: SortedBy.ALPHABETICALLY_ASC) {
+                    when (cardFilter.sortedBy) {
+                        SortedBy.SEARCH_RELEVANCE -> it
                         SortedBy.ALPHABETICALLY_ASC -> it.sortedBy { it.name }
                         SortedBy.ALPHABETICALLY_DESC -> it.sortedByDescending { it.name }
                         SortedBy.STRENGTH_ASC -> it.sortedBy { it.strength ?: 0 }
                         SortedBy.STRENGTH_DESC -> it.sortedByDescending { it.strength ?: 0 }
                     }
+                }
+                .map {
+                    val factions = cardFilter.factionFilter.entries
+                            .filter { it.value }
+                            .map { it.key }
+                    val colours = cardFilter.colourFilter.entries
+                            .filter { it.value }
+                            .map { it.key }
+                    val rarities = cardFilter.rarityFilter.entries
+                            .filter { it.value }
+                            .map { it.key }
+                    CardDatabaseResult(it, cardFilter.searchQuery, factions, colours,
+                            rarities, cardFilter.isCollectibleOnly, cardFilter.sortedBy)
                 }
     }
 
@@ -59,17 +86,6 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
         return database.cardDao().getCards(cardIds)
                 .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
                 .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
-    }
-
-    override fun searchCards(query: String): Single<Collection<GwentCard>> {
-        return Single.zip(
-                getCardEntities(),
-                database.keywordDao().getAllKeywords(),
-                database.categoryDao().getAllCategories(),
-                Function3<List<CardEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
-                { cards, keywords, categories -> CardSearchData(cards, keywords, categories) })
-                .flatMap { CardSearch.searchCards(query, it) }
-                .flatMap { getCards(it) }
     }
 
     override fun getCard(id: String): Single<GwentCard> {

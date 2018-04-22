@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.card
 import com.jamieadkins.gwent.core.*
 
 data class CardFilter(
+        val searchQuery: String = "",
         val rarityFilter: Map<GwentCardRarity, Boolean>,
         val colourFilter: Map<GwentCardColour, Boolean>,
         val factionFilter: Map<GwentFaction, Boolean>,

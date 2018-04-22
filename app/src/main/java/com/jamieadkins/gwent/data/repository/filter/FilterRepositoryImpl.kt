@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.data.repository.filter
 
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.card.SortedBy
+import com.jamieadkins.gwent.core.SortedBy
 import com.jamieadkins.gwent.core.GwentCardColour
 import com.jamieadkins.gwent.core.GwentCardRarity
 import com.jamieadkins.gwent.core.GwentFaction
@@ -18,6 +18,8 @@ class FilterRepositoryImpl : FilterRepository {
     private var isCollectibleOnly = false
 
     private var defaultCollectibleOnly = false
+
+    private var searchQuery: String = ""
 
     override fun getFilter(): Observable<CardFilter> = filter
 
@@ -50,6 +52,8 @@ class FilterRepositoryImpl : FilterRepository {
                                   factions: List<GwentFaction>,
                                   colours: List<GwentCardColour>,
                                    collectibleOnly: Boolean) {
+        searchQuery = ""
+
         rarityFilter.clear()
         rarities.forEach {
             rarityFilter[it] = true
@@ -89,7 +93,23 @@ class FilterRepositoryImpl : FilterRepository {
         filter.onNext(createCardFilter())
     }
 
+    override fun updateSearchQuery(query: String) {
+        if (searchQuery.isEmpty()) {
+            clearSearchQuery()
+        } else {
+            searchQuery = query
+            sortOrder = SortedBy.SEARCH_RELEVANCE
+            filter.onNext(createCardFilter())
+        }
+    }
+
+    override fun clearSearchQuery() {
+        searchQuery = ""
+        sortOrder = SortedBy.ALPHABETICALLY_ASC
+        filter.onNext(createCardFilter())
+    }
+
     private fun createCardFilter(): CardFilter {
-        return CardFilter(rarityFilter, colourFilter, factionFilter, isCollectibleOnly)
+        return CardFilter(searchQuery, rarityFilter, colourFilter, factionFilter, isCollectibleOnly)
     }
 }

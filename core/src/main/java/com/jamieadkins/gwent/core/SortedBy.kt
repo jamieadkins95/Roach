@@ -1,8 +1,9 @@
-package com.jamieadkins.gwent.card
+package com.jamieadkins.gwent.core
 
 enum class SortedBy {
     ALPHABETICALLY_ASC,
     ALPHABETICALLY_DESC,
     STRENGTH_ASC,
-    STRENGTH_DESC
+    STRENGTH_DESC,
+    SEARCH_RELEVANCE
 }
