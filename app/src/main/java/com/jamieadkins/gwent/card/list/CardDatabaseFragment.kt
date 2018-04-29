@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -17,14 +16,14 @@ import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.RefreshEvent
-import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.update.UpdateActivity
 import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.util.DisplayMetrics
 import android.view.*
+import android.widget.Toast
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.base.PresenterFactory
@@ -175,6 +174,10 @@ class CardDatabaseFragment :
 
     override fun scrollToTop() {
         recyclerView.smoothScrollToPosition(0)
+    }
+
+    override fun showCardDetails(cardId: String) {
+        Toast.makeText(requireContext(), cardId, Toast.LENGTH_SHORT).show()
     }
 
     override fun showUpdateAvailable() {

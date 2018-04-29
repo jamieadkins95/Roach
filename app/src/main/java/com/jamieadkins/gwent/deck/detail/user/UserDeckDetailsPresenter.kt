@@ -2,9 +2,6 @@ package com.jamieadkins.gwent.deck.detail.user
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.commonutils.mvp2.addToComposite
-import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.deck.DeckRepository
 

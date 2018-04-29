@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.list
 
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
@@ -7,11 +8,10 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.*
 import com.jamieadkins.gwent.core.CardDatabaseResult
-import com.jamieadkins.gwent.core.GwentCard
-import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.filter.FilterRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
+import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
 
 class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
                             val cardRepository: CardRepository,
@@ -46,6 +46,14 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
                 .subscribeWith(object : BaseDisposableObserver<ScrollToTopEvent>() {
                     override fun onNext(t: ScrollToTopEvent) {
                         view?.scrollToTop()
+                    }
+                })
+                .addToComposite(disposable)
+
+        RxBus.register(GwentCardClickEvent::class.java)
+                .subscribeWith(object : BaseDisposableObserver<GwentCardClickEvent>() {
+                    override fun onNext(event: GwentCardClickEvent) {
+                        view?.showCardDetails(event.data)
                     }
                 })
                 .addToComposite(disposable)

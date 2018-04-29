@@ -11,7 +11,7 @@ import android.widget.Spinner
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.NewDeckBundle
 import com.jamieadkins.gwent.bus.NewDeckRequest
-import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.core.GwentFaction
 
 class NewDeckDialog : DialogFragment() {

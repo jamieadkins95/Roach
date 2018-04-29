@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.ModelProp
 
 import com.airbnb.epoxy.ModelView
@@ -22,6 +23,7 @@ import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.core.GwentStringHelper
 import com.jamieadkins.gwent.view.R
 import kotterknife.bindView
+import org.jetbrains.annotations.Nullable
 import java.lang.Exception
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
@@ -44,6 +46,11 @@ class GwentCardView : CardView {
 
     private fun inflateView() {
         LayoutInflater.from(context).inflate(R.layout.view_gwent_card, this, true)
+    }
+
+    @CallbackProp
+    fun setClickListener(listener: View.OnClickListener?) {
+        setOnClickListener(listener)
     }
 
     @TextProp

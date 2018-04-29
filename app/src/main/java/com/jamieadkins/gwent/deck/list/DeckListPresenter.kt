@@ -6,7 +6,7 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.NewDeckRequest
-import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.data.repository.deck.DeckRepository
 import com.jamieadkins.gwent.model.deck.GwentDeckSummary
 

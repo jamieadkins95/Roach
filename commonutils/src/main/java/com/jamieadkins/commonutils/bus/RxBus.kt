@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.bus
+package com.jamieadkins.commonutils.bus
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

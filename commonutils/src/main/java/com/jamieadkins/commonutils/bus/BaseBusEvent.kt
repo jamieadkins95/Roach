@@ -1,3 +1,3 @@
-package com.jamieadkins.gwent.bus
+package com.jamieadkins.commonutils.bus
 
 open class BaseBusEvent<T>(val data: T)

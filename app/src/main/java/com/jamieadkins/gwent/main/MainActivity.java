@@ -7,21 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
-import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.commonutils.bus.RxBus;
 import com.jamieadkins.gwent.bus.ScrollToTopEvent;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
-import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.PreferenceFragment;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 

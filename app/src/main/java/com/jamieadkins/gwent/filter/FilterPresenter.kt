@@ -5,7 +5,7 @@ import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.FilterChangeEvent
-import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.data.repository.filter.FilterRepository
 

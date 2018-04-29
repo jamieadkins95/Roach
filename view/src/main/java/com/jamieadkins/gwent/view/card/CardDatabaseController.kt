@@ -4,9 +4,11 @@ import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.TypedEpoxyController
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.core.CardDatabaseResult
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.view.R
+import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
 
 class CardDatabaseController(val resources: Resources) : TypedEpoxyController<CardDatabaseResult>() {
 
@@ -35,6 +37,7 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                         .cardCategories(card.categories)
                         .cardStrength(card.strength)
                         .cardImage(card.cardArt?.low)
+                        .clickListener { _ -> RxBus.post(GwentCardClickEvent(it)) }
 
                 card.faction?.let {
                     model.cardFaction(it)
