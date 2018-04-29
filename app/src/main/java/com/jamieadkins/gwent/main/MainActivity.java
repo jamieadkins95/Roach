@@ -18,6 +18,8 @@ import android.view.View;
 
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.base.BaseActivity;
+import com.jamieadkins.gwent.bus.RxBus;
+import com.jamieadkins.gwent.bus.ScrollToTopEvent;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
 import com.jamieadkins.gwent.deck.list.NewDeckDialog;
 import com.jamieadkins.gwent.settings.PreferenceFragment;
@@ -61,6 +63,13 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment = getFragmentForMenuItem(item.getItemId());
                 launchFragment(fragment, fragment.getClass().getSimpleName());
                 return true;
+            }
+        });
+
+        navigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                RxBus.INSTANCE.post(new ScrollToTopEvent());
             }
         });
     }

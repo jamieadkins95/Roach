@@ -26,6 +26,7 @@ import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.util.DisplayMetrics
 import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.core.CardDatabaseResult
@@ -36,7 +37,7 @@ class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
         CardDatabaseContract.View,
         SwipeRefreshLayout.OnRefreshListener,
-        BaseListView {
+        BaseListView, ScrollView {
 
     private val screenKey = javaClass.name
 
@@ -170,6 +171,10 @@ class CardDatabaseFragment :
 
     override fun onRefresh() {
         RxBus.post(RefreshEvent())
+    }
+
+    override fun scrollToTop() {
+        recyclerView.smoothScrollToPosition(0)
     }
 
     override fun showUpdateAvailable() {

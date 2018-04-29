@@ -42,6 +42,14 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
                 })
                 .addToComposite(disposable)
 
+        RxBus.register(ScrollToTopEvent::class.java)
+                .subscribeWith(object : BaseDisposableObserver<ScrollToTopEvent>() {
+                    override fun onNext(t: ScrollToTopEvent) {
+                        view?.scrollToTop()
+                    }
+                })
+                .addToComposite(disposable)
+
         filterRepository.getFilter()
                 .observeOn(schedulerProvider.ui())
                 .doOnNext { view?.setLoadingIndicator(true) }
