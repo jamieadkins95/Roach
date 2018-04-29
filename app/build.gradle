@@ -9,12 +9,12 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion compileSdk
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.jamieadkins.gwent"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 47
         versionName "v2.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
