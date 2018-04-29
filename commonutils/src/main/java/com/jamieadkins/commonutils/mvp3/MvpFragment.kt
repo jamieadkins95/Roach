@@ -2,6 +2,7 @@ package com.jamieadkins.commonutils.mvp3
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.View
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 
 abstract class MvpFragment<V> : Fragment() {
@@ -12,13 +13,13 @@ abstract class MvpFragment<V> : Fragment() {
         setupPresenter()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this as V)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
         presenter.onDetach()
     }
 
