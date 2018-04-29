@@ -1,7 +1,9 @@
 package com.jamieadkins.commonutils.mvp3
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.DisplayMetrics
 import android.view.View
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 
@@ -24,4 +26,11 @@ abstract class MvpFragment<V> : Fragment() {
     }
 
     abstract fun setupPresenter(): BasePresenter<V>
+
+    fun convertDpToPixel(dp: Float, context: Context): Float {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        return px
+    }
 }

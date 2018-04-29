@@ -14,13 +14,13 @@ class DetailPresenter(var cardId: String,
         BasePresenter<DetailContract.View>(schedulerProvider), DetailContract.Presenter {
 
     override fun onRefresh() {
-        /*cardRepository.getCard(cardId)
+        cardRepository.getCard(cardId)
                 .applySchedulers()
                 .subscribeWith(object : BaseDisposableSingle<GwentCard>() {
                     override fun onSuccess(result: GwentCard) {
                         view?.showCard(result)
                     }
                 })
-                .addToComposite(disposable)*/
+                .addToComposite(disposable)
     }
 }

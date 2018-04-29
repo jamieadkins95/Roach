@@ -105,13 +105,6 @@ class CardDatabaseFragment :
         recyclerView.adapter = controller.adapter
     }
 
-    fun convertDpToPixel(dp: Float, context: Context): Float {
-        val resources = context.resources
-        val metrics = resources.displayMetrics
-        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        return px
-    }
-
     override fun setupPresenter(): BasePresenter<CardDatabaseContract.View> {
         val newPresenter = PresenterFactory.getPresenter(
                 javaClass.simpleName,
