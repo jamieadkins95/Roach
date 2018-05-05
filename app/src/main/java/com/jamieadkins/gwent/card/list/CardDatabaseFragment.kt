@@ -28,6 +28,8 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
+import com.jamieadkins.gwent.card.detail.CardDetailsActivity
+import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.core.CardDatabaseResult
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
@@ -170,7 +172,9 @@ class CardDatabaseFragment :
     }
 
     override fun showCardDetails(cardId: String) {
-        Toast.makeText(requireContext(), cardId, Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), CardDetailsActivity::class.java)
+        intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
+        activity?.startActivity(intent)
     }
 
     override fun showUpdateAvailable() {
