@@ -3,19 +3,20 @@
     <!-- Factions -->
     <color name="neutral">#757575</color>
 
-    <color name="skellige">#3F51B5</color>
-    <color name="skelligeDark">#303F9F</color>
+    <color name="skellige">#534679</color>
+    <color name="skelligeDark">#281f4d</color>
 
-    <color name="monsters">#F44336</color>
-    <color name="monstersDark">#D32F2F</color>
+    <color name="monsters">#86221b</color>
+    <color name="monstersDark">#540000</color>
 
-    <color name="northernRealms">#2196F3</color>
-    <color name="northernRealmsDark">#1976D2</color>
+    <color name="northernRealms">#3e6998</color>
+    <color name="northernRealmsDark">#003f6a</color>
 
-    <color name="scoiatael">#4CAF50</color>
-    <color name="scoiataelDark">#388E3C</color>
+    <color name="scoiatael">#577327</color>
+    <color name="scoiataelDark">#2b4700</color>
 
-    <color name="nilfgaard">#212121</color>
+    <color name="nilfgaard">#1f2328</color>
+    <color name="nilfgaardDark">#000000</color>
 
     <!-- Rarities -->
     <color name="common">#757575</color>

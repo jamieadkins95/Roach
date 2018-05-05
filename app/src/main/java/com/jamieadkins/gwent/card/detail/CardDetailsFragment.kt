@@ -15,6 +15,7 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.card.CardResourceHelper
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.view.card.detail.CardDetailsController
@@ -69,6 +70,9 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         Glide.with(requireContext())
                 .load(card.cardArt?.medium)
                 .into(imgCard)
+
+        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(requireContext(), card.faction!!))
+        activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(requireContext(), card.faction!!)
     }
 
     override fun setLoadingIndicator(loading: Boolean) {
