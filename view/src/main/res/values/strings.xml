@@ -6,5 +6,6 @@
 
     <string name="tooltip">Tooltip</string>
     <string name="flavor">Flavor</string>
+    <string name="categories">Categories</string>
     <string name="related">Related Cards</string>
 </resources>

@@ -16,6 +16,7 @@ import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.view.card.detail.CardDetailsController
 import kotterknife.bindView
 
@@ -56,6 +57,8 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = controller.adapter
+        val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
+        recyclerView.addItemDecoration(dividerItemDecoration)
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
     }
 

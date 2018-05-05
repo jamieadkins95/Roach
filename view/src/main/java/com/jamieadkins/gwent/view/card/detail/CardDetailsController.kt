@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.view.card.detail
 
 import android.content.res.Resources
+import android.graphics.Typeface
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
@@ -13,18 +14,38 @@ import com.jamieadkins.gwent.view.card.SubHeaderViewModel_
 class CardDetailsController(val resources: Resources) : TypedEpoxyController<GwentCard>() {
 
     @AutoModel lateinit var tooltipHeader: SubHeaderViewModel_
+    @AutoModel lateinit var tooltip: ElevatedTextViewModel_
     @AutoModel lateinit var flavorHeader: SubHeaderViewModel_
+    @AutoModel lateinit var flavor: ElevatedTextViewModel_
+    @AutoModel lateinit var categoriesHeader: SubHeaderViewModel_
+    @AutoModel lateinit var categories: ElevatedTextViewModel_
     @AutoModel lateinit var relatedCardsHeader: SubHeaderViewModel_
 
     override fun buildModels(card: GwentCard) {
 
+        val shouldShowTooltip = !card.tooltip.isNullOrEmpty()
         tooltipHeader
                 .title(R.string.tooltip)
-                .addTo(this)
+                .addIf(shouldShowTooltip, this)
+        tooltip.text(card.tooltip ?: "")
+                .typeface(Typeface.DEFAULT)
+                .addIf(shouldShowTooltip, this)
 
+        val shouldShowFlavor = !card.flavor.isNullOrEmpty()
         flavorHeader
                 .title(R.string.flavor)
-                .addTo(this)
+                .addIf(shouldShowFlavor, this)
+        flavor.text(card.flavor ?: "")
+                .typeface(Typeface.defaultFromStyle(Typeface.ITALIC))
+                .addIf(shouldShowFlavor, this)
+
+        val shouldShowCategories = card.categories.isNotEmpty()
+        categoriesHeader
+                .title(R.string.categories)
+                .addIf(shouldShowCategories, this)
+        categories.text(card.categories.joinToString())
+                .typeface(Typeface.DEFAULT)
+                .addIf(shouldShowCategories, this)
 
         relatedCardsHeader
                 .title(R.string.related)
