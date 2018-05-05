@@ -20,6 +20,10 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
     @AutoModel lateinit var categoriesHeader: SubHeaderViewModel_
     @AutoModel lateinit var categories: ElevatedTextViewModel_
     @AutoModel lateinit var relatedCardsHeader: SubHeaderViewModel_
+    @AutoModel lateinit var craftHeader: SubHeaderViewModel_
+    @AutoModel lateinit var craft: CraftCostViewModel_
+    @AutoModel lateinit var millHeader: SubHeaderViewModel_
+    @AutoModel lateinit var mill: CraftCostViewModel_
 
     override fun buildModels(card: GwentCard) {
 
@@ -46,6 +50,17 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
         categories.text(card.categories.joinToString())
                 .typeface(Typeface.DEFAULT)
                 .addIf(shouldShowCategories, this)
+
+        craftHeader
+                .title(R.string.craft)
+                .addTo(this)
+        craft.value(card.craftCost)
+                .addTo(this)
+        millHeader
+                .title(R.string.mill)
+                .addTo(this)
+        mill.value(card.millValue)
+                .addTo(this)
 
         relatedCardsHeader
                 .title(R.string.related)

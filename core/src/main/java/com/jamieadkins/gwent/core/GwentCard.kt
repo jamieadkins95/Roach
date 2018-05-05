@@ -13,8 +13,8 @@ class GwentCard {
     var rarity: GwentCardRarity? = null
     var collectible = false
 
-    var craftValues = mutableMapOf<String, Int>()
-    var millValues = mutableMapOf<String, Int>()
+    var craftCost = 0
+    var millValue = 0
 
     var relatedCards = listOf<String>()
 

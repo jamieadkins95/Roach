@@ -7,5 +7,7 @@
     <string name="tooltip">Tooltip</string>
     <string name="flavor">Flavor</string>
     <string name="categories">Categories</string>
+    <string name="craft">Craft</string>
+    <string name="mill">Mill</string>
     <string name="related">Related Cards</string>
 </resources>
