@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.card.detail
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
@@ -23,6 +26,8 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
 
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
+    private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
+    private val imgCard by bindView<ImageView>(R.id.card_image)
 
     companion object {
         const val KEY_ID = "cardId"
@@ -51,15 +56,21 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = controller.adapter
+        refreshLayout.setColorSchemeResources(R.color.gwentAccent)
     }
 
     override fun showCard(card: GwentCard) {
         (activity as? AppCompatActivity)?.title = card.name
         controller.setData(card)
+
+        Glide.with(requireContext())
+                .load(card.cardArt?.medium)
+                .into(imgCard)
     }
 
     override fun setLoadingIndicator(loading: Boolean) {
-
+        refreshLayout.isEnabled = loading
+        refreshLayout.isRefreshing = loading
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

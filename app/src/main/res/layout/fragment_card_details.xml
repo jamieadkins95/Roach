@@ -9,6 +9,18 @@
 
     <include layout="@layout/appbar_layout" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/refreshContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/card_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:background="@color/white"
