@@ -1,6 +1,4 @@
-package com.jamieadkins.gwent.domain.card.model
-
-import com.jamieadkins.gwent.domain.GwentFaction
+package com.jamieadkins.gwent.core
 
 data class GwentCard(
         val id: String,

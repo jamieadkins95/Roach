@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.deck.detail.user
 
 import com.jamieadkins.gwent.deck.detail.DeckDetailsContract
-import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.core.GwentCard
 
 /**
  * Specifies the contract between the view and the presenter.

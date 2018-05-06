@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.domain
+package com.jamieadkins.gwent.core
 
 enum class GwentFaction {
     MONSTER,

@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.data.repository.deck
 
 import com.jamieadkins.gwent.model.deck.GwentDeck
-import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.core.GwentFaction
 import io.reactivex.Completable
 
 import io.reactivex.Flowable

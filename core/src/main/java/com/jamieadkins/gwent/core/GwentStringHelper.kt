@@ -1,10 +1,6 @@
 package com.jamieadkins.gwent.core
 
 import android.content.Context
-import com.jamieadkins.gwent.domain.card.model.GwentCardColour
-import com.jamieadkins.gwent.domain.card.model.GwentCardLoyalty
-import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
-import com.jamieadkins.gwent.domain.GwentFaction
 
 object GwentStringHelper {
 

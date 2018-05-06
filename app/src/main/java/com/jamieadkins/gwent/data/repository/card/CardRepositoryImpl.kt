@@ -7,7 +7,7 @@ import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
-import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.data.CardSearchData
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity

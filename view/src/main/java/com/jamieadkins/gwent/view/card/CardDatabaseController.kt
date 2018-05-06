@@ -2,9 +2,11 @@ package com.jamieadkins.gwent.view.card
 
 import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
+import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.core.CardDatabaseResult
+import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.view.R
 import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
 

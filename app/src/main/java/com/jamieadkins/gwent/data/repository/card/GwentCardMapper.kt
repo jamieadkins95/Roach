@@ -1,15 +1,11 @@
 package com.jamieadkins.gwent.data.repository.card
 
+import com.jamieadkins.gwent.core.*
 import com.jamieadkins.gwent.data.card.Faction
 import com.jamieadkins.gwent.data.card.Type
 import com.jamieadkins.gwent.data.repository.FirebaseCardResult
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
-import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.domain.card.model.GwentCard
-import com.jamieadkins.gwent.domain.card.model.GwentCardArt
-import com.jamieadkins.gwent.domain.card.model.GwentCardColour
-import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 
 object GwentCardMapper {
     private const val DEFAULT_LOCALE = "en-US"

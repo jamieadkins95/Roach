@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.domain.card.model
+package com.jamieadkins.gwent.core
 
 enum class GwentCardLoyalty {
     LOYAL,
