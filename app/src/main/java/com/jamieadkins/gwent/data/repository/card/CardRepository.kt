@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.data.repository.card
 
 import com.jamieadkins.gwent.card.CardFilter
 import com.jamieadkins.gwent.core.CardDatabaseResult
-import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import io.reactivex.Single
 
 interface CardRepository {

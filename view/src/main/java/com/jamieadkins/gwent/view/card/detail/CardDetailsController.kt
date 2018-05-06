@@ -4,13 +4,10 @@ import android.content.res.Resources
 import android.graphics.Typeface
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.Typed2EpoxyController
-import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.core.GwentCard
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.view.R
 import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
-import com.jamieadkins.gwent.view.card.CardResourceHelper
 import com.jamieadkins.gwent.view.card.GwentCardViewModel_
 import com.jamieadkins.gwent.view.card.SubHeaderViewModel_
 

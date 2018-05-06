@@ -19,12 +19,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.jamieadkins.gwent.core.GwentCardRarity
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.core.GwentStringHelper
 import com.jamieadkins.gwent.view.R
 import kotterknife.bindView
-import org.jetbrains.annotations.Nullable
 import java.lang.Exception
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)

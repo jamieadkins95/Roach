@@ -1,13 +1,12 @@
 package com.jamieadkins.gwent.data.repository.deck
 
-import com.jamieadkins.gwent.core.GwentCard
-import com.jamieadkins.gwent.core.GwentCardColour
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
-import com.jamieadkins.gwent.model.*
 import com.jamieadkins.gwent.model.deck.GwentDeck
 import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
 import com.jamieadkins.gwent.model.deck.GwentDeckSummary

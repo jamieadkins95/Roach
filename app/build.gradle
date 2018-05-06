@@ -117,6 +117,7 @@ dependencies {
     implementation project(':database')
     implementation project(':view')
     implementation project(':core')
+    implementation project(':domain')
 }
 
 repositories {
