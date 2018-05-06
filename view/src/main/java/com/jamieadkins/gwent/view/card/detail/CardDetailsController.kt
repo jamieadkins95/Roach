@@ -29,29 +29,25 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
 
     override fun buildModels(card: GwentCard) {
 
-        val shouldShowTooltip = !card.tooltip.isNullOrEmpty()
         tooltipHeader
                 .title(R.string.tooltip)
-                .addIf(shouldShowTooltip, this)
-        tooltip.text(card.tooltip ?: "")
+                .addIf(card.tooltip.isNotEmpty(), this)
+        tooltip.text(card.tooltip)
                 .typeface(Typeface.DEFAULT)
-                .addIf(shouldShowTooltip, this)
-
-        val shouldShowFlavor = !card.flavor.isNullOrEmpty()
+                .addIf(card.tooltip.isNotEmpty(), this)
         flavorHeader
                 .title(R.string.flavor)
-                .addIf(shouldShowFlavor, this)
-        flavor.text(card.flavor ?: "")
+                .addIf(card.flavor.isNotEmpty(), this)
+        flavor.text(card.flavor)
                 .typeface(Typeface.defaultFromStyle(Typeface.ITALIC))
-                .addIf(shouldShowFlavor, this)
+                .addIf(card.flavor.isNotEmpty(), this)
 
-        val shouldShowCategories = card.categories.isNotEmpty()
         categoriesHeader
                 .title(R.string.categories)
-                .addIf(shouldShowCategories, this)
+                .addIf(card.categories.isNotEmpty(), this)
         categories.text(card.categories.joinToString())
                 .typeface(Typeface.DEFAULT)
-                .addIf(shouldShowCategories, this)
+                .addIf(card.categories.isNotEmpty(), this)
 
         craftHeader
                 .title(R.string.craft)
@@ -71,26 +67,18 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
         val relatedCards = listOf(card)
 
         relatedCards.forEach { relatedCard ->
-            relatedCard.id?.let {
-                val model = GwentCardViewModel_()
-                        .id(it)
-                        .cardName(relatedCard.name ?: "")
-                        .cardTooltip(relatedCard.tooltip ?: "")
-                        .cardCategories(relatedCard.categories)
-                        .cardStrength(relatedCard.strength)
-                        .cardImage(relatedCard.cardArt?.medium)
-                        .clickListener { _ -> RxBus.post(GwentCardClickEvent(it)) }
+            val model = GwentCardViewModel_()
+                    .id(relatedCard.id)
+                    .cardName(relatedCard.name)
+                    .cardTooltip(relatedCard.tooltip)
+                    .cardCategories(relatedCard.categories)
+                    .cardStrength(relatedCard.strength)
+                    .cardImage(relatedCard.cardArt?.medium)
+                    .cardFaction(relatedCard.faction)
+                    .cardRarity(relatedCard.rarity)
+                    .clickListener { _ -> RxBus.post(GwentCardClickEvent(relatedCard.id)) }
 
-                relatedCard.faction?.let {
-                    model.cardFaction(it)
-                }
-
-                relatedCard.rarity?.let {
-                    model.cardRarity(it)
-                }
-
-                model.addTo(this)
-            }
+            model.addTo(this)
         }
     }
 }

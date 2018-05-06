@@ -19,17 +19,20 @@ object GwentCardMapper {
     }
 
     fun cardEntityToGwentCard(cardEntity: CardEntity, locale: String = DEFAULT_LOCALE): GwentCard {
-        val card = GwentCard()
-        card.id = cardEntity.id
-        card.name = cardEntity.name[locale]
-        card.tooltip = cardEntity.tooltip[locale]
-        card.flavor = cardEntity.flavor[locale]
-        card.strength = cardEntity.strength
-        card.collectible = cardEntity.collectible
+        val card = GwentCard(cardEntity.id,
+                cardEntity.name[locale] ?: "",
+                cardEntity.tooltip[locale] ?: "",
+                cardEntity.flavor[locale] ?: "",
+                emptyList(),
+                factionIdToFaction(cardEntity.faction),
+                cardEntity.strength,
+                typeToColour(cardEntity.color),
+                rarityIdToRarity(cardEntity.rarity),
+                cardEntity.collectible,
+                0,
+                0,
+                cardEntity.related)
 
-        card.faction = factionIdToFaction(cardEntity.faction)
-        card.colour = typeToColour(cardEntity.color)
-        card.rarity = rarityIdToRarity(cardEntity.rarity)
         card.cardArt = cardEntity.art?.firstOrNull()?.let { artEntityToCardArt(it) }
         return card
     }

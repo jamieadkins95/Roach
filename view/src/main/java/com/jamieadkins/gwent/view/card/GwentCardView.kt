@@ -61,14 +61,7 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
 
     @ModelProp
     fun setCardCategories(categories: List<String>) {
-        var text = ""
-        categories.forEachIndexed { index, category ->
-            text += category
-            if (index != categories.size - 1) {
-                text += ", "
-            }
-        }
-
+        val text = categories.joinToString()
         tvCategories.text = text
 
         if (text.isNotEmpty()) {

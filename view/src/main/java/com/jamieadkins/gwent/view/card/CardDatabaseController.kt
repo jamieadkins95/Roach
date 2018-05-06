@@ -29,26 +29,18 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                 .addIf(result.searchQuery.isEmpty() && filtersApplied > 0, this)
 
         result.cards.forEach { card ->
-            card.id?.let {
-                val model = GwentCardViewModel_()
-                        .id(it)
-                        .cardName(card.name ?: "")
-                        .cardTooltip(card.tooltip ?: "")
-                        .cardCategories(card.categories)
-                        .cardStrength(card.strength)
-                        .cardImage(card.cardArt?.medium)
-                        .clickListener { _ -> RxBus.post(GwentCardClickEvent(it)) }
+            val model = GwentCardViewModel_()
+                    .id(card.id)
+                    .cardName(card.name)
+                    .cardTooltip(card.tooltip)
+                    .cardCategories(card.categories)
+                    .cardStrength(card.strength)
+                    .cardImage(card.cardArt?.medium)
+                    .cardFaction(card.faction)
+                    .cardRarity(card.rarity)
+                    .clickListener { _ -> RxBus.post(GwentCardClickEvent(card.id)) }
 
-                card.faction?.let {
-                    model.cardFaction(it)
-                }
-
-                card.rarity?.let {
-                    model.cardRarity(it)
-                }
-
-                model.addTo(this)
-            }
+            model.addTo(this)
         }
     }
 }

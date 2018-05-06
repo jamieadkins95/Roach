@@ -78,10 +78,10 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
 
         loadCardImage(card.cardArt?.medium)
 
-        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, card.faction!!))
+        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, card.faction))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, card.faction!!)
-            progress.indeterminateTintList = ColorStateList.valueOf(CardResourceHelper.getColorForFaction(resources, card.faction ?: GwentFaction.NEUTRAL))
+            activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, card.faction)
+            progress.indeterminateTintList = ColorStateList.valueOf(CardResourceHelper.getColorForFaction(resources, card.faction))
         }
     }
 
