@@ -6,7 +6,7 @@ import com.jamieadkins.gwent.core.GwentCard
 interface DetailContract {
     interface View : BaseView {
 
-        fun showCard(card: GwentCard)
+        fun showScreen(cardDetailsScreenData: CardDetailsScreenData)
     }
 
     interface Presenter

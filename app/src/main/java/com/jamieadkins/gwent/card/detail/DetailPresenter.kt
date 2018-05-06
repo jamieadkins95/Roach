@@ -16,10 +16,16 @@ class DetailPresenter(var cardId: String,
     override fun onRefresh() {
         view?.setLoadingIndicator(true)
         cardRepository.getCard(cardId)
+                .flatMap { card ->
+                    cardRepository.getCards(card.relatedCards)
+                            .map { related ->
+                                CardDetailsScreenData(card, related.toList())
+                            }
+                }
                 .applySchedulers()
-                .subscribeWith(object : BaseDisposableSingle<GwentCard>() {
-                    override fun onSuccess(result: GwentCard) {
-                        view?.showCard(result)
+                .subscribeWith(object : BaseDisposableSingle<CardDetailsScreenData>() {
+                    override fun onSuccess(result: CardDetailsScreenData) {
+                        view?.showScreen(result)
                         view?.setLoadingIndicator(false)
                     }
                 })

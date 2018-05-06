@@ -72,9 +72,13 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
     }
 
-    override fun showCard(card: GwentCard) {
+    override fun showScreen(cardDetailsScreenData: CardDetailsScreenData) {
+        showCard(cardDetailsScreenData.card)
+        controller.setData(cardDetailsScreenData.card, cardDetailsScreenData.relatedCards)
+    }
+
+    private fun showCard(card: GwentCard) {
         (activity as? AppCompatActivity)?.title = card.name
-        controller.setData(card)
 
         loadCardImage(card.cardArt?.medium)
 

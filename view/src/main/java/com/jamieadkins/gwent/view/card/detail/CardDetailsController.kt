@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.view.card.detail
 import android.content.res.Resources
 import android.graphics.Typeface
 import com.airbnb.epoxy.AutoModel
+import com.airbnb.epoxy.Typed2EpoxyController
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.core.GwentCard
@@ -13,7 +14,7 @@ import com.jamieadkins.gwent.view.card.CardResourceHelper
 import com.jamieadkins.gwent.view.card.GwentCardViewModel_
 import com.jamieadkins.gwent.view.card.SubHeaderViewModel_
 
-class CardDetailsController(val resources: Resources) : TypedEpoxyController<GwentCard>() {
+class CardDetailsController(val resources: Resources) : Typed2EpoxyController<GwentCard, List<GwentCard>>() {
 
     @AutoModel lateinit var tooltipHeader: SubHeaderViewModel_
     @AutoModel lateinit var tooltip: ElevatedTextViewModel_
@@ -27,7 +28,7 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
     @AutoModel lateinit var millHeader: SubHeaderViewModel_
     @AutoModel lateinit var mill: CraftCostViewModel_
 
-    override fun buildModels(card: GwentCard) {
+    override fun buildModels(card: GwentCard, relatedCards: List<GwentCard>) {
 
         tooltipHeader
                 .title(R.string.tooltip)
@@ -62,9 +63,7 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
 
         relatedCardsHeader
                 .title(R.string.related)
-                .addTo(this)
-
-        val relatedCards = listOf(card)
+                .addIf(relatedCards.isNotEmpty(), this)
 
         relatedCards.forEach { relatedCard ->
             val model = GwentCardViewModel_()
