@@ -36,7 +36,7 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                         .cardTooltip(card.tooltip ?: "")
                         .cardCategories(card.categories)
                         .cardStrength(card.strength)
-                        .cardImage(card.cardArt?.low)
+                        .cardImage(card.cardArt?.medium)
                         .clickListener { _ -> RxBus.post(GwentCardClickEvent(it)) }
 
                 card.faction?.let {

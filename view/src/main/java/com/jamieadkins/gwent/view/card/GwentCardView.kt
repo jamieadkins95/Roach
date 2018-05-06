@@ -15,6 +15,7 @@ import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -27,7 +28,8 @@ import org.jetbrains.annotations.Nullable
 import java.lang.Exception
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
-class GwentCardView : CardView {
+class GwentCardView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+    : CardView(context, attrs, defStyleAttr) {
 
     private val tvName by bindView<TextView>(R.id.name)
     private val tvTooltip by bindView<TextView>(R.id.tooltip)
@@ -38,13 +40,7 @@ class GwentCardView : CardView {
     private val imgCard by bindView<ImageView>(R.id.card_image)
     private val progress by bindView<ProgressBar>(R.id.progress)
 
-    constructor(context: Context) : super(context) { inflateView() }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) { inflateView() }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) { inflateView() }
-
-    private fun inflateView() {
+    init {
         LayoutInflater.from(context).inflate(R.layout.view_gwent_card, this, true)
     }
 
@@ -90,6 +86,7 @@ class GwentCardView : CardView {
             Glide.with(context)
                     .load(imageUrl)
                     .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .listener(object : RequestListener<String, GlideDrawable> {
                         override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
                             progress.visibility = View.GONE

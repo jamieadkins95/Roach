@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.detail
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
@@ -11,11 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.card.CardResourceHelper
+import com.jamieadkins.gwent.view.card.CardResourceHelper
 import com.jamieadkins.gwent.core.GwentCard
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.view.card.detail.CardDetailsController
@@ -69,10 +71,13 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
 
         Glide.with(requireContext())
                 .load(card.cardArt?.medium)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCard)
 
-        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(requireContext(), card.faction!!))
-        activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(requireContext(), card.faction!!)
+        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, card.faction!!))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, card.faction!!)
+        }
     }
 
     override fun setLoadingIndicator(loading: Boolean) {

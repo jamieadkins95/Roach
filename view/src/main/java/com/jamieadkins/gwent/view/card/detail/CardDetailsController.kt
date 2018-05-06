@@ -6,8 +6,10 @@ import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.view.R
 import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
+import com.jamieadkins.gwent.view.card.CardResourceHelper
 import com.jamieadkins.gwent.view.card.GwentCardViewModel_
 import com.jamieadkins.gwent.view.card.SubHeaderViewModel_
 
@@ -76,7 +78,7 @@ class CardDetailsController(val resources: Resources) : TypedEpoxyController<Gwe
                         .cardTooltip(relatedCard.tooltip ?: "")
                         .cardCategories(relatedCard.categories)
                         .cardStrength(relatedCard.strength)
-                        .cardImage(relatedCard.cardArt?.low)
+                        .cardImage(relatedCard.cardArt?.medium)
                         .clickListener { _ -> RxBus.post(GwentCardClickEvent(it)) }
 
                 relatedCard.faction?.let {
