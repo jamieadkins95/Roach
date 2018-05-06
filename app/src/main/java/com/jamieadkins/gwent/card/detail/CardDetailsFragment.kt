@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.detail
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,14 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.view.card.CardResourceHelper
 import com.jamieadkins.gwent.core.GwentCard
+import com.jamieadkins.gwent.core.GwentFaction
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.view.card.detail.CardDetailsController
 import kotterknife.bindView
@@ -32,6 +38,7 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val imgCard by bindView<ImageView>(R.id.card_image)
+    private val progress by bindView<ProgressBar>(R.id.progress)
 
     companion object {
         const val KEY_ID = "cardId"
@@ -69,14 +76,42 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         (activity as? AppCompatActivity)?.title = card.name
         controller.setData(card)
 
-        Glide.with(requireContext())
-                .load(card.cardArt?.medium)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgCard)
+        loadCardImage(card.cardArt?.medium)
 
         toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, card.faction!!))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, card.faction!!)
+            progress.indeterminateTintList = ColorStateList.valueOf(CardResourceHelper.getColorForFaction(resources, card.faction ?: GwentFaction.NEUTRAL))
+        }
+    }
+
+    fun loadCardImage(imageUrl: String?) {
+        imgCard.visibility = View.INVISIBLE
+        progress.visibility = View.VISIBLE
+        if (imageUrl != null) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .listener(object : RequestListener<String, GlideDrawable> {
+                        override fun onException(e: java.lang.Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
+                            progress.visibility = View.GONE
+                            imgCard.visibility = View.VISIBLE
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                            progress.visibility = View.GONE
+                            imgCard.visibility = View.VISIBLE
+                            return false
+                        }
+
+                    })
+                    .into(imgCard)
+        } else {
+            imgCard.setImageDrawable(null)
+            progress.visibility = View.GONE
+            imgCard.visibility = View.VISIBLE
         }
     }
 
