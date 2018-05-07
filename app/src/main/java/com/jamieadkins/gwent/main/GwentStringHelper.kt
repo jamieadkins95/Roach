@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.main
 
 import android.content.Context
-import com.jamieadkins.gwent.core.R
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardLoyalty
