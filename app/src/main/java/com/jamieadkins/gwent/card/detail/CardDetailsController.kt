@@ -1,15 +1,15 @@
-package com.jamieadkins.gwent.view.card.detail
+package com.jamieadkins.gwent.card.detail
 
 import android.content.res.Resources
 import android.graphics.Typeface
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.model.GwentCard
-import com.jamieadkins.gwent.view.R
-import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
-import com.jamieadkins.gwent.view.card.GwentCardViewModel_
-import com.jamieadkins.gwent.view.card.SubHeaderViewModel_
+import com.jamieadkins.gwent.bus.GwentCardClickEvent
+import com.jamieadkins.gwent.card.list.GwentCardViewModel_
+import com.jamieadkins.gwent.card.list.SubHeaderViewModel_
 
 class CardDetailsController(val resources: Resources) : Typed2EpoxyController<GwentCard, List<GwentCard>>() {
 

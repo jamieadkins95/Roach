@@ -15,9 +15,7 @@ import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
 import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
-import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
 import android.view.*
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.ScrollView

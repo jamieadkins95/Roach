@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.view.bus
+package com.jamieadkins.gwent.bus
 
 import com.jamieadkins.commonutils.bus.BaseBusEvent
 

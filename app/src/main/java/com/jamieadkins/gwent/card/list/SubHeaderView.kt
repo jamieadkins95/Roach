@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.view.card
+package com.jamieadkins.gwent.card.list
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
-import com.jamieadkins.gwent.view.R
+import com.jamieadkins.gwent.R
 import kotterknife.bindView
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)

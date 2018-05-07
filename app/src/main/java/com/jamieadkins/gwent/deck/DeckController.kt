@@ -1,7 +1,8 @@
-package com.jamieadkins.gwent.view
+package com.jamieadkins.gwent.deck
 
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
+import com.jamieadkins.gwent.R
 
 class DeckController : TypedEpoxyController<List<String>>() {
     @AutoModel

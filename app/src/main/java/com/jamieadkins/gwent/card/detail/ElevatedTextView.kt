@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.view.card.detail
+package com.jamieadkins.gwent.card.detail
 
 import android.content.Context
 import android.graphics.Typeface
@@ -10,7 +10,7 @@ import com.airbnb.epoxy.ModelProp
 
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
-import com.jamieadkins.gwent.view.R
+import com.jamieadkins.gwent.R
 import kotterknife.bindView
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)

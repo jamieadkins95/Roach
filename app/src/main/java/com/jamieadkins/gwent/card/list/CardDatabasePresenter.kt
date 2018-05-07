@@ -13,8 +13,8 @@ import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
-import com.jamieadkins.gwent.view.bus.DownloadUpdateClickEvent
-import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
+import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
+import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 

@@ -1,11 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 apply plugin: 'io.fabric'
 
 androidExtensions {
     experimental = true
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 android {
@@ -79,11 +84,14 @@ dependencies {
     implementation "com.android.support:preference-v14:$support_library_version"
     implementation "com.android.support:palette-v7:$support_library_version"
     implementation "com.android.support:customtabs:$support_library_version"
+    implementation "com.android.support:animated-vector-drawable:$support_library_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     // UI.
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    implementation 'com.airbnb.android:epoxy:2.10.0'
+    kapt 'com.airbnb.android:epoxy-processor:2.10.0'
 
     // Utils.
     implementation project(':commonutils')
@@ -102,7 +110,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(':database')
-    implementation project(':view')
     implementation project(':core')
     implementation project(':data')
 }

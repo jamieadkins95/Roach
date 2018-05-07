@@ -10,7 +10,7 @@ import com.jamieadkins.commonutils.bus.RxBus
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.*
-import com.jamieadkins.gwent.core.GwentStringHelper
+import com.jamieadkins.gwent.main.GwentStringHelper
 import kotterknife.bindView
 
 class FilterRecyclerViewAdapter : RecyclerView.Adapter<FilterRecyclerViewAdapter.FilterViewHolder>() {

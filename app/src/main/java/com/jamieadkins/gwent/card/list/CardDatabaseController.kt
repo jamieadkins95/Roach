@@ -1,13 +1,13 @@
-package com.jamieadkins.gwent.view.card
+package com.jamieadkins.gwent.card.list
 
 import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
-import com.jamieadkins.gwent.view.R
-import com.jamieadkins.gwent.view.bus.DownloadUpdateClickEvent
-import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
+import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
+import com.jamieadkins.gwent.bus.GwentCardClickEvent
 
 class CardDatabaseController(val resources: Resources) : TypedEpoxyController<CardDatabaseScreenModel>() {
 

@@ -22,10 +22,9 @@ import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.MvpFragment
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.view.card.CardResourceHelper
+import com.jamieadkins.gwent.main.CardResourceHelper
 import com.jamieadkins.gwent.domain.card.model.GwentCard
-import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
-import com.jamieadkins.gwent.view.card.detail.CardDetailsController
+import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import kotterknife.bindView
 
 class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.View {

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.view.card
+package com.jamieadkins.gwent.card.list
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -19,10 +19,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.core.GwentStringHelper
-import com.jamieadkins.gwent.view.R
+import com.jamieadkins.gwent.main.GwentStringHelper
 import kotterknife.bindView
 import java.lang.Exception
 
