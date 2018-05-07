@@ -1,6 +1,9 @@
 package com.jamieadkins.gwent.card
 
-import com.jamieadkins.gwent.core.*
+import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.card.model.SortedBy
 
 data class CardFilter(
         val searchQuery: String = "",

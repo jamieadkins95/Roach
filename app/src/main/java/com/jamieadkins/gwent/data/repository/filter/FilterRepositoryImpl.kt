@@ -1,10 +1,10 @@
 package com.jamieadkins.gwent.data.repository.filter
 
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.core.SortedBy
-import com.jamieadkins.gwent.core.GwentCardColour
-import com.jamieadkins.gwent.core.GwentCardRarity
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.SortedBy
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.GwentFaction
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
@@ -49,8 +49,8 @@ class FilterRepositoryImpl : FilterRepository {
     }
 
     override fun setDefaultFilters(rarities: List<GwentCardRarity>,
-                                  factions: List<GwentFaction>,
-                                  colours: List<GwentCardColour>,
+                                   factions: List<GwentFaction>,
+                                   colours: List<GwentCardColour>,
                                    collectibleOnly: Boolean) {
         searchQuery = ""
 

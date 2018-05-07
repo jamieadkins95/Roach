@@ -1,10 +1,10 @@
 package com.jamieadkins.gwent.data.repository.filter
 
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.core.SortedBy
-import com.jamieadkins.gwent.core.GwentCardColour
-import com.jamieadkins.gwent.core.GwentCardRarity
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.SortedBy
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.GwentFaction
 import io.reactivex.Observable
 
 interface FilterRepository {
@@ -26,8 +26,8 @@ interface FilterRepository {
     fun setCollectibleOnly(collectibleOnly: Boolean)
 
     fun setDefaultFilters(rarities: List<GwentCardRarity> = GwentCardRarity.values().toList(),
-                         factions: List<GwentFaction> = GwentFaction.values().toList(),
-                         colours: List<GwentCardColour> = GwentCardColour.values().toList(),
+                          factions: List<GwentFaction> = GwentFaction.values().toList(),
+                          colours: List<GwentCardColour> = GwentCardColour.values().toList(),
                           collectibleOnly: Boolean = false)
 
     fun resetFilters()

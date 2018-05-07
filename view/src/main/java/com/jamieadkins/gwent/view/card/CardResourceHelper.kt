@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.view.card
 
 import android.content.res.Resources
 import android.support.v4.content.res.ResourcesCompat
-import com.jamieadkins.gwent.core.GwentFaction
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.view.R
 
 object CardResourceHelper {

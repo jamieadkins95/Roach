@@ -8,8 +8,8 @@ import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.*
 import com.jamieadkins.gwent.card.CardFilter
-import com.jamieadkins.gwent.core.CardDatabaseResult
-import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel
+import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
+import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.data.repository.card.CardRepository
 import com.jamieadkins.gwent.data.repository.filter.FilterRepository
 import com.jamieadkins.gwent.data.repository.update.UpdateRepository
@@ -65,7 +65,8 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
 
         Observable.combineLatest(getCards(), getUpdates().startWith(false),
                 BiFunction { cards: CardDatabaseResult, updateAvaliable: Boolean ->
-                    CardDatabaseScreenModel(cards, updateAvaliable) })
+                    CardDatabaseScreenModel(cards, updateAvaliable)
+                })
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnSubscribe { view?.setLoadingIndicator(true) }

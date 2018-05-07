@@ -25,7 +25,7 @@ import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
-import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel
+import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 import com.jamieadkins.gwent.update.UpdateActivity

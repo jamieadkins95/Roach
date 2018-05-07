@@ -2,7 +2,6 @@ package com.jamieadkins.gwent.data.repository.update
 
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.support.v7.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.Constants
@@ -22,7 +21,7 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jamieadkins.gwent.core.update.UpdateResult
+import com.jamieadkins.gwent.domain.update.UpdateResult
 import com.jamieadkins.gwent.data.keyword.FirebaseCategoryResult
 import com.jamieadkins.gwent.data.keyword.FirebaseKeywordResult
 import com.jamieadkins.gwent.data.repository.card.GwentCardMapper

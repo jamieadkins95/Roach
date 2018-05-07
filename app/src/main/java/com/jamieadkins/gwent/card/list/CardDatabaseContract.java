@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.card.list;
 
 import com.jamieadkins.commonutils.mvp3.ScrollView;
-import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel;
+import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel;
 
 import org.jetbrains.annotations.NotNull;
 

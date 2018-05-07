@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel
+import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.view.R
 import com.jamieadkins.gwent.view.bus.DownloadUpdateClickEvent
 import com.jamieadkins.gwent.view.bus.GwentCardClickEvent

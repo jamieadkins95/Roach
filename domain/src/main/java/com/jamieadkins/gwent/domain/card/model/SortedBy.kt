@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.core
+package com.jamieadkins.gwent.domain.card.model
 
 enum class SortedBy {
     ALPHABETICALLY_ASC,

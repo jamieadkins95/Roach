@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.core
+package com.jamieadkins.gwent.domain.card.model
 
 class GwentCardArt {
     var original: String? = null

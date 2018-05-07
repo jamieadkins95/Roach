@@ -1,4 +1,6 @@
-package com.jamieadkins.gwent.core
+package com.jamieadkins.gwent.domain.card.model
+
+import com.jamieadkins.gwent.domain.GwentFaction
 
 data class CardDatabaseResult(val cards: List<GwentCard> = emptyList(),
                               val searchQuery: String = "",
