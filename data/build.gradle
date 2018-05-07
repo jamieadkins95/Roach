@@ -13,13 +13,31 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "CARD_DATA_VERSION", '"3"'
+        }
+        debug {
+            buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
         }
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(':database')
     api project(':domain')
+
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.nytimes.android:cache3:3.0.0-beta'
+    implementation 'com.nytimes.android:store3:3.0.0-beta'
+    implementation 'com.nytimes.android:middleware3:3.0.0-beta'
+    implementation 'com.nytimes.android:filesystem3:3.0.0-beta'
+    implementation 'me.xdrop:fuzzywuzzy:1.1.8'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    implementation "com.google.firebase:firebase-storage:$google_services_version"
+    api "com.google.firebase:firebase-messaging:$google_services_version"
 }
 repositories {
     mavenCentral()

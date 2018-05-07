@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Roach</string>
-    <string name="pref_rxjava" translatable="false">Rxjava</string>
-    <string name="pref_glide" translatable="false">Glide</string>
-    <string name="pref_material_drawer" translatable="false">Material Drawer</string>
-    <string name="pref_analytics_key" translatable="false">com.jamieadkins.gwent.analytics</string>
-    <string name="pref_crowd_sourcing_key" translatable="false">com.jamieadkins.gwent.crowd.sourcing</string>
-    <string name="pref_locale_key" translatable="false">com.jamieadkins.gwent.crowd.locale</string>
-    <string name="pref_show_images_key" translatable="false">com.jamieadkins.gwent.show.images</string>
-    <string name="pref_low_data_key" translatable="false">com.jamieadkins.gwent.crowd.low.data</string>
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
     <string name="email_subject" translatable="false">Roach for Android</string>
@@ -17,90 +9,6 @@
 
     <string name="me" translatable="false">Jamie Adkins</string>
     <string name="cook" translatable="false">Michael Cook</string>
-
-    <array translatable="false" name="locales">
-        <item>en-US</item>
-        <item>de-DE</item>
-        <item>es-ES</item>
-        <item>es-MX</item>
-        <item>fr-FR</item>
-        <item>it-IT</item>
-        <item>ja-JP</item>
-        <item>pl-PL</item>
-        <item>pt-BR</item>
-        <item>ru-RU</item>
-    </array>
-
-    <array translatable="false" name="locales_readable">
-        <item>@string/english_en</item>
-        <item>@string/german_de</item>
-        <item>@string/spanish_es</item>
-        <item>@string/spanish_mx</item>
-        <item>@string/french_fr</item>
-        <item>@string/italian_it</item>
-        <item>@string/japanese_ja</item>
-        <item>@string/polish_pl</item>
-        <item>@string/portuguese_br</item>
-        <item>@string/russian_ru</item>
-    </array>
-
-    <string name="english_en" translatable="false">English</string>
-    <string name="german_de" translatable="false">Deutsch</string>
-    <string name="spanish_es" translatable="false">Español</string>
-    <string name="spanish_mx" translatable="false">Español (AL)</string>
-    <string name="french_fr" translatable="false">Français</string>
-    <string name="italian_it" translatable="false">Italiano</string>
-    <string name="japanese_ja" translatable="false">日本語</string>
-    <string name="polish_pl" translatable="false">Polski</string>
-    <string name="portuguese_br" translatable="false">Português do Brasil</string>
-    <string name="russian_ru" translatable="false">Pусский</string>
-
-    <string name="en" translatable="false">en</string>
-    <string name="de" translatable="false">de</string>
-    <string name="es" translatable="false">es</string>
-    <string name="fr" translatable="false">fr</string>
-    <string name="it" translatable="false">it</string>
-    <string name="jp" translatable="false">jp</string>
-    <string name="pl" translatable="false">pl</string>
-    <string name="pt_BR" translatable="false">pt-BR</string>
-    <string name="ru" translatable="false">ru</string>
-
-    <array translatable="false" name="locales_news">
-        <item>none</item>
-        <item>@string/en</item>
-        <item>@string/de</item>
-        <item>@string/es</item>
-        <item>@string/fr</item>
-        <item>@string/it</item>
-        <item>@string/jp</item>
-        <item>@string/pl</item>
-        <item>@string/pt_BR</item>
-        <item>@string/ru</item>
-    </array>
-
-    <array translatable="false" name="locales_news_readable">
-        <item>@string/none</item>
-        <item>@string/english_en</item>
-        <item>@string/german_de</item>
-        <item>@string/spanish_es</item>
-        <item>@string/french_fr</item>
-        <item>@string/italian_it</item>
-        <item>@string/japanese_ja</item>
-        <item>@string/polish_pl</item>
-        <item>@string/portuguese_br</item>
-        <item>@string/russian_ru</item>
-    </array>
-
-    <string translatable="false" name="default_locale">en-US</string>
-    <string translatable="false" name="shown_language">com.jamieadkins.gwent.shown.language</string>
-    <string translatable="false" name="shown_news">com.jamieadkins.gwent.shown.news</string>
-    <string name="news_url" translatable="false">https://playgwent.com/news</string>
-
-    <string translatable="false" name="pref_news_notifications_key">com.jamieadkins.gwent.notifications.news</string>
-    <string translatable="false" name="pref_patch_notifications_key">com.jamieadkins.gwent.notifications.patch</string>
-    <string translatable="false" name="pref_patch_notifications_topic_key">com.jamieadkins.gwent.notifications.patch.topic</string>
-    <string translatable="false" name="notification_channel_id">com.jamieadkins.gwent</string>
-    <string translatable="false" name="notification_channel_name">Gwent</string>
 
     <string translatable="false" name="discord">Discord</string>
     <string translatable="false" name="youtube">YouTube</string>
