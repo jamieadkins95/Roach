@@ -1,5 +1,7 @@
 package com.jamieadkins.commonutils.mvp2
 
+import com.jamieadkins.commonutils.bus.RefreshEvent
+import com.jamieadkins.commonutils.bus.RxBus
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BasePresenter<V>(val schedulerProvider: BaseSchedulerProvider) {
@@ -9,6 +11,7 @@ abstract class BasePresenter<V>(val schedulerProvider: BaseSchedulerProvider) {
     open fun onAttach(newView: V) {
         view = newView
         onRefresh()
+        RxBus.post(RefreshEvent())
     }
 
     open fun onDetach() {
@@ -16,5 +19,5 @@ abstract class BasePresenter<V>(val schedulerProvider: BaseSchedulerProvider) {
         disposable.clear()
     }
 
-    abstract fun onRefresh()
+    open fun onRefresh() {}
 }

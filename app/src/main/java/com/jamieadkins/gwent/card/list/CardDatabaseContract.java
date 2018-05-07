@@ -1,12 +1,15 @@
 package com.jamieadkins.gwent.card.list;
 
 import com.jamieadkins.commonutils.mvp3.ScrollView;
+import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel;
 
 import org.jetbrains.annotations.NotNull;
 
 public interface CardDatabaseContract {
     interface View extends CardsContract.View, ScrollView {
-        void showUpdateAvailable();
+        void showData(@NotNull CardDatabaseScreenModel data);
+
+        void openUpdateScreen();
     }
 
     interface Presenter {

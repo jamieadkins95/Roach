@@ -1,9 +1,7 @@
 package com.jamieadkins.gwent.card.list
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -15,24 +13,22 @@ import com.jamieadkins.commonutils.mvp3.MvpFragment
 
 import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.bus.RefreshEvent
+import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.update.UpdateActivity
 import com.jamieadkins.gwent.view.card.CardDatabaseController
 import kotterknife.bindView
 import com.jamieadkins.gwent.view.card.VerticalSpaceItemDecoration
-import android.util.DisplayMetrics
 import android.view.*
-import android.widget.Toast
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.base.PresenterFactory
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
-import com.jamieadkins.gwent.core.CardDatabaseResult
+import com.jamieadkins.gwent.core.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
+import com.jamieadkins.gwent.update.UpdateActivity
 
 class CardDatabaseFragment :
         MvpFragment<CardDatabaseContract.View>(),
@@ -150,17 +146,18 @@ class CardDatabaseFragment :
         recyclerView.visibility = View.GONE
     }
 
-    override fun showCards(result: CardDatabaseResult) {
-        if (result.cards.isNotEmpty()) {
-            controller.setData(result)
-            emptyView.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
-            recyclerView.post {
-                recyclerView.scrollToPosition(0)
-            }
-        } else {
-            showEmptyView()
+    override fun showData(data: CardDatabaseScreenModel) {
+        controller.setData(data)
+        emptyView.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        recyclerView.post {
+            recyclerView.scrollToPosition(0)
         }
+    }
+
+    override fun openUpdateScreen() {
+        val intent = Intent(requireContext(), UpdateActivity::class.java)
+        activity?.startActivity(intent)
     }
 
     override fun onRefresh() {
@@ -175,21 +172,5 @@ class CardDatabaseFragment :
         val intent = Intent(requireContext(), CardDetailsActivity::class.java)
         intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
         activity?.startActivity(intent)
-    }
-
-    override fun showUpdateAvailable() {
-        val message = getString(R.string.update_available)
-        val actionMessage = getString(R.string.update)
-        val action = View.OnClickListener {
-            val i = Intent(activity, UpdateActivity::class.java)
-            startActivity(i)
-        }
-
-        view?.let {
-            val snackbar = Snackbar.make(it, message, Snackbar.LENGTH_INDEFINITE)
-            snackbar.setAction(actionMessage, action)
-            snackbar.show()
-        }
-
     }
 }

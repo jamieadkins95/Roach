@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.bus
+package com.jamieadkins.commonutils.bus
 
 import com.jamieadkins.commonutils.bus.NoDataBusEvent
 

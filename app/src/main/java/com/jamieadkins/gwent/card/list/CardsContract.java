@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface CardsContract {
     interface View extends BaseListView {
-        void showCards(@NotNull CardDatabaseResult result);
 
         void showCardDetails(@NotNull String cardId);
     }
