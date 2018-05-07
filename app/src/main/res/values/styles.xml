@@ -29,4 +29,8 @@
     <style name="Widget.BottomNavigationView.Gwent" parent="Widget.Design.BottomNavigationView">
         <item name="android:fontFamily">@font/gwent</item>
     </style>
+
+    <style name="GwentTextAppearance">
+        <item name="android:fontFamily">@font/gwent</item>
+    </style>
 </resources>

@@ -93,6 +93,8 @@ class CardDatabaseFragment :
             title = getString(R.string.card_database)
         }
 
+        toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
+
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
         refreshLayout.setOnRefreshListener(this)
 
