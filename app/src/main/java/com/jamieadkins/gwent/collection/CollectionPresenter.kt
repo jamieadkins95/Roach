@@ -2,8 +2,8 @@ package com.jamieadkins.gwent.collection
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.gwent.data.repository.card.CardRepository
-import com.jamieadkins.gwent.data.repository.update.UpdateRepository
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 
 class CollectionPresenter(schedulerProvider: BaseSchedulerProvider,
                           val cardRepository: CardRepository,

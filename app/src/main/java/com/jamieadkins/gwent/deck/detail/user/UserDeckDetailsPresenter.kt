@@ -2,8 +2,8 @@ package com.jamieadkins.gwent.deck.detail.user
 
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.gwent.data.repository.card.CardRepository
-import com.jamieadkins.gwent.data.repository.deck.DeckRepository
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 
 class UserDeckDetailsPresenter(private val deckId: String,
                                private val deckRepository: DeckRepository,

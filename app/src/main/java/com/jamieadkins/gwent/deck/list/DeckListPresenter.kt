@@ -7,8 +7,8 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.data.repository.deck.DeckRepository
-import com.jamieadkins.gwent.model.deck.GwentDeckSummary
+import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
+import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
 
 class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                         private val deckRepository: DeckRepository) :

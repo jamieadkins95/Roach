@@ -1,10 +1,11 @@
 package com.jamieadkins.gwent.data.repository.filter
 
-import com.jamieadkins.gwent.card.CardFilter
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 

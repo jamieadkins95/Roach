@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.model.deck
+package com.jamieadkins.gwent.domain.deck.model
 
 data class GwentDeckCardCounts(
         val bronzeCardCount: Int = 0,

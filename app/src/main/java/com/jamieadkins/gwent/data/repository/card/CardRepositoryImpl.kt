@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.data.repository.card
 
-import com.jamieadkins.gwent.card.CardFilter
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.data.CardSearch
@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.data.CardSearchData
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import io.reactivex.Single
 import io.reactivex.functions.Function3
 

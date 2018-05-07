@@ -1,6 +1,6 @@
-package com.jamieadkins.gwent.data.repository.update
+package com.jamieadkins.gwent.domain.update.repository
 
-import com.jamieadkins.gwent.domain.update.UpdateResult
+import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.card
+package com.jamieadkins.gwent.domain.filter.model
 
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour

@@ -1,6 +1,6 @@
-package com.jamieadkins.gwent.data.repository.deck
+package com.jamieadkins.gwent.domain.deck.repository
 
-import com.jamieadkins.gwent.model.deck.GwentDeck
+import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.GwentFaction
 import io.reactivex.Completable
 

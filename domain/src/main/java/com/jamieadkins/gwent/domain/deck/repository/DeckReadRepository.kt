@@ -1,9 +1,9 @@
-package com.jamieadkins.gwent.data.repository.deck
+package com.jamieadkins.gwent.domain.deck.repository
 
 import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.model.deck.GwentDeck
-import com.jamieadkins.gwent.model.deck.GwentDeckSummary
-import com.jamieadkins.gwent.model.deck.GwentDeckCardCounts
+import com.jamieadkins.gwent.domain.deck.model.GwentDeck
+import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
+import com.jamieadkins.gwent.domain.deck.model.GwentDeckCardCounts
 import io.reactivex.Flowable
 
 import io.reactivex.Single

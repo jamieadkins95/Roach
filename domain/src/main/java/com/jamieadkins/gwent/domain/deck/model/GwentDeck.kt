@@ -1,13 +1,12 @@
-package com.jamieadkins.gwent.model.deck
+package com.jamieadkins.gwent.domain.deck.model
 
-import com.jamieadkins.commonutils.ui.RecyclerViewItem
 import com.jamieadkins.gwent.domain.GwentFaction
 
 data class GwentDeck(
         val id: String,
         var name: String? = null,
         var faction: GwentFaction,
-        var leaderId: String? = null) : RecyclerViewItem {
+        var leaderId: String? = null) {
 
     var cards: Map<String, Int> = hashMapOf()
 
@@ -15,15 +14,7 @@ data class GwentDeck(
         return other is GwentDeck && other.id == id
     }
 
-    override fun areContentsTheSame(other: RecyclerViewItem): Boolean {
-        return other is GwentDeck && cards == other.cards
-    }
-
     override fun toString(): String {
         return "$name $faction $leaderId"
-    }
-
-    override fun getItemType(): Int {
-        return 0
     }
 }

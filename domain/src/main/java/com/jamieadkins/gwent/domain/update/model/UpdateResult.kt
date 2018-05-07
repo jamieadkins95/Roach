@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.domain.update
+package com.jamieadkins.gwent.domain.update.model
 
 sealed class UpdateResult {
 

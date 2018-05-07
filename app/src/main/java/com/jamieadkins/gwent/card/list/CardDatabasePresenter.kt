@@ -7,12 +7,12 @@ import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.*
-import com.jamieadkins.gwent.card.CardFilter
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
-import com.jamieadkins.gwent.data.repository.card.CardRepository
-import com.jamieadkins.gwent.data.repository.filter.FilterRepository
-import com.jamieadkins.gwent.data.repository.update.UpdateRepository
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
+import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import com.jamieadkins.gwent.view.bus.DownloadUpdateClickEvent
 import com.jamieadkins.gwent.view.bus.GwentCardClickEvent
 import io.reactivex.Observable

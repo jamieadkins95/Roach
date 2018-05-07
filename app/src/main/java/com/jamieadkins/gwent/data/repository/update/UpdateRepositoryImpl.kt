@@ -21,7 +21,7 @@ import java.io.File
 import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jamieadkins.gwent.domain.update.UpdateResult
+import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import com.jamieadkins.gwent.data.keyword.FirebaseCategoryResult
 import com.jamieadkins.gwent.data.keyword.FirebaseKeywordResult
 import com.jamieadkins.gwent.data.repository.card.GwentCardMapper
@@ -35,6 +35,7 @@ import java.lang.reflect.Type
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import java.util.*
 
 

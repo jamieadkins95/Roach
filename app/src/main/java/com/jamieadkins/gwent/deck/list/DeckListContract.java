@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.jamieadkins.commonutils.mvp2.BaseListView;
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.model.deck.GwentDeckSummary;
+import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
-package com.jamieadkins.gwent.data.repository.filter
+package com.jamieadkins.gwent.domain.filter.repository
 
-import com.jamieadkins.gwent.card.CardFilter
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
