@@ -12,6 +12,10 @@
                     android:value="@string/email_subject" />
             </intent>
         </Preference>
+        <Preference android:title="@string/privacy" >
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.example.com" />
+        </Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_attributions">
