@@ -1,17 +1,12 @@
 If you have questions about deleting or correcting your personal data please contact us at jamieadkins95+gwent@gmail.com.
 
-Jamie Adkins (“Developer") operates the mobile application "Roach for Gwent" ("Application"). It is our policy to respect your privacy regarding any information we may collect while operating Roach.
+Jamie Adkins (“Developer") operates the mobile application "Roach" ("Application"). It is our policy to respect your privacy regarding any information we may collect while operating Roach.
 
 ## Personal Data
 
 Among the types of Personal Data that this Application collects, by itself or through third parties, there are: email address, password and User ID.
 This information is used for authentication purposes only, to allow the user private access to content they have created.
 The Personal Data may be freely provided by the User, or collected automatically when using this Application.
-
-## The use of the collected Data
-
-The Data concerning the User is collected to allow the Developer to provide its services, as well as for the following purposes: Registration and authentication, User Created Data.
-The Personal Data used for each purpose is outlined in the specific sections of this document.
 
 ## Registration and Authentication
 
@@ -25,54 +20,9 @@ Direct registration (This Application)
 The User registers by filling out the registration form and providing the Personal Data directly to this Application.
 Personal Data collected: email address, password and User ID.
 
-## User Created Data
-
-When a user creates content using this Application, the data is stored according to the following model:
-```
-{
-  "users": {
-    "unique-user-id-non-personally-identifiable": {
-      "decks": {
-        "unique-deck-id": {
-          "faction":"scoiatael",
-          "id":"-KZ-QzT4olx_Su-kvBUK",	  
-          "name":"me deck",	  
-          "openToPublic":false,	  
-       	  "cards": {
-            "example-card-id": 1,	    
-            "example-card-id2": 0
-          }
-        }
-      }     
-    }    
-  }  
-}
-```
-This data is then protected by the following rules:
-```
-{
-  "rules": {  
-    "users": {    
-    	"$uid": {
-      	// Only this user can read and write to their own bucket.
-	      ".write": "auth != null && auth.uid == $uid",
-      	".read": "auth != null && auth.uid == $uid"
-    	}
-    }    
-  }  
-}
-```
-User Created Data is stored without any personably indentifiable information and can only be accessed by the user that created it.
-
 ## Firebase
 
 Roach uses various Firebase services to provide functionality to this Application. These are:
-
-### Analytics
-
-Firebase will collect anonymous usage statistics to help future development of this Application. This information can include, anonymous information about your device (e.g Android version), and Application usage time.
-
-Analytics is strictly opt-in, and will only be enabled if the user enables it. It can be disabled at anytime through the Application settings.
 
 ### Authentication
 
@@ -81,10 +31,6 @@ As described in the Registration and Authentication section, users can register 
 ### Database
 
 Any user created data is stored in a Firebase Realtime Database according to the model described above.
-
-### Crash Reporting
-
-Roach will automatically report Application crashes to Firebase. The reports are completely anonymous. By using Roach, you are agreeing to the use of this feature.
 
 ## Additional information about Data collection and processing
 
