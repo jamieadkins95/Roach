@@ -14,7 +14,7 @@
         </Preference>
         <Preference android:title="@string/privacy" >
             <intent android:action="android.intent.action.VIEW"
-                android:data="http://www.example.com" />
+                android:data="https://github.com/jamieadkins95/Roach/blob/master/PRIVACY.md" />
         </Preference>
     </PreferenceCategory>
     <PreferenceCategory
