@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-apply plugin: 'io.fabric'
-
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -93,9 +91,6 @@ dependencies {
     compile "com.google.firebase:firebase-database:$google_services_version"
     compile "com.google.firebase:firebase-storage:$google_services_version"
     compile "com.google.firebase:firebase-messaging:$google_services_version"
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true
-    }
 
     // Testing.
     testCompile 'junit:junit:4.12'

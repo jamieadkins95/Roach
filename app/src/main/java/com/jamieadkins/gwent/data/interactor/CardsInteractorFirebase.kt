@@ -12,8 +12,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseReference
 import com.jamieadkins.commonutils.mvp2.applyComputationSchedulers
 import com.jamieadkins.gwent.data.*
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.SearchEvent
 
 /**
  * Deals with firebase.
@@ -90,9 +88,6 @@ class CardsInteractorFirebase(val locale: String = "en-US") : CardsInteractor {
         if (query != null) {
             source = getCards().applyComputationSchedulers().flatMap { cardList ->
                 val searchResults = searchCards(query, cardList, locale)
-                Answers.getInstance().logSearch(SearchEvent()
-                        .putQuery(query)
-                        .putCustomAttribute("hits", searchResults.size))
                 getCards(searchResults)
             }
         } else if (cardIds != null) {
