@@ -49,11 +49,6 @@
             android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="7e4cba196ad21fc2d7f6bd83b49d8671a7cff512"
-            tools:replace="android:value" />
-
         <activity android:name=".update.UpdateActivity"
             android:theme="@style/Theme.Gwent.NoActionBar.Full" />
     </application>

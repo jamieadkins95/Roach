@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent
 
-
 import android.support.v7.preference.PreferenceManager
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider
