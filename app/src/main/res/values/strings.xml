@@ -14,4 +14,5 @@
     <string name="update_available_title">Update Available</string>
     <string name="update_available_body">A card database update is available to download.</string>
     <string name="download">Download</string>
+    <string name="privacy">Privacy Policy</string>
 </resources>

@@ -2,9 +2,7 @@ package com.jamieadkins.gwent.main
 
 import android.app.Application
 import android.util.Log
-import com.crashlytics.android.Crashlytics
 import com.jamieadkins.gwent.BuildConfig
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -17,7 +15,6 @@ class GwentApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-        Fabric.with(this, Crashlytics())
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
