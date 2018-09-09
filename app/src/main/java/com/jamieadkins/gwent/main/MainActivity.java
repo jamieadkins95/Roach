@@ -20,6 +20,7 @@ import com.jamieadkins.commonutils.bus.RxBus;
 import com.jamieadkins.gwent.bus.ScrollToTopEvent;
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment;
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment;
+import com.jamieadkins.gwent.collection.CollectionPlaceholderFragment;
 import com.jamieadkins.gwent.settings.PreferenceFragment;
 import com.jamieadkins.gwent.settings.SettingsActivity;
 
@@ -116,7 +117,7 @@ public class MainActivity extends BaseActivity {
             case R.id.navigation_card_db:
                 return new CardDatabaseFragment();
             case R.id.navigation_collection:
-                return new CardDatabaseFragment();
+                return new CollectionPlaceholderFragment();
             case R.id.navigation_decks:
                 Fragment fragment = new CardDetailsFragment();
                 Bundle bundle = new Bundle();
