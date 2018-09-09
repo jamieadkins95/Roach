@@ -80,8 +80,12 @@ class CardDatabasePresenter(schedulerProvider: BaseSchedulerProvider,
     }
 
     private fun getCards(): Observable<CardDatabaseResult> {
+        val filter  = filterRepository.getFilter()
+            .doOnNext {
+                view?.setLoadingIndicator(true)
+            }
         return Observable.combineLatest(RxBus.register(RefreshEvent::class.java).startWith(RefreshEvent()),
-                filterRepository.getFilter(), BiFunction { event: RefreshEvent, filter: CardFilter -> filter })
+                filter, BiFunction { event: RefreshEvent, filter: CardFilter -> filter })
                 .observeOn(schedulerProvider.io())
                 .switchMapSingle { cardRepository.getCards(it) }
     }
