@@ -4,6 +4,7 @@
     <string name="cards">Cards</string>
     <string name="card_database">Card Database</string>
     <string name="collection_manager">Collection Manager</string>
+    <string name="deck_builder">Deck Builder</string>
     <string name="news">News</string>
     <string name="no_internet_connection">No internet connection :(</string>
     <string name="decks">Decks</string>
@@ -73,5 +74,7 @@
     <string name="forums">Forums</string>
 
     <string name="collection_placeholder_title">Collection Manager will return soon!</string>
-    <string name="collection_placeholder_message">Gwent changed a lot with the Homecoming update. Collection Manager is currently being rebuilt to support the new update.</string>
+    <string name="collection_placeholder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Collection Manager is currently being rebuilt to support the new update.</string>
+    <string name="deck_builder_title">Deck Builder will return soon!</string>
+    <string name="deck_builder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Deck Builder is currently being rebuilt to support the new update.</string>
 </resources>
