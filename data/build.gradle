@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion compileSdk
+    compileSdkVersion Versions.compile_sdk
 
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
     }
 
     compileOptions {
@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation Libs.kotlin
     implementation project(':database')
     api project(':domain')
 

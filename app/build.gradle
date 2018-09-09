@@ -12,14 +12,13 @@ kapt {
 }
 
 android {
-    compileSdkVersion compileSdk
-    buildToolsVersion '27.0.3'
+    compileSdkVersion Versions.compile_sdk
     defaultConfig {
         applicationId "com.jamieadkins.gwent"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode 48
-        versionName "v2.0.6"
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
+        versionCode Versions.app_version_code
+        versionName Versions.app_version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -107,7 +106,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
     implementation 'com.android.support:multidex:1.0.3'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation Libs.kotlin
 
     implementation project(':database')
     implementation project(':data')
