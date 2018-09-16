@@ -24,6 +24,7 @@ import com.jamieadkins.gwent.collection.CollectionPlaceholderFragment;
 import com.jamieadkins.gwent.deck.list.DeckListPlaceholderFragment;
 import com.jamieadkins.gwent.settings.PreferenceFragment;
 import com.jamieadkins.gwent.settings.SettingsActivity;
+import com.jamieadkins.gwent.settings.SettingsFragment;
 
 import java.util.Locale;
 
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity {
             case R.id.navigation_decks:
                 return new DeckListPlaceholderFragment();
             case R.id.navigation_gwent:
-                return PreferenceFragment.newInstance(R.xml.gwent);
+                return new SettingsFragment();
             default:
                 return new CardDatabaseFragment();
         }
