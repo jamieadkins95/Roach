@@ -2,19 +2,17 @@ package com.jamieadkins.gwent.settings
 
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.EpoxyController
-import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
 
 class SettingsController : EpoxyController() {
 
-    @AutoModel lateinit var news: SettingsListItemViewModel_
-    @AutoModel lateinit var esports: SettingsListItemViewModel_
-    @AutoModel lateinit var forums: SettingsListItemViewModel_
-    @AutoModel lateinit var reddit: SettingsListItemViewModel_
-    @AutoModel lateinit var discord: SettingsListItemViewModel_
-    @AutoModel lateinit var twitch: SettingsListItemViewModel_
-    @AutoModel lateinit var youtube: SettingsListItemViewModel_
+    @AutoModel lateinit var news: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var esports: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var forums: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var reddit: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var discord: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var twitch: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var youtube: MaterialSettingsOneLineViewModel_
 
     var listener: SettingsNavigationCallback? = null
 

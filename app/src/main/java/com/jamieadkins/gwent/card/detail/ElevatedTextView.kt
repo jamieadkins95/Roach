@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.airbnb.epoxy.ModelProp
 
@@ -15,7 +16,7 @@ import kotterknife.bindView
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class ElevatedTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : CardView(context, attrs, defStyleAttr) {
+    : LinearLayout(context, attrs, defStyleAttr) {
 
     private val tvText by bindView<TextView>(R.id.text)
 

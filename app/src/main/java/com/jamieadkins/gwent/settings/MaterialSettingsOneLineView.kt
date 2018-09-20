@@ -13,17 +13,14 @@ import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.jamieadkins.gwent.R
-import kotlinx.android.synthetic.main.view_settings_item.view.*
+import kotlinx.android.synthetic.main.view_material_settings_one_line.view.*
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
-class SettingsListItemView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+class MaterialSettingsOneLineView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_settings_item, this, true)
-        val outValue = TypedValue()
-        context.theme.resolveAttribute(R.attr.selectableItemBackground, outValue, true)
-        setBackgroundResource(outValue.resourceId)
+        LayoutInflater.from(context).inflate(R.layout.view_material_settings_one_line, this, true)
     }
 
     @TextProp
@@ -39,5 +36,13 @@ class SettingsListItemView @JvmOverloads constructor(context: Context, attrs: At
     @CallbackProp
     fun setClickListener(listener: View.OnClickListener?) {
         setOnClickListener(listener)
+
+        if (listener != null) {
+            val outValue = TypedValue()
+            context.theme.resolveAttribute(R.attr.selectableItemBackground, outValue, true)
+            setBackgroundResource(outValue.resourceId)
+        } else {
+            setBackgroundResource(0)
+        }
     }
 }
