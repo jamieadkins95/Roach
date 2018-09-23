@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.data
 
 import com.jamieadkins.gwent.database.entity.CardEntity
+import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
 import io.reactivex.Single
@@ -19,14 +20,14 @@ object CardSearch {
             val start = System.currentTimeMillis()
             cardSearchData.cards.forEach { card ->
                 val scores = ArrayList<Int>()
-                scores.add(FuzzySearch.partialRatio(query, card.name["en-US"]))
-                scores.add(FuzzySearch.partialRatio(query, card.tooltip["en-US"]))
-                card.categoryIds.forEach { categoryId ->
+                scores.add(FuzzySearch.partialRatio(query, card.card.name["en-US"]))
+                scores.add(FuzzySearch.partialRatio(query, card.card.tooltip["en-US"]))
+                card.card.categoryIds.forEach { categoryId ->
                     cardSearchData.categories.filter { categoryId == it.categoryId }.forEach {
                         scores.add(FuzzySearch.partialRatio(query, it.name))
                     }
                 }
-                card.keywordIds.forEach { keywordId ->
+                card.card.keywordIds.forEach { keywordId ->
                     cardSearchData.keywords.filter { keywordId == it.keywordId }.forEach {
                         scores.add(FuzzySearch.partialRatio(query, it.name))
                     }
@@ -35,7 +36,7 @@ object CardSearch {
                 if (score > maxScore) {
                     maxScore = score
                 }
-                card.id.let {
+                card.card.id.let {
                     val result = CardSearchResult(it, score)
                     searchResults.add(result)
                 }
@@ -60,4 +61,4 @@ object CardSearch {
 
 private class CardSearchResult(val cardId: String, val score: Int)
 
-class CardSearchData(val cards: List<CardEntity>, val keywords: List<KeywordEntity>, val categories: List<CategoryEntity>)
+class CardSearchData(val cards: List<CardWithArtEntity>, val keywords: List<KeywordEntity>, val categories: List<CategoryEntity>)

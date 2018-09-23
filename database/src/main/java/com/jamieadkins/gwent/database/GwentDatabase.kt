@@ -25,6 +25,8 @@ abstract class GwentDatabase : RoomDatabase() {
 
     abstract fun cardDao(): CardDao
 
+    abstract fun artDao(): ArtDao
+
     abstract fun patchDao(): PatchDao
 
     abstract fun deckDao(): DeckDao

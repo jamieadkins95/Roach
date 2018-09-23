@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.data.CardSearchData
 import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
+import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
@@ -23,26 +24,8 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
                 .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
     }
 
-    private fun getCardEntities(): Single<List<CardEntity>> {
+    private fun getCardEntities(): Single<List<CardWithArtEntity>> {
         return database.cardDao().getCards()
-                .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
-    }
-
-    private fun mergeCardEntitiesWithCardArt(cards: List<CardEntity>): Single<List<CardEntity>> {
-        val cardIds = cards.map { it.id }
-        return database.cardDao().getCardArt(cardIds).map { artList ->
-            val artMap = mutableMapOf<String, MutableList<ArtEntity>>()
-            artList.forEach {
-                if (artMap[it.cardId] == null) {
-                    artMap[it.cardId] = mutableListOf()
-                }
-                artMap[it.cardId]?.add(it)
-            }
-            cards.forEach {
-                it.art = artMap[it.id]
-            }
-            cards
-        }
     }
 
     override fun getCards(cardFilter: CardFilter): Single<CardDatabaseResult> {
@@ -51,7 +34,7 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
                     getCardEntities(),
                     database.keywordDao().getAllKeywords(),
                     database.categoryDao().getAllCategories(),
-                    Function3<List<CardEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
+                    Function3<List<CardWithArtEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
                     { cards, keywords, categories -> CardSearchData(cards, keywords, categories) })
                     .flatMap { CardSearch.searchCards(cardFilter.searchQuery, it) }
                     .flatMap { getCards(it) }
@@ -86,14 +69,11 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
         return database.cardDao().getCards(cardIds)
-                .flatMap { cards -> mergeCardEntitiesWithCardArt(cards) }
                 .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
     }
 
     override fun getCard(id: String): Single<GwentCard> {
         return database.cardDao().getCard(id)
-                .flatMap { mergeCardEntitiesWithCardArt(listOf(it)) }
-                .map { it.first() }
                 .map { GwentCardMapper.cardEntityToGwentCard(it) }
     }
 

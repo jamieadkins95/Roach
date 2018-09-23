@@ -15,9 +15,8 @@ data class GwentCard(
         val collectible: Boolean = false,
         val craftCost: Int = 0,
         val millValue: Int = 0,
-        val relatedCards: List<String> = emptyList()) {
-
-    var cardArt: GwentCardArt? = null
+        val relatedCards: List<String> = emptyList(),
+        val cardArt: GwentCardArt) {
 
     override fun toString(): String {
         return name

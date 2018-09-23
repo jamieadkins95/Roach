@@ -164,7 +164,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
         return Completable.fromCallable {
             val cards = GwentCardMapper.cardEntityListFromApiResult(cardList)
             database.cardDao().insertCards(cards)
-            database.cardDao().insertArt(GwentCardMapper.artEntityListFromApiResult(cardList))
+            database.artDao().insertArt(GwentCardMapper.artEntityListFromApiResult(cardList))
         }
     }
 

@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.card.model.Rarity
 import com.jamieadkins.gwent.data.card.model.Type
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
+import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardArt
@@ -15,7 +16,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 object GwentCardMapper {
     private const val DEFAULT_LOCALE = "en-US"
 
-    fun gwentCardListFromCardEntityList(entityList: Collection<CardEntity>): Collection<GwentCard> {
+    fun gwentCardListFromCardEntityList(entityList: Collection<CardWithArtEntity>): Collection<GwentCard> {
         val cardList = mutableListOf<GwentCard>()
         entityList.forEach {
             cardList.add(cardEntityToGwentCard(it))
@@ -23,23 +24,22 @@ object GwentCardMapper {
         return cardList
     }
 
-    fun cardEntityToGwentCard(cardEntity: CardEntity, locale: String = DEFAULT_LOCALE): GwentCard {
-        val card = GwentCard(cardEntity.id,
-                cardEntity.name[locale] ?: "",
-                cardEntity.tooltip[locale] ?: "",
-                cardEntity.flavor[locale] ?: "",
-                emptyList(),
-                factionIdToFaction(cardEntity.faction),
-                cardEntity.strength,
-                typeToColour(cardEntity.color),
-                rarityIdToRarity(cardEntity.rarity),
-                cardEntity.collectible,
-                0,
-                0,
-                cardEntity.related)
-
-        card.cardArt = cardEntity.art?.firstOrNull()?.let { artEntityToCardArt(it) }
-        return card
+    fun cardEntityToGwentCard(toMap: CardWithArtEntity, locale: String = DEFAULT_LOCALE): GwentCard {
+        val cardEntity = toMap.card
+        return GwentCard(cardEntity.id,
+                         cardEntity.name[locale] ?: "",
+                         cardEntity.tooltip[locale] ?: "",
+                         cardEntity.flavor[locale] ?: "",
+                         emptyList(),
+                         factionIdToFaction(cardEntity.faction),
+                         cardEntity.strength,
+                         typeToColour(cardEntity.color),
+                         rarityIdToRarity(cardEntity.rarity),
+                         cardEntity.collectible,
+                         0,
+                         0,
+                         cardEntity.related,
+                         artEntityToCardArt(toMap.art.first()))
     }
 
     fun cardEntityListFromApiResult(result: FirebaseCardResult): Collection<CardEntity> {
@@ -48,21 +48,21 @@ object GwentCardMapper {
             if (it.isReleased) {
                 val variation = it.variations.values.firstOrNull()
                 cardList.add(
-                        CardEntity(
-                                it.ingameId,
-                                it.strength,
-                                variation?.isCollectible ?: false,
-                                it.rarity ?: "",
-                                it.type ?: "",
-                                it.faction ?: "",
-                                it.name ?: mapOf(),
-                                it.info ?: mapOf(),
-                                it.flavor ?: mapOf(),
-                                it.categories ?: listOf(),
-                                it.keywords ?: listOf(),
-                                it.loyalties ?: listOf(),
-                                it.related ?: listOf()
-                        )
+                    CardEntity(
+                        it.ingameId,
+                        it.strength,
+                        variation?.isCollectible ?: false,
+                        it.rarity ?: "",
+                        it.type ?: "",
+                        it.faction ?: "",
+                        it.name ?: mapOf(),
+                        it.info ?: mapOf(),
+                        it.flavor ?: mapOf(),
+                        it.categories ?: listOf(),
+                        it.keywords ?: listOf(),
+                        it.loyalties ?: listOf(),
+                        it.related ?: listOf()
+                    )
                 )
             }
         }
@@ -76,15 +76,15 @@ object GwentCardMapper {
                 val variation = card.variations.values.firstOrNull()
                 variation?.let { variation ->
                     artList.add(
-                            ArtEntity(
-                                    variation.variationId,
-                                    card.ingameId,
-                                    variation.art.original,
-                                    variation.art.high,
-                                    variation.art.medium,
-                                    variation.art.low,
-                                    variation.art.thumbnail
-                            )
+                        ArtEntity(
+                            variation.variationId,
+                            card.ingameId,
+                            variation.art.original,
+                            variation.art.high,
+                            variation.art.medium,
+                            variation.art.low,
+                            variation.art.thumbnail
+                        )
                     )
                 }
             }
@@ -97,7 +97,7 @@ object GwentCardMapper {
         art.original = artEntity.original
         art.high = artEntity.high
         art.medium = artEntity.medium
-        art.low= artEntity.low
+        art.low = artEntity.low
         art.thumbnail = artEntity.thumbnail
         return art
     }
