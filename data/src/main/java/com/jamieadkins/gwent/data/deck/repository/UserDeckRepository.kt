@@ -1,9 +1,11 @@
 package com.jamieadkins.gwent.data.deck.repository
 
+import com.jamieadkins.gwent.data.FactionMapper
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
+import com.jamieadkins.gwent.data.card.model.Faction
 import com.jamieadkins.gwent.data.deck.mapper.DeckMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
@@ -15,11 +17,14 @@ import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 import io.reactivex.*
 import io.reactivex.functions.BiFunction
 
-class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
+class UserDeckRepository(private val database: GwentDatabase,
+                         private val cardMapper: GwentCardMapper,
+                         private val factionMapper: FactionMapper,
+                         private val deckMapper: DeckMapper) : DeckRepository {
 
     override fun getDecks(): Single<List<GwentDeckSummary>> {
         return database.deckDao().getDecksOnce()
-                .map { DeckMapper.deckEntityListToGwentDeckList(it).toList() }
+                .map { deckMapper.mapList(it) }
                 .flatMap {
                     Observable.fromIterable(it)
                             .flatMap { deck ->
@@ -37,7 +42,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary> {
         return database.deckDao().getDeck(deckId)
-                .map { DeckMapper.deckEntityToGwentDeck(it) }
+                .map { deckMapper.map(it) }
                 .flatMap {
                     getLeader(it.id)
                             .zipWith(getCardCounts(it.id).toMaybe(),
@@ -52,9 +57,10 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
     private fun getLeader(deckId: String): Maybe<GwentCard> {
         return database.deckDao().getDeckOnce(deckId)
                 .flatMapMaybe {
-                    if (it.leaderId != null) {
-                        database.cardDao().getCard(it.leaderId!!)
-                                .map { GwentCardMapper.cardEntityToGwentCard(it) }
+                    val leaderId = it.leaderId
+                    if (leaderId != null) {
+                        database.cardDao().getCard(leaderId)
+                                .map { cardMapper.map(it, "en-US") }
                                 .toMaybe()
                     } else {
                         Maybe.empty<GwentCard>()
@@ -69,17 +75,17 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun getDeck(deckId: String): Flowable<GwentDeck> {
         return database.deckDao().getDeck(deckId)
-                .map { DeckMapper.deckEntityToGwentDeck(it) }
+                .map { deckMapper.map(it) }
     }
 
     override fun getDeckOnce(deckId: String): Single<GwentDeck> {
         return database.deckDao().getDeckOnce(deckId)
-                .map { DeckMapper.deckEntityToGwentDeck(it) }
+                .map { deckMapper.map(it) }
     }
 
     override fun getDeckFaction(deckId: String): Single<GwentFaction> {
         return database.deckDao().getDeckOnce(deckId)
-                .map { GwentCardMapper.factionIdToFaction(it.factionId) }
+                .map { factionMapper.map(it.factionId) }
     }
 
     override fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts> {
@@ -89,7 +95,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
                 // Get all card entities.
                 .flatMapSingle { database.cardDao().getCards(it) }
                 // Map entities to GwentCards.
-                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
+                .map { cardMapper.mapList(it, "en-US") }
                 // Map to GwentDeckCardCounts
                 .map { cards ->
                     var bronzeCount = 0
@@ -108,7 +114,7 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
 
     override fun createNewDeck(name: String, faction: GwentFaction): Single<String> {
         return Single.fromCallable {
-            val deck = DeckEntity(name, GwentCardMapper.factionToFactionId(faction))
+            val deck = DeckEntity(name, factionToFactionId(faction))
             database.deckDao().insertDeck(deck).toString()
         }
     }
@@ -116,8 +122,10 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
     override fun addCardToDeck(deckId: String, cardId: String): Completable {
         val defaultEntity = DeckCardEntity(deckId, cardId, 1)
         return database.deckCardDao().getCardCount(deckId, cardId)
-                .switchIfEmpty(insert(defaultEntity)
-                        .flatMapMaybe { database.deckCardDao().getCardCount(deckId, cardId) })
+                .switchIfEmpty(
+                    insert(defaultEntity)
+                        .flatMapMaybe { database.deckCardDao().getCardCount(deckId, cardId) }
+                )
                 .flatMapCompletable { updateCardCount(deckId, cardId, it.count)}
     }
 
@@ -165,6 +173,18 @@ class UserDeckRepository(private val database: GwentDatabase) : DeckRepository {
     override fun deleteDeck(deckId: String): Completable {
         return Completable.fromCallable {
             database.deckDao().deleteDeck(deckId)
+        }
+    }
+
+    private fun factionToFactionId(faction: GwentFaction): String {
+        return when (faction) {
+            GwentFaction.MONSTER -> Faction.MONSTERS_ID
+            GwentFaction.NORTHERN_REALMS -> Faction.NORTHERN_REALMS_ID
+            GwentFaction.SCOIATAEL -> Faction.SCOIATAEL_ID
+            GwentFaction.SKELLIGE -> Faction.SKELLIGE_ID
+            GwentFaction.NILFGAARD -> Faction.NILFGAARD_ID
+            GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
+            else -> throw Exception("Faction not found")
         }
     }
 }

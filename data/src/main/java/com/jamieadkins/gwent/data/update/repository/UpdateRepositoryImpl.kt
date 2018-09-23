@@ -16,7 +16,6 @@ import com.google.firebase.storage.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jamieadkins.gwent.domain.update.model.UpdateResult
-import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +25,8 @@ import java.lang.reflect.Type
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jamieadkins.gwent.data.*
+import com.jamieadkins.gwent.data.card.mapper.ApiMapper
+import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
 import com.jamieadkins.gwent.data.update.mapper.GwentCategoryMapper
 import com.jamieadkins.gwent.data.update.mapper.GwentKeywordMapper
 import com.jamieadkins.gwent.data.update.model.FirebaseCategoryResult
@@ -37,7 +38,9 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
                            private val filesDirectory: File,
                            private val storeManager: StoreManager,
                            sharedPreferences: SharedPreferences,
-                           private val resources: Resources) : UpdateRepository {
+                           private val resources: Resources,
+                           private val cardMapper: ApiMapper,
+                           private val artMapper: ArtApiMapper) : UpdateRepository {
 
     private val preferences = RxSharedPreferences.create(sharedPreferences)
 
@@ -162,9 +165,9 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
 
     private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
         return Completable.fromCallable {
-            val cards = GwentCardMapper.cardEntityListFromApiResult(cardList)
+            val cards = cardMapper.map(cardList)
             database.cardDao().insertCards(cards)
-            database.artDao().insertArt(GwentCardMapper.artEntityListFromApiResult(cardList))
+            database.artDao().insertArt(artMapper.map(cardList))
         }
     }
 

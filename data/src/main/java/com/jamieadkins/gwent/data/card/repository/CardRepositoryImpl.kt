@@ -17,11 +17,12 @@ import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import io.reactivex.Single
 import io.reactivex.functions.Function3
 
-class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
+class CardRepositoryImpl(private val database: GwentDatabase,
+                         private val cardMapper: GwentCardMapper) : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
         return getCardEntities()
-                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
+                .map { cardMapper.mapList(it, "en-US") }
     }
 
     private fun getCardEntities(): Single<List<CardWithArtEntity>> {
@@ -69,12 +70,12 @@ class CardRepositoryImpl(private val database: GwentDatabase) : CardRepository {
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
         return database.cardDao().getCards(cardIds)
-                .map { GwentCardMapper.gwentCardListFromCardEntityList(it) }
+                .map { cardMapper.mapList(it, "en-US") }
     }
 
     override fun getCard(id: String): Single<GwentCard> {
         return database.cardDao().getCard(id)
-                .map { GwentCardMapper.cardEntityToGwentCard(it) }
+                .map { cardMapper.map(it, "en-US") }
     }
 
     fun doesCardMeetFilter(filter: CardFilter, card: GwentCard): Boolean {
