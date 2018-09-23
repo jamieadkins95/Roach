@@ -17,6 +17,6 @@ interface PatchDao {
     fun insertPatchVersion(patch: PatchVersionEntity)
 
     @Query("SELECT * FROM " + GwentDatabase.PATCH_VERSION_TABLE + " WHERE patch=:patch")
-    fun getPatchVersion(patch: String): PatchVersionEntity?
+    fun getPatchVersion(patch: String): Maybe<PatchVersionEntity>
 
 }

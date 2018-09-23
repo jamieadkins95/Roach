@@ -13,6 +13,4 @@ interface UpdateRepository {
     fun performFirstTimeSetup(): Observable<UpdateResult>
 
     fun performUpdate(): Completable
-
-    fun getNewCardData(): Single<File>
 }

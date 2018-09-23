@@ -32,6 +32,8 @@ import com.jamieadkins.gwent.data.update.mapper.GwentKeywordMapper
 import com.jamieadkins.gwent.data.update.model.FirebaseCategoryResult
 import com.jamieadkins.gwent.data.update.model.FirebaseKeywordResult
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
+import io.reactivex.Maybe
+import io.reactivex.functions.BiFunction
 import java.util.*
 
 class UpdateRepositoryImpl(private val database: GwentDatabase,
@@ -60,10 +62,17 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
 
     override fun isUpdateAvailable(): Single<Boolean> {
         return getLatestPatch()
-                .map {
-                    val storedPatch = getCachedPatch(it.patch)
-                    storedPatch == null || it.patch != storedPatch.patch || it.lastUpdated > storedPatch.lastUpdated
-                }
+            .map { it.patch }
+            .flatMapMaybe { patch ->
+                Maybe.zip(
+                    getLastUpdated(patch).toMaybe(),
+                    database.patchDao().getPatchVersion(patch).map { it.lastUpdated },
+                    BiFunction { remote: Long, local: Long ->
+                        remote > local
+                    }
+                )
+            }
+            .toSingle(true)
     }
 
     private fun getLatestPatch(): Single<PatchVersionEntity> {
@@ -79,11 +88,6 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
     private fun getLastUpdated(patch: String): Single<Long> {
         return getMetaData(getStorageReference(patch, CARD_FILE_NAME))
                 .map { it.updatedTimeMillis }
-    }
-
-    private fun getCachedPatch(patch: String): PatchVersionEntity? {
-        val cached = database.patchDao().getPatchVersion(patch)
-        return cached
     }
 
     override fun performFirstTimeSetup(): Observable<UpdateResult> {
@@ -197,11 +201,6 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
         return Completable.fromCallable {
             database.patchDao().insertPatchVersion(newPatch)
         }
-    }
-
-    override fun getNewCardData(): Single<File> {
-        return getLatestPatch()
-                .flatMap { getFileFromFirebase(getStorageReference(it.patch, CARD_FILE_NAME), CARD_FILE_NAME) }
     }
 
     private fun getFileFromFirebase(storageRef: StorageReference, outputFileName: String): Single<File> {
