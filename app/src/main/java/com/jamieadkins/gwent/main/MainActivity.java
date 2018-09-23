@@ -89,17 +89,6 @@ public class MainActivity extends BaseActivity {
     private void checkLanguage() {
         String language = Locale.getDefault().getLanguage();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.contains(getString(R.string.shown_language))) {
-            SharedPreferences.Editor editor = preferences.edit();
-            String[] locales = getResources().getStringArray(R.array.locales);
-            for (String locale : locales) {
-                if (locale.contains(language)) {
-                    editor.putString(getString(R.string.pref_locale_key), locale);
-                }
-            }
-            editor.putBoolean(getString(R.string.shown_language), true);
-            editor.apply();
-        }
 
         if (!preferences.contains(getString(R.string.shown_news))) {
             SharedPreferences.Editor editor = preferences.edit();

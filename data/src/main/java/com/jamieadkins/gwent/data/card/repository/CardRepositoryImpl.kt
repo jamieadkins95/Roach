@@ -5,24 +5,28 @@ import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.database.GwentDatabase
-import com.jamieadkins.gwent.database.entity.ArtEntity
-import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.data.CardSearchData
 import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
+import com.jamieadkins.gwent.domain.LocaleRepository
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import io.reactivex.Single
-import io.reactivex.functions.Function3
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function5
 
 class CardRepositoryImpl(private val database: GwentDatabase,
-                         private val cardMapper: GwentCardMapper) : CardRepository {
+                         private val cardMapper: GwentCardMapper,
+                         private val localeRepository: LocaleRepository) : CardRepository {
 
     private fun getAllCards(): Single<Collection<GwentCard>> {
-        return getCardEntities()
-                .map { cardMapper.mapList(it, "en-US") }
+        return Single.zip(getCardEntities(),
+                          localeRepository.getLocale().firstOrError(),
+                          BiFunction { cards: List<CardWithArtEntity>, locale: String ->
+                              cardMapper.mapList(cards, locale)
+                          })
     }
 
     private fun getCardEntities(): Single<List<CardWithArtEntity>> {
@@ -35,9 +39,17 @@ class CardRepositoryImpl(private val database: GwentDatabase,
                     getCardEntities(),
                     database.keywordDao().getAllKeywords(),
                     database.categoryDao().getAllCategories(),
-                    Function3<List<CardWithArtEntity>, List<KeywordEntity>, List<CategoryEntity>, CardSearchData>
-                    { cards, keywords, categories -> CardSearchData(cards, keywords, categories) })
-                    .flatMap { CardSearch.searchCards(cardFilter.searchQuery, it) }
+                    localeRepository.getLocale().firstOrError(),
+                    localeRepository.getDefaultLocale().firstOrError(),
+                    Function5 {
+                        cards: List<CardWithArtEntity>,
+                        keywords: List<KeywordEntity>,
+                        categories: List<CategoryEntity>,
+                        userLocale: String,
+                        defaultLocale: String ->
+                        val cardSearchData = CardSearchData(cards, keywords, categories)
+                        CardSearch.searchCards(cardFilter.searchQuery, cardSearchData, userLocale, defaultLocale)
+                    })
                     .flatMap { getCards(it) }
         } else {
             getAllCards()
@@ -69,13 +81,19 @@ class CardRepositoryImpl(private val database: GwentDatabase,
     }
 
     override fun getCards(cardIds: List<String>): Single<Collection<GwentCard>> {
-        return database.cardDao().getCards(cardIds)
-                .map { cardMapper.mapList(it, "en-US") }
+        return Single.zip(database.cardDao().getCards(cardIds),
+                          localeRepository.getLocale().firstOrError(),
+                          BiFunction { cards: List<CardWithArtEntity>, locale: String ->
+                              cardMapper.mapList(cards, locale)
+                          })
     }
 
     override fun getCard(id: String): Single<GwentCard> {
-        return database.cardDao().getCard(id)
-                .map { cardMapper.map(it, "en-US") }
+        return Single.zip(database.cardDao().getCard(id),
+                          localeRepository.getLocale().firstOrError(),
+                          BiFunction { card: CardWithArtEntity, locale: String ->
+                              cardMapper.map(card, locale)
+                          })
     }
 
     fun doesCardMeetFilter(filter: CardFilter, card: GwentCard): Boolean {

@@ -81,8 +81,6 @@
         <item>@string/russian_ru</item>
     </array>
 
-    <string translatable="false" name="default_locale">en-US</string>
-    <string translatable="false" name="shown_language">com.jamieadkins.gwent.shown.language</string>
     <string translatable="false" name="shown_news">com.jamieadkins.gwent.shown.news</string>
     <string name="news_url" translatable="false">https://playgwent.com/news</string>
 

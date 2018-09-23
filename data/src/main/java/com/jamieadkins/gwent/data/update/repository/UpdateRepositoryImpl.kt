@@ -37,12 +37,10 @@ import java.util.*
 class UpdateRepositoryImpl(private val database: GwentDatabase,
                            private val filesDirectory: File,
                            private val storeManager: StoreManager,
-                           sharedPreferences: SharedPreferences,
+                           private val preferences: RxSharedPreferences,
                            private val resources: Resources,
                            private val cardMapper: ApiMapper,
                            private val artMapper: ArtApiMapper) : UpdateRepository {
-
-    private val preferences = RxSharedPreferences.create(sharedPreferences)
 
     private companion object {
         const val CARD_FILE_NAME = "cards.json"
@@ -93,8 +91,7 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
                 .asObservable()
                 .flatMap { done ->
                     if (done) {
-                        performFirstTimeLanguageSetup()
-                                .concatWith { performFirstTimeNotificationSetup() }
+                        performFirstTimeNotificationSetup()
                     } else {
                         Observable.empty()
                     }
@@ -102,16 +99,6 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
                 .doOnComplete {
                     preferences.getBoolean("setup").set(true)
                 }
-    }
-
-    private fun performFirstTimeLanguageSetup(): Observable<UpdateResult> {
-        return Observable.fromCallable {
-            val language = Locale.getDefault().language
-            val cardLanguage = resources.getStringArray(R.array.locales).firstOrNull { it.contains(language) } ?: "en-US"
-            preferences.getString(resources.getString(R.string.pref_locale_key)).set(cardLanguage)
-            preferences.getBoolean(resources.getString(R.string.shown_language)).set(true)
-            UpdateResult.LanguageSetup
-        }
     }
 
     private fun performFirstTimeNotificationSetup(): Observable<UpdateResult> {

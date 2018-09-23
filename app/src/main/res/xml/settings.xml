@@ -25,7 +25,6 @@
             android:summary="@string/pref_locale_summary"
             android:dialogTitle="@string/pref_locale"
             android:entries="@array/locales_readable"
-            android:entryValues="@array/locales"
-            android:defaultValue="@string/default_locale" />
+            android:entryValues="@array/locales" />
     </PreferenceCategory>
 </PreferenceScreen>

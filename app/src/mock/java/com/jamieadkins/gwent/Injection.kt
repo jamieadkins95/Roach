@@ -1,9 +1,11 @@
 package com.jamieadkins.gwent
 
 import android.support.v7.preference.PreferenceManager
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.data.FactionMapper
+import com.jamieadkins.gwent.data.LocaleRepositoryImpl
 import com.jamieadkins.gwent.data.StoreManager
 import com.jamieadkins.gwent.data.card.mapper.ApiMapper
 import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
@@ -23,8 +25,10 @@ import com.jamieadkins.gwent.main.GwentApplication
 
 object Injection {
 
+    private val resources by lazy { GwentApplication.INSTANCE.applicationContext.resources }
     private val database by lazy { GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext) }
     private val storeManager by lazy { StoreManager(GwentApplication.INSTANCE.cacheDir) }
+    private val preferences by lazy { RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext)) }
     private val filterRepositories = mutableMapOf<String, FilterRepository>()
 
     private val factionMapper by lazy { FactionMapper() }
@@ -35,12 +39,14 @@ object Injection {
     private val artApiMapper by lazy { ArtApiMapper() }
     private val cardApiMapper by lazy { ApiMapper() }
 
+    private val localeRepository by lazy { LocaleRepositoryImpl(preferences, resources) }
+
     fun provideDeckRepository(): DeckRepository {
-        return UserDeckRepository(database, cardMapper, factionMapper, deckMapper)
+        return UserDeckRepository(database, cardMapper, factionMapper, deckMapper, localeRepository)
     }
 
     fun provideCardRepository(): CardRepository {
-        return CardRepositoryImpl(database, cardMapper)
+        return CardRepositoryImpl(database, cardMapper, localeRepository)
     }
 
     fun provideUpdateRepository(): UpdateRepository {
@@ -48,8 +54,8 @@ object Injection {
             database,
             GwentApplication.INSTANCE.filesDir,
             storeManager,
-            PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext),
-            GwentApplication.INSTANCE.applicationContext.resources, cardApiMapper, artApiMapper)
+            preferences,
+            resources, cardApiMapper, artApiMapper)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {

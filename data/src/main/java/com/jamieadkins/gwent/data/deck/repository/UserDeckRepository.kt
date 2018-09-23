@@ -8,8 +8,10 @@ import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.data.card.model.Faction
 import com.jamieadkins.gwent.data.deck.mapper.DeckMapper
 import com.jamieadkins.gwent.database.GwentDatabase
+import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
+import com.jamieadkins.gwent.domain.LocaleRepository
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckCardCounts
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
@@ -20,7 +22,8 @@ import io.reactivex.functions.BiFunction
 class UserDeckRepository(private val database: GwentDatabase,
                          private val cardMapper: GwentCardMapper,
                          private val factionMapper: FactionMapper,
-                         private val deckMapper: DeckMapper) : DeckRepository {
+                         private val deckMapper: DeckMapper,
+                         private val localeRepository: LocaleRepository) : DeckRepository {
 
     override fun getDecks(): Single<List<GwentDeckSummary>> {
         return database.deckDao().getDecksOnce()
@@ -55,12 +58,14 @@ class UserDeckRepository(private val database: GwentDatabase,
     }
 
     private fun getLeader(deckId: String): Maybe<GwentCard> {
-        return database.deckDao().getDeckOnce(deckId)
-                .flatMapMaybe {
-                    val leaderId = it.leaderId
+        return Single.zip(database.deckDao().getDeckOnce(deckId),
+                          localeRepository.getLocale().firstOrError(),
+                          BiFunction { deck: DeckEntity, locale: String -> Pair(deck, locale) })
+                .flatMapMaybe { deckAndLocale ->
+                    val leaderId = deckAndLocale.first.leaderId
                     if (leaderId != null) {
                         database.cardDao().getCard(leaderId)
-                                .map { cardMapper.map(it, "en-US") }
+                                .map { cardMapper.map(it, deckAndLocale.second) }
                                 .toMaybe()
                     } else {
                         Maybe.empty<GwentCard>()
@@ -93,9 +98,14 @@ class UserDeckRepository(private val database: GwentDatabase,
                 // Get all card ids.
                 .map { it.map { it.cardId } }
                 // Get all card entities.
-                .flatMapSingle { database.cardDao().getCards(it) }
-                // Map entities to GwentCards.
-                .map { cardMapper.mapList(it, "en-US") }
+                .flatMapSingle {
+                    Single.zip(
+                        database.cardDao().getCards(it),
+                        localeRepository.getLocale().firstOrError(),
+                        BiFunction { cards: List<CardWithArtEntity>, locale: String ->
+                            cardMapper.mapList(cards, locale)
+                        })
+                }
                 // Map to GwentDeckCardCounts
                 .map { cards ->
                     var bronzeCount = 0
