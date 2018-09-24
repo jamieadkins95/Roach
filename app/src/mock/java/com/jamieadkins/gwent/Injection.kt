@@ -53,7 +53,6 @@ object Injection {
         return UpdateRepositoryImpl(
             database,
             GwentApplication.INSTANCE.filesDir,
-            storeManager,
             preferences,
             resources, cardApiMapper, artApiMapper)
     }

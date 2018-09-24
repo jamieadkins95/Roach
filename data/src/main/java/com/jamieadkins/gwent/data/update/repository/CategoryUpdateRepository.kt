@@ -39,7 +39,7 @@ class CategoryUpdateRepository(private val database: GwentDatabase,
         return Observable.empty()
     }
 
-    override fun performUpdate(): Completable {
+    override fun internalPerformUpdate(): Completable {
         return patchRepository.getLatestPatchId()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())

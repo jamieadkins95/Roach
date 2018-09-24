@@ -5,17 +5,31 @@ import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
+import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.lang.reflect.Type
 
-open class BaseUpdateRepository(private val filesDirectory: File) {
-
+abstract class BaseUpdateRepository(private val filesDirectory: File) : UpdateRepository {
 
     private val storage = FirebaseStorage.getInstance()
     val gson = Gson()
+
+    override fun performUpdate(): Completable {
+        return isUpdateAvailable()
+            .flatMapCompletable { updateAvailable ->
+                if (updateAvailable) {
+                    internalPerformUpdate()
+                } else {
+                    Completable.complete()
+                }
+            }
+    }
+
+    abstract fun internalPerformUpdate(): Completable
 
     protected fun getRemoteLastUpdated(patch: String, fileName: String): Single<Long> {
         return getMetaData(getStorageReference(patch, fileName))
@@ -54,7 +68,11 @@ open class BaseUpdateRepository(private val filesDirectory: File) {
     }
 
     protected fun getStorageReference(patch: String, fileName: String): StorageReference {
-        return storage.reference.child("card-data").child(patch).child(fileName)
+        return getStorageReference(patch).child(fileName)
+    }
+
+    protected fun getStorageReference(patch: String): StorageReference {
+        return storage.reference.child("card-data").child(patch)
     }
 
     protected fun <T> parseJsonFile(file: File, type: Type = genericType<T>()): Single<T> {

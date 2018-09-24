@@ -20,7 +20,7 @@ class CardUpdateRepository(private val database: GwentDatabase,
                            filesDirectory: File,
                            private val patchRepository: PatchRepository,
                            private val cardMapper: ApiMapper,
-                           private val artMapper: ArtApiMapper) : BaseUpdateRepository(filesDirectory), UpdateRepository {
+                           private val artMapper: ArtApiMapper) : BaseUpdateRepository(filesDirectory) {
 
     private companion object {
         const val FILE_NAME = "cards.json"
@@ -44,7 +44,7 @@ class CardUpdateRepository(private val database: GwentDatabase,
         return Observable.empty()
     }
 
-    override fun performUpdate(): Completable {
+    override fun internalPerformUpdate(): Completable {
         return patchRepository.getLatestPatchId()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())
