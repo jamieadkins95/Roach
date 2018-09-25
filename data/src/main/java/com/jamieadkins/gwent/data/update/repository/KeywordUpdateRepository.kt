@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.update.repository
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.database.entity.PatchVersionEntity
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -19,7 +20,8 @@ import io.reactivex.functions.BiFunction
 
 class KeywordUpdateRepository(private val database: GwentDatabase,
                               filesDirectory: File,
-                              private val patchRepository: PatchRepository) : BaseUpdateRepository(filesDirectory), UpdateRepository {
+                              private val patchRepository: PatchRepository,
+                              preferences: RxSharedPreferences) : BaseUpdateRepository(filesDirectory, preferences), UpdateRepository {
 
     private companion object {
         const val FILE_NAME = "keywords.json"
@@ -27,16 +29,16 @@ class KeywordUpdateRepository(private val database: GwentDatabase,
 
     override fun isUpdateAvailable(): Single<Boolean> {
         return patchRepository.getLatestPatchId()
-            .flatMapMaybe { patch ->
-                Maybe.zip(
-                    getRemoteLastUpdated(patch, FILE_NAME).toMaybe(),
-                    database.patchDao().getPatchVersion(patch).map { it.lastUpdated },
+            .flatMap { patch ->
+                Single.zip(
+                    getRemoteLastUpdated(patch, FILE_NAME),
+                    getLocalLastUpdated(patch, FILE_NAME),
                     BiFunction { remote: Long, local: Long ->
                         remote > local
                     }
                 )
             }
-            .toSingle(true)
+            .onErrorReturnItem(false)
     }
 
     override fun performFirstTimeSetup(): Observable<UpdateResult> {
@@ -49,6 +51,7 @@ class KeywordUpdateRepository(private val database: GwentDatabase,
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseKeywordResult>(it, FirebaseKeywordResult::class.java) }
             .flatMapCompletable { updateKeywordDatabase(it) }
+            .andThen(updateLastUpdated())
     }
 
     private fun updateKeywordDatabase(result: FirebaseKeywordResult): Completable {
@@ -56,5 +59,10 @@ class KeywordUpdateRepository(private val database: GwentDatabase,
             val keywords = GwentKeywordMapper.mapToKeywordEntityList(result)
             database.keywordDao().insert(keywords)
         }
+    }
+
+    private fun updateLastUpdated(): Completable {
+        return patchRepository.getLatestPatchId()
+            .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 }

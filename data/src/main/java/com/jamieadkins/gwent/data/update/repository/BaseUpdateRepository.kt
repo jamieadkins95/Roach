@@ -1,22 +1,31 @@
 package com.jamieadkins.gwent.data.update.repository
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
+import com.nytimes.android.external.cache3.Cache
+import com.nytimes.android.external.cache3.CacheBuilder
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.lang.reflect.Type
+import java.util.*
+import java.util.concurrent.TimeUnit
 
-abstract class BaseUpdateRepository(private val filesDirectory: File) : UpdateRepository {
+abstract class BaseUpdateRepository(private val filesDirectory: File,
+                                    private val preferences: RxSharedPreferences) : UpdateRepository {
 
     private val storage = FirebaseStorage.getInstance()
     val gson = Gson()
+    private val cache: Cache<String, Single<Long>> = CacheBuilder.newBuilder()
+        .expireAfterAccess(1, TimeUnit.MINUTES)
+        .build()
 
     override fun performUpdate(): Completable {
         return isUpdateAvailable()
@@ -32,8 +41,21 @@ abstract class BaseUpdateRepository(private val filesDirectory: File) : UpdateRe
     abstract fun internalPerformUpdate(): Completable
 
     protected fun getRemoteLastUpdated(patch: String, fileName: String): Single<Long> {
-        return getMetaData(getStorageReference(patch, fileName))
-            .map { it.updatedTimeMillis }
+        val storageRef = getStorageReference(patch, fileName)
+        return cache.get(storageRef.path) {
+            getMetaData(storageRef)
+                .map { it.updatedTimeMillis }
+        }!!
+    }
+
+    protected fun getLocalLastUpdated(patch: String, fileName: String): Single<Long> {
+        return preferences.getLong(patch + fileName).asObservable().firstOrError()
+    }
+
+    protected fun updateLocalLastUpdated(patch: String, fileName: String): Completable {
+        return Completable.fromCallable {
+            preferences.getLong(patch + fileName).set(Date().time)
+        }
     }
 
     protected fun getFileFromFirebase(storageRef: StorageReference, outputFileName: String): Single<File> {
@@ -68,11 +90,7 @@ abstract class BaseUpdateRepository(private val filesDirectory: File) : UpdateRe
     }
 
     protected fun getStorageReference(patch: String, fileName: String): StorageReference {
-        return getStorageReference(patch).child(fileName)
-    }
-
-    protected fun getStorageReference(patch: String): StorageReference {
-        return storage.reference.child("card-data").child(patch)
+        return storage.reference.child("card-data").child(patch).child(fileName)
     }
 
     protected fun <T> parseJsonFile(file: File, type: Type = genericType<T>()): Single<T> {

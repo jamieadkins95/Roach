@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.update.repository
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.card.mapper.ApiMapper
 import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
 import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
@@ -20,7 +21,8 @@ class CardUpdateRepository(private val database: GwentDatabase,
                            filesDirectory: File,
                            private val patchRepository: PatchRepository,
                            private val cardMapper: ApiMapper,
-                           private val artMapper: ArtApiMapper) : BaseUpdateRepository(filesDirectory) {
+                           private val artMapper: ArtApiMapper,
+                           preferences: RxSharedPreferences) : BaseUpdateRepository(filesDirectory, preferences) {
 
     private companion object {
         const val FILE_NAME = "cards.json"
@@ -28,16 +30,16 @@ class CardUpdateRepository(private val database: GwentDatabase,
 
     override fun isUpdateAvailable(): Single<Boolean> {
         return patchRepository.getLatestPatchId()
-            .flatMapMaybe { patch ->
-                Maybe.zip(
-                    getRemoteLastUpdated(patch, FILE_NAME).toMaybe(),
-                    database.patchDao().getPatchVersion(patch).map { it.lastUpdated },
+            .flatMap { patch ->
+                Single.zip(
+                    getRemoteLastUpdated(patch, FILE_NAME),
+                    getLocalLastUpdated(patch, FILE_NAME),
                     BiFunction { remote: Long, local: Long ->
                         remote > local
                     }
                 )
             }
-            .toSingle(true)
+            .onErrorReturnItem(false)
     }
 
     override fun performFirstTimeSetup(): Observable<UpdateResult> {
@@ -50,6 +52,7 @@ class CardUpdateRepository(private val database: GwentDatabase,
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
             .flatMapCompletable { updateCardDatabase(it) }
+            .andThen(updateLastUpdated())
     }
 
     private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
@@ -58,5 +61,10 @@ class CardUpdateRepository(private val database: GwentDatabase,
             database.cardDao().insertCards(cards)
             database.artDao().insertArt(artMapper.map(cardList))
         }
+    }
+
+    private fun updateLastUpdated(): Completable {
+        return patchRepository.getLatestPatchId()
+            .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 }

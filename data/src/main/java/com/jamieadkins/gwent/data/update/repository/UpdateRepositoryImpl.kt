@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.util.*
@@ -24,14 +24,15 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
                            private val cardUpdateRepository: UpdateRepository,
                            private val keywordUpdateRepository: UpdateRepository,
                            private val categoryUpdateRepository: UpdateRepository,
-                           private val patchRepository: PatchRepository) : BaseUpdateRepository(filesDirectory) {
+                           private val patchRepository: PatchRepository) : BaseUpdateRepository(filesDirectory, preferences) {
 
     override fun isUpdateAvailable(): Single<Boolean> {
-        return Single.zip(cardUpdateRepository.isUpdateAvailable(),
+        return Single.zip(database.cardDao().count(),
+                          cardUpdateRepository.isUpdateAvailable(),
                           keywordUpdateRepository.isUpdateAvailable(),
                           categoryUpdateRepository.isUpdateAvailable(),
-                          Function3 { card: Boolean, keyword: Boolean, category: Boolean ->
-                              card || keyword || category
+                          Function4 { cardsInDb: Int, card: Boolean, keyword: Boolean, category: Boolean ->
+                              cardsInDb == 0 || card || keyword || category
                           })
     }
 
@@ -59,7 +60,6 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
         return cardUpdateRepository.performUpdate()
             .andThen(keywordUpdateRepository.performUpdate())
             .andThen(categoryUpdateRepository.performUpdate())
-            .andThen(performPatchDatabaseUpdate())
     }
 
     private fun performFirstTimeNotificationSetup(): Observable<UpdateResult> {
@@ -93,27 +93,6 @@ class UpdateRepositoryImpl(private val database: GwentDatabase,
             if (BuildConfig.DEBUG) {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic("news-$key-debug")
             }
-        }
-    }
-
-    private fun getLastUpdated(patch: String): Single<Long> {
-        return getMetaData(getStorageReference(patch))
-            .map { it.updatedTimeMillis }
-    }
-
-    private fun performPatchDatabaseUpdate(): Completable {
-        return patchRepository.getLatestPatchId()
-            .flatMap { patch ->
-                getLastUpdated(patch)
-                    .map { PatchVersionEntity(patch, patch, it) }
-            }
-            .observeOn(Schedulers.io())
-            .flatMapCompletable { updatePatchDatabase(it) }
-    }
-
-    private fun updatePatchDatabase(newPatch: PatchVersionEntity): Completable {
-        return Completable.fromCallable {
-            database.patchDao().insertPatchVersion(newPatch)
         }
     }
 }

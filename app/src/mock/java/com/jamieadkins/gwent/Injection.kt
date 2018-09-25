@@ -15,6 +15,10 @@ import com.jamieadkins.gwent.data.card.repository.CardRepositoryImpl
 import com.jamieadkins.gwent.data.deck.mapper.DeckMapper
 import com.jamieadkins.gwent.data.deck.repository.UserDeckRepository
 import com.jamieadkins.gwent.data.filter.repository.FilterRepositoryImpl
+import com.jamieadkins.gwent.data.update.repository.CardUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.CategoryUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.KeywordUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.PatchRepository
 import com.jamieadkins.gwent.data.update.repository.UpdateRepositoryImpl
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
@@ -25,6 +29,7 @@ import com.jamieadkins.gwent.main.GwentApplication
 
 object Injection {
 
+    private val filesDir = GwentApplication.INSTANCE.filesDir
     private val resources by lazy { GwentApplication.INSTANCE.applicationContext.resources }
     private val database by lazy { GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext) }
     private val storeManager by lazy { StoreManager(GwentApplication.INSTANCE.cacheDir) }
@@ -40,6 +45,10 @@ object Injection {
     private val cardApiMapper by lazy { ApiMapper() }
 
     private val localeRepository by lazy { LocaleRepositoryImpl(preferences, resources) }
+    private val patchRepository by lazy { PatchRepository(storeManager) }
+    private val cardUpdateRepository by lazy { CardUpdateRepository(database, filesDir, patchRepository, cardApiMapper, artApiMapper, preferences) }
+    private val keywordUpdateRepository by lazy { KeywordUpdateRepository(database, filesDir, patchRepository, preferences) }
+    private val categoryUpdateRepository by lazy { CategoryUpdateRepository(database, filesDir, patchRepository, preferences) }
 
     fun provideDeckRepository(): DeckRepository {
         return UserDeckRepository(database, cardMapper, factionMapper, deckMapper, localeRepository)
@@ -52,9 +61,9 @@ object Injection {
     fun provideUpdateRepository(): UpdateRepository {
         return UpdateRepositoryImpl(
             database,
-            GwentApplication.INSTANCE.filesDir,
+            filesDir,
             preferences,
-            resources, cardApiMapper, artApiMapper)
+            resources, cardUpdateRepository, keywordUpdateRepository, categoryUpdateRepository, patchRepository)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {

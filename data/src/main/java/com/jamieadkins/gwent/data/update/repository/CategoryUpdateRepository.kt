@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.update.repository
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.update.mapper.GwentCategoryMapper
 import com.jamieadkins.gwent.data.update.model.FirebaseCategoryResult
 import com.jamieadkins.gwent.database.GwentDatabase
@@ -15,7 +16,9 @@ import java.io.File
 
 class CategoryUpdateRepository(private val database: GwentDatabase,
                                filesDirectory: File,
-                               private val patchRepository: PatchRepository) : BaseUpdateRepository(filesDirectory), UpdateRepository {
+                               private val patchRepository: PatchRepository,
+                               preferences: RxSharedPreferences)
+    : BaseUpdateRepository(filesDirectory, preferences), UpdateRepository {
 
     private companion object {
         const val FILE_NAME = "categories.json"
@@ -23,16 +26,16 @@ class CategoryUpdateRepository(private val database: GwentDatabase,
 
     override fun isUpdateAvailable(): Single<Boolean> {
         return patchRepository.getLatestPatchId()
-            .flatMapMaybe { patch ->
-                Maybe.zip(
-                    getRemoteLastUpdated(patch, FILE_NAME).toMaybe(),
-                    database.patchDao().getPatchVersion(patch).map { it.lastUpdated },
+            .flatMap { patch ->
+                Single.zip(
+                    getRemoteLastUpdated(patch, FILE_NAME),
+                    getLocalLastUpdated(patch, FILE_NAME),
                     BiFunction { remote: Long, local: Long ->
                         remote > local
                     }
                 )
             }
-            .toSingle(true)
+            .onErrorReturnItem(false)
     }
 
     override fun performFirstTimeSetup(): Observable<UpdateResult> {
@@ -45,6 +48,7 @@ class CategoryUpdateRepository(private val database: GwentDatabase,
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseCategoryResult>(it, FirebaseCategoryResult::class.java) }
             .flatMapCompletable { updateCategoriesDatabase(it) }
+            .andThen(updateLastUpdated())
     }
 
     private fun updateCategoriesDatabase(result: FirebaseCategoryResult): Completable {
@@ -52,5 +56,10 @@ class CategoryUpdateRepository(private val database: GwentDatabase,
             val categories = GwentCategoryMapper.mapToCategoryEntityList(result)
             database.categoryDao().insert(categories)
         }
+    }
+
+    private fun updateLastUpdated(): Completable {
+        return patchRepository.getLatestPatchId()
+            .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 }

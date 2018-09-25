@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Transaction
-import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import io.reactivex.Flowable
@@ -33,4 +32,6 @@ interface CardDao {
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + "  WHERE id IN(:ids)")
     fun getCards(ids: List<String>): Single<List<CardWithArtEntity>>
 
+    @Query("SELECT COUNT(*) FROM " + GwentDatabase.CARD_TABLE)
+    fun count(): Single<Int>
 }
