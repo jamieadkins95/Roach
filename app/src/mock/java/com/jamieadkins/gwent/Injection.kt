@@ -29,10 +29,8 @@ import com.jamieadkins.gwent.main.GwentApplication
 
 object Injection {
 
-    private val filesDir = GwentApplication.INSTANCE.filesDir
     private val resources by lazy { GwentApplication.INSTANCE.applicationContext.resources }
     private val database by lazy { GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext) }
-    private val storeManager by lazy { StoreManager(GwentApplication.INSTANCE.cacheDir) }
     private val preferences by lazy { RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext)) }
     private val filterRepositories = mutableMapOf<String, FilterRepository>()
 
@@ -40,26 +38,11 @@ object Injection {
     private val artMapper by lazy { GwentCardArtMapper() }
     private val cardMapper by lazy { GwentCardMapper(artMapper, factionMapper) }
 
-    private val artApiMapper by lazy { ArtApiMapper() }
-    private val cardApiMapper by lazy { ApiMapper() }
-
     private val localeRepository by lazy { LocaleRepositoryImpl(preferences, resources) }
-    private val patchRepository by lazy { PatchRepository(storeManager) }
-    private val cardUpdateRepository by lazy { CardUpdateRepository(database, filesDir, patchRepository, cardApiMapper, artApiMapper, preferences) }
-    private val keywordUpdateRepository by lazy { KeywordUpdateRepository(database, filesDir, patchRepository, preferences) }
-    private val categoryUpdateRepository by lazy { CategoryUpdateRepository(database, filesDir, patchRepository, preferences) }
 
 
     fun provideCardRepository(): CardRepository {
         return CardRepositoryImpl(database, cardMapper, localeRepository)
-    }
-
-    fun provideUpdateRepository(): UpdateRepository {
-        return UpdateRepositoryImpl(
-            database,
-            filesDir,
-            preferences,
-            resources, cardUpdateRepository, keywordUpdateRepository, categoryUpdateRepository)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {

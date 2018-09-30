@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.list
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -8,18 +9,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
-import com.jamieadkins.commonutils.mvp2.BaseListView
-import com.jamieadkins.commonutils.mvp3.MvpFragment
-
-import com.jamieadkins.gwent.Injection
-import com.jamieadkins.gwent.R
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
-import kotterknife.bindView
-import android.view.*
-import com.jamieadkins.commonutils.mvp2.BasePresenter
+import com.jamieadkins.commonutils.mvp2.BaseListView
 import com.jamieadkins.commonutils.mvp3.ScrollView
-import com.jamieadkins.gwent.base.PresenterFactory
+import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
@@ -27,21 +28,26 @@ import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 import com.jamieadkins.gwent.update.UpdateActivity
+import dagger.android.support.DaggerFragment
+import kotterknife.bindView
+import javax.inject.Inject
 
 class CardDatabaseFragment :
-        MvpFragment<CardDatabaseContract.View>(),
-        CardDatabaseContract.View,
-        SwipeRefreshLayout.OnRefreshListener,
-        BaseListView, ScrollView {
+    DaggerFragment(),
+    CardDatabaseContract.View,
+    SwipeRefreshLayout.OnRefreshListener,
+    BaseListView, ScrollView {
 
     private val screenKey = javaClass.name
+
+    @Inject
+    lateinit var presenter: CardDatabaseContract.Presenter
 
     private val emptyView by bindView<View>(R.id.empty)
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
     private lateinit var controller: CardDatabaseController
-    private lateinit var cardsPresenter: CardDatabasePresenter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -66,7 +72,7 @@ class CardDatabaseFragment :
         val searchView = searchMenuItem?.actionView as? SearchView
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                cardsPresenter.search(query)
+                presenter.search(query)
                 return false
             }
 
@@ -76,7 +82,7 @@ class CardDatabaseFragment :
         })
 
         searchView?.setOnCloseListener {
-            cardsPresenter.clearSearch()
+            presenter.clearSearch()
             false
         }
 
@@ -101,19 +107,6 @@ class CardDatabaseFragment :
         val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = controller.adapter
-    }
-
-    override fun setupPresenter(): BasePresenter<CardDatabaseContract.View> {
-        val newPresenter = PresenterFactory.getPresenter(
-                javaClass.simpleName,
-                { CardDatabasePresenter(
-                        Injection.provideSchedulerProvider(),
-                        Injection.provideCardRepository(),
-                        Injection.provideUpdateRepository(),
-                        Injection.provideFilterRepository(screenKey))
-                })
-        cardsPresenter = newPresenter as CardDatabasePresenter
-        return newPresenter
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -172,5 +165,12 @@ class CardDatabaseFragment :
         val intent = Intent(requireContext(), CardDetailsActivity::class.java)
         intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
         activity?.startActivity(intent)
+    }
+
+    private fun convertDpToPixel(dp: Float, context: Context): Float {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        return px
     }
 }

@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.di
 
-import android.app.Application
+import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.update.UpdateModule
@@ -16,7 +16,8 @@ import dagger.BindsInstance
         FragmentInjectionModule::class,
         AppModule::class,
         DataModule::class,
-        UpdateModule::class
+        UpdateModule::class,
+        CardDatabaseModule::class
     ]
 )
 @Singleton
