@@ -110,6 +110,10 @@ dependencies {
 
     implementation project(':database')
     implementation project(':data')
+
+    implementation Libs.dagger
+    kapt Libs.dagger_compiler
+    kapt Libs.dagger_processor
 }
 
 repositories {

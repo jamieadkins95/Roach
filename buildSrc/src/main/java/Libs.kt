@@ -30,4 +30,8 @@ object Libs {
     const val support_espresso = "com.android.support.test.espresso:espresso-core:${Versions.support_espresso}"
     const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockito_kotlin = "com.nhaarman:mockito-kotlin:${Versions.mockito_kotlin}"
+    const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+    const val dagger_support = "com.google.dagger:dagger-android-support:${Versions.dagger}"
+    const val dagger_processor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+    const val dagger_compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 }
