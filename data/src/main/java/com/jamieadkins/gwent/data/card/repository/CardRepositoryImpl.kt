@@ -8,11 +8,8 @@ import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
 import com.jamieadkins.gwent.domain.LocaleRepository
-import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.GwentCard
-import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
-import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function5
@@ -23,7 +20,29 @@ class CardRepositoryImpl @Inject constructor(
     private val cardMapper: GwentCardMapper,
     private val localeRepository: LocaleRepository) : CardRepository {
 
-    private fun getAllCards(): Observable<Collection<GwentCard>> {
+    private fun getCardEntities(): Observable<List<CardWithArtEntity>> {
+        return database.cardDao().getCards().toObservable()
+    }
+
+    override fun searchCards(searchQuery: String): Observable<List<GwentCard>> {
+        return Observable.combineLatest(
+            getCardEntities(),
+            database.keywordDao().getAllKeywords().toObservable(),
+            database.categoryDao().getAllCategories().toObservable(),
+            localeRepository.getLocale(),
+            localeRepository.getDefaultLocale(),
+            Function5 { cards: List<CardWithArtEntity>,
+                        keywords: List<KeywordEntity>,
+                        categories: List<CategoryEntity>,
+                        userLocale: String,
+                        defaultLocale: String ->
+                val cardSearchData = CardSearchData(cards, keywords, categories)
+                CardSearch.searchCards(searchQuery, cardSearchData, userLocale, defaultLocale)
+            })
+            .switchMap { getCards(it) }
+    }
+
+    override fun getCards(): Observable<List<GwentCard>> {
         return Observable.combineLatest(
             getCardEntities(),
             localeRepository.getLocale(),
@@ -32,57 +51,7 @@ class CardRepositoryImpl @Inject constructor(
             })
     }
 
-    private fun getCardEntities(): Observable<List<CardWithArtEntity>> {
-        return database.cardDao().getCards().toObservable()
-    }
-
-    override fun getCards(cardFilter: CardFilter): Observable<CardDatabaseResult> {
-        val source = if (cardFilter.searchQuery.isNotEmpty()) {
-            Observable.combineLatest(
-                getCardEntities(),
-                database.keywordDao().getAllKeywords().toObservable(),
-                database.categoryDao().getAllCategories().toObservable(),
-                localeRepository.getLocale(),
-                localeRepository.getDefaultLocale(),
-                Function5 { cards: List<CardWithArtEntity>,
-                            keywords: List<KeywordEntity>,
-                            categories: List<CategoryEntity>,
-                            userLocale: String,
-                            defaultLocale: String ->
-                    val cardSearchData = CardSearchData(cards, keywords, categories)
-                    CardSearch.searchCards(cardFilter.searchQuery, cardSearchData, userLocale, defaultLocale)
-                })
-                .switchMap { getCards(it) }
-        } else {
-            getAllCards()
-        }
-        return source
-            .map { it.filter { card -> cardFilter.let { doesCardMeetFilter(cardFilter, card) } } }
-            .map {
-                when (cardFilter.sortedBy) {
-                    SortedBy.SEARCH_RELEVANCE -> it
-                    SortedBy.ALPHABETICALLY_ASC -> it.sortedBy { it.name }
-                    SortedBy.ALPHABETICALLY_DESC -> it.sortedByDescending { it.name }
-                    SortedBy.STRENGTH_ASC -> it.sortedBy { it.strength ?: 0 }
-                    SortedBy.STRENGTH_DESC -> it.sortedByDescending { it.strength ?: 0 }
-                }
-            }
-            .map {
-                val factions = cardFilter.factionFilter.entries
-                    .filter { it.value }
-                    .map { it.key }
-                val colours = cardFilter.colourFilter.entries
-                    .filter { it.value }
-                    .map { it.key }
-                val rarities = cardFilter.rarityFilter.entries
-                    .filter { it.value }
-                    .map { it.key }
-                CardDatabaseResult(it, cardFilter.searchQuery, factions, colours,
-                                   rarities, cardFilter.isCollectibleOnly, cardFilter.sortedBy)
-            }
-    }
-
-    override fun getCards(cardIds: List<String>): Observable<Collection<GwentCard>> {
+    override fun getCards(cardIds: List<String>): Observable<List<GwentCard>> {
         return Observable.combineLatest(
             database.cardDao().getCards(cardIds).toObservable(),
             localeRepository.getLocale(),
@@ -98,13 +67,5 @@ class CardRepositoryImpl @Inject constructor(
             BiFunction { card: CardWithArtEntity, locale: String ->
                 cardMapper.map(card, locale)
             })
-    }
-
-    fun doesCardMeetFilter(filter: CardFilter, card: GwentCard): Boolean {
-        val include = !filter.isCollectibleOnly || card.collectible
-        val faction = filter.factionFilter[card.faction] ?: false
-        val rarity = filter.rarityFilter[card.rarity] ?: false
-        val colour = filter.colourFilter[card.colour] ?: false
-        return (faction && rarity && colour && include)
     }
 }

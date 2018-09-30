@@ -1,41 +1,35 @@
 package com.jamieadkins.gwent.card.list
 
-import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
+import com.jamieadkins.gwent.domain.card.GetCardsUseCase
 import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
-import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
-import com.jamieadkins.gwent.domain.filter.model.CardFilter
-import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
-import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
+import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.main.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class CardDatabasePresenter @Inject constructor(
     private val view: CardDatabaseContract.View,
-    private val schedulerProvider: BaseSchedulerProvider,
-    private val cardRepository: CardRepository,
-    private val updateRepository: UpdateRepository,
-    val filterRepository: FilterRepository
+    private val getCardsUseCase: GetCardsUseCase,
+    private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase
 ) : BasePresenter(), CardDatabaseContract.Presenter {
 
-    init {
-        filterRepository.setDefaultFilters()
-    }
+    private val searches = BehaviorSubject.createDefault("")
 
     override fun onAttach() {
         RxBus.register(ResetFiltersEvent::class.java)
             .subscribeWith(object : BaseDisposableObserver<ResetFiltersEvent>() {
                 override fun onNext(event: ResetFiltersEvent) {
-                    filterRepository.resetFilters()
+                    // Do nothing.
                 }
             })
             .addToComposite()
@@ -64,13 +58,22 @@ class CardDatabasePresenter @Inject constructor(
             })
             .addToComposite()
 
-        Observable.combineLatest(getCards(),
+        val getCards = searches
+            .switchMap { query ->
+                val cards = if (query.isEmpty()) {
+                    getCardsUseCase.getCards()
+                } else {
+                    getCardsUseCase.searchCards(query)
+                }
+
+                cards.map { Pair(it, query) }
+            }
+
+        Observable.combineLatest(getCards,
                                  getUpdates(),
-                                 BiFunction { cards: CardDatabaseResult, updateAvaliable: Boolean ->
-                                     CardDatabaseScreenModel(cards, updateAvaliable)
+                                 BiFunction { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean ->
+                                     CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable)
                                  })
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
             .doOnSubscribe { view.setLoadingIndicator(true) }
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
@@ -81,27 +84,17 @@ class CardDatabasePresenter @Inject constructor(
             .addToComposite()
     }
 
-    private fun getCards(): Observable<CardDatabaseResult> {
-        val filter = filterRepository.getFilter()
-            .doOnNext {
-                view.setLoadingIndicator(true)
-            }
-        return filter
-            .observeOn(schedulerProvider.io())
-            .switchMap { cardRepository.getCards(it) }
-    }
-
     private fun getUpdates(): Observable<Boolean> {
         return refreshRequests
-            .flatMapSingle { updateRepository.isUpdateAvailable() }
+            .flatMapSingle { getCardDatabaseUpdateUseCase.isUpdateAvailable() }
             .startWith(false)
     }
 
     override fun search(query: String) {
-        filterRepository.updateSearchQuery(query)
+        searches.onNext(query)
     }
 
     override fun clearSearch() {
-        filterRepository.clearSearchQuery()
+        searches.onNext("")
     }
 }

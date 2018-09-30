@@ -3,6 +3,8 @@ apply plugin: "kotlin"
 dependencies {
     implementation Libs.kotlin
     implementation Libs.rxjava
+
+    implementation Libs.javaxInject
 }
 
 sourceCompatibility = "1.7"

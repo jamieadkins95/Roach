@@ -1,5 +1,5 @@
 package com.jamieadkins.gwent.domain.card.screen
 
-import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 
-data class CardDatabaseScreenModel(val cards: CardDatabaseResult, val updateAvailable: Boolean)
+data class CardDatabaseScreenModel(val cards: List<GwentCard>, val searchQuery: String, val updateAvailable: Boolean)

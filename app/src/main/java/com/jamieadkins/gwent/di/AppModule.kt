@@ -3,9 +3,10 @@ package com.jamieadkins.gwent.di
 import android.content.Context
 import android.content.res.Resources
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.BuildConfig
+import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.main.GwentApplication
+import com.jamieadkins.gwent.main.SchedulerProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -52,6 +53,10 @@ abstract class AppModule {
 
         @Provides
         @JvmStatic
-        fun schedulerProvider(): BaseSchedulerProvider = SchedulerProvider
+        fun schedulerProvider(): SchedulerProvider = SchedulerProviderImpl()
+
+        @Provides
+        @JvmStatic
+        fun baseSchedulerProvider(): BaseSchedulerProvider = com.jamieadkins.commonutils.mvp2.SchedulerProvider
     }
 }

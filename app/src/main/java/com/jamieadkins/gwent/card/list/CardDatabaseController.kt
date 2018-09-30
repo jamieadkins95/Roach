@@ -22,16 +22,16 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
 
         headerView
                 .title(R.string.search_results)
-                .secondaryText(resources.getString(R.string.results_found, data.cards.cards.size, data.cards.searchQuery))
-                .addIf(data.cards.searchQuery.isNotEmpty(), this)
+                .secondaryText(resources.getString(R.string.results_found, data.cards.size, data.searchQuery))
+                .addIf(data.searchQuery.isNotEmpty(), this)
 
         val filtersApplied = 0
 
         subheaderView
                 .title(resources.getString(R.string.filters_applied, filtersApplied))
-                .addIf(data.cards.searchQuery.isEmpty() && filtersApplied > 0, this)
+                .addIf(data.searchQuery.isEmpty() && filtersApplied > 0, this)
 
-        data.cards.cards.forEach { card ->
+        data.cards.forEach { card ->
             val model = GwentCardViewModel_()
                     .id(card.id)
                     .cardName(card.name)

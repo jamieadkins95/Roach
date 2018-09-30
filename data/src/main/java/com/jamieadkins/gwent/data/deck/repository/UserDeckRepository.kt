@@ -16,6 +16,7 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckCardCounts
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -72,7 +73,7 @@ class UserDeckRepository @Inject constructor(
                 if (leaderId != null) {
                     database.cardDao().getCard(leaderId)
                         .map { cardMapper.map(it, deckAndLocale.second) }
-                        .toMaybe()
+                        .firstElement()
                 } else {
                     Maybe.empty<GwentCard>()
                 }
@@ -104,10 +105,10 @@ class UserDeckRepository @Inject constructor(
             // Get all card ids.
             .map { it.map { it.cardId } }
             // Get all card entities.
-            .flatMapSingle {
-                Single.zip(
+            .switchMap {
+                Flowable.combineLatest(
                     database.cardDao().getCards(it),
-                    localeRepository.getLocale().firstOrError(),
+                    localeRepository.getLocale().toFlowable(BackpressureStrategy.LATEST),
                     BiFunction { cards: List<CardWithArtEntity>, locale: String ->
                         cardMapper.mapList(cards, locale)
                     })
