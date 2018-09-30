@@ -14,7 +14,6 @@ import dagger.BindsInstance
     modules = [
         AndroidSupportInjectionModule::class,
         FragmentInjectionModule::class,
-        ActivityInjectionModule::class,
         AppModule::class,
         DataModule::class,
         UpdateModule::class
