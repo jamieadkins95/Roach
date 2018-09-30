@@ -39,7 +39,6 @@ object Injection {
     private val factionMapper by lazy { FactionMapper() }
     private val artMapper by lazy { GwentCardArtMapper() }
     private val cardMapper by lazy { GwentCardMapper(artMapper, factionMapper) }
-    private val deckMapper by lazy { DeckMapper(factionMapper) }
 
     private val artApiMapper by lazy { ArtApiMapper() }
     private val cardApiMapper by lazy { ApiMapper() }
@@ -50,9 +49,6 @@ object Injection {
     private val keywordUpdateRepository by lazy { KeywordUpdateRepository(database, filesDir, patchRepository, preferences) }
     private val categoryUpdateRepository by lazy { CategoryUpdateRepository(database, filesDir, patchRepository, preferences) }
 
-    fun provideDeckRepository(): DeckRepository {
-        return UserDeckRepository(database, cardMapper, factionMapper, deckMapper, localeRepository)
-    }
 
     fun provideCardRepository(): CardRepository {
         return CardRepositoryImpl(database, cardMapper, localeRepository)
@@ -63,7 +59,7 @@ object Injection {
             database,
             filesDir,
             preferences,
-            resources, cardUpdateRepository, keywordUpdateRepository, categoryUpdateRepository, patchRepository)
+            resources, cardUpdateRepository, keywordUpdateRepository, categoryUpdateRepository)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {

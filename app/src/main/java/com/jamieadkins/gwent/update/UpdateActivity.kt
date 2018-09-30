@@ -2,23 +2,30 @@ package com.jamieadkins.gwent.update
 
 import android.os.Bundle
 import android.widget.TextView
-import com.jamieadkins.commonutils.mvp2.MvpActivity
-import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class UpdateActivity : MvpActivity<UpdateContract.View>(), UpdateContract.View {
+class UpdateActivity : DaggerAppCompatActivity(), UpdateContract.View {
 
     lateinit var tvText: TextView
+
+    @Inject
+    lateinit var presenter: UpdateContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
 
         tvText = findViewById(R.id.text)
+
+        presenter.onAttach()
     }
 
-    override fun setupPresenter() {
-        presenter = UpdatePresenter(Injection.provideSchedulerProvider(), Injection.provideUpdateRepository())
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.onDetach()
     }
 
     override fun openCardDatabase() {

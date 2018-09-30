@@ -1,23 +1,34 @@
 package com.jamieadkins.gwent.di
 
+import android.app.Application
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.main.GwentApplication
+import com.jamieadkins.gwent.update.UpdateModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
+import dagger.BindsInstance
 
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
         FragmentInjectionModule::class,
+        ActivityInjectionModule::class,
         AppModule::class,
-        DataModule::class
+        DataModule::class,
+        UpdateModule::class
     ]
 )
 @Singleton
 abstract class AppComponent : AndroidInjector<GwentApplication> {
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<GwentApplication>()
+    internal interface Builder {
+
+        @BindsInstance
+        fun application(application: GwentApplication): AppComponent.Builder
+
+        fun build(): AppComponent
+    }
 }

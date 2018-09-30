@@ -18,8 +18,9 @@ import java.lang.reflect.Type
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-abstract class BaseUpdateRepository(private val filesDirectory: File,
-                                    private val preferences: RxSharedPreferences) : UpdateRepository {
+abstract class BaseUpdateRepository(
+    private val filesDirectory: File,
+    private val preferences: RxSharedPreferences) : UpdateRepository {
 
     private val storage = FirebaseStorage.getInstance()
     val gson = Gson()

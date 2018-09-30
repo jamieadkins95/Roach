@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.di
 
 import android.content.Context
 import android.content.res.Resources
+import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
+import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.main.GwentApplication
 import dagger.Binds
@@ -47,5 +49,9 @@ abstract class AppModule {
         @Provides
         @JvmStatic
         fun resources(context: Context): Resources = context.resources
+
+        @Provides
+        @JvmStatic
+        fun schedulerProvider(): BaseSchedulerProvider = SchedulerProvider
     }
 }

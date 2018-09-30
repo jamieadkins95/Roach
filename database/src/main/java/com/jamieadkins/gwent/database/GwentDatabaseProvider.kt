@@ -5,7 +5,7 @@ import android.content.Context
 
 object GwentDatabaseProvider {
 
-    var instance: GwentDatabase? = null
+    private var instance: GwentDatabase? = null
 
     fun getDatabase(applicationContext: Context): GwentDatabase {
         if (instance == null) {
