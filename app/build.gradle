@@ -112,6 +112,7 @@ dependencies {
     implementation project(':data')
 
     implementation Libs.dagger
+    implementation Libs.dagger_support
     kapt Libs.dagger_compiler
     kapt Libs.dagger_processor
 }

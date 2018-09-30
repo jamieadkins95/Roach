@@ -1,12 +1,10 @@
 package com.jamieadkins.gwent.main
 
-import android.app.Application
-import android.util.Log
-import com.jamieadkins.gwent.BuildConfig
-import timber.log.Timber
-import timber.log.Timber.DebugTree
+import com.jamieadkins.gwent.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
-class GwentApplication : Application() {
+class GwentApplication : DaggerApplication() {
 
     companion object {
         lateinit var INSTANCE: GwentApplication
@@ -15,9 +13,9 @@ class GwentApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+    }
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(DebugTree())
-        }
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().create(this)
     }
 }
