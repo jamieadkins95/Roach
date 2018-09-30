@@ -36,7 +36,7 @@ class UpdateRepositoryImpl @Inject constructor(
                           keywordUpdateRepository.isUpdateAvailable(),
                           categoryUpdateRepository.isUpdateAvailable(),
                           Function4 { cardsInDb: Int, card: Boolean, keyword: Boolean, category: Boolean ->
-                              true || cardsInDb == 0 || card || keyword || category
+                              cardsInDb == 0 || card || keyword || category
                           })
     }
 
