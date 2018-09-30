@@ -107,6 +107,13 @@ class CardDatabaseFragment :
         val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = controller.adapter
+
+        presenter.onAttach()
+    }
+
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -154,7 +161,7 @@ class CardDatabaseFragment :
     }
 
     override fun onRefresh() {
-        RxBus.post(RefreshEvent())
+        presenter.onRefresh()
     }
 
     override fun scrollToTop() {
