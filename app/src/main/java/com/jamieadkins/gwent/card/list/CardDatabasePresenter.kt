@@ -86,9 +86,7 @@ class CardDatabasePresenter @Inject constructor(
             .doOnNext {
                 view.setLoadingIndicator(true)
             }
-        return Observable.combineLatest(refreshRequests,
-                                        filter,
-                                        BiFunction { _: Any, filter: CardFilter -> filter })
+        return filter
             .observeOn(schedulerProvider.io())
             .switchMapSingle { cardRepository.getCards(it) }
     }
