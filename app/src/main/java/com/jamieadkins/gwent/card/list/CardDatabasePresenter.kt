@@ -88,7 +88,7 @@ class CardDatabasePresenter @Inject constructor(
             }
         return filter
             .observeOn(schedulerProvider.io())
-            .switchMapSingle { cardRepository.getCards(it) }
+            .switchMap { cardRepository.getCards(it) }
     }
 
     private fun getUpdates(): Observable<Boolean> {

@@ -18,19 +18,19 @@ interface CardDao {
 
     @Transaction
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE)
-    fun getCards(): Single<List<CardWithArtEntity>>
+    fun getCardsOnce(): Single<List<CardWithArtEntity>>
 
     @Transaction
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE)
-    fun subscribeToCards(): Flowable<List<CardWithArtEntity>>
+    fun getCards(): Flowable<List<CardWithArtEntity>>
 
     @Transaction
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + " WHERE id=:cardId")
-    fun getCard(cardId: String): Single<CardWithArtEntity>
+    fun getCard(cardId: String): Flowable<CardWithArtEntity>
 
     @Transaction
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + "  WHERE id IN(:ids)")
-    fun getCards(ids: List<String>): Single<List<CardWithArtEntity>>
+    fun getCards(ids: List<String>): Flowable<List<CardWithArtEntity>>
 
     @Query("SELECT COUNT(*) FROM " + GwentDatabase.CARD_TABLE)
     fun count(): Single<Int>

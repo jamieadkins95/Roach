@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.card.detail
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.addToComposite
+import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
 
@@ -14,7 +15,7 @@ class DetailPresenter(var cardId: String,
     override fun onRefresh() {
         view?.setLoadingIndicator(true)
         cardRepository.getCard(cardId)
-                .flatMap { card ->
+                .switchMap { card ->
                     cardRepository.getCards(card.relatedCards)
                             .map { related ->
                                 CardDetailsScreenData(card, related.toList())
@@ -22,8 +23,8 @@ class DetailPresenter(var cardId: String,
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableSingle<CardDetailsScreenData>() {
-                    override fun onSuccess(result: CardDetailsScreenData) {
+                .subscribeWith(object : BaseDisposableObserver<CardDetailsScreenData>() {
+                    override fun onNext(result: CardDetailsScreenData) {
                         view?.showScreen(result)
                         view?.setLoadingIndicator(false)
                     }

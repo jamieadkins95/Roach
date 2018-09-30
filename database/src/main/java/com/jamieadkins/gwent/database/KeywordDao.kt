@@ -17,11 +17,11 @@ interface KeywordDao {
     fun insert(items: Collection<KeywordEntity>)
 
     @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE} WHERE keywordId = :keywordId AND locale = :locale")
-    fun getKeywordForLocale(keywordId: String, locale: String): Single<KeywordEntity>
+    fun getKeywordForLocale(keywordId: String, locale: String): Flowable<KeywordEntity>
 
     @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE} WHERE keywordId = :keywordId")
-    fun getKeyword(keywordId: String): Single<List<KeywordEntity>>
+    fun getKeyword(keywordId: String): Flowable<List<KeywordEntity>>
 
     @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE}")
-    fun getAllKeywords(): Single<List<KeywordEntity>>
+    fun getAllKeywords(): Flowable<List<KeywordEntity>>
 }

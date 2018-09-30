@@ -17,11 +17,11 @@ interface CategoryDao {
     fun insert(items: Collection<CategoryEntity>)
 
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE categoryId = :categoryId AND locale = :locale")
-    fun getCategoryForLocale(categoryId: String, locale: String): Single<CategoryEntity>
+    fun getCategoryForLocale(categoryId: String, locale: String): Flowable<CategoryEntity>
 
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE categoryId = :categoryId")
-    fun getCategory(categoryId: String): Single<List<CategoryEntity>>
+    fun getCategory(categoryId: String): Flowable<List<CategoryEntity>>
 
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE}")
-    fun getAllCategories(): Single<List<CategoryEntity>>
+    fun getAllCategories(): Flowable<List<CategoryEntity>>
 }
