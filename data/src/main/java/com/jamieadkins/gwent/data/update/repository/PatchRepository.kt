@@ -8,8 +8,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.Gson
 import com.jamieadkins.gwent.data.*
+import javax.inject.Inject
 
-class PatchRepository(private val storeManager: StoreManager) {
+class PatchRepository @Inject constructor(private val storeManager: StoreManager) {
 
     val gson = Gson()
     private val cardsApi = Retrofit.Builder()

@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.di
 
+import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.main.GwentApplication
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -10,7 +11,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         FragmentInjectionModule::class,
-        AppModule::class
+        AppModule::class,
+        DataModule::class
     ]
 )
 @Singleton

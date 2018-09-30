@@ -5,9 +5,11 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.domain.LocaleRepository
 import io.reactivex.Observable
 import java.util.*
+import javax.inject.Inject
 
-class LocaleRepositoryImpl(private val preferences: RxSharedPreferences,
-                           private val resources: Resources) : LocaleRepository {
+class LocaleRepositoryImpl @Inject constructor(
+    private val preferences: RxSharedPreferences,
+    private val resources: Resources) : LocaleRepository {
 
     override fun getLocale(): Observable<String> {
         val key = resources.getString(R.string.pref_locale_key)

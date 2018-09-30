@@ -17,8 +17,12 @@ import okhttp3.ResponseBody
 import java.lang.reflect.Type
 import com.nytimes.android.external.fs3.filesystem.FileSystemFactory
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
-class StoreManager(val cacheDirectory: File) {
+@Singleton
+class StoreManager @Inject constructor(@Named("cache") val cacheDirectory: File) {
     private val storeMap = hashMapOf<BarCode, Store<*, BarCode>>()
 
     fun <T> getData(barCode: BarCode, observable: Single<ResponseBody>, type: Type, expirationTime: Long): Flowable<T> {

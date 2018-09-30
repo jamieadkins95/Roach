@@ -12,6 +12,8 @@ object Versions {
     const val support_lib = "28.0.0"
     const val support_constraint_layout = "1.1.0"
     const val dagger = "2.16"
+    const val javaxAnnotation = "1.2"
+    const val javaxInject = "1"
 
     const val retrofit = "2.4.0"
     const val rxjava = "2.1.12"

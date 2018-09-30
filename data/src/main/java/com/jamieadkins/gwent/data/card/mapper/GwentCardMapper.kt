@@ -7,8 +7,9 @@ import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import javax.inject.Inject
 
-class GwentCardMapper(private val artMapper: GwentCardArtMapper, private val factionMapper: FactionMapper) {
+class GwentCardMapper @Inject constructor(private val artMapper: GwentCardArtMapper, private val factionMapper: FactionMapper) {
 
     fun map(from: CardWithArtEntity, locale: String): GwentCard {
         val cardEntity = from.card

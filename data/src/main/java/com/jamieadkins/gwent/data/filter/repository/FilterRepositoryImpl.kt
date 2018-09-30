@@ -8,8 +8,9 @@ import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class FilterRepositoryImpl : FilterRepository {
+class FilterRepositoryImpl @Inject constructor() : FilterRepository {
     private val filter = BehaviorSubject.create<CardFilter>()
 
     private val rarityFilter = mutableMapOf<GwentCardRarity, Boolean>()

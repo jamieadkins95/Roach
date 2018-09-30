@@ -34,4 +34,6 @@ object Libs {
     const val dagger_support = "com.google.dagger:dagger-android-support:${Versions.dagger}"
     const val dagger_processor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
     const val dagger_compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    const val javaxAnnotation = "javax.annotation:javax.annotation-api:${Versions.javaxAnnotation}"
+    const val javaxInject = "javax.inject:javax.inject:${Versions.javaxInject}"
 }

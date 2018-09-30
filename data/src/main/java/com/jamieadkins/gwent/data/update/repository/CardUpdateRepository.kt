@@ -4,25 +4,24 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.card.mapper.ApiMapper
 import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
 import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
-import com.jamieadkins.gwent.data.update.mapper.GwentCategoryMapper
-import com.jamieadkins.gwent.data.update.model.FirebaseCategoryResult
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.domain.update.model.UpdateResult
-import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Named
 
-class CardUpdateRepository(private val database: GwentDatabase,
-                           filesDirectory: File,
-                           private val patchRepository: PatchRepository,
-                           private val cardMapper: ApiMapper,
-                           private val artMapper: ArtApiMapper,
-                           preferences: RxSharedPreferences) : BaseUpdateRepository(filesDirectory, preferences) {
+class CardUpdateRepository @Inject constructor(
+    private val database: GwentDatabase,
+    @Named("files") filesDirectory: File,
+    private val patchRepository: PatchRepository,
+    private val cardMapper: ApiMapper,
+    private val artMapper: ArtApiMapper,
+    preferences: RxSharedPreferences) : BaseUpdateRepository(filesDirectory, preferences) {
 
     private companion object {
         const val FILE_NAME = "cards.json"

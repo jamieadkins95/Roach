@@ -7,17 +7,19 @@ import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Named
 
-class CategoryUpdateRepository(private val database: GwentDatabase,
-                               filesDirectory: File,
-                               private val patchRepository: PatchRepository,
-                               preferences: RxSharedPreferences)
+class CategoryUpdateRepository @Inject constructor(
+    private val database: GwentDatabase,
+    @Named("files") filesDirectory: File,
+    private val patchRepository: PatchRepository,
+    preferences: RxSharedPreferences)
     : BaseUpdateRepository(filesDirectory, preferences), UpdateRepository {
 
     private companion object {

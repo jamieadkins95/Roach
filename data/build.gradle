@@ -43,6 +43,10 @@ dependencies {
     api Libs.rxpreferences
     implementation "com.google.firebase:firebase-storage:$google_services_version"
     api "com.google.firebase:firebase-messaging:$google_services_version"
+
+    implementation Libs.dagger
+    kapt Libs.dagger_compiler
+    kapt Libs.dagger_processor
 }
 repositories {
     mavenCentral()
