@@ -21,6 +21,8 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                     it.name ?: mapOf(),
                     it.info ?: mapOf(),
                     it.flavor ?: mapOf(),
+                    variation?.craft?.get("standard") ?: 0,
+                    variation?.mill?.get("standard") ?: 0,
                     it.categories ?: listOf(),
                     it.keywords ?: listOf(),
                     it.loyalties ?: listOf(),

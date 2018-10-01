@@ -23,8 +23,8 @@ class GwentCardMapper @Inject constructor(private val artMapper: GwentCardArtMap
                          typeToColour(cardEntity.color),
                          rarityIdToRarity(cardEntity.rarity),
                          cardEntity.collectible,
-                         0,
-                         0,
+                         cardEntity.craft,
+                         cardEntity.mill,
                          cardEntity.related,
                          artMapper.map(from.art.first()))
     }
