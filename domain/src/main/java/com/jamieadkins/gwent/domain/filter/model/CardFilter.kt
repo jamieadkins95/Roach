@@ -6,9 +6,8 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 
 data class CardFilter(
-        val searchQuery: String = "",
-        val rarityFilter: Map<GwentCardRarity, Boolean>,
-        val colourFilter: Map<GwentCardColour, Boolean>,
-        val factionFilter: Map<GwentFaction, Boolean>,
+        val rarityFilter: Map<GwentCardRarity, Boolean> = GwentCardRarity.values().map { it to true }.toMap(),
+        val colourFilter: Map<GwentCardColour, Boolean> = GwentCardColour.values().map { it to true }.toMap(),
+        val factionFilter: Map<GwentFaction, Boolean> = GwentFaction.values().map { it to true }.toMap(),
         val isCollectibleOnly: Boolean = false,
         val sortedBy: SortedBy = SortedBy.ALPHABETICALLY_ASC)

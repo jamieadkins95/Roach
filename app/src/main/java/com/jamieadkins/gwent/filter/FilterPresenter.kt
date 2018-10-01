@@ -16,18 +16,6 @@ class FilterPresenter(val filterType: FilterType,
 
     override fun onAttach(newView: FilterContract.View) {
         super.onAttach(newView)
-        RxBus.register(FilterChangeEvent::class.java)
-                .subscribeWith(object : BaseDisposableObserver<FilterChangeEvent>() {
-                    override fun onNext(event: FilterChangeEvent) {
-                        val filter = event.data
-                        when (filter) {
-                            is FactionFilter -> filterRepository.updateFactionFilter(filter.faction, filter.isChecked)
-                            is ColourFilter -> filterRepository.updateColourFilter(filter.colour, filter.isChecked)
-                            is RarityFilter -> filterRepository.updateRarityFilter(filter.rarity, filter.isChecked)
-                        }
-                    }
-                })
-                .addToComposite(disposable)
 
         filterRepository.getFilter()
                 .subscribeOn(schedulerProvider.io())
