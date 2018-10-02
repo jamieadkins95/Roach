@@ -97,7 +97,7 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
         } else {
             imgCard.setImageDrawable(null)
             progress.visibility = View.GONE
-            imgCard.visibility = View.VISIBLE
+            imgCard.visibility = View.INVISIBLE
         }
     }
 
