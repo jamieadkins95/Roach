@@ -10,7 +10,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class UpdateModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [UpdateDataModule::class])
+    @ContributesAndroidInjector
     internal abstract fun activity(): UpdateActivity
 
     @ActivityScoped

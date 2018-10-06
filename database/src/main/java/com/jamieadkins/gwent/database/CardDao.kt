@@ -33,5 +33,5 @@ interface CardDao {
     fun getCards(ids: List<String>): Flowable<List<CardWithArtEntity>>
 
     @Query("SELECT COUNT(*) FROM " + GwentDatabase.CARD_TABLE)
-    fun count(): Single<Int>
+    fun count(): Flowable<Int>
 }

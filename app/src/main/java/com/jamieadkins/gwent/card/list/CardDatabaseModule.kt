@@ -18,7 +18,7 @@ import javax.inject.Singleton
 abstract class CardDatabaseModule {
 
     @FragmentScoped
-    @ContributesAndroidInjector(modules = [UpdateDataModule::class])
+    @ContributesAndroidInjector()
     internal abstract fun view(): CardDatabaseFragment
 
     @FragmentScoped

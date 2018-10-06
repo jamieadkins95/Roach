@@ -15,6 +15,7 @@ class UpdatePresenter @Inject constructor(
 
     override fun onAttach() {
         updateRepository.isUpdateAvailable()
+            .first(false)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.io())
             .flatMapCompletable { update ->

@@ -7,22 +7,27 @@ import com.jamieadkins.gwent.data.update.repository.UpdateRepositoryImpl
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 abstract class UpdateDataModule {
 
     @Binds
+    @Singleton
     abstract fun repository(repository: UpdateRepositoryImpl): UpdateRepository
 
     @CardUpdate
     @Binds
+    @Singleton
     abstract fun card(repository: CardUpdateRepository): UpdateRepository
 
     @KeywordUpdate
     @Binds
+    @Singleton
     abstract fun keyword(repository: KeywordUpdateRepository): UpdateRepository
 
     @CategoryUpdate
     @Binds
+    @Singleton
     abstract fun category(repository: CategoryUpdateRepository): UpdateRepository
 }

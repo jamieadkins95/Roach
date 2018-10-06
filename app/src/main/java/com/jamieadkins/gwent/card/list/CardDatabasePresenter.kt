@@ -86,7 +86,9 @@ class CardDatabasePresenter @Inject constructor(
 
     private fun getUpdates(): Observable<Boolean> {
         return refreshRequests
-            .flatMapSingle { getCardDatabaseUpdateUseCase.isUpdateAvailable() }
+            .switchMap {
+                getCardDatabaseUpdateUseCase.isUpdateAvailable()
+            }
             .startWith(false)
     }
 

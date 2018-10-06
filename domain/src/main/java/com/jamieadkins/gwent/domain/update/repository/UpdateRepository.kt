@@ -8,7 +8,7 @@ import java.io.File
 
 interface UpdateRepository {
 
-    fun isUpdateAvailable(): Single<Boolean>
+    fun isUpdateAvailable(): Observable<Boolean>
 
     fun performFirstTimeSetup(): Observable<UpdateResult>
 

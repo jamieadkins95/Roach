@@ -11,6 +11,7 @@ import com.nytimes.android.external.cache3.Cache
 import com.nytimes.android.external.cache3.CacheBuilder
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -28,11 +29,15 @@ abstract class BaseUpdateRepository(
         .expireAfterAccess(1, TimeUnit.MINUTES)
         .build()
 
+    val updateStateChanges = BehaviorSubject.createDefault(Any())
+
     override fun performUpdate(): Completable {
         return isUpdateAvailable()
+            .first(false)
             .flatMapCompletable { updateAvailable ->
                 if (updateAvailable) {
                     internalPerformUpdate()
+                        .doOnComplete { updateStateChanges.onNext(Any()) }
                 } else {
                     Completable.complete()
                 }

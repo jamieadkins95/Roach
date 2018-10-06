@@ -26,18 +26,21 @@ class CategoryUpdateRepository @Inject constructor(
         const val FILE_NAME = "categories.json"
     }
 
-    override fun isUpdateAvailable(): Single<Boolean> {
-        return patchRepository.getLatestPatchId()
-            .flatMap { patch ->
-                Single.zip(
-                    getRemoteLastUpdated(patch, FILE_NAME),
-                    getLocalLastUpdated(patch, FILE_NAME),
-                    BiFunction { remote: Long, local: Long ->
-                        remote > local
+    override fun isUpdateAvailable(): Observable<Boolean> {
+        return updateStateChanges
+            .flatMapSingle {
+                patchRepository.getLatestPatchId()
+                    .flatMap { patch ->
+                        Single.zip(
+                            getRemoteLastUpdated(patch, FILE_NAME),
+                            getLocalLastUpdated(patch, FILE_NAME),
+                            BiFunction { remote: Long, local: Long ->
+                                remote > local
+                            }
+                        )
                     }
-                )
+                    .onErrorReturnItem(false)
             }
-            .onErrorReturnItem(false)
     }
 
     override fun performFirstTimeSetup(): Observable<UpdateResult> {
