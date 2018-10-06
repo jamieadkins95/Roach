@@ -7,6 +7,8 @@ interface UpdateContract {
     interface View {
 
         fun openCardDatabase()
+
+        fun showError()
     }
 
     interface Presenter : MvpPresenter

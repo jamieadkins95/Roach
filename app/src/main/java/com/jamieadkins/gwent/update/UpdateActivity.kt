@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.update
 
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import com.jamieadkins.gwent.R
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -30,5 +31,9 @@ class UpdateActivity : DaggerAppCompatActivity(), UpdateContract.View {
 
     override fun openCardDatabase() {
         finish()
+    }
+
+    override fun showError() {
+        Toast.makeText(this, R.string.updated_failed, Toast.LENGTH_SHORT).show()
     }
 }

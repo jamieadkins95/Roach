@@ -31,6 +31,11 @@ class UpdatePresenter @Inject constructor(
                     super.onComplete()
                     view.openCardDatabase()
                 }
+
+                override fun onError(e: Throwable) {
+                    super.onError(e)
+                    view.showError()
+                }
             })
             .addToComposite()
     }
