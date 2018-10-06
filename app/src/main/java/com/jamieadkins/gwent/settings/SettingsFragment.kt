@@ -69,7 +69,7 @@ class SettingsFragment : Fragment(), SettingsController.SettingsNavigationCallba
     }
 
     override fun onDiscordClicked() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/k9hcJRh"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/playgwent"))
         startActivity(intent)
     }
 
