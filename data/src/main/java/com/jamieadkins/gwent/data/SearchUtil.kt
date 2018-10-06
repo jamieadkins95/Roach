@@ -17,23 +17,24 @@ object CardSearch {
         val start = System.currentTimeMillis()
         cardSearchData.cards.forEach { card ->
             val scores = ArrayList<Int>()
+            val lowerCaseQuery = query.toLowerCase()
 
             // Search in user's language
-            scores.add(FuzzySearch.partialRatio(query, card.card.name[userLocale]))
-            scores.add(FuzzySearch.partialRatio(query, card.card.tooltip[userLocale]))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[userLocale]?.toLowerCase()))
 
             // Search in the default language
-            scores.add(FuzzySearch.partialRatio(query, card.card.name[defaultLocale]))
-            scores.add(FuzzySearch.partialRatio(query, card.card.tooltip[defaultLocale]))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[defaultLocale]?.toLowerCase()))
 
             card.card.categoryIds.forEach { categoryId ->
                 cardSearchData.categories.filter { categoryId == it.categoryId }.forEach {
-                    scores.add(FuzzySearch.partialRatio(query, it.name))
+                    scores.add(FuzzySearch.partialRatio(lowerCaseQuery, it.name.toLowerCase()))
                 }
             }
             card.card.keywordIds.forEach { keywordId ->
                 cardSearchData.keywords.filter { keywordId == it.keywordId }.forEach {
-                    scores.add(FuzzySearch.partialRatio(query, it.name))
+                    scores.add(FuzzySearch.partialRatio(lowerCaseQuery, it.name.toLowerCase()))
                 }
             }
             val score = Collections.max(scores)
