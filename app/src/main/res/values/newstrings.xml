@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings">Settings</string>
-    <string name="cards">Cards</string>
-    <string name="card_database">Card Database</string>
-    <string name="collection_manager">Collection Manager</string>
-    <string name="deck_builder">Deck Builder</string>
-    <string name="news">News</string>
     <string name="no_internet_connection">No internet connection :(</string>
-    <string name="decks">Decks</string>
-    <string name="collection">Collection</string>
-    <string name="search">Search</string>
     <string name="deck_name">Deck name</string>
     <string name="create">Create</string>
     <string name="new_deck">New Deck</string>
-    <string name="filter">Filter</string>
     <string name="reset_filters">Reset Filters</string>
     <string name="about">About</string>
     <string name="pref_licenses">Open Source Licenses</string>
@@ -70,11 +61,4 @@
     <string name="empty_cards">No cards</string>
     <string name="empty_cards_message">Try changing your filters or updating the card database.</string>
     <string name="other">Other</string>
-    <string name="esports">Esports</string>
-    <string name="forums">Forums</string>
-
-    <string name="collection_placeholder_title">Collection Manager will return soon!</string>
-    <string name="collection_placeholder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Collection Manager is currently being rebuilt to support the new update.</string>
-    <string name="deck_builder_title">Deck Builder will return soon!</string>
-    <string name="deck_builder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Deck Builder is currently being rebuilt to support the new update.</string>
 </resources>

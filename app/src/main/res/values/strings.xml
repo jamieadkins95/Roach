@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="search">Search</string>
     <string name="search_results">Search Results</string>
     <string name="results_found">%1$d results found for \"%2$s\"</string>
     <string name="filters_applied">%d filters applied</string>
-
     <string name="tooltip">Tooltip</string>
     <string name="flavor">Flavor</string>
     <string name="categories">Categories</string>
@@ -15,4 +15,19 @@
     <string name="update_available_body">A card database update is available to download.</string>
     <string name="download">Download</string>
     <string name="privacy">Privacy Policy</string>
+    <string name="cards">Cards</string>
+    <string name="decks">Decks</string>
+    <string name="collection">Collection</string>
+    <string name="card_database">Card Database</string>
+    <string name="collection_manager">Collection Manager</string>
+    <string name="deck_builder">Deck Builder</string>
+    <string name="filter">Filter</string>
+    <string name="news">News</string>
+    <string name="esports">Esports</string>
+    <string name="forums">Forums</string>
+
+    <string name="collection_placeholder_title">Collection Manager will return soon!</string>
+    <string name="collection_placeholder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Collection Manager is currently being rebuilt to support the new update.</string>
+    <string name="deck_builder_title">Deck Builder will return soon!</string>
+    <string name="deck_builder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Deck Builder is currently being rebuilt to support the new update.</string>
 </resources>
