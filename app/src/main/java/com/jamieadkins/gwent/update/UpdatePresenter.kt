@@ -14,17 +14,8 @@ class UpdatePresenter @Inject constructor(
     : BasePresenter(), UpdateContract.Presenter {
 
     override fun onAttach() {
-        updateRepository.isUpdateAvailable()
-            .first(false)
+        updateRepository.performUpdate()
             .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.io())
-            .flatMapCompletable { update ->
-                if (update) {
-                    updateRepository.performUpdate()
-                } else {
-                    Completable.complete()
-                }
-            }
             .observeOn(schedulerProvider.ui())
             .subscribeWith(object : BaseDisposableCompletableObserver() {
                 override fun onComplete() {
