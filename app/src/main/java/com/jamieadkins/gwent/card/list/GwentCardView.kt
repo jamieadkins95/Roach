@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.airbnb.epoxy.AfterPropsSet
 import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.ModelProp
 
@@ -37,7 +38,6 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
     private val tvRarity by bindView<TextView>(R.id.rarity)
     private val tvFaction by bindView<TextView>(R.id.faction)
     private val imgCard by bindView<ImageView>(R.id.card_image)
-    private val progress by bindView<ProgressBar>(R.id.progress)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_gwent_card, this, true)
@@ -70,39 +70,38 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
-    @ModelProp
-    fun setCardImage(imageUrl: String?) {
-        imgCard.visibility = View.INVISIBLE
-        progress.visibility = View.VISIBLE
-        if (imageUrl != null) {
+    @JvmField @ModelProp var cardImage: String? = null
+    lateinit var faction: GwentFaction
+
+    @AfterPropsSet
+    fun handleImage() {
+        val cardBack = when (faction) {
+            GwentFaction.NORTHERN_REALMS -> R.drawable.cardback_northern_realms
+            GwentFaction.NILFGAARD -> R.drawable.cardback_nilfgaard
+            GwentFaction.NEUTRAL -> R.drawable.cardback_neutral
+            GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
+            GwentFaction.MONSTER -> R.drawable.cardback_monster
+            GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
+        }
+
+        if (cardImage != null) {
             Glide.with(context)
-                    .load(imageUrl)
-                    .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .listener(object : RequestListener<String, GlideDrawable> {
-                        override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
-                            progress.visibility = View.GONE
-                            imgCard.visibility = View.VISIBLE
-                            return false
-                        }
-
-                        override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                            progress.visibility = View.GONE
-                            imgCard.visibility = View.VISIBLE
-                            return false
-                        }
-
-                    })
-                    .into(imgCard)
+                .load(cardImage)
+                .fitCenter()
+                .error(cardBack)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgCard)
         } else {
-            imgCard.setImageDrawable(null)
-            progress.visibility = View.GONE
-            imgCard.visibility = View.INVISIBLE
+            Glide.with(context)
+                .load(cardBack)
+                .into(imgCard)
         }
     }
 
     @ModelProp
-    fun setCardFaction(faction: GwentFaction) {
+    fun setCardFaction(cardFaction: GwentFaction) {
+        faction = cardFaction
+
         tvFaction.text = GwentStringHelper.getFactionString(context, faction)
         val factionColor = when (faction) {
             GwentFaction.MONSTER -> ContextCompat.getColor(context, R.color.monsters)
