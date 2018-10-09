@@ -6,7 +6,7 @@ import java.util.Map;
 public class CardDetails {
     private static final String DEFAULT_LOCALE = "en-US";
 
-    private List<String> categories;
+    private List<String> categoryIds;
     private List<String> keywords;
     private String faction;
     private Map<String, String> flavor;
@@ -102,7 +102,7 @@ public class CardDetails {
     }
 
     public List<String> getCategories() {
-        return categories;
+        return categoryIds;
     }
 
     public List<String> getKeywords() {

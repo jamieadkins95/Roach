@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.LocaleRepository
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckCardCounts
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
@@ -30,6 +31,7 @@ class UserDeckRepository @Inject constructor(
     private val cardMapper: GwentCardMapper,
     private val factionMapper: FactionMapper,
     private val deckMapper: DeckMapper,
+    private val cardRepository: CardRepository,
     private val localeRepository: LocaleRepository) : DeckRepository {
 
     override fun getDecks(): Single<List<GwentDeckSummary>> {
@@ -50,17 +52,16 @@ class UserDeckRepository @Inject constructor(
             }
     }
 
-    override fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary> {
+    override fun getDeckSummary(deckId: String): Observable<GwentDeckSummary> {
         return database.deckDao().getDeck(deckId)
             .map { deckMapper.map(it) }
-            .flatMap {
+            .toObservable()
+            .flatMapMaybe {
                 getLeader(it.id)
                     .zipWith(getCardCounts(it.id).toMaybe(),
-                             BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts
-                                 ->
+                             BiFunction { leader: GwentCard, cardCounts: GwentDeckCardCounts ->
                                  GwentDeckSummary(it, leader, cardCounts)
                              })
-                    .toFlowable()
             }
     }
 
@@ -71,9 +72,7 @@ class UserDeckRepository @Inject constructor(
             .flatMapMaybe { deckAndLocale ->
                 val leaderId = deckAndLocale.first.leaderId
                 if (leaderId != null) {
-                    database.cardDao().getCard(leaderId)
-                        .map { cardMapper.map(it, deckAndLocale.second) }
-                        .firstElement()
+                    cardRepository.getCard(leaderId).firstElement()
                 } else {
                     Maybe.empty<GwentCard>()
                 }
@@ -100,18 +99,14 @@ class UserDeckRepository @Inject constructor(
             .map { factionMapper.map(it.factionId) }
     }
 
-    override fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts> {
+    override fun getDeckCardCounts(deckId: String): Observable<GwentDeckCardCounts> {
         return database.deckCardDao().getCardCounts(deckId)
+            .toObservable()
             // Get all card ids.
             .map { it.map { it.cardId } }
             // Get all card entities.
             .switchMap {
-                Flowable.combineLatest(
-                    database.cardDao().getCards(it),
-                    localeRepository.getLocale().toFlowable(BackpressureStrategy.LATEST),
-                    BiFunction { cards: List<CardWithArtEntity>, locale: String ->
-                        cardMapper.mapList(cards, locale)
-                    })
+               cardRepository.getCards(it)
             }
             // Map to GwentDeckCardCounts
             .map { cards ->
