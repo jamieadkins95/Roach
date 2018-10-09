@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckCardCounts
 import io.reactivex.Flowable
+import io.reactivex.Observable
 
 import io.reactivex.Single
 
@@ -16,7 +17,7 @@ interface DeckReadRepository {
 
     fun getDeckFaction(deckId: String): Single<GwentFaction>
 
-    fun getDeckSummary(deckId: String): Flowable<GwentDeckSummary>
+    fun getDeckSummary(deckId: String): Observable<GwentDeckSummary>
 
-    fun getDeckCardCounts(deckId: String): Flowable<GwentDeckCardCounts>
+    fun getDeckCardCounts(deckId: String): Observable<GwentDeckCardCounts>
 }

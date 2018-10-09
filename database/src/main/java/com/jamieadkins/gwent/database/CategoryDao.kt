@@ -19,6 +19,9 @@ interface CategoryDao {
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE categoryId = :categoryId AND locale = :locale")
     fun getCategoryForLocale(categoryId: String, locale: String): Flowable<CategoryEntity>
 
+    @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE locale = :locale")
+    fun getCategoriesForLocale(locale: String): Flowable<List<CategoryEntity>>
+
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE} WHERE categoryId = :categoryId")
     fun getCategory(categoryId: String): Flowable<List<CategoryEntity>>
 

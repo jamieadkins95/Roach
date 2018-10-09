@@ -8,6 +8,7 @@ data class GwentCard(
         val tooltip: String = "",
         val flavor: String = "",
         val categories: List<String> = emptyList(),
+        val keywords: List<GwentKeyword> = emptyList(),
         val faction: GwentFaction,
         val strength: Int = 0,
         val colour: GwentCardColour,
