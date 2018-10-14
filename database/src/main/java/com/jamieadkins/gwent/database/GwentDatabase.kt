@@ -15,7 +15,6 @@ abstract class GwentDatabase : RoomDatabase() {
         const val DB_NAME = "GwentDatabase"
         const val CARD_TABLE = "cards"
         const val ART_TABLE = "art"
-        const val PATCH_VERSION_TABLE = "patch"
         const val DECK_TABLE = "decks"
         const val DECK_CARD_TABLE = "deck_cards"
         const val COLLECTION_TABLE = "collection"
@@ -26,8 +25,6 @@ abstract class GwentDatabase : RoomDatabase() {
     abstract fun cardDao(): CardDao
 
     abstract fun artDao(): ArtDao
-
-    abstract fun patchDao(): PatchDao
 
     abstract fun deckDao(): DeckDao
 
