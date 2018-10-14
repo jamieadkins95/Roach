@@ -4,6 +4,7 @@ import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.card.CardDataModule
 import com.jamieadkins.gwent.data.update.UpdateDataModule
+import com.jamieadkins.gwent.launch.LaunchModule
 import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.update.UpdateModule
 import dagger.Component
@@ -21,7 +22,8 @@ import dagger.BindsInstance
         CardDataModule::class,
         UpdateModule::class,
         UpdateDataModule::class,
-        CardDatabaseModule::class
+        CardDatabaseModule::class,
+        LaunchModule::class
     ]
 )
 @Singleton
