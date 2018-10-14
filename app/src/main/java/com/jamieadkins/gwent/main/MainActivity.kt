@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.collection.CollectionPlaceholderFragment
 import com.jamieadkins.gwent.deck.list.DeckListPlaceholderFragment
-import com.jamieadkins.gwent.settings.SettingsFragment
+import com.jamieadkins.gwent.settings.GwentFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_card_db -> CardDatabaseFragment()
             R.id.navigation_collection -> CollectionPlaceholderFragment()
             R.id.navigation_decks -> DeckListPlaceholderFragment()
-            R.id.navigation_gwent -> SettingsFragment()
+            R.id.navigation_gwent -> GwentFragment()
             else -> CardDatabaseFragment()
         }
     }

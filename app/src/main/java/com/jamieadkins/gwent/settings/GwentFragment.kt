@@ -17,9 +17,9 @@ import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PRE
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : Fragment(), SettingsController.SettingsNavigationCallback {
+class GwentFragment : Fragment(), GwentController.SettingsNavigationCallback {
 
-    private val controller = SettingsController()
+    private val controller = GwentController()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

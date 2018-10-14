@@ -4,7 +4,7 @@ import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.EpoxyController
 import com.jamieadkins.gwent.R
 
-class SettingsController : EpoxyController() {
+class GwentController : EpoxyController() {
 
     @AutoModel lateinit var news: MaterialSettingsOneLineViewModel_
     @AutoModel lateinit var esports: MaterialSettingsOneLineViewModel_
