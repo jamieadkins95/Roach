@@ -20,7 +20,7 @@
         android:id="@+id/header_primary_text"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="@color/text_primary"
         tools:text="Search Results"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@id/start"
