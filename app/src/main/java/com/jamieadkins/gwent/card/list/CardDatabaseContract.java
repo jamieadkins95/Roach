@@ -11,6 +11,8 @@ public interface CardDatabaseContract {
         void showData(@NotNull CardDatabaseScreenModel data);
 
         void openUpdateScreen();
+
+        void showLoadingIndicator(Boolean loading);
     }
 
     interface Presenter extends MvpPresenter {

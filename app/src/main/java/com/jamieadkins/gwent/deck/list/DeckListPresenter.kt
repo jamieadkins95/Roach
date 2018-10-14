@@ -37,7 +37,7 @@ class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                 .subscribeWith(object : BaseDisposableSingle<Collection<GwentDeckSummary>>() {
                     override fun onSuccess(decks: Collection<GwentDeckSummary>) {
                         view?.showDecks(decks)
-                        view?.setLoadingIndicator(false)
+                        view?.showLoadingIndicator(false)
                     }
                 })
                 .addToComposite(disposable)

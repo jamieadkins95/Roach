@@ -13,6 +13,8 @@ class SettingsController : EpoxyController() {
     @AutoModel lateinit var discord: MaterialSettingsOneLineViewModel_
     @AutoModel lateinit var twitch: MaterialSettingsOneLineViewModel_
     @AutoModel lateinit var youtube: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var settings: MaterialSettingsOneLineViewModel_
+    @AutoModel lateinit var about: MaterialSettingsOneLineViewModel_
 
     var listener: SettingsNavigationCallback? = null
 
@@ -52,6 +54,16 @@ class SettingsController : EpoxyController() {
             .icon(R.drawable.ic_youtube)
             .clickListener { _ -> listener?.onYoutubeClicked() }
             .addTo(this)
+
+        settings.title(R.string.settings)
+            .icon(R.drawable.ic_settings)
+            .clickListener { _ -> listener?.onSettingsClicked() }
+            .addTo(this)
+
+        about.title(R.string.about)
+            .icon(R.drawable.ic_info)
+            .clickListener { _ -> listener?.onAboutClicked() }
+            .addTo(this)
     }
 
     interface SettingsNavigationCallback {
@@ -69,5 +81,9 @@ class SettingsController : EpoxyController() {
         fun onTwitchClicked()
 
         fun onYoutubeClicked()
+
+        fun onSettingsClicked()
+
+        fun onAboutClicked()
     }
 }

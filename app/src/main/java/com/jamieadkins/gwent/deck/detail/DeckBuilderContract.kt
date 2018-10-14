@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.deck.detail
 
-import com.jamieadkins.commonutils.mvp2.BaseListView
 import com.jamieadkins.gwent.card.list.CardsContract
 
 /**
@@ -10,7 +9,7 @@ import com.jamieadkins.gwent.card.list.CardsContract
 interface DeckBuilderContract {
     interface CardDatabaseView : View, CardsContract.View
 
-    interface View : BaseListView
+    interface View
 
     interface Presenter : CardsContract.Presenter
 }

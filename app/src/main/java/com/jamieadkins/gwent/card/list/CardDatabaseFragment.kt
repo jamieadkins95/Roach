@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.commonutils.mvp2.BaseListView
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
@@ -36,14 +35,13 @@ class CardDatabaseFragment :
     DaggerFragment(),
     CardDatabaseContract.View,
     SwipeRefreshLayout.OnRefreshListener,
-    BaseListView, ScrollView {
+    ScrollView {
 
     private val screenKey = javaClass.name
 
     @Inject
     lateinit var presenter: CardDatabaseContract.Presenter
 
-    private val emptyView by bindView<View>(R.id.empty)
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
@@ -129,26 +127,16 @@ class CardDatabaseFragment :
                 dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }
-            R.id.filter_reset -> {
-                RxBus.post(ResetFiltersEvent())
-                true
-            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    override fun setLoadingIndicator(loading: Boolean) {
+    override fun showLoadingIndicator(loading: Boolean) {
         refreshLayout.isRefreshing = loading
-    }
-
-    override fun showEmptyView() {
-        emptyView.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
         controller.setData(data)
-        emptyView.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
         recyclerView.post {
             recyclerView.scrollToPosition(0)

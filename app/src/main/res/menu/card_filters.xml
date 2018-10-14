@@ -21,10 +21,6 @@
                 android:id="@+id/filter_rarity"
                 android:title="@string/rarity" />
 
-            <item
-                android:id="@+id/filter_reset"
-                android:title="@string/reset_filters" />
-
         </menu>
     </item>
 </menu>

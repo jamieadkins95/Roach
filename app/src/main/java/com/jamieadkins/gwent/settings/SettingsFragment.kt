@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.settings.BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT
+import com.jamieadkins.gwent.settings.BasePreferenceActivity.EXTRA_PREFERENCE_TITLE
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -81,6 +83,24 @@ class SettingsFragment : Fragment(), SettingsController.SettingsNavigationCallba
     override fun onYoutubeClicked() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCKS8WtM7U144j4fAU4xqiCw"))
         startActivity(intent)
+    }
+
+    override fun onSettingsClicked() {
+        context?.let {
+            val intent = Intent(it, SettingsActivity::class.java)
+            intent.putExtra(EXTRA_PREFERENCE_TITLE, R.string.settings)
+            intent.putExtra(EXTRA_PREFERENCE_LAYOUT, R.xml.settings)
+            startActivity(intent)
+        }
+    }
+
+    override fun onAboutClicked() {
+        context?.let {
+            val intent = Intent(it, SettingsActivity::class.java)
+            intent.putExtra(EXTRA_PREFERENCE_TITLE, R.string.about)
+            intent.putExtra(EXTRA_PREFERENCE_LAYOUT, R.xml.about)
+            startActivity(intent)
+        }
     }
 
     private fun showChromeCustomTab(url: String) {

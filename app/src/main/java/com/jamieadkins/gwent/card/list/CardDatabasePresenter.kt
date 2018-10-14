@@ -74,11 +74,11 @@ class CardDatabasePresenter @Inject constructor(
                                  BiFunction { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean ->
                                      CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable)
                                  })
-            .doOnSubscribe { view.setLoadingIndicator(true) }
+            .doOnSubscribe { view.showLoadingIndicator(true) }
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
                     view.showData(data)
-                    view.setLoadingIndicator(false)
+                    view.showLoadingIndicator(false)
                 }
             })
             .addToComposite()

@@ -11,6 +11,4 @@
     <color name="text_hint_dark">#80FFFFFF</color>
     <color name="text_subheader_dark">@color/text_secondary_dark</color>
 
-    <color name="empty">#44000000</color>
-
 </resources>
