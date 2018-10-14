@@ -25,6 +25,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.main.CardResourceHelper
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.domain.GwentFaction
 import kotterknife.bindView
 
 class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
@@ -36,7 +37,6 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
     private val toolbar by bindView<Toolbar>(R.id.toolbar)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val imgCard by bindView<ImageView>(R.id.card_image)
-    private val progress by bindView<ProgressBar>(R.id.progress)
 
     companion object {
         const val KEY_ID = "cardId"
@@ -78,42 +78,35 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
     private fun showCard(card: GwentCard) {
         (activity as? AppCompatActivity)?.title = card.name
 
-        loadCardImage(card.cardArt?.medium)
+        loadCardImage(card.cardArt.medium, card.faction)
 
         toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, card.faction))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, card.faction)
-            progress.indeterminateTintList = ColorStateList.valueOf(CardResourceHelper.getColorForFaction(resources, card.faction))
         }
     }
 
-    fun loadCardImage(imageUrl: String?) {
-        imgCard.visibility = View.INVISIBLE
-        progress.visibility = View.VISIBLE
+    private fun loadCardImage(imageUrl: String?, faction: GwentFaction) {
+        val cardBack = when (faction) {
+            GwentFaction.NORTHERN_REALMS -> R.drawable.cardback_northern_realms
+            GwentFaction.NILFGAARD -> R.drawable.cardback_nilfgaard
+            GwentFaction.NEUTRAL -> R.drawable.cardback_neutral
+            GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
+            GwentFaction.MONSTER -> R.drawable.cardback_monster
+            GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
+        }
+
         if (imageUrl != null) {
             Glide.with(context)
-                    .load(imageUrl)
-                    .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .listener(object : RequestListener<String, GlideDrawable> {
-                        override fun onException(e: java.lang.Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
-                            progress.visibility = View.GONE
-                            imgCard.visibility = View.VISIBLE
-                            return false
-                        }
-
-                        override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                            progress.visibility = View.GONE
-                            imgCard.visibility = View.VISIBLE
-                            return false
-                        }
-
-                    })
-                    .into(imgCard)
+                .load(imageUrl)
+                .placeholder(cardBack)
+                .error(cardBack)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imgCard)
         } else {
-            imgCard.setImageDrawable(null)
-            progress.visibility = View.GONE
-            imgCard.visibility = View.VISIBLE
+            Glide.with(context)
+                .load(cardBack)
+                .into(imgCard)
         }
     }
 

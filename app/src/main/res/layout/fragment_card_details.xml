@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,44 +9,40 @@
     <include layout="@layout/appbar_layout" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/refreshContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginBottom="150dp">
 
-    <ImageView
-        android:id="@+id/card_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="547:731"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/regis_medium" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/card_image"
-        app:layout_constraintEnd_toEndOf="@id/card_image"
-        app:layout_constraintTop_toTopOf="@id/card_image"
-        app:layout_constraintBottom_toBottomOf="@id/card_image" />
+            <ImageView
+                android:id="@+id/card_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/cardback_nilfgaard" />
 
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-        app:behavior_peekHeight="150dp" />
+        android:background="@color/white"
+        android:elevation="2dp"
+        app:behavior_peekHeight="100dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>
