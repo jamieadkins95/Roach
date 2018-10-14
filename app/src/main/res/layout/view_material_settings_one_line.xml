@@ -27,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/update_available_title"
-        android:textColor="@color/text_primary_light"
+        android:textColor="@color/text_primary"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:textSize="16sp"

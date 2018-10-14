@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Base.Theme.Gwent" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.Theme.Gwent" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/gwentGreen</item>
         <item name="colorPrimaryDark">@color/gwentGreenDark</item>
         <item name="colorAccent">@color/gwentAccent</item>
@@ -24,7 +24,7 @@
 
     <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
     <style name="Widget.BottomNavigationView.Gwent" parent="Widget.Design.BottomNavigationView">
         <item name="android:fontFamily">@font/gwent</item>

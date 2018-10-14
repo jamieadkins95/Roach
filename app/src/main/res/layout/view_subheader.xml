@@ -13,6 +13,6 @@
         android:id="@+id/subheader_text"
         android:textSize="14sp"
         tools:text="15 results for found for \'yennefer\'"
-        android:textColor="@color/text_secondary_light"/>
+        android:textColor="@color/text_secondary"/>
 
 </LinearLayout>

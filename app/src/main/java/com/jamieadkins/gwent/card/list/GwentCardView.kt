@@ -104,12 +104,12 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
 
         tvFaction.text = GwentStringHelper.getFactionString(context, faction)
         val factionColor = when (faction) {
-            GwentFaction.MONSTER -> ContextCompat.getColor(context, R.color.monsters)
-            GwentFaction.NORTHERN_REALMS -> ContextCompat.getColor(context, R.color.northernRealms)
-            GwentFaction.SCOIATAEL -> ContextCompat.getColor(context, R.color.scoiatael)
-            GwentFaction.SKELLIGE -> ContextCompat.getColor(context, R.color.skellige)
+            GwentFaction.MONSTER -> ContextCompat.getColor(context, R.color.monstersLight)
+            GwentFaction.NORTHERN_REALMS -> ContextCompat.getColor(context, R.color.northernRealmsLight)
+            GwentFaction.SCOIATAEL -> ContextCompat.getColor(context, R.color.scoiataelLight)
+            GwentFaction.SKELLIGE -> ContextCompat.getColor(context, R.color.skelligeLight)
             GwentFaction.NEUTRAL -> ContextCompat.getColor(context, R.color.neutral)
-            GwentFaction.NILFGAARD -> ContextCompat.getColor(context, R.color.nilfgaard)
+            GwentFaction.NILFGAARD -> ContextCompat.getColor(context, R.color.nilfgaardLight)
             else -> ContextCompat.getColor(context, R.color.neutral)
         }
         tvFaction.setTextColor(factionColor)

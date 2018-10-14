@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/title"
         android:textSize="14sp"
-        android:textColor="@color/text_secondary_light"
+        android:textColor="@color/text_secondary"
         tools:text="Leader"/>
 
 </merge>

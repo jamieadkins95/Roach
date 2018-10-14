@@ -40,7 +40,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#303030"
         android:elevation="2dp"
         app:behavior_peekHeight="100dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior" />

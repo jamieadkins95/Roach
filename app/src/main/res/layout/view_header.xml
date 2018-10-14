@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/header_secondary_text"
         tools:text="15 results for found for \'yennefer\'"
-        android:textColor="@color/text_secondary_light"
+        android:textColor="@color/text_secondary"
         app:layout_constraintStart_toEndOf="@id/start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_primary_text"

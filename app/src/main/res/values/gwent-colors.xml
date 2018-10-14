@@ -6,27 +6,32 @@
     <color name="gwentGreenLight">#B2DFDB</color>
 
     <!-- Factions -->
-    <color name="neutral">#757575</color>
+    <color name="neutral">#80FFFFFF</color>
 
     <color name="skellige">#534679</color>
+    <color name="skelligeLight">#8171a8</color>
     <color name="skelligeDark">#281f4d</color>
 
     <color name="monsters">#86221b</color>
+    <color name="monstersLight">#bb5143</color>
     <color name="monstersDark">#540000</color>
 
     <color name="northernRealms">#3e6998</color>
+    <color name="northernRealmsLight">#6f97c9</color>
     <color name="northernRealmsDark">#003f6a</color>
 
     <color name="scoiatael">#577327</color>
+    <color name="scoiataelLight">#86a253</color>
     <color name="scoiataelDark">#2b4700</color>
 
     <color name="nilfgaard">#1f2328</color>
+    <color name="nilfgaardLight">#FFC107</color>
     <color name="nilfgaardDark">#000000</color>
 
     <!-- Rarities -->
-    <color name="common">#757575</color>
-    <color name="rare">#2196F3</color>
-    <color name="epic">#9C27B0</color>
+    <color name="common">#80FFFFFF</color>
+    <color name="rare">#6ec6ff</color>
+    <color name="epic">#d05ce3</color>
     <color name="legendary">#FFC107</color>
 
     <!-- Types -->
