@@ -11,6 +11,8 @@ data class GwentCard(
         val keywords: List<GwentKeyword> = emptyList(),
         val faction: GwentFaction,
         val strength: Int = 0,
+        val provisions: Int = 0,
+        val mulligans: Int = 0,
         val colour: GwentCardColour,
         val rarity: GwentCardRarity,
         val collectible: Boolean = false,

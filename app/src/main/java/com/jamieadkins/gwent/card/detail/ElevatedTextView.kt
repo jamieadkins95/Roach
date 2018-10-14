@@ -30,7 +30,7 @@ class ElevatedTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     @ModelProp
-    fun setTypeface(typeface: Typeface = Typeface.DEFAULT) {
+    fun setTypeface(typeface: Typeface) {
         tvText.typeface = typeface
     }
 }

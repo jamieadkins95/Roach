@@ -13,11 +13,13 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                 val variation = it.variations.values.firstOrNull()
                 CardEntity(
                     it.ingameId,
-                    it.strength,
+                    it.strength ?: 0,
                     variation?.isCollectible ?: false,
                     it.rarity ?: "",
                     it.type ?: "",
                     it.faction ?: "",
+                    it.provision ?: 0,
+                    it.mulligans ?: 0,
                     it.name ?: mapOf(),
                     it.info ?: mapOf(),
                     it.flavor ?: mapOf(),

@@ -18,6 +18,8 @@ public class CardDetails {
     private List<String> related;
     private boolean released;
     private int strength;
+    private int provision;
+    private int mulligans;
     private String type;
     private Map<String, Variation> variations;
 
@@ -146,6 +148,22 @@ public class CardDetails {
         }
 
         return Rarity.COMMON_ID;
+    }
+
+    public int getProvision() {
+        return provision;
+    }
+
+    public void setProvision(int provision) {
+        this.provision = provision;
+    }
+
+    public int getMulligans() {
+        return mulligans;
+    }
+
+    public void setMulligans(int mulligans) {
+        this.mulligans = mulligans;
     }
 
     public static class Variation {

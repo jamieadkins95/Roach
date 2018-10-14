@@ -13,6 +13,8 @@ data class CardEntity(
         val rarity: String,
         val color: String,
         val faction: String,
+        val provisions: Int = 0,
+        val mulligans: Int = 0,
         val name: Map<String, String>,
         val tooltip: Map<String, String>,
         val flavor: Map<String, String>,

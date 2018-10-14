@@ -39,6 +39,8 @@ class GwentCardMapper @Inject constructor(
                          keywords,
                          factionMapper.map(cardEntity.faction),
                          cardEntity.strength,
+                         cardEntity.provisions,
+                         cardEntity.mulligans,
                          typeToColour(cardEntity.color),
                          rarityIdToRarity(cardEntity.rarity),
                          cardEntity.collectible,

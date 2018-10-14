@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.card.list.GwentCardViewModel_
 import com.jamieadkins.gwent.card.list.SubHeaderViewModel_
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 
 class CardDetailsController(val resources: Resources) : Typed2EpoxyController<GwentCard, List<GwentCard>>() {
 
@@ -22,6 +23,10 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
     @AutoModel lateinit var relatedCardsHeader: SubHeaderViewModel_
     @AutoModel lateinit var craftHeader: SubHeaderViewModel_
     @AutoModel lateinit var craft: CraftCostViewModel_
+    @AutoModel lateinit var provisionsHeader: SubHeaderViewModel_
+    @AutoModel lateinit var provisions: ElevatedTextViewModel_
+    @AutoModel lateinit var mulligansHeader: SubHeaderViewModel_
+    @AutoModel lateinit var mulligans: ElevatedTextViewModel_
     @AutoModel lateinit var millHeader: SubHeaderViewModel_
     @AutoModel lateinit var mill: CraftCostViewModel_
 
@@ -46,6 +51,22 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
         categories.text(card.categories.joinToString())
                 .typeface(Typeface.DEFAULT)
                 .addIf(card.categories.isNotEmpty(), this)
+
+        val showProvisions = card.colour != GwentCardColour.LEADER
+        provisionsHeader
+            .title(R.string.provisions)
+            .addIf(showProvisions, this)
+        provisions.text(card.provisions.toString())
+            .typeface(Typeface.DEFAULT)
+            .addIf(showProvisions, this)
+
+        val showMulligans = card.colour == GwentCardColour.LEADER
+        mulligansHeader
+            .title(R.string.mulligans)
+            .addIf(showMulligans, this)
+        mulligans.text(card.mulligans.toString())
+            .typeface(Typeface.DEFAULT)
+            .addIf(showMulligans, this)
 
         craftHeader
                 .title(R.string.craft)
