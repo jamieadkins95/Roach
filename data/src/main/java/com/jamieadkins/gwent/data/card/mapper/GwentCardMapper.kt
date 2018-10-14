@@ -22,12 +22,14 @@ class GwentCardMapper @Inject constructor(
         val categories = allCategories.asSequence()
             .filter { category ->
                 cardEntity.categoryIds.contains(category.categoryId) && category.locale == locale }
+            .distinct()
             .map { it.name }
             .toList()
 
         val keywords = allKeywords
             .asSequence()
             .filter { cardEntity.keywordIds.contains(it.keywordId) && it.locale == locale }
+            .distinct()
             .map { GwentKeyword(it.keywordId, it.name, it.description) }
             .toList()
 
