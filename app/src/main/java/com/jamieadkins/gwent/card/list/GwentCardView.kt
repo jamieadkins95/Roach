@@ -87,7 +87,7 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
         if (cardImage != null) {
             Glide.with(context)
                 .load(cardImage)
-                .fitCenter()
+                .placeholder(cardBack)
                 .error(cardBack)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCard)
