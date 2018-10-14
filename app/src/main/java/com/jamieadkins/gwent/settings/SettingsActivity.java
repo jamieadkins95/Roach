@@ -7,8 +7,8 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.jamieadkins.gwent.BuildConfig;
 import com.jamieadkins.gwent.R;
+import com.jamieadkins.gwent.data.BuildConfig;
 
 public class SettingsActivity extends BasePreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {

@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.update.repository
 
+import android.content.res.AssetManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.card.mapper.ApiMapper
 import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
@@ -12,6 +13,7 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -21,11 +23,11 @@ class CardUpdateRepository @Inject constructor(
     private val patchRepository: PatchRepository,
     private val cardMapper: ApiMapper,
     private val artMapper: ArtApiMapper,
-    preferences: RxSharedPreferences) : BaseUpdateRepository(filesDirectory, preferences) {
+    preferences: RxSharedPreferences,
+    private val assetManager: AssetManager
+) : BaseUpdateRepository(filesDirectory, preferences) {
 
-    private companion object {
-        const val FILE_NAME = "cards.json"
-    }
+    override val FILE_NAME = "cards.json"
 
     override fun isUpdateAvailable(): Observable<Boolean> {
         return updateStateChanges
@@ -44,8 +46,13 @@ class CardUpdateRepository @Inject constructor(
             }
     }
 
-    override fun performFirstTimeSetup(): Observable<UpdateResult> {
-        return Observable.empty()
+    override fun internalPerformFirstTimeSetup(): Completable {
+        return Single.fromCallable {
+            with(assetManager.open(FILE_NAME)) {
+                val reader = InputStreamReader(this, "UTF-8")
+                gson.fromJson<FirebaseCardResult>(reader, FirebaseCardResult::class.java)
+            }
+        }.flatMapCompletable(::updateCardDatabase)
     }
 
     override fun internalPerformUpdate(): Completable {

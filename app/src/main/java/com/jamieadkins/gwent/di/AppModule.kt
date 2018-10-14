@@ -1,6 +1,8 @@
 package com.jamieadkins.gwent.di
 
+import android.app.NotificationManager
 import android.content.Context
+import android.content.res.AssetManager
 import android.content.res.Resources
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.BuildConfig
@@ -58,5 +60,14 @@ abstract class AppModule {
         @Provides
         @JvmStatic
         fun baseSchedulerProvider(): BaseSchedulerProvider = com.jamieadkins.commonutils.mvp2.SchedulerProvider
+
+        @Provides
+        @JvmStatic
+        fun notificationManager(context: Context): NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+
+        @Provides
+        @JvmStatic
+        fun assetManager(context: Context): AssetManager = context.assets
     }
 }

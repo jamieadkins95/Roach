@@ -1,20 +1,17 @@
 package com.jamieadkins.gwent.card.detail
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.base.BaseActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment.Companion.KEY_ID
 
-class CardDetailsActivity : BaseActivity() {
+class CardDetailsActivity : AppCompatActivity() {
 
     lateinit var cardId: String
 
-    override fun initialiseContentView() {
-        setContentView(R.layout.activity_detail)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_detail)
 
         cardId = savedInstanceState?.getString(KEY_ID)
                 ?: intent?.getStringExtra(CardDetailsFragment.KEY_ID)

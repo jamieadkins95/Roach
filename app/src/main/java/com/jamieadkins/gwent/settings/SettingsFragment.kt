@@ -12,8 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.settings.BasePreferenceActivity.EXTRA_PREFERENCE_LAYOUT
-import com.jamieadkins.gwent.settings.BasePreferenceActivity.EXTRA_PREFERENCE_TITLE
+import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_LAYOUT
+import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_TITLE
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 

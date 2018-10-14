@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import com.nytimes.android.external.cache3.Cache
 import com.nytimes.android.external.cache3.CacheBuilder
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import java.io.BufferedReader
@@ -31,6 +32,25 @@ abstract class BaseUpdateRepository(
 
     val updateStateChanges = BehaviorSubject.createDefault(Any())
 
+    abstract val FILE_NAME: String
+
+    override fun hasDoneFirstTimeSetup(): Observable<Boolean> {
+        return preferences.getBoolean("first-time-setup-$FILE_NAME", false).asObservable()
+    }
+
+    override fun performFirstTimeSetup(): Completable {
+        return hasDoneFirstTimeSetup()
+            .first(false)
+            .flatMapCompletable { doneSetup ->
+                if (!doneSetup) {
+                    internalPerformFirstTimeSetup()
+                        .doOnComplete { preferences.getBoolean("first-time-setup-$FILE_NAME").set(true) }
+                } else {
+                    Completable.complete()
+                }
+            }
+    }
+
     override fun performUpdate(): Completable {
         return isUpdateAvailable()
             .first(false)
@@ -45,6 +65,8 @@ abstract class BaseUpdateRepository(
     }
 
     abstract fun internalPerformUpdate(): Completable
+
+    abstract fun internalPerformFirstTimeSetup(): Completable
 
     protected fun getRemoteLastUpdated(patch: String, fileName: String): Single<Long> {
         val storageRef = getStorageReference(patch, fileName)
