@@ -40,7 +40,6 @@ class FilterPresenter(val filterType: FilterType,
                                 }
                             }
                         }
-                        view?.showFilters(filters)
                     }
                 })
     }

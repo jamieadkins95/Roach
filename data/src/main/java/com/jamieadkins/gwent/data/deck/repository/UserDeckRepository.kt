@@ -116,7 +116,6 @@ class UserDeckRepository @Inject constructor(
                 cards.forEach {
                     when (it.colour) {
                         GwentCardColour.BRONZE -> bronzeCount++
-                        GwentCardColour.SILVER -> silverCount++
                         GwentCardColour.GOLD -> goldCount++
                     }
                 }

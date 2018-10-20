@@ -22,7 +22,6 @@ object GwentStringHelper {
     fun getColourString(context: Context, colour: GwentCardColour?): String? {
         return when(colour) {
             GwentCardColour.BRONZE -> context.getString(R.string.bronze)
-            GwentCardColour.SILVER -> context.getString(R.string.silver)
             GwentCardColour.GOLD -> context.getString(R.string.gold)
             GwentCardColour.LEADER -> context.getString(R.string.leader)
             else -> null

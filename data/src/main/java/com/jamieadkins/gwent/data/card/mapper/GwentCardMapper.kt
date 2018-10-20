@@ -55,7 +55,6 @@ class GwentCardMapper @Inject constructor(
     private fun typeToColour(type: String): GwentCardColour {
         return when (type) {
             Type.BRONZE_ID -> GwentCardColour.BRONZE
-            Type.SILVER_ID -> GwentCardColour.SILVER
             Type.GOLD_ID -> GwentCardColour.GOLD
             Type.LEADER_ID -> GwentCardColour.LEADER
             else -> throw Exception("Colour not found")
