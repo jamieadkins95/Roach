@@ -9,5 +9,7 @@ data class CardFilter(
         val rarityFilter: Map<GwentCardRarity, Boolean> = GwentCardRarity.values().map { it to true }.toMap(),
         val colourFilter: Map<GwentCardColour, Boolean> = GwentCardColour.values().map { it to true }.toMap(),
         val factionFilter: Map<GwentFaction, Boolean> = GwentFaction.values().map { it to true }.toMap(),
+        val minProvisions: Int = 0,
+        val maxProvisions: Int = 20,
         val isCollectibleOnly: Boolean = false,
         val sortedBy: SortedBy = SortedBy.ALPHABETICALLY_ASC)

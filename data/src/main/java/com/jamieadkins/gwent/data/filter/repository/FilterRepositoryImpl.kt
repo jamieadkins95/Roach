@@ -12,14 +12,7 @@ import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor() : FilterRepository {
 
-    private val filter = BehaviorSubject.createDefault(
-        CardFilter(
-            GwentCardRarity.values().map { it to true }.toMap().toMutableMap(),
-            GwentCardColour.values().map { it to true }.toMap().toMutableMap(),
-            GwentFaction.values().map { it to true }.toMap().toMutableMap(),
-            false,
-            SortedBy.ALPHABETICALLY_ASC)
-    )
+    private val filter = BehaviorSubject.createDefault(CardFilter())
 
     override fun getFilter(): Observable<CardFilter> = filter
 }
