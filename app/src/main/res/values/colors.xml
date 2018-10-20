@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey_900">#212121</color> <!-- Dark theme toolbar color-->
@@ -17,5 +17,8 @@
     <color name="text_primary_dark">#FFFFFFFF</color>
     <color name="text_secondary_dark">#B3FFFFFF</color>
     <color name="text_hint_dark">#80FFFFFF</color>
+
+    <!-- TextInputLayout box color -->
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/text_hint</color>
 
 </resources>

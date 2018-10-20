@@ -32,6 +32,8 @@
     <string name="about">About</string>
     <string name="apply_filters">Apply</string>
     <string name="reset_filters">Reset</string>
+    <string name="minimum">Minimum</string>
+    <string name="maximum">Maximum</string>
 
     <string name="collection_placeholder_title">Collection Manager will return soon!</string>
     <string name="collection_placeholder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Collection Manager is currently being rebuilt to support the new update.</string>

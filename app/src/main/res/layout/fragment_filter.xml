@@ -192,17 +192,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Rarity -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/group_provisions"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/text_secondary"
             app:layout_constraintTop_toBottomOf="@id/subheader_provisions"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tilMax">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputMin"
+                android:textColor="@color/text_primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/minimum"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMax"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/text_secondary"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintTop_toTopOf="@id/tilMin"
+            app:layout_constraintBottom_toBottomOf="@id/tilMin"
+            app:layout_constraintStart_toEndOf="@id/tilMin"
             app:layout_constraintEnd_toEndOf="parent">
 
-        </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputMax"
+                android:textColor="@color/text_primary"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/maximum"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnReset"
@@ -212,10 +244,10 @@
             android:text="@string/reset_filters"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@id/group_provisions"
+            app:layout_constraintTop_toTopOf="@id/btnApply"
+            app:layout_constraintBottom_toBottomOf="@id/btnApply"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnApply"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/btnApply" />
 
         <Button
             android:id="@+id/btnApply"
@@ -225,7 +257,8 @@
             android:text="@string/apply_filters"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@id/group_provisions"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tilMin"
             app:layout_constraintStart_toEndOf="@id/btnReset"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

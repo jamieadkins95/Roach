@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.filter
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +46,26 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_rarity_rare.setOnCheckedChangeListener { _, checked -> presenter.onRareChanged(checked) }
         filter_rarity_epic.setOnCheckedChangeListener { _, checked -> presenter.onEpicChanged(checked) }
         filter_rarity_legendary.setOnCheckedChangeListener { _, checked -> presenter.onLegendaryChanged(checked) }
+
+        inputMin.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) { /* Do nothing. */ }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { /* Do nothing. */ }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                s?.toString()?.toIntOrNull()?.let(presenter::onMinProvisionsChanged)
+            }
+        })
+
+        inputMax.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) { /* Do nothing. */ }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { /* Do nothing. */ }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                s?.toString()?.toIntOrNull()?.let(presenter::onMaxProvisionsChanged)
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -76,6 +98,10 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setEpicFilter(checked: Boolean) { filter_rarity_epic.isChecked = checked }
 
     override fun setLegendaryFilter(checked: Boolean) { filter_rarity_legendary.isChecked = checked }
+
+    override fun setMinProvisions(provisions: Int) { inputMin.setText(provisions.toString()) }
+
+    override fun setMaxProvisions(provisions: Int) { inputMax.setText(provisions.toString()) }
 
     override fun close() = dismiss()
 }

@@ -32,6 +32,10 @@ interface FilterContract {
         fun setEpicFilter(checked: Boolean)
 
         fun setLegendaryFilter(checked: Boolean)
+
+        fun setMinProvisions(provisions: Int)
+
+        fun setMaxProvisions(provisions: Int)
     }
 
     interface Presenter : MvpPresenter {
@@ -65,5 +69,9 @@ interface FilterContract {
         fun onEpicChanged(checked: Boolean)
 
         fun onLegendaryChanged(checked: Boolean)
+
+        fun onMinProvisionsChanged(min: Int)
+
+        fun onMaxProvisionsChanged(max: Int)
     }
 }

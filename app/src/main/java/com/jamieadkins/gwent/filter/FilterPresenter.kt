@@ -32,6 +32,9 @@ class FilterPresenter @Inject constructor(
     var epic = false
     var legendary = false
 
+    var minProvisions = 0
+    var maxProvisions = 100
+
     override fun onAttach() {
         getFilterUseCase.getFilter()
             .firstOrError()
@@ -75,6 +78,12 @@ class FilterPresenter @Inject constructor(
 
                     legendary = filter.rarityFilter[GwentCardRarity.LEGENDARY] ?: false
                     view.setLegendaryFilter(legendary)
+
+                    minProvisions = filter.minProvisions
+                    view.setMinProvisions(minProvisions)
+
+                    maxProvisions = filter.maxProvisions
+                    view.setMaxProvisions(filter.maxProvisions)
                 }
             })
             .addToComposite()
@@ -107,7 +116,7 @@ class FilterPresenter @Inject constructor(
             GwentCardRarity.EPIC to epic,
             GwentCardRarity.LEGENDARY to legendary
         )
-        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions))
+        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions, minProvisions, maxProvisions))
         view.close()
     }
 
@@ -136,6 +145,10 @@ class FilterPresenter @Inject constructor(
     override fun onEpicChanged(checked: Boolean) { epic = checked }
 
     override fun onLegendaryChanged(checked: Boolean) { legendary = checked }
+
+    override fun onMinProvisionsChanged(min: Int) { minProvisions = min }
+
+    override fun onMaxProvisionsChanged(max: Int) { maxProvisions = max }
 
     override fun onRefresh() {
         // Do nothing
