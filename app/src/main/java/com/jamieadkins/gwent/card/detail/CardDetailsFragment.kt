@@ -61,6 +61,7 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(toolbar)
         }
+        toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
 
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
