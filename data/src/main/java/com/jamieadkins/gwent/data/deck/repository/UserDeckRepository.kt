@@ -84,9 +84,10 @@ class UserDeckRepository @Inject constructor(
             .first(GwentDeckCardCounts(0, 0, 0))
     }
 
-    override fun getDeck(deckId: String): Flowable<GwentDeck> {
+    override fun getDeck(deckId: String): Observable<GwentDeck> {
         return database.deckDao().getDeck(deckId)
             .map { deckMapper.map(it) }
+            .toObservable()
     }
 
     override fun getDeckOnce(deckId: String): Single<GwentDeck> {
@@ -130,14 +131,10 @@ class UserDeckRepository @Inject constructor(
         }
     }
 
-    override fun addCardToDeck(deckId: String, cardId: String): Completable {
-        val defaultEntity = DeckCardEntity(deckId, cardId, 1)
-        return database.deckCardDao().getCardCount(deckId, cardId)
-            .switchIfEmpty(
-                insert(defaultEntity)
-                    .flatMapMaybe { database.deckCardDao().getCardCount(deckId, cardId) }
-            )
-            .flatMapCompletable { updateCardCount(deckId, cardId, it.count) }
+    override fun updateCardCount(deckId: String, cardId: String, count: Int): Completable {
+        return Completable.fromCallable {
+            database.deckCardDao().insert(DeckCardEntity(deckId, cardId, count))
+        }
     }
 
     override fun setLeader(deckId: String, leaderId: String): Completable {
@@ -149,35 +146,6 @@ class UserDeckRepository @Inject constructor(
     override fun renameDeck(deckId: String, newName: String): Completable {
         return Completable.fromCallable {
             database.deckDao().changeDeckName(deckId, newName)
-        }
-    }
-
-    override fun removeCardFromDeck(deckId: String, cardId: String): Completable {
-        return database.deckCardDao().getCardCount(deckId, cardId)
-            .flatMapCompletable {
-                if (it.count <= 1) {
-                    removeCard(it.deckId, it.cardId)
-                } else {
-                    updateCardCount(it.deckId, it.cardId, it.count)
-                }
-            }
-    }
-
-    private fun insert(entity: DeckCardEntity): Single<Long> {
-        return Single.fromCallable {
-            database.deckCardDao().insert(entity)
-        }
-    }
-
-    private fun removeCard(deckId: String, cardId: String): Completable {
-        return Completable.fromCallable {
-            database.deckCardDao().removeCard(deckId, cardId)
-        }
-    }
-
-    private fun updateCardCount(deckId: String, cardId: String, count: Int): Completable {
-        return Completable.fromCallable {
-            database.deckCardDao().updateCardCount(deckId, cardId, count)
         }
     }
 

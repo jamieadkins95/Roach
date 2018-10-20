@@ -16,12 +16,6 @@ interface DeckCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entity: DeckCardEntity): Long
 
-    @Query("UPDATE ${GwentDatabase.DECK_CARD_TABLE} SET count = :count WHERE deckId = :deckId AND cardId = :cardId")
-    fun updateCardCount(deckId: String, cardId: String, count: Int)
-
-    @Query("DELETE FROM ${GwentDatabase.DECK_CARD_TABLE} WHERE deckId = :deckId AND cardId = :cardId")
-    fun removeCard(deckId: String, cardId: String)
-
     @Query("SELECT * FROM ${GwentDatabase.DECK_CARD_TABLE} WHERE deckId = :deckId AND cardId = :cardId")
     fun getCardCount(deckId: String, cardId: String): Maybe<DeckCardEntity>
 
