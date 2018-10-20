@@ -27,6 +27,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach()
         btnApply.setOnClickListener { presenter.applyFilters() }
+        btnReset.setOnClickListener { presenter.resetFilters() }
 
         filter_faction_ng.setOnCheckedChangeListener { _, checked -> presenter.onNilfgaardFilterChanged(checked) }
         filter_faction_mon.setOnCheckedChangeListener { _, checked -> presenter.onMonsterFilterChanged(checked) }

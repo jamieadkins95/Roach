@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.filter
 
-import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
@@ -23,8 +23,9 @@ class FilterPresenter @Inject constructor(
 
     override fun onAttach() {
         getFilterUseCase.getFilter()
-            .subscribeWith(object : BaseDisposableObserver<CardFilter>() {
-                override fun onNext(filter: CardFilter) {
+            .firstOrError()
+            .subscribeWith(object : BaseDisposableSingle<CardFilter>() {
+                override fun onSuccess(filter: CardFilter) {
                     val ng = filter.factionFilter[GwentFaction.NILFGAARD] ?: false
                     nilfgaard = ng
                     view.setNilfgaardFilter(nilfgaard)
@@ -53,6 +54,11 @@ class FilterPresenter @Inject constructor(
             .addToComposite()
     }
 
+    override fun resetFilters() {
+        setFilterUseCase.setFilter(CardFilter())
+        view.close()
+    }
+
     override fun applyFilters() {
         val factions = mapOf(
             GwentFaction.NILFGAARD to nilfgaard,
@@ -66,17 +72,29 @@ class FilterPresenter @Inject constructor(
         view.close()
     }
 
-    override fun onNilfgaardFilterChanged(checked: Boolean) { nilfgaard = checked }
+    override fun onNilfgaardFilterChanged(checked: Boolean) {
+        nilfgaard = checked
+    }
 
-    override fun onNorthernRealmsFilterChanged(checked: Boolean) { northernRealms = checked }
+    override fun onNorthernRealmsFilterChanged(checked: Boolean) {
+        northernRealms = checked
+    }
 
-    override fun onMonsterFilterChanged(checked: Boolean) { monster = checked }
+    override fun onMonsterFilterChanged(checked: Boolean) {
+        monster = checked
+    }
 
-    override fun onSkelligeFilterChanged(checked: Boolean) { skellige = checked }
+    override fun onSkelligeFilterChanged(checked: Boolean) {
+        skellige = checked
+    }
 
-    override fun onScoiataelFilterChanged(checked: Boolean) { scoiatael = checked }
+    override fun onScoiataelFilterChanged(checked: Boolean) {
+        scoiatael = checked
+    }
 
-    override fun onNeutralFilterChanged(checked: Boolean) { neutral = checked }
+    override fun onNeutralFilterChanged(checked: Boolean) {
+        neutral = checked
+    }
 
     override fun onRefresh() {
         // Do nothing

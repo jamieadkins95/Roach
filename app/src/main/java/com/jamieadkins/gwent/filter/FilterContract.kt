@@ -24,6 +24,8 @@ interface FilterContract {
 
         fun applyFilters()
 
+        fun resetFilters()
+
         fun onNilfgaardFilterChanged(checked: Boolean)
 
         fun onNorthernRealmsFilterChanged(checked: Boolean)
