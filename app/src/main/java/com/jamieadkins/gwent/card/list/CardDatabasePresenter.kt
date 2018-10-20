@@ -26,14 +26,6 @@ class CardDatabasePresenter @Inject constructor(
     private val searches = BehaviorSubject.createDefault("")
 
     override fun onAttach() {
-        RxBus.register(ResetFiltersEvent::class.java)
-            .subscribeWith(object : BaseDisposableObserver<ResetFiltersEvent>() {
-                override fun onNext(event: ResetFiltersEvent) {
-                    // Do nothing.
-                }
-            })
-            .addToComposite()
-
         RxBus.register(ScrollToTopEvent::class.java)
             .subscribeWith(object : BaseDisposableObserver<ScrollToTopEvent>() {
                 override fun onNext(t: ScrollToTopEvent) {
