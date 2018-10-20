@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
-import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.domain.card.model.GwentCardColour
-import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import kotlinx.android.synthetic.main.fragment_filter.*
+import javax.inject.Inject
 
 class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterContract.View {
+
+    @Inject lateinit var presenter: FilterContract.Presenter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), this.theme)
@@ -25,49 +25,33 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnApply.setOnClickListener {
+        presenter.onAttach()
+        btnApply.setOnClickListener { presenter.applyFilters() }
 
-        }
+        filter_faction_ng.setOnCheckedChangeListener { _, checked -> presenter.onNilfgaardFilterChanged(checked) }
+        filter_faction_mon.setOnCheckedChangeListener { _, checked -> presenter.onMonsterFilterChanged(checked) }
+        filter_faction_nr.setOnCheckedChangeListener { _, checked -> presenter.onNorthernRealmsFilterChanged(checked) }
+        filter_faction_sk.setOnCheckedChangeListener { _, checked -> presenter.onSkelligeFilterChanged(checked) }
+        filter_faction_sc.setOnCheckedChangeListener { _, checked -> presenter.onScoiataelFilterChanged(checked) }
+        filter_faction_ne.setOnCheckedChangeListener { _, checked -> presenter.onNeutralFilterChanged(checked) }
     }
 
-    override fun showFactions(factions: Map<GwentFaction, Boolean>) {
-        factions.entries.forEach {
-            val view = when (it.key) {
-                GwentFaction.NORTHERN_REALMS -> filter_faction_nr
-                GwentFaction.MONSTER -> filter_faction_mon
-                GwentFaction.SKELLIGE -> filter_faction_sk
-                GwentFaction.SCOIATAEL -> filter_faction_sc
-                GwentFaction.NILFGAARD -> filter_faction_ng
-                GwentFaction.NEUTRAL -> filter_faction_ne
-            }
-            view.isChecked = it.value
-        }
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
     }
 
-    override fun showTiers(tiers: Map<GwentCardColour, Boolean>) {
-        tiers.entries.forEach {
-            val view = when (it.key) {
-                GwentCardColour.BRONZE -> filter_color_bronze
-                GwentCardColour.GOLD -> filter_color_gold
-                GwentCardColour.LEADER -> filter_color_leader
-            }
-            view.isChecked = it.value
-        }
-    }
+    override fun setNilfgaardFilter(checked: Boolean) { filter_faction_ng.isChecked = checked }
 
-    override fun showRarities(rarities: Map<GwentCardRarity, Boolean>) {
-        rarities.entries.forEach {
-            val view = when (it.key) {
-                GwentCardRarity.COMMON -> filter_rarity_common
-                GwentCardRarity.RARE -> filter_rarity_rare
-                GwentCardRarity.EPIC -> filter_rarity_epic
-                GwentCardRarity.LEGENDARY -> filter_rarity_legendary
-            }
-            view.isChecked = it.value
-        }
-    }
+    override fun setMonsterFilter(checked: Boolean) { filter_faction_mon.isChecked = checked }
 
-    override fun showProvisions(provisions: Map<Int, Boolean>) {
+    override fun setNorthernRealmsFilter(checked: Boolean) { filter_faction_nr.isChecked = checked }
 
-    }
+    override fun setScoiataelFilter(checked: Boolean) { filter_faction_sc.isChecked = checked }
+
+    override fun setSkelligeFilter(checked: Boolean) { filter_faction_sk.isChecked = checked }
+
+    override fun setNeutralFilter(checked: Boolean) { filter_faction_ne.isChecked = checked }
+
+    override fun close() = dismiss()
 }

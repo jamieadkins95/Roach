@@ -15,4 +15,6 @@ class FilterRepositoryImpl @Inject constructor() : FilterRepository {
     private val filter = BehaviorSubject.createDefault(CardFilter())
 
     override fun getFilter(): Observable<CardFilter> = filter
+
+    override fun setFilter(cardFilter: CardFilter) = filter.onNext(cardFilter)
 }

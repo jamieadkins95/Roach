@@ -10,4 +10,6 @@ import io.reactivex.Observable
 interface FilterRepository {
 
     fun getFilter(): Observable<CardFilter>
+
+    fun setFilter(cardFilter: CardFilter)
 }
