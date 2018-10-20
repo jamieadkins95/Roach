@@ -52,7 +52,7 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
                 .typeface(Typeface.DEFAULT)
                 .addIf(card.categories.isNotEmpty(), this)
 
-        val showProvisions = card.colour != GwentCardColour.LEADER
+        val showProvisions = card.colour != GwentCardColour.LEADER && card.provisions > 0
         provisionsHeader
             .title(R.string.provisions)
             .addIf(showProvisions, this)
@@ -68,16 +68,11 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
             .typeface(Typeface.DEFAULT)
             .addIf(showMulligans, this)
 
-        craftHeader
-                .title(R.string.craft)
-                .addTo(this)
-        craft.value(card.craftCost)
-                .addTo(this)
-        millHeader
-                .title(R.string.mill)
-                .addTo(this)
-        mill.value(card.millValue)
-                .addTo(this)
+        val showCraft = card.collectible
+        craftHeader.title(R.string.craft).addIf(showCraft, this)
+        craft.value(card.craftCost).addIf(showCraft, this)
+        millHeader.title(R.string.mill).addIf(showCraft, this)
+        mill.value(card.millValue).addIf(showCraft, this)
 
         relatedCardsHeader
                 .title(R.string.related)
