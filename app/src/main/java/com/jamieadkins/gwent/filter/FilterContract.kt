@@ -18,6 +18,12 @@ interface FilterContract {
         fun setScoiataelFilter(checked: Boolean)
 
         fun setNeutralFilter(checked: Boolean)
+
+        fun setBronzeFilter(checked: Boolean)
+
+        fun setGoldFilter(checked: Boolean)
+
+        fun setLeaderFilter(checked: Boolean)
     }
 
     interface Presenter : MvpPresenter {
@@ -37,5 +43,11 @@ interface FilterContract {
         fun onScoiataelFilterChanged(checked: Boolean)
 
         fun onNeutralFilterChanged(checked: Boolean)
+
+        fun onBronzeChanged(checked: Boolean)
+
+        fun onGoldChanged(checked: Boolean)
+
+        fun onLeaderChanged(checked: Boolean)
     }
 }

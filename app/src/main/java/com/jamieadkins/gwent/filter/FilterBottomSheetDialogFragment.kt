@@ -35,6 +35,10 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_faction_sk.setOnCheckedChangeListener { _, checked -> presenter.onSkelligeFilterChanged(checked) }
         filter_faction_sc.setOnCheckedChangeListener { _, checked -> presenter.onScoiataelFilterChanged(checked) }
         filter_faction_ne.setOnCheckedChangeListener { _, checked -> presenter.onNeutralFilterChanged(checked) }
+
+        filter_color_bronze.setOnCheckedChangeListener { _, checked -> presenter.onBronzeChanged(checked) }
+        filter_color_gold.setOnCheckedChangeListener { _, checked -> presenter.onGoldChanged(checked) }
+        filter_color_leader.setOnCheckedChangeListener { _, checked -> presenter.onLeaderChanged(checked) }
     }
 
     override fun onDestroyView() {
@@ -53,6 +57,12 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setSkelligeFilter(checked: Boolean) { filter_faction_sk.isChecked = checked }
 
     override fun setNeutralFilter(checked: Boolean) { filter_faction_ne.isChecked = checked }
+
+    override fun setBronzeFilter(checked: Boolean) { filter_color_bronze.isChecked = checked }
+
+    override fun setGoldFilter(checked: Boolean) { filter_color_gold.isChecked = checked }
+
+    override fun setLeaderFilter(checked: Boolean) { filter_color_leader.isChecked = checked }
 
     override fun close() = dismiss()
 }

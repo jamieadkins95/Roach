@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.filter
 
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
@@ -21,34 +22,41 @@ class FilterPresenter @Inject constructor(
     var scoiatael = false
     var neutral = false
 
+    var bronze = false
+    var gold = false
+    var leader = false
+
     override fun onAttach() {
         getFilterUseCase.getFilter()
             .firstOrError()
             .subscribeWith(object : BaseDisposableSingle<CardFilter>() {
                 override fun onSuccess(filter: CardFilter) {
-                    val ng = filter.factionFilter[GwentFaction.NILFGAARD] ?: false
-                    nilfgaard = ng
+                    nilfgaard = filter.factionFilter[GwentFaction.NILFGAARD] ?: false
                     view.setNilfgaardFilter(nilfgaard)
 
-                    val nr = filter.factionFilter[GwentFaction.NORTHERN_REALMS] ?: false
-                    northernRealms = nr
+                    northernRealms = filter.factionFilter[GwentFaction.NORTHERN_REALMS] ?: false
                     view.setNorthernRealmsFilter(northernRealms)
 
-                    val mn = filter.factionFilter[GwentFaction.MONSTER] ?: false
-                    monster = mn
+                    monster = filter.factionFilter[GwentFaction.MONSTER] ?: false
                     view.setMonsterFilter(monster)
 
-                    val sk = filter.factionFilter[GwentFaction.SKELLIGE] ?: false
-                    skellige = sk
+                    skellige = filter.factionFilter[GwentFaction.SKELLIGE] ?: false
                     view.setSkelligeFilter(skellige)
 
-                    val sc = filter.factionFilter[GwentFaction.SCOIATAEL] ?: false
-                    scoiatael = sc
+                    scoiatael = filter.factionFilter[GwentFaction.SCOIATAEL] ?: false
                     view.setScoiataelFilter(scoiatael)
 
-                    val ne = filter.factionFilter[GwentFaction.NEUTRAL] ?: false
-                    neutral = ne
+                    neutral = filter.factionFilter[GwentFaction.NEUTRAL] ?: false
                     view.setNeutralFilter(neutral)
+
+                    bronze = filter.colourFilter[GwentCardColour.BRONZE] ?: false
+                    view.setBronzeFilter(bronze)
+
+                    gold = filter.colourFilter[GwentCardColour.GOLD] ?: false
+                    view.setGoldFilter(gold)
+
+                    leader = filter.colourFilter[GwentCardColour.LEADER] ?: false
+                    view.setLeaderFilter(leader)
                 }
             })
             .addToComposite()
@@ -68,7 +76,13 @@ class FilterPresenter @Inject constructor(
             GwentFaction.SCOIATAEL to scoiatael,
             GwentFaction.NEUTRAL to neutral
         )
-        setFilterUseCase.setFilter(CardFilter(factionFilter = factions))
+
+        val colours = mapOf(
+            GwentCardColour.BRONZE to bronze,
+            GwentCardColour.GOLD to gold,
+            GwentCardColour.LEADER to leader
+        )
+        setFilterUseCase.setFilter(CardFilter(colourFilter = colours, factionFilter = factions))
         view.close()
     }
 
@@ -94,6 +108,18 @@ class FilterPresenter @Inject constructor(
 
     override fun onNeutralFilterChanged(checked: Boolean) {
         neutral = checked
+    }
+
+    override fun onBronzeChanged(checked: Boolean) {
+        bronze = checked
+    }
+
+    override fun onGoldChanged(checked: Boolean) {
+        gold = checked
+    }
+
+    override fun onLeaderChanged(checked: Boolean) {
+        leader = checked
     }
 
     override fun onRefresh() {
