@@ -1,6 +1,6 @@
 package com.jamieadkins.commonutils.ui
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 
 class DiffUtilCallback(val oldList: List<RecyclerViewItem>?, val newList: List<RecyclerViewItem>?) : DiffUtil.Callback() {
 

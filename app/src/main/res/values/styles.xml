@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Base.Theme.Gwent" parent="Theme.AppCompat">
+    <style name="Base.Theme.Gwent" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/gwentGreen</item>
         <item name="colorPrimaryDark">@color/gwentGreenDark</item>
         <item name="colorAccent">@color/gwentAccent</item>
@@ -22,9 +22,9 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Gwent.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.AppCompat" />
+    <style name="Theme.Gwent.PopupOverlay" parent="ThemeOverlay.MaterialComponents" />
 
     <style name="Widget.BottomNavigationView.Gwent" parent="Widget.Design.BottomNavigationView">
         <item name="android:fontFamily">@font/gwent</item>

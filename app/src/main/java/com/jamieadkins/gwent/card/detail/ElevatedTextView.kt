@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.card.detail
 
 import android.content.Context
 import android.graphics.Typeface
-import android.support.v7.widget.CardView
+import androidx.cardview.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout

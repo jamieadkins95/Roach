@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.data
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences

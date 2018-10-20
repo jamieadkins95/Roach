@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.jamieadkins.gwent.database.entity.*
 import io.reactivex.Completable
 import io.reactivex.Flowable

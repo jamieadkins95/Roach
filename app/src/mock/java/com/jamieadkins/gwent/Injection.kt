@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent
 
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider

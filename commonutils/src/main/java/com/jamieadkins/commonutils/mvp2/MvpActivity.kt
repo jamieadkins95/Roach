@@ -1,7 +1,7 @@
 package com.jamieadkins.commonutils.mvp2
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 abstract class MvpActivity<V> : AppCompatActivity() {
     var presenter: BasePresenter<V>? = null

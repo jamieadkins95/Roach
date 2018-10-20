@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.card.detail
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment.Companion.KEY_ID
 

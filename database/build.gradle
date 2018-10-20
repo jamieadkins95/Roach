@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -32,9 +32,9 @@ repositories {
 dependencies {
     implementation Libs.kotlin
     implementation Libs.rxjava
-    api "android.arch.persistence.room:runtime:1.1.1"
-    api "android.arch.persistence.room:rxjava2:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
+    api "androidx.room:room-runtime:2.1.0-alpha01"
+    api "androidx.room:room-rxjava2:2.1.0-alpha01"
+    kapt "androidx.room:room-compiler:2.1.0-alpha01"
     implementation "com.google.code.gson:gson:2.8.2"
     implementation project(':domain')
 }

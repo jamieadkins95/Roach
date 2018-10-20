@@ -1,7 +1,7 @@
 package com.jamieadkins.commonutils.mvp2
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 abstract class MvpFragment<V> : Fragment() {
     var presenter: BasePresenter<V>? = null

@@ -1,8 +1,8 @@
 package com.jamieadkins.gwent.card.list
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View

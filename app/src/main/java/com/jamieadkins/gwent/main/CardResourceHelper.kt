@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.main
 
 import android.content.res.Resources
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.R
 

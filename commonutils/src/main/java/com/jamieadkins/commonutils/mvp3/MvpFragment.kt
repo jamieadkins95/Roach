@@ -2,7 +2,7 @@ package com.jamieadkins.commonutils.mvp3
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.DisplayMetrics
 import android.view.View
 import com.jamieadkins.commonutils.mvp2.BasePresenter

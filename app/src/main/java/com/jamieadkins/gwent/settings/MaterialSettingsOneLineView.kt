@@ -1,9 +1,9 @@
 package com.jamieadkins.gwent.settings
 
 import android.content.Context
-import android.support.annotation.DrawableRes
-import android.support.constraint.ConstraintLayout
-import android.support.v4.content.ContextCompat
+import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater

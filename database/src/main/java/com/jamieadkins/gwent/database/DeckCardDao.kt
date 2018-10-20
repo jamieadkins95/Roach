@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.database.entity.DeckCardEntity

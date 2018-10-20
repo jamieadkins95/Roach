@@ -1,8 +1,8 @@
 package com.jamieadkins.gwent.deck
 
 import android.content.Context
-import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater

@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.deck.list;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.jamieadkins.gwent.card.list.CardsContract;
 import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary;

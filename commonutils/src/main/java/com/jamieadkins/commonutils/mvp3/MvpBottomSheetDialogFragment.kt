@@ -1,7 +1,7 @@
 package com.jamieadkins.commonutils.mvp3
 
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jamieadkins.commonutils.mvp2.BasePresenter
 
 abstract class MvpBottomSheetDialogFragment<V> : BottomSheetDialogFragment() {
