@@ -39,6 +39,11 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_color_bronze.setOnCheckedChangeListener { _, checked -> presenter.onBronzeChanged(checked) }
         filter_color_gold.setOnCheckedChangeListener { _, checked -> presenter.onGoldChanged(checked) }
         filter_color_leader.setOnCheckedChangeListener { _, checked -> presenter.onLeaderChanged(checked) }
+
+        filter_rarity_common.setOnCheckedChangeListener { _, checked -> presenter.onCommonChanged(checked) }
+        filter_rarity_rare.setOnCheckedChangeListener { _, checked -> presenter.onRareChanged(checked) }
+        filter_rarity_epic.setOnCheckedChangeListener { _, checked -> presenter.onEpicChanged(checked) }
+        filter_rarity_legendary.setOnCheckedChangeListener { _, checked -> presenter.onLegendaryChanged(checked) }
     }
 
     override fun onDestroyView() {
@@ -63,6 +68,14 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setGoldFilter(checked: Boolean) { filter_color_gold.isChecked = checked }
 
     override fun setLeaderFilter(checked: Boolean) { filter_color_leader.isChecked = checked }
+
+    override fun setCommonFilter(checked: Boolean) { filter_rarity_common.isChecked = checked }
+
+    override fun setRareFilter(checked: Boolean) { filter_rarity_rare.isChecked = checked }
+
+    override fun setEpicFilter(checked: Boolean) { filter_rarity_epic.isChecked = checked }
+
+    override fun setLegendaryFilter(checked: Boolean) { filter_rarity_legendary.isChecked = checked }
 
     override fun close() = dismiss()
 }

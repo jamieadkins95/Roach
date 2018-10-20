@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.filter
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
@@ -25,6 +26,11 @@ class FilterPresenter @Inject constructor(
     var bronze = false
     var gold = false
     var leader = false
+
+    var common = false
+    var rare = false
+    var epic = false
+    var legendary = false
 
     override fun onAttach() {
         getFilterUseCase.getFilter()
@@ -57,6 +63,18 @@ class FilterPresenter @Inject constructor(
 
                     leader = filter.colourFilter[GwentCardColour.LEADER] ?: false
                     view.setLeaderFilter(leader)
+
+                    common = filter.rarityFilter[GwentCardRarity.COMMON] ?: false
+                    view.setCommonFilter(common)
+
+                    rare = filter.rarityFilter[GwentCardRarity.RARE] ?: false
+                    view.setRareFilter(rare)
+
+                    epic = filter.rarityFilter[GwentCardRarity.EPIC] ?: false
+                    view.setEpicFilter(epic)
+
+                    legendary = filter.rarityFilter[GwentCardRarity.LEGENDARY] ?: false
+                    view.setLegendaryFilter(legendary)
                 }
             })
             .addToComposite()
@@ -82,45 +100,42 @@ class FilterPresenter @Inject constructor(
             GwentCardColour.GOLD to gold,
             GwentCardColour.LEADER to leader
         )
-        setFilterUseCase.setFilter(CardFilter(colourFilter = colours, factionFilter = factions))
+
+        val rarities = mapOf(
+            GwentCardRarity.COMMON to common,
+            GwentCardRarity.RARE to rare,
+            GwentCardRarity.EPIC to epic,
+            GwentCardRarity.LEGENDARY to legendary
+        )
+        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions))
         view.close()
     }
 
-    override fun onNilfgaardFilterChanged(checked: Boolean) {
-        nilfgaard = checked
-    }
+    override fun onNilfgaardFilterChanged(checked: Boolean) { nilfgaard = checked }
 
-    override fun onNorthernRealmsFilterChanged(checked: Boolean) {
-        northernRealms = checked
-    }
+    override fun onNorthernRealmsFilterChanged(checked: Boolean) { northernRealms = checked }
 
-    override fun onMonsterFilterChanged(checked: Boolean) {
-        monster = checked
-    }
+    override fun onMonsterFilterChanged(checked: Boolean) { monster = checked }
 
-    override fun onSkelligeFilterChanged(checked: Boolean) {
-        skellige = checked
-    }
+    override fun onSkelligeFilterChanged(checked: Boolean) { skellige = checked }
 
-    override fun onScoiataelFilterChanged(checked: Boolean) {
-        scoiatael = checked
-    }
+    override fun onScoiataelFilterChanged(checked: Boolean) { scoiatael = checked }
 
-    override fun onNeutralFilterChanged(checked: Boolean) {
-        neutral = checked
-    }
+    override fun onNeutralFilterChanged(checked: Boolean) { neutral = checked }
 
-    override fun onBronzeChanged(checked: Boolean) {
-        bronze = checked
-    }
+    override fun onBronzeChanged(checked: Boolean) { bronze = checked }
 
-    override fun onGoldChanged(checked: Boolean) {
-        gold = checked
-    }
+    override fun onGoldChanged(checked: Boolean) { gold = checked }
 
-    override fun onLeaderChanged(checked: Boolean) {
-        leader = checked
-    }
+    override fun onLeaderChanged(checked: Boolean) { leader = checked }
+
+    override fun onCommonChanged(checked: Boolean) { common = checked }
+
+    override fun onRareChanged(checked: Boolean) { rare = checked }
+
+    override fun onEpicChanged(checked: Boolean) { epic = checked }
+
+    override fun onLegendaryChanged(checked: Boolean) { legendary = checked }
 
     override fun onRefresh() {
         // Do nothing

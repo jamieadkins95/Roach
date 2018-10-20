@@ -24,6 +24,14 @@ interface FilterContract {
         fun setGoldFilter(checked: Boolean)
 
         fun setLeaderFilter(checked: Boolean)
+
+        fun setCommonFilter(checked: Boolean)
+
+        fun setRareFilter(checked: Boolean)
+
+        fun setEpicFilter(checked: Boolean)
+
+        fun setLegendaryFilter(checked: Boolean)
     }
 
     interface Presenter : MvpPresenter {
@@ -49,5 +57,13 @@ interface FilterContract {
         fun onGoldChanged(checked: Boolean)
 
         fun onLeaderChanged(checked: Boolean)
+
+        fun onCommonChanged(checked: Boolean)
+
+        fun onRareChanged(checked: Boolean)
+
+        fun onEpicChanged(checked: Boolean)
+
+        fun onLegendaryChanged(checked: Boolean)
     }
 }
