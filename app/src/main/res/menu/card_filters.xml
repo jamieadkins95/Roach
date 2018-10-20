@@ -6,21 +6,5 @@
         android:icon="@drawable/ic_filter_list"
         android:orderInCategory="2"
         app:showAsAction="ifRoom"
-        android:title="@string/filter">
-
-        <menu>
-            <item
-                android:id="@+id/filter_faction"
-                android:title="@string/faction" />
-
-            <item
-                android:id="@+id/filter_colour"
-                android:title="@string/color" />
-
-            <item
-                android:id="@+id/filter_rarity"
-                android:title="@string/rarity" />
-
-        </menu>
-    </item>
+        android:title="@string/filter" />
 </menu>

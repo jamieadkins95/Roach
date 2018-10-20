@@ -8,7 +8,7 @@ object Versions {
 
     const val gradle_plugin = "3.2.0"
     const val google_services_plugin = "3.2.1"
-    const val kotlin = "1.2.61"
+    const val kotlin = "1.2.71"
     const val support_lib = "28.0.0"
     const val support_constraint_layout = "1.1.0"
     const val dagger = "2.16"

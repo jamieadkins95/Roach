@@ -33,4 +33,16 @@
     <style name="GwentTextAppearance">
         <item name="android:fontFamily">@font/gwent</item>
     </style>
+
+    <style name="Base.Widget.MaterialComponents.Chip.Dark">
+        <item name="chipBackgroundColor">@drawable/background_chip_dark</item>
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.Chip.Filter.Dark" parent="Base.Widget.MaterialComponents.Chip.Dark">
+        <item name="android:checkable">true</item>
+        <item name="chipIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+    </style>
 </resources>

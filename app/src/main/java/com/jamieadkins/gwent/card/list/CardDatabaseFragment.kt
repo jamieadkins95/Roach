@@ -116,14 +116,8 @@ class CardDatabaseFragment :
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
-            R.id.filter_faction, R.id.filter_rarity, R.id.filter_colour -> {
-                val filterType = when (item.itemId) {
-                    R.id.filter_faction -> FilterType.FACTION
-                    R.id.filter_rarity -> FilterType.RARITY
-                    R.id.filter_colour -> FilterType.COLOUR
-                    else -> throw Exception("Filter not supported")
-                }
-                val dialog = FilterBottomSheetDialogFragment.newInstance(filterType, screenKey)
+            R.id.action_filter -> {
+                val dialog = FilterBottomSheetDialogFragment()
                 dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }

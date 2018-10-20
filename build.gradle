@@ -12,9 +12,9 @@ buildscript {
     }
 
     dependencies {
-        classpath Libs.gradle_plugin
-        classpath Libs.google_services_plugin
-        classpath Libs.kotlin_plugin
+        classpath "com.android.tools.build:gradle:${Versions.gradle_plugin}"
+        classpath "com.google.gms:google-services:${Versions.google_services_plugin}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
     }
 }

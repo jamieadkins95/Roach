@@ -2,6 +2,9 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="grey_900">#212121</color> <!-- Dark theme toolbar color-->
+    <color name="grey_850">#303030</color> <!-- Dark theme window color-->
+    <color name="grey_800">#424242</color> <!-- Dark theme card color-->
 
     <color name="text_primary">@color/text_primary_dark</color>
     <color name="text_secondary">@color/text_secondary_dark</color>
