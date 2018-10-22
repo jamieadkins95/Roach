@@ -1,40 +1,48 @@
 package com.jamieadkins.gwent
 
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider
+import com.jamieadkins.gwent.data.FactionMapper
+import com.jamieadkins.gwent.data.LocaleRepositoryImpl
 import com.jamieadkins.gwent.data.StoreManager
-import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.data.card.mapper.ApiMapper
+import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
+import com.jamieadkins.gwent.data.card.mapper.GwentCardArtMapper
+import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.data.card.repository.CardRepositoryImpl
-import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
+import com.jamieadkins.gwent.data.deck.mapper.DeckMapper
 import com.jamieadkins.gwent.data.deck.repository.UserDeckRepository
-import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
 import com.jamieadkins.gwent.data.filter.repository.FilterRepositoryImpl
-import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
+import com.jamieadkins.gwent.data.update.repository.CardUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.CategoryUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.KeywordUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.PatchRepository
 import com.jamieadkins.gwent.data.update.repository.UpdateRepositoryImpl
 import com.jamieadkins.gwent.database.GwentDatabaseProvider
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
+import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
+import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import com.jamieadkins.gwent.main.GwentApplication
 
 object Injection {
 
+    private val resources by lazy { GwentApplication.INSTANCE.applicationContext.resources }
     private val database by lazy { GwentDatabaseProvider.getDatabase(GwentApplication.INSTANCE.applicationContext) }
-    private val storeManager by lazy { StoreManager(GwentApplication.INSTANCE.cacheDir) }
+    private val preferences by lazy { RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext)) }
     private val filterRepositories = mutableMapOf<String, FilterRepository>()
 
-    fun provideDeckRepository(): DeckRepository {
-        return UserDeckRepository(database)
-    }
+    private val factionMapper by lazy { FactionMapper() }
+    private val artMapper by lazy { GwentCardArtMapper() }
+    private val cardMapper by lazy { GwentCardMapper(artMapper, factionMapper) }
+
+    private val localeRepository by lazy { LocaleRepositoryImpl(preferences, resources) }
+
 
     fun provideCardRepository(): CardRepository {
-        return CardRepositoryImpl(database)
-    }
-
-    fun provideUpdateRepository(): UpdateRepository {
-        return UpdateRepositoryImpl(database,
-                                    GwentApplication.INSTANCE.filesDir,
-                                    storeManager,
-                                    PreferenceManager.getDefaultSharedPreferences(GwentApplication.INSTANCE.applicationContext),
-                                    GwentApplication.INSTANCE.applicationContext.resources)
+        return CardRepositoryImpl(database, cardMapper, localeRepository)
     }
 
     fun provideFilterRepository(key: String): FilterRepository {
