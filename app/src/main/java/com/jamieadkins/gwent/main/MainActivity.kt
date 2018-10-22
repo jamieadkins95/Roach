@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.collection.CollectionPlaceholderFragment
+import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.deck.list.DeckListPlaceholderFragment
 import com.jamieadkins.gwent.settings.GwentFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,14 +34,12 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Cold start, launch card db fragment.
             val fragment = CardDatabaseFragment()
-            launchFragment(fragment, fragment.javaClass
-                .simpleName)
+            launchFragment(fragment, fragment.javaClass.simpleName)
         }
 
         navigation.setOnNavigationItemSelectedListener { item ->
             val fragment = getFragmentForMenuItem(item.itemId)
-            launchFragment(fragment, fragment.javaClass
-                .simpleName)
+            launchFragment(fragment, fragment.javaClass.simpleName)
             true
         }
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         return when (itemId) {
             R.id.navigation_card_db -> CardDatabaseFragment()
             R.id.navigation_collection -> CollectionPlaceholderFragment()
-            R.id.navigation_decks -> DeckListPlaceholderFragment()
+            R.id.navigation_decks -> if (BuildConfig.DEBUG) DeckListFragment() else DeckListPlaceholderFragment()
             R.id.navigation_gwent -> GwentFragment()
             else -> CardDatabaseFragment()
         }
@@ -71,8 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun launchFragment(fragment: Fragment, tag: String) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(
-            R.id.contentContainer, fragment, tag)
+        fragmentTransaction.replace(R.id.contentContainer, fragment, tag)
         fragmentTransaction.commit()
 
         // Our options menu will be different for different tabs.

@@ -1,43 +1,39 @@
 package com.jamieadkins.gwent.deck.list
 
-import com.jamieadkins.commonutils.mvp2.BasePresenter
-import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
-import com.jamieadkins.gwent.bus.NewDeckRequest
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.deck.CreateDeckUseCase
+import com.jamieadkins.gwent.domain.deck.GetDecksUseCase
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
-import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
+import com.jamieadkins.gwent.main.BasePresenter
+import javax.inject.Inject
 
-class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
-                        private val deckRepository: DeckRepository) :
-        BasePresenter<DeckListContract.View>(schedulerProvider), DeckListContract.Presenter {
+class DeckListPresenter @Inject constructor(
+    private val view: DeckListContract.View,
+    private val createDeckUseCase: CreateDeckUseCase,
+    private val getDecksUseCase: GetDecksUseCase
+) : BasePresenter(), DeckListContract.Presenter {
 
-    override fun onAttach(newView: DeckListContract.View) {
-        super.onAttach(newView)
-        onRefresh()
-
-        RxBus.register(NewDeckRequest::class.java)
-                .observeOn(schedulerProvider.io())
-                .switchMapSingle { deckRepository.createNewDeck(it.data.name, it.data.faction) }
-                .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableObserver<String>() {
-                    override fun onNext(newDeckId: String) {
-                        view?.showDeckDetails(newDeckId)
-                    }
-                })
-                .addToComposite(disposable)
-
-        deckRepository.getDecks()
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
+    override fun onAttach() {
+        getDecksUseCase.get()
+            .doOnSubscribe { view.showLoadingIndicator(true) }
             .subscribeWith(object : BaseDisposableObserver<List<GwentDeck>>() {
                 override fun onNext(decks: List<GwentDeck>) {
-                    view?.showDecks(decks)
-                    view?.showLoadingIndicator(false)
+                    view.showDecks(decks)
+                    view.showLoadingIndicator(false)
                 }
             })
-            .addToComposite(disposable)
+            .addToComposite()
+    }
+
+    override fun createDeck(name: String, faction: GwentFaction) {
+        createDeckUseCase.create(name, faction)
+            .subscribeWith(object : BaseDisposableSingle<String>() {
+                override fun onSuccess(newDeckId: String) {
+                    view.showDeckDetails(newDeckId)
+                }
+            })
+            .addToComposite()
     }
 }

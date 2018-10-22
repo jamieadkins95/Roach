@@ -28,6 +28,7 @@ import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterType
 import com.jamieadkins.gwent.update.UpdateActivity
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.appbar_layout.*
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -44,7 +45,6 @@ class CardDatabaseFragment :
 
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
-    private val toolbar by bindView<Toolbar>(R.id.toolbar)
     private lateinit var controller: CardDatabaseController
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
