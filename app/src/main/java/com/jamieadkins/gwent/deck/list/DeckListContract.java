@@ -3,9 +3,9 @@ package com.jamieadkins.gwent.deck.list;
 import androidx.annotation.NonNull;
 
 import com.jamieadkins.gwent.card.list.CardsContract;
-import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary;
+import com.jamieadkins.gwent.domain.deck.model.GwentDeck;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Specifies the contract between the view and the presenter.
@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public interface DeckListContract {
     interface View {
-        void showDecks(@NonNull Collection<GwentDeckSummary> decks);
+        void showDecks(@NonNull List<GwentDeck> decks);
 
         void showDeckDetails(@NonNull String deckId);
 

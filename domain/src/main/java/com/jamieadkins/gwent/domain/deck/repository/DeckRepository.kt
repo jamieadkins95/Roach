@@ -8,7 +8,11 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 
-interface DeckRepository : DeckReadRepository {
+interface DeckRepository {
+
+    fun getDecks(): Observable<List<GwentDeck>>
+
+    fun getDeckOnce(deckId: String): Single<GwentDeck>
 
     fun getDeck(deckId: String): Observable<GwentDeck>
 

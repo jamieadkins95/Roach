@@ -9,8 +9,8 @@ import com.jamieadkins.gwent.database.GwentDatabase
 data class DeckEntity(
         val name: String,
         val factionId: String,
-        val leaderId: String? = null,
+        val leaderId: String,
         val deleted: Boolean = false) {
 
-    @PrimaryKey(autoGenerate = true) var id: Long? = null
+    @PrimaryKey(autoGenerate = true) var id: Long = 0
 }

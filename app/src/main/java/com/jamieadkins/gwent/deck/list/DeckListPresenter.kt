@@ -7,8 +7,8 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.NewDeckRequest
 import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
-import com.jamieadkins.gwent.domain.deck.model.GwentDeckSummary
 
 class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                         private val deckRepository: DeckRepository) :
@@ -28,18 +28,16 @@ class DeckListPresenter(schedulerProvider: BaseSchedulerProvider,
                     }
                 })
                 .addToComposite(disposable)
-    }
 
-    override fun onRefresh() {
         deckRepository.getDecks()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableSingle<Collection<GwentDeckSummary>>() {
-                    override fun onSuccess(decks: Collection<GwentDeckSummary>) {
-                        view?.showDecks(decks)
-                        view?.showLoadingIndicator(false)
-                    }
-                })
-                .addToComposite(disposable)
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribeWith(object : BaseDisposableObserver<List<GwentDeck>>() {
+                override fun onNext(decks: List<GwentDeck>) {
+                    view?.showDecks(decks)
+                    view?.showLoadingIndicator(false)
+                }
+            })
+            .addToComposite(disposable)
     }
 }
