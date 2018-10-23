@@ -12,9 +12,6 @@ class DeckController : TypedEpoxyController<List<String>>() {
     lateinit var goldDivider: DividerViewModel_
 
     @AutoModel
-    lateinit var silverDivider: DividerViewModel_
-
-    @AutoModel
     lateinit var bronzeDivider: DividerViewModel_
 
     override fun buildModels(headers: List<String>) {
@@ -26,11 +23,6 @@ class DeckController : TypedEpoxyController<List<String>>() {
         goldDivider
                 .title(R.string.gold)
                 .color(R.color.gold)
-                .addTo(this)
-
-        silverDivider
-                .title(R.string.silver)
-                .color(R.color.silver)
                 .addTo(this)
 
         bronzeDivider

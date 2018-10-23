@@ -39,12 +39,4 @@ object GwentStringHelper {
             else -> null
         }
     }
-
-    fun getLoyaltyString(context: Context, colour: GwentCardLoyalty?): String? {
-        return when(colour) {
-            GwentCardLoyalty.LOYAL -> context.getString(R.string.loyal)
-            GwentCardLoyalty.DISLOYAL -> context.getString(R.string.disloyal)
-            else -> null
-        }
-    }
 }

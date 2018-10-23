@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faction">Frakcja</string>
+    <string name="northern_realms">Królestwa Północy</string>
+    <string name="monster">Potwory</string>
+    <string name="skellige">Skellige</string>
+    <string name="scoiatael">Scoia\\\'tael</string>
+    <string name="neutral">Neutralne</string>
+    <string name="nilfgaard">Nilfgaard</string>
+    <string name="bronze">Brązowe</string>
+    <string name="gold">Złote</string>
+    <string name="leader">Dowódca</string>
+    <string name="rarity">Rzadkość</string>
+    <string name="common">Zwykła</string>
+    <string name="rare">Rzadka</string>
+    <string name="epic">Epicka</string>
+    <string name="legendary">Legendarna</string>
+    <string name="gwent">Gwint</string>
+</resources>

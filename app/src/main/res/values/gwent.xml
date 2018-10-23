@@ -9,7 +9,6 @@
     <string name="nilfgaard">Nilfgaard</string>
     <string name="color">Color</string>
     <string name="bronze">Bronze</string>
-    <string name="silver">Silver</string>
     <string name="gold">Gold</string>
     <string name="leader">Leader</string>
     <string name="rarity">Rarity</string>
@@ -17,10 +16,4 @@
     <string name="rare">Rare</string>
     <string name="epic">Epic</string>
     <string name="legendary">Legendary</string>
-    <string name="loyalty">Loyalty</string>
-    <string name="loyal">Loyal</string>
-    <string name="disloyal">Disloyal</string>
-    <string name="melee">Melee</string>
-    <string name="siege">Siege</string>
-    <string name="ranged">Ranged</string>
 </resources>

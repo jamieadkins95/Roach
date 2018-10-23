@@ -4,7 +4,6 @@
     <string name="transition_card" translatable="false">com.jamieadkins.gwent.transition.card</string>
     <string name="developer_email" translatable="false">jamieadkins95+gwent@gmail.com</string>
     <string name="email_subject" translatable="false">Roach for Android</string>
-    <string name="email_template" translatable="false">Hey Jamie (Developer), I have an issue with Roach, it concerns the %s feature. Here is my concern:</string>
     <string name="deck_total_cards_value">%1$d/%2$d</string>
 
     <string name="me" translatable="false">Jamie Adkins</string>

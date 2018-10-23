@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faction">Fraktion</string>
+    <string name="northern_realms">Nördliche Königreiche</string>
+    <string name="monster">Monster</string>
+    <string name="skellige">Skellige</string>
+    <string name="scoiatael">Scoia\\\'Tael</string>
+    <string name="neutral">Neutral</string>
+    <string name="nilfgaard">Nilfgaard</string>
+    <string name="bronze">Bronze</string>
+    <string name="gwent">Gwent</string>
+    <string name="leader">Anführer</string>
+    <string name="rarity">Seltenheit</string>
+    <string name="common">Gewöhnlich</string>
+    <string name="rare">Selten</string>
+    <string name="epic">Episch</string>
+    <string name="legendary">Legendär</string>
+    <string name="gold">Gold</string>
+</resources>
