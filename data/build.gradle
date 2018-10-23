@@ -20,7 +20,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
-            buildConfigField "String", "CARD_DATA_VERSION", '"3"'
+            buildConfigField "String", "CARD_DATA_VERSION", '"4"'
         }
         debug {
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
