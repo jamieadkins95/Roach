@@ -1,7 +1,10 @@
 package com.jamieadkins.gwent.launch
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.main.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
@@ -18,7 +21,13 @@ class LaunchActivity : DaggerAppCompatActivity(), LaunchContract.View {
 
     override fun onStart() {
         super.onStart()
-        presenter.onAttach()
+        val url = intent?.extras?.getString("url")
+        if (url != null) {
+            showChromeCustomTab(url)
+            finish()
+        } else {
+            presenter.onAttach()
+        }
     }
 
     override fun onStop() {
@@ -29,5 +38,13 @@ class LaunchActivity : DaggerAppCompatActivity(), LaunchContract.View {
     override fun onSetupComplete() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+    }
+
+    private fun showChromeCustomTab(url: String) {
+        CustomTabsIntent.Builder()
+            .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+            .setShowTitle(true)
+            .build()
+            .launchUrl(this, Uri.parse(url))
     }
 }
