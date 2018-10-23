@@ -30,7 +30,7 @@ class MaterialSettingsOneLineView @JvmOverloads constructor(context: Context, at
 
     @ModelProp
     fun setIcon(@DrawableRes iconRes: Int) {
-        icon.setImageDrawable(ContextCompat.getDrawable(icon.context, iconRes))
+        icon.setImageResource(iconRes)
     }
 
     @CallbackProp
