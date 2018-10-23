@@ -59,6 +59,7 @@ class CardDatabasePresenter @Inject constructor(
                 }
 
                 cards.map { Pair(it, query) }
+                    .doOnSubscribe { view.showLoadingIndicator(true) }
             }
 
         Observable.combineLatest(getCards,
@@ -66,7 +67,6 @@ class CardDatabasePresenter @Inject constructor(
                                  BiFunction { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean ->
                                      CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable)
                                  })
-            .doOnSubscribe { view.showLoadingIndicator(true) }
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
                     view.showData(data)
