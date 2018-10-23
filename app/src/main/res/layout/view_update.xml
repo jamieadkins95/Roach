@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/download"
         android:layout_margin="8dp"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintTop_toBottomOf="@id/body"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
