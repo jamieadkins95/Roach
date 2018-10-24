@@ -100,7 +100,7 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         if (imageUrl != null) {
             Glide.with(context)
                 .load(imageUrl)
-                .placeholder(cardBack)
+                .centerCrop()
                 .error(cardBack)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCard)
