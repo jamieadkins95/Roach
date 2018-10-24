@@ -3,7 +3,6 @@
 buildscript {
     ext.support_library_version = '27.1.1'
     ext.constraint_layout_version = '1.1.2'
-    ext.google_services_version = '15.0.2'
 
     repositories {
         google()
@@ -12,8 +11,8 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${Versions.gradle_plugin}"
-        classpath "com.google.gms:google-services:${Versions.google_services_plugin}"
+        classpath "com.android.tools.build:gradle:3.2.0"
+        classpath "com.google.gms:google-services:4.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
     }

@@ -43,8 +43,9 @@ dependencies {
     api 'com.nytimes.android:filesystem3:3.0.1'
     implementation 'me.xdrop:fuzzywuzzy:1.1.8'
     api Libs.rxpreferences
-    api "com.google.firebase:firebase-storage:$google_services_version"
-    api "com.google.firebase:firebase-messaging:$google_services_version"
+    api 'com.google.firebase:firebase-core:16.0.4'
+    api "com.google.firebase:firebase-storage:16.0.3"
+    api "com.google.firebase:firebase-messaging:17.3.4"
 
     implementation Libs.dagger
     kapt Libs.dagger_compiler

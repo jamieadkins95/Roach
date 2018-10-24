@@ -3,16 +3,18 @@ package com.jamieadkins.gwent.settings;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.preference.PreferenceManager;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.BuildConfig;
 
 public class SettingsActivity extends BasePreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
-    public static final String PREFERENCE_ANALYTICS = "com.jamieadkins.gwent.analytics";
     public static final String NOTIFICATIONS_NEWS = "com.jamieadkins.gwent.notifications.news";
     public static final String NOTIFICATIONS_PATCH = "com.jamieadkins.gwent.notifications.patch";
     public static final String LOCALE = "com.jamieadkins.gwent.crowd.locale";
@@ -34,10 +36,6 @@ public class SettingsActivity extends BasePreferenceActivity implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case PREFERENCE_ANALYTICS:
-                boolean enableAnalytics = sharedPreferences.getBoolean(PREFERENCE_ANALYTICS, false);
-                FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(enableAnalytics);
-                break;
             case LOCALE:
                 setResult(RESULT_OK);
                 break;
