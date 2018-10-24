@@ -37,6 +37,7 @@ class UpdateRepositoryImpl @Inject constructor(
             Function4 { cardsInDb: Int, card: Boolean, keyword: Boolean, category: Boolean ->
                 cardsInDb == 0 || card || keyword || category
             })
+            .onErrorReturnItem(false)
             .distinctUntilChanged()
     }
 
