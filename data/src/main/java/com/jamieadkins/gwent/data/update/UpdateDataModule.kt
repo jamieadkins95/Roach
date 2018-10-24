@@ -3,8 +3,10 @@ package com.jamieadkins.gwent.data.update
 import com.jamieadkins.gwent.data.update.repository.CardUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.CategoryUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.KeywordUpdateRepository
+import com.jamieadkins.gwent.data.update.repository.NoticesRepositoryImpl
 import com.jamieadkins.gwent.data.update.repository.NotificationsRepository
 import com.jamieadkins.gwent.data.update.repository.UpdateRepositoryImpl
+import com.jamieadkins.gwent.domain.update.repository.NoticesRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import dagger.Binds
 import dagger.Module
@@ -36,4 +38,8 @@ abstract class UpdateDataModule {
     @Binds
     @Singleton
     abstract fun notifications(repository: NotificationsRepository): UpdateRepository
+
+    @Binds
+    @Singleton
+    abstract fun notices(repository: NoticesRepositoryImpl): NoticesRepository
 }

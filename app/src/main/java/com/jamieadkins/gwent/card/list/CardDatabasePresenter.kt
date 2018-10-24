@@ -10,17 +10,20 @@ import com.jamieadkins.gwent.domain.card.GetCardsUseCase
 import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
+import com.jamieadkins.gwent.domain.update.model.Notice
 import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
+import com.jamieadkins.gwent.domain.update.repository.GetNoticesUseCase
 import com.jamieadkins.gwent.main.BasePresenter
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class CardDatabasePresenter @Inject constructor(
     private val view: CardDatabaseContract.View,
     private val getCardsUseCase: GetCardsUseCase,
-    private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase
+    private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase,
+    private val getNoticesUseCase: GetNoticesUseCase
 ) : BasePresenter(), CardDatabaseContract.Presenter {
 
     private val searches = BehaviorSubject.createDefault("")
@@ -64,8 +67,9 @@ class CardDatabasePresenter @Inject constructor(
 
         Observable.combineLatest(getCards,
                                  getUpdates(),
-                                 BiFunction { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean ->
-                                     CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable)
+                                 getNotices(),
+                                 Function3 { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean, notices: List<Notice> ->
+                                     CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable, notices)
                                  })
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
@@ -82,6 +86,12 @@ class CardDatabasePresenter @Inject constructor(
                 getCardDatabaseUpdateUseCase.isUpdateAvailable()
             }
             .startWith(false)
+    }
+
+    private fun getNotices(): Observable<List<Notice>> {
+        return refreshRequests
+            .switchMap { getNoticesUseCase.getNotices() }
+            .startWith(emptyList<Notice>())
     }
 
     override fun search(query: String) {

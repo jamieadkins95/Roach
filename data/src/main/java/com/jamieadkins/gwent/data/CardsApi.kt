@@ -18,4 +18,7 @@ interface CardsApi {
 
     @GET("patch/{version}.json")
     fun fetchPatch(@Path("version") version: String): Single<ResponseBody>
+
+    @GET("notices/{locale}.json")
+    fun fetchNotices(@Path("locale") locale: String): Single<ResponseBody>
 }

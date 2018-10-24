@@ -17,6 +17,13 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
 
     override fun buildModels(data: CardDatabaseScreenModel) {
 
+        data.notices.forEach {
+            NoticeViewModel_()
+                .id(it.id)
+                .title(it.title)
+                .addTo(this)
+        }
+
         updateView.clickListener { _ -> RxBus.post(DownloadUpdateClickEvent()) }
                 .addIf(data.updateAvailable, this)
 
