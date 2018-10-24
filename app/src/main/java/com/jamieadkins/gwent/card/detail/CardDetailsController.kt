@@ -84,7 +84,7 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
                     .cardName(relatedCard.name)
                     .cardTooltip(relatedCard.tooltip)
                     .cardCategories(relatedCard.categories)
-                    .cardStrength(relatedCard.strength)
+                    .cardProvisions(card.provisions)
                     .cardImage(relatedCard.cardArt?.medium)
                     .cardFaction(relatedCard.faction)
                     .cardRarity(relatedCard.rarity)

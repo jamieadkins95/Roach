@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.airbnb.epoxy.AfterPropsSet
 import com.airbnb.epoxy.CallbackProp
@@ -17,15 +16,11 @@ import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.main.GwentStringHelper
 import kotterknife.bindView
-import java.lang.Exception
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class GwentCardView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
@@ -34,7 +29,7 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
     private val tvName by bindView<TextView>(R.id.name)
     private val tvTooltip by bindView<TextView>(R.id.tooltip)
     private val tvCategories by bindView<TextView>(R.id.categories)
-    private val tvStrength by bindView<TextView>(R.id.strength)
+    private val tvProvisions by bindView<TextView>(R.id.strength)
     private val tvRarity by bindView<TextView>(R.id.rarity)
     private val tvFaction by bindView<TextView>(R.id.faction)
     private val imgCard by bindView<ImageView>(R.id.card_image)
@@ -130,13 +125,12 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     @ModelProp
-    fun setCardStrength(strength: Int?) {
-        if (strength ?: 0 > 0) {
-            tvStrength.text = strength.toString()
-            tvStrength.visibility = View.VISIBLE
+    fun setCardProvisions(provision: Int) {
+        if (provision > 0) {
+            tvProvisions.text = provision.toString()
+            tvProvisions.visibility = View.VISIBLE
         } else {
-            tvStrength.visibility = View.GONE
+            tvProvisions.visibility = View.GONE
         }
-
     }
 }

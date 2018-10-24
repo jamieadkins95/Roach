@@ -44,7 +44,7 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                     .cardName(card.name)
                     .cardTooltip(card.tooltip)
                     .cardCategories(card.categories)
-                    .cardStrength(card.strength)
+                    .cardProvisions(card.provisions)
                     .cardImage(card.cardArt?.medium)
                     .cardFaction(card.faction)
                     .cardRarity(card.rarity)
