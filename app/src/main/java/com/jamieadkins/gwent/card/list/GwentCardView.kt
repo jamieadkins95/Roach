@@ -82,15 +82,11 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
         if (cardImage != null) {
             Glide.with(context)
                 .load(cardImage)
-                .error(cardBack)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgCard)
         } else {
-            Glide.with(context)
-                .load(cardBack)
-                .centerCrop()
-                .into(imgCard)
+            imgCard.setImageDrawable(null)
         }
     }
 
