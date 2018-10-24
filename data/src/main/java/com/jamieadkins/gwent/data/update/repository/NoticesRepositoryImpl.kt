@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.data.update.repository
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jamieadkins.gwent.data.BuildConfig
@@ -41,6 +40,7 @@ class NoticesRepositoryImpl @Inject constructor(private val storeManager: StoreM
                     )
                 }
             }
+            .onErrorReturnItem(emptyList())
             .toObservable()
     }
 
