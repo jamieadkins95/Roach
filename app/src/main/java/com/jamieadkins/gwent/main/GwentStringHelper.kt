@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.main
 
 import android.content.Context
+import android.content.res.Resources
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardLoyalty
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.card.model.GwentCardType
 
 object GwentStringHelper {
 
@@ -37,6 +39,15 @@ object GwentStringHelper {
             GwentFaction.NILFGAARD -> context.getString(R.string.nilfgaard)
             GwentFaction.NEUTRAL -> context.getString(R.string.neutral)
             else -> null
+        }
+    }
+
+    fun getTypeString(resources: Resources, type: GwentCardType): String {
+        return when(type) {
+            GwentCardType.Unit -> resources.getString(R.string.unit)
+            GwentCardType.Artifact -> resources.getString(R.string.artifact)
+            GwentCardType.Spell -> resources.getString(R.string.spell)
+            GwentCardType.Leader -> resources.getString(R.string.leader)
         }
     }
 }

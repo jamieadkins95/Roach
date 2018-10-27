@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.card.list.GwentCardViewModel_
 import com.jamieadkins.gwent.card.list.SubHeaderViewModel_
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
+import com.jamieadkins.gwent.main.GwentStringHelper
 
 class CardDetailsController(val resources: Resources) : Typed2EpoxyController<GwentCard, List<GwentCard>>() {
 
@@ -20,6 +21,8 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
     @AutoModel lateinit var flavor: ElevatedTextViewModel_
     @AutoModel lateinit var categoriesHeader: SubHeaderViewModel_
     @AutoModel lateinit var categories: ElevatedTextViewModel_
+    @AutoModel lateinit var typeHeader: SubHeaderViewModel_
+    @AutoModel lateinit var type: ElevatedTextViewModel_
     @AutoModel lateinit var relatedCardsHeader: SubHeaderViewModel_
     @AutoModel lateinit var craftHeader: SubHeaderViewModel_
     @AutoModel lateinit var craft: CraftCostViewModel_
@@ -51,6 +54,13 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
         categories.text(card.categories.joinToString())
                 .typeface(Typeface.DEFAULT)
                 .addIf(card.categories.isNotEmpty(), this)
+
+        typeHeader
+            .title(R.string.type)
+            .addTo( this)
+        type.text(GwentStringHelper.getTypeString(resources, card.type))
+            .typeface(Typeface.DEFAULT)
+            .addTo(this)
 
         val showProvisions = card.colour != GwentCardColour.LEADER && card.provisions > 0
         provisionsHeader

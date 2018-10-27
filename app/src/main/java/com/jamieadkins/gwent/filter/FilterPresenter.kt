@@ -4,6 +4,7 @@ import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
@@ -31,6 +32,10 @@ class FilterPresenter @Inject constructor(
     var rare = false
     var epic = false
     var legendary = false
+
+    var unit = false
+    var spell = false
+    var artifact = false
 
     var minProvisions = 0
     var maxProvisions = 100
@@ -66,6 +71,7 @@ class FilterPresenter @Inject constructor(
 
                     leader = filter.colourFilter[GwentCardColour.LEADER] ?: false
                     view.setLeaderFilter(leader)
+                    view.setTypeLeaderFilter(leader)
 
                     common = filter.rarityFilter[GwentCardRarity.COMMON] ?: false
                     view.setCommonFilter(common)
@@ -84,6 +90,15 @@ class FilterPresenter @Inject constructor(
 
                     maxProvisions = filter.maxProvisions
                     view.setMaxProvisions(filter.maxProvisions)
+
+                    unit = filter.typeFilter[GwentCardType.Unit] ?: false
+                    view.setUnitFilter(unit)
+
+                    spell = filter.typeFilter[GwentCardType.Spell] ?: false
+                    view.setSpellFilter(spell)
+
+                    artifact = filter.typeFilter[GwentCardType.Artifact] ?: false
+                    view.setArtifactFilter(artifact)
                 }
             })
             .addToComposite()
@@ -116,7 +131,14 @@ class FilterPresenter @Inject constructor(
             GwentCardRarity.EPIC to epic,
             GwentCardRarity.LEGENDARY to legendary
         )
-        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions, minProvisions, maxProvisions))
+
+        val types = mapOf(
+            GwentCardType.Unit to unit,
+            GwentCardType.Spell to spell,
+            GwentCardType.Artifact to artifact,
+            GwentCardType.Leader to leader
+        )
+        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions, types, minProvisions, maxProvisions))
         view.close()
     }
 
@@ -136,7 +158,10 @@ class FilterPresenter @Inject constructor(
 
     override fun onGoldChanged(checked: Boolean) { gold = checked }
 
-    override fun onLeaderChanged(checked: Boolean) { leader = checked }
+    override fun onLeaderChanged(checked: Boolean) {
+        leader = checked
+        view.setTypeLeaderFilter(checked)
+    }
 
     override fun onCommonChanged(checked: Boolean) { common = checked }
 
@@ -149,6 +174,17 @@ class FilterPresenter @Inject constructor(
     override fun onMinProvisionsChanged(min: Int) { minProvisions = min }
 
     override fun onMaxProvisionsChanged(max: Int) { maxProvisions = max }
+
+    override fun onTypeUnitChanged(checked: Boolean) { unit = checked }
+
+    override fun onTypeArtifactChanged(checked: Boolean) { artifact = checked }
+
+    override fun onTypeSpellChanged(checked: Boolean) { spell = checked }
+
+    override fun onTypeLeaderChanged(checked: Boolean) {
+        leader = checked
+        view.setLeaderFilter(checked)
+    }
 
     override fun onRefresh() {
         // Do nothing

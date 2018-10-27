@@ -36,6 +36,14 @@ interface FilterContract {
         fun setMinProvisions(provisions: Int)
 
         fun setMaxProvisions(provisions: Int)
+
+        fun setUnitFilter(checked: Boolean)
+
+        fun setArtifactFilter(checked: Boolean)
+
+        fun setSpellFilter(checked: Boolean)
+
+        fun setTypeLeaderFilter(checked: Boolean)
     }
 
     interface Presenter : MvpPresenter {
@@ -73,5 +81,13 @@ interface FilterContract {
         fun onMinProvisionsChanged(min: Int)
 
         fun onMaxProvisionsChanged(max: Int)
+
+        fun onTypeUnitChanged(checked: Boolean)
+
+        fun onTypeSpellChanged(checked: Boolean)
+
+        fun onTypeArtifactChanged(checked: Boolean)
+
+        fun onTypeLeaderChanged(checked: Boolean)
     }
 }

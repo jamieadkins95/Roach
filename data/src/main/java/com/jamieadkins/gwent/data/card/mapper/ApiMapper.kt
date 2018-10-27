@@ -18,6 +18,7 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                     it.rarity ?: "",
                     it.type ?: "",
                     it.faction ?: "",
+                    it.cardType ?: "",
                     it.provision ?: 0,
                     it.mulligans ?: 0,
                     it.name ?: mapOf(),
