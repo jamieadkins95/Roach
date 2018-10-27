@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.card.model.GwentKeyword
+import timber.log.Timber
 import javax.inject.Inject
 
 class GwentCardMapper @Inject constructor(
@@ -59,7 +60,10 @@ class GwentCardMapper @Inject constructor(
             Type.BRONZE_ID -> GwentCardColour.BRONZE
             Type.GOLD_ID -> GwentCardColour.GOLD
             Type.LEADER_ID -> GwentCardColour.LEADER
-            else -> throw Exception("Colour not found")
+            else -> {
+                Timber.e("Colour $type not found. Defaulting to Bronze")
+                GwentCardColour.BRONZE
+            }
         }
     }
 
@@ -69,7 +73,10 @@ class GwentCardMapper @Inject constructor(
             Rarity.RARE_ID -> GwentCardRarity.RARE
             Rarity.EPIC_ID -> GwentCardRarity.EPIC
             Rarity.LEGENDARY_ID -> GwentCardRarity.LEGENDARY
-            else -> throw Exception("Rarity not found")
+            else -> {
+                Timber.e("Rarity $rarity not found. Defaulting to Common")
+                GwentCardRarity.COMMON
+            }
         }
     }
 
@@ -78,7 +85,10 @@ class GwentCardMapper @Inject constructor(
             "Unit" -> GwentCardType.Unit
             "Spell" -> GwentCardType.Spell
             "Artifact" -> GwentCardType.Artifact
-            else -> throw Exception("Type not found")
+            else -> {
+                Timber.e("Type $type not found. Defaulting to Unit")
+                GwentCardType.Unit
+            }
         }
     }
 
