@@ -7,4 +7,6 @@ sealed class GwentCardType {
     object Spell : GwentCardType()
 
     object Artifact : GwentCardType()
+
+    object Leader : GwentCardType()
 }
