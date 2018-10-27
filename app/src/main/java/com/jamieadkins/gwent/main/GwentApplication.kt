@@ -9,8 +9,6 @@ import com.jamieadkins.gwent.BuildConfig
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
-
 class GwentApplication : DaggerApplication() {
 
     companion object {
