@@ -47,6 +47,11 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_rarity_epic.setOnCheckedChangeListener { _, checked -> presenter.onEpicChanged(checked) }
         filter_rarity_legendary.setOnCheckedChangeListener { _, checked -> presenter.onLegendaryChanged(checked) }
 
+        filter_type_unit.setOnCheckedChangeListener { _, checked -> presenter.onTypeUnitChanged(checked) }
+        filter_type_artifact.setOnCheckedChangeListener { _, checked -> presenter.onTypeArtifactChanged(checked) }
+        filter_type_spell.setOnCheckedChangeListener { _, checked -> presenter.onTypeSpellChanged(checked) }
+        filter_type_leader.setOnCheckedChangeListener { _, checked -> presenter.onTypeLeaderChanged(checked) }
+
         inputMin.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) { /* Do nothing. */ }
 
@@ -102,6 +107,14 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setMinProvisions(provisions: Int) { inputMin.setText(provisions.toString()) }
 
     override fun setMaxProvisions(provisions: Int) { inputMax.setText(provisions.toString()) }
+
+    override fun setArtifactFilter(checked: Boolean) { filter_type_artifact.isChecked = checked }
+
+    override fun setSpellFilter(checked: Boolean) { filter_type_spell.isChecked = checked }
+
+    override fun setUnitFilter(checked: Boolean) { filter_type_unit.isChecked = checked }
+
+    override fun setTypeLeaderFilter(checked: Boolean) { filter_type_leader.isChecked = checked }
 
     override fun close() = dismiss()
 }

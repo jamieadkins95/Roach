@@ -3,12 +3,19 @@ package com.jamieadkins.gwent.domain.filter.model
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 
 data class CardFilter(
         val rarityFilter: Map<GwentCardRarity, Boolean> = GwentCardRarity.values().map { it to true }.toMap(),
         val colourFilter: Map<GwentCardColour, Boolean> = GwentCardColour.values().map { it to true }.toMap(),
         val factionFilter: Map<GwentFaction, Boolean> = GwentFaction.values().map { it to true }.toMap(),
+        val typeFilter: Map<GwentCardType, Boolean> = mapOf(
+            GwentCardType.Unit to true,
+            GwentCardType.Spell to true,
+            GwentCardType.Artifact to true,
+            GwentCardType.Leader to true
+        ),
         val minProvisions: Int = 0,
         val maxProvisions: Int = 20,
         val isCollectibleOnly: Boolean = false,
