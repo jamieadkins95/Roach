@@ -3,11 +3,12 @@ package com.jamieadkins.gwent.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.jamieadkins.gwent.database.GwentDatabase.Companion.DATABASE_VERSION
 import com.jamieadkins.gwent.database.entity.*
 
 @Database(entities = [CardEntity::class, ArtEntity::class,
     DeckEntity::class, DeckCardEntity::class, CollectionEntity::class, CategoryEntity::class,
-    KeywordEntity::class], version = 2)
+    KeywordEntity::class], version = DATABASE_VERSION)
 @TypeConverters(DatabaseConverters::class)
 abstract class GwentDatabase : RoomDatabase() {
 
@@ -20,6 +21,8 @@ abstract class GwentDatabase : RoomDatabase() {
         const val COLLECTION_TABLE = "collection"
         const val CATEGORY_TABLE = "category"
         const val KEYWORD_TABLE = "keyword"
+
+        const val DATABASE_VERSION = 2
     }
 
     abstract fun cardDao(): CardDao
