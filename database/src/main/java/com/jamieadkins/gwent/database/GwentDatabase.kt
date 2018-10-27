@@ -7,7 +7,7 @@ import com.jamieadkins.gwent.database.entity.*
 
 @Database(entities = [CardEntity::class, ArtEntity::class,
     DeckEntity::class, DeckCardEntity::class, CollectionEntity::class, CategoryEntity::class,
-    KeywordEntity::class], version = 1)
+    KeywordEntity::class], version = 2)
 @TypeConverters(DatabaseConverters::class)
 abstract class GwentDatabase : RoomDatabase() {
 

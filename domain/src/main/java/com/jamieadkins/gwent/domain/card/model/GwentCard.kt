@@ -15,6 +15,7 @@ data class GwentCard(
         val mulligans: Int = 0,
         val colour: GwentCardColour,
         val rarity: GwentCardRarity,
+        val typer: GwentCardType,
         val collectible: Boolean = false,
         val craftCost: Int = 0,
         val millValue: Int = 0,

@@ -3,10 +3,14 @@ package com.jamieadkins.gwent.data
 import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.database.GwentDatabase
+import com.jamieadkins.gwent.database.Migration1To2
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoSet
 import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
@@ -30,5 +34,9 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun database(context: Context): GwentDatabase = Room.databaseBuilder(context, GwentDatabase::class.java, GwentDatabase.DB_NAME).build()
+    fun database(context: Context): GwentDatabase {
+        return Room.databaseBuilder(context, GwentDatabase::class.java, GwentDatabase.DB_NAME)
+            .addMigrations(Migration1To2)
+            .build()
+    }
 }

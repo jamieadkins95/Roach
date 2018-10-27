@@ -9,6 +9,7 @@ import com.jamieadkins.gwent.database.entity.KeywordEntity
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
+import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.card.model.GwentKeyword
 import javax.inject.Inject
 
@@ -45,6 +46,7 @@ class GwentCardMapper @Inject constructor(
                          cardEntity.mulligans,
                          typeToColour(cardEntity.color),
                          rarityIdToRarity(cardEntity.rarity),
+                         typeIdToType(cardEntity.type),
                          cardEntity.collectible,
                          cardEntity.craft,
                          cardEntity.mill,
@@ -68,6 +70,15 @@ class GwentCardMapper @Inject constructor(
             Rarity.EPIC_ID -> GwentCardRarity.EPIC
             Rarity.LEGENDARY_ID -> GwentCardRarity.LEGENDARY
             else -> throw Exception("Rarity not found")
+        }
+    }
+
+    private fun typeIdToType(type: String): GwentCardType {
+        return when (type) {
+            "Unit" -> GwentCardType.Unit
+            "Spell" -> GwentCardType.Spell
+            "Artifact" -> GwentCardType.Artifact
+            else -> throw Exception("Type not found")
         }
     }
 

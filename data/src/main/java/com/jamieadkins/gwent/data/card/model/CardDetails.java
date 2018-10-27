@@ -21,6 +21,7 @@ public class CardDetails {
     private int provision;
     private int mulligans;
     private String type;
+    private String cardType;
     private Map<String, Variation> variations;
 
     private String patch;
@@ -63,6 +64,10 @@ public class CardDetails {
 
     public String getType() {
         return type;
+    }
+
+    public String getCardType() {
+        return cardType;
     }
 
     public int getStrength() {
