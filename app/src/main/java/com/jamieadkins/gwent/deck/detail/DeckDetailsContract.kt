@@ -1,10 +1,33 @@
 package com.jamieadkins.gwent.deck.detail
 
+import com.jamieadkins.gwent.domain.deck.model.GwentDeck
+import com.jamieadkins.gwent.main.MvpPresenter
 
 interface DeckDetailsContract {
-    interface DeckDetailsView : DeckBuilderContract.View {
-        fun onLeaderChanged(newLeaderId: String)
+
+    interface View {
+
+        fun showDeck(deck: GwentDeck)
+
+        fun showLoadingIndicator()
+
+        fun hideLoadingIndicator()
+
+        fun showLeaderPicker()
+
+        fun showRenameDeckMenu()
+
+        fun close()
     }
 
-    interface Presenter : DeckBuilderContract.Presenter
+    interface Presenter : MvpPresenter {
+
+        fun setDeckId(deckId: String)
+
+        fun onChangeLeaderClicked()
+
+        fun onRenameClicked()
+
+        fun onDeleteClicked()
+    }
 }

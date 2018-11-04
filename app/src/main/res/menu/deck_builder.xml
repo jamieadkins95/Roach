@@ -5,12 +5,7 @@
         android:id="@+id/action_change_leader"
         android:icon="@drawable/ic_crown"
         app:showAsAction="ifRoom"
-        android:title="@string/change_leader">
-
-        <!-- Empty menu, populated dynamically -->
-        <menu/>
-
-    </item>
+        android:title="@string/change_leader" />
 
     <item android:id="@+id/action_rename"
         app:showAsAction="never"

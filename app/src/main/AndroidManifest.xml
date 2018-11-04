@@ -44,6 +44,11 @@
         <activity
             android:name=".card.detail.CardDetailsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
+
+        <activity
+            android:name=".deck.detail.DeckDetailsActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
+
         <activity
             android:exported="true"
             android:name=".settings.BasePreferenceActivity"

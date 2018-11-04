@@ -1,6 +1,8 @@
 package com.jamieadkins.gwent.deck.list
 
+import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.domain.deck.GetDecksUseCase
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.main.BasePresenter
@@ -18,6 +20,14 @@ class DeckListPresenter @Inject constructor(
                 override fun onNext(decks: List<GwentDeck>) {
                     view.showDecks(decks)
                     view.showLoadingIndicator(false)
+                }
+            })
+            .addToComposite()
+
+        RxBus.register(GwentDeckClickEvent::class.java)
+            .subscribeWith(object : BaseDisposableObserver<GwentDeckClickEvent>() {
+                override fun onNext(event: GwentDeckClickEvent) {
+                    view.showDeckDetails(event.data)
                 }
             })
             .addToComposite()

@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.list
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
+import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
@@ -64,7 +66,7 @@ class DeckListFragment : DaggerFragment(), DeckListContract.View {
     }
 
     override fun showDeckDetails(deckId: String) {
-        Timber.e("Decks: $deckId")
+        startActivity(DeckDetailsActivity.getIntent(requireContext(), deckId))
     }
 
     override fun showLoadingIndicator(loading: Boolean) { loadingIndicator.isRefreshing = loading }
