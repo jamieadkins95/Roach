@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.Migration1To2
+import com.jamieadkins.gwent.database.Migration2To3
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -37,6 +38,7 @@ class DataModule {
     fun database(context: Context): GwentDatabase {
         return Room.databaseBuilder(context, GwentDatabase::class.java, GwentDatabase.DB_NAME)
             .addMigrations(Migration1To2)
+            .addMigrations(Migration2To3)
             .build()
     }
 }

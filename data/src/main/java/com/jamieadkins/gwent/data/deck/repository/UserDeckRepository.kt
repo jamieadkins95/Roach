@@ -35,6 +35,7 @@ class UserDeckRepository @Inject constructor(
                                     deckWithCards.deck.name,
                                     factionMapper.map(deckWithCards.deck.factionId),
                                     leader,
+                                    deckWithCards.deck.created,
                                     deckWithCards.cards.map { Pair(it.cardId, it.count) }.toMap()
                                 )
                             }
@@ -55,6 +56,7 @@ class UserDeckRepository @Inject constructor(
                             deckWithCards.deck.name,
                             factionMapper.map(deckWithCards.deck.factionId),
                             leader,
+                            deckWithCards.deck.created,
                             deckWithCards.cards.map { Pair(it.cardId, it.count) }.toMap()
                         )
                     }

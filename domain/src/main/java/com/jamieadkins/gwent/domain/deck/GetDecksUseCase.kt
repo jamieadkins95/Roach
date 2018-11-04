@@ -13,6 +13,7 @@ class GetDecksUseCase @Inject constructor(
 
     fun get(): Observable<List<GwentDeck>> {
         return deckRepository.getDecks()
+            .map { decks -> decks.sortedByDescending { it.createdAt } }
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }

@@ -5,8 +5,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-import java.lang.reflect.Type
-import java.util.Collections
+import java.util.*
 
 class DatabaseConverters {
     private var gson = Gson()
@@ -42,5 +41,15 @@ class DatabaseConverters {
     @TypeConverter
     fun intMapToString(map: Map<String, Int>): String {
         return gson.toJson(map)
+    }
+
+    @TypeConverter
+    fun fromTimestamp(value: Long): Date {
+        return Date(value)
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date): Long {
+        return date.time
     }
 }

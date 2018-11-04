@@ -22,7 +22,7 @@ abstract class GwentDatabase : RoomDatabase() {
         const val CATEGORY_TABLE = "category"
         const val KEYWORD_TABLE = "keyword"
 
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     abstract fun cardDao(): CardDao
