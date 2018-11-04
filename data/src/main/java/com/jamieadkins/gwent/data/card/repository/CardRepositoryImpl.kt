@@ -2,11 +2,13 @@ package com.jamieadkins.gwent.data.card.repository
 
 import com.jamieadkins.gwent.data.CardSearch
 import com.jamieadkins.gwent.data.CardSearchData
+import com.jamieadkins.gwent.data.FromFactionMapper
 import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.LocaleRepository
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class CardRepositoryImpl @Inject constructor(
     private val database: GwentDatabase,
     private val cardMapper: GwentCardMapper,
+    private val fromFactionMapper: FromFactionMapper,
     private val localeRepository: LocaleRepository) : CardRepository {
 
     private fun getCardEntities(): Observable<List<CardWithArtEntity>> {
@@ -75,6 +78,18 @@ class CardRepositoryImpl @Inject constructor(
             Function4 { card: CardWithArtEntity, keywords: List<KeywordEntity>,
                         categories: List<CategoryEntity>, locale: String ->
                 cardMapper.map(card, locale, keywords, categories)
+            })
+    }
+
+    override fun getLeaders(faction: GwentFaction): Observable<List<GwentCard>> {
+        return Observable.combineLatest(
+            database.cardDao().getLeaders(fromFactionMapper.map(faction)).toObservable(),
+            database.keywordDao().getAllKeywords().toObservable(),
+            database.categoryDao().getAllCategories().toObservable(),
+            localeRepository.getLocale(),
+            Function4 { cards: List<CardWithArtEntity>, keywords: List<KeywordEntity>,
+                        categories: List<CategoryEntity>, locale: String ->
+                cardMapper.mapList(cards, locale, keywords, categories)
             })
     }
 

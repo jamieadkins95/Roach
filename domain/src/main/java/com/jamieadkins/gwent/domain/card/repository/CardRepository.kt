@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.domain.card.repository
 
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import io.reactivex.Observable
 
@@ -12,4 +13,6 @@ interface CardRepository {
     fun getCards(cardIds: List<String>): Observable<List<GwentCard>>
 
     fun getCard(id: String): Observable<GwentCard>
+
+    fun getLeaders(faction: GwentFaction): Observable<List<GwentCard>>
 }

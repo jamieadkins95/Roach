@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.main.CardResourceHelper
 import dagger.android.support.DaggerFragment
@@ -50,6 +51,11 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         presenter.onAttach()
     }
 
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.deck_builder, menu)
@@ -83,7 +89,8 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     }
 
     override fun showLeaderPicker() {
-        Toast.makeText(context, "Change Leader", Toast.LENGTH_SHORT).show()
+        val dialog = LeaderPickerDialog.newInstance(deckId)
+        dialog.show(activity?.supportFragmentManager, dialog.tag)
     }
 
     override fun showRenameDeckMenu() {

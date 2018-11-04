@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.jamieadkins.gwent.database.entity.CardEntity
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
+import com.jamieadkins.gwent.domain.GwentFaction
 import io.reactivex.Flowable
 import io.reactivex.Single
 
@@ -31,6 +32,10 @@ interface CardDao {
     @Transaction
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + "  WHERE id IN(:ids)")
     fun getCards(ids: List<String>): Flowable<List<CardWithArtEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + " WHERE faction=:faction AND type='Leader'")
+    fun getLeaders(faction: String): Flowable<List<CardWithArtEntity>>
 
     @Query("SELECT COUNT(*) FROM " + GwentDatabase.CARD_TABLE)
     fun count(): Flowable<Int>
