@@ -6,6 +6,7 @@
 
     <dimen name="bb_padding">52dp</dimen>
 
+    <dimen name="divider_spacing">8dp</dimen>
 
     <dimen name="card_image_pixel_negation_vertical">-25px</dimen>
     <dimen name="card_image_pixel_negation_horizontal">-150px</dimen>

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import dagger.android.support.DaggerFragment
@@ -17,6 +19,8 @@ import javax.inject.Inject
 class DeckListFragment : DaggerFragment(), DeckListContract.View {
 
     @Inject lateinit var presenter: DeckListContract.Presenter
+
+    private val controller = DeckListController()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -36,6 +40,12 @@ class DeckListFragment : DaggerFragment(), DeckListContract.View {
         loadingIndicator.setColorSchemeResources(R.color.gwentAccent)
         loadingIndicator.isEnabled = false
 
+        val layoutManager = LinearLayoutManager(recyclerView.context)
+        recyclerView.layoutManager = layoutManager
+        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
+        recyclerView.addItemDecoration(dividerItemDecoration)
+        recyclerView.adapter = controller.adapter
+
         btnCreate.setOnClickListener {
             val dialog = CreateDeckDialog()
             dialog.show(activity?.supportFragmentManager, dialog.tag)
@@ -50,7 +60,7 @@ class DeckListFragment : DaggerFragment(), DeckListContract.View {
     }
 
     override fun showDecks(decks: List<GwentDeck>) {
-        Timber.e("Decks: ${decks.size}")
+       controller.setData(decks)
     }
 
     override fun showDeckDetails(deckId: String) {
