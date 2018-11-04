@@ -6,6 +6,8 @@ import com.jamieadkins.gwent.deck.detail.DeckDetailsFragment
 import com.jamieadkins.gwent.deck.detail.DeckDetailsModule
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerModule
+import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
+import com.jamieadkins.gwent.deck.detail.rename.RenameDeckModule
 import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.deck.list.DeckListModule
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
@@ -34,4 +36,8 @@ abstract class FragmentInjectionModule private constructor() {
     @FragmentScoped
     @ContributesAndroidInjector(modules = [LeaderPickerModule::class])
     internal abstract fun leaderPicker(): LeaderPickerDialog
+
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [RenameDeckModule::class])
+    internal abstract fun renameDeck(): RenameDeckDialog
 }

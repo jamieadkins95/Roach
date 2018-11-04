@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
+import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.main.CardResourceHelper
 import dagger.android.support.DaggerFragment
@@ -94,7 +95,8 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     }
 
     override fun showRenameDeckMenu() {
-        Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show()
+        val dialog = RenameDeckDialog.newInstance(deckId)
+        dialog.show(activity?.supportFragmentManager, dialog.tag)
     }
 
     override fun showLoadingIndicator() {
