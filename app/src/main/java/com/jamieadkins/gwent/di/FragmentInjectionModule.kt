@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.di
 
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
+import com.jamieadkins.gwent.deck.create.CreateDeckModule
 import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.deck.list.DeckListModule
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
@@ -19,6 +20,6 @@ abstract class FragmentInjectionModule private constructor() {
     internal abstract fun deckList(): DeckListFragment
 
     @FragmentScoped
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [CreateDeckModule::class])
     internal abstract fun createDeck(): CreateDeckDialog
 }

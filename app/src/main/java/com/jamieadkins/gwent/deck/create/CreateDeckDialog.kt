@@ -6,12 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.ChipGroup
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
+import com.jamieadkins.gwent.domain.GwentFaction
 import kotlinx.android.synthetic.main.fragment_create_deck.*
+import timber.log.Timber
+import javax.inject.Inject
 
-class CreateDeckDialog : DaggerSupportDialogFragment() {
+class CreateDeckDialog : DaggerSupportDialogFragment(), CreateDeckContract.View {
+
+    @Inject lateinit var presenter: CreateDeckContract.Presenter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), this.theme)
@@ -24,8 +28,24 @@ class CreateDeckDialog : DaggerSupportDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        group_faction.setOnCheckedChangeListener { group: ChipGroup?, checkedId: Int ->
-            // Do nothing
+        btnCreate.setOnClickListener {
+            val faction = when (groupFaction.checkedChipId) {
+                R.id.faction_nr -> GwentFaction.NORTHERN_REALMS
+                R.id.faction_mon -> GwentFaction.MONSTER
+                R.id.faction_sk -> GwentFaction.SKELLIGE
+                R.id.faction_sc -> GwentFaction.SCOIATAEL
+                R.id.faction_ng -> GwentFaction.NILFGAARD
+                else -> GwentFaction.NORTHERN_REALMS
+            }
+            presenter.createDeck(inputName.text?.toString() ?: "", faction)
         }
+    }
+
+    override fun showDeckDetails(deckId: String) {
+        Timber.e("Deck ID: $deckId")
+    }
+
+    override fun close() {
+        this.dismiss()
     }
 }
