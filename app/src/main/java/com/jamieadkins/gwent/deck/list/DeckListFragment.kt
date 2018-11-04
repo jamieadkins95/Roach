@@ -1,17 +1,15 @@
 package com.jamieadkins.gwent.deck.list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
-import kotlinx.android.synthetic.main.fragment_collection_placeholder.*
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,6 +35,12 @@ class DeckListFragment : DaggerFragment(), DeckListContract.View {
 
         loadingIndicator.setColorSchemeResources(R.color.gwentAccent)
         loadingIndicator.isEnabled = false
+
+        btnCreate.setOnClickListener {
+            val dialog = CreateDeckDialog()
+            dialog.show(activity?.supportFragmentManager, dialog.tag)
+        }
+
         presenter.onAttach()
     }
 

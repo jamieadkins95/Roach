@@ -45,4 +45,12 @@
         <item name="closeIconVisible">false</item>
         <item name="checkedIcon">@drawable/ic_check</item>
     </style>
+
+    <style name="Widget.MaterialComponents.Chip.Choice.Dark" parent="Base.Widget.MaterialComponents.Chip.Dark">
+        <item name="android:checkable">true</item>
+        <item name="chipIconVisible">false</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+    </style>
 </resources>

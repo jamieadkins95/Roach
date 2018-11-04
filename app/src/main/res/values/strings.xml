@@ -52,5 +52,7 @@
     <string name="change_leader">Change Leader</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
+    <string name="deck_name">Deck Name</string>
+    <string name="create_deck">Create Deck</string>
 
 </resources>
