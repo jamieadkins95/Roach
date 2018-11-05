@@ -13,7 +13,6 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
 
     @AutoModel lateinit var updateView: UpdateAvailableViewModel_
     @AutoModel lateinit var headerView: HeaderViewModel_
-    @AutoModel lateinit var subheaderView: SubHeaderViewModel_
 
     override fun buildModels(data: CardDatabaseScreenModel) {
 
@@ -31,12 +30,6 @@ class CardDatabaseController(val resources: Resources) : TypedEpoxyController<Ca
                 .title(R.string.search_results)
                 .secondaryText(resources.getString(R.string.results_found, data.cards.size, data.searchQuery))
                 .addIf(data.searchQuery.isNotEmpty(), this)
-
-        val filtersApplied = 0
-
-        subheaderView
-                .title(resources.getString(R.string.filters_applied, filtersApplied))
-                .addIf(data.searchQuery.isEmpty() && filtersApplied > 0, this)
 
         data.cards.forEach { card ->
             val model = GwentCardViewModel_()

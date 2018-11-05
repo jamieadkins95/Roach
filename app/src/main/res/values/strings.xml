@@ -54,5 +54,7 @@
     <string name="delete">Delete</string>
     <string name="deck_name">Deck Name</string>
     <string name="create_deck">Create Deck</string>
+    <string name="deck">Deck</string>
+    <string name="cards_in_deck">%1$d/%2$d cards in deck</string>
 
 </resources>

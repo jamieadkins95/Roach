@@ -8,12 +8,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.main.CardResourceHelper
 import dagger.android.support.DaggerFragment
@@ -26,6 +27,9 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     lateinit var deckId: String
 
     @Inject lateinit var presenter: DeckDetailsContract.Presenter
+
+    private lateinit var cardDatabaseController: DeckCardDatabaseController
+    private lateinit var deckController: DeckController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         deckId = arguments?.getString(KEY_ID) ?: throw Exception("Deck id not found.")
@@ -44,8 +48,17 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         }
         toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
 
-        val layoutManager = LinearLayoutManager(cardDatabase.context)
-        cardDatabase.layoutManager = layoutManager
+        cardDatabase.layoutManager = LinearLayoutManager(cardDatabase.context)
+        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
+        cardDatabase.addItemDecoration(dividerItemDecoration)
+        cardDatabaseController = DeckCardDatabaseController(resources)
+        cardDatabase.adapter = cardDatabaseController.adapter
+
+        deckController = DeckController(resources)
+        deckList.layoutManager = LinearLayoutManager(deckList.context)
+        deckList.addItemDecoration(dividerItemDecoration)
+        deckList.adapter = deckController.adapter
+
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
 
         presenter.setDeckId(deckId)
@@ -80,6 +93,10 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         }
     }
 
+    override fun showCardDatabase(cards: List<GwentCard>, searchQuery: String) {
+        cardDatabaseController.setData(cards, searchQuery)
+    }
+
     override fun showDeck(deck: GwentDeck) {
         (activity as? AppCompatActivity)?.title = deck.name
 
@@ -87,6 +104,8 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, deck.faction)
         }
+
+        deckController.setData(deck)
     }
 
     override fun showLeaderPicker() {
