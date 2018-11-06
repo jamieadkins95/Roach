@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 class GetCardsUseCase @Inject constructor(
     private val cardRepository: CardRepository,
-    private val filterRepository: FilterRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
 
@@ -25,32 +24,8 @@ class GetCardsUseCase @Inject constructor(
     }
 
     private fun internalGetCards(cardObservable: Observable<List<GwentCard>>): Observable<List<GwentCard>> {
-        return Observable.combineLatest(
-            cardObservable,
-            filterRepository.getFilter(),
-            BiFunction { cards: List<GwentCard>, filter: CardFilter ->
-                val filtered = cards.filter { doesCardMeetFilter(filter, it) }
-
-                when (filter.sortedBy) {
-                    SortedBy.SEARCH_RELEVANCE -> filtered
-                    SortedBy.ALPHABETICALLY_ASC -> filtered.sortedBy { it.name }
-                    SortedBy.ALPHABETICALLY_DESC -> filtered.sortedByDescending { it.name }
-                    SortedBy.STRENGTH_ASC -> filtered.sortedBy { it.strength }
-                    SortedBy.STRENGTH_DESC -> filtered.sortedByDescending { it.strength }
-                }
-            })
+        return cardObservable
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }
-
-    private fun doesCardMeetFilter(filter: CardFilter, card: GwentCard): Boolean {
-        val include = !filter.isCollectibleOnly || card.collectible
-        val faction = filter.factionFilter[card.faction] ?: false
-        val rarity = filter.rarityFilter[card.rarity] ?: false
-        val colour = filter.colourFilter[card.colour] ?: false
-        val type = filter.typeFilter[card.type] ?: false
-        val provisions = card.provisions >= filter.minProvisions && card.provisions <= filter.maxProvisions
-        return (faction && rarity && colour && include && provisions && type)
-    }
-
 }

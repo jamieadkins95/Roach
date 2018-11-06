@@ -48,6 +48,8 @@ interface FilterContract {
 
     interface Presenter : MvpPresenter {
 
+        fun setDeck(deckId: String)
+
         fun applyFilters()
 
         fun resetFilters()

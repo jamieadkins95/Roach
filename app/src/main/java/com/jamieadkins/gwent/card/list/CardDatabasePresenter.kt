@@ -10,11 +10,15 @@ import com.jamieadkins.gwent.domain.card.GetCardsUseCase
 import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
+import com.jamieadkins.gwent.domain.filter.FilterCardsUseCase
+import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.update.model.Notice
 import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.domain.update.repository.GetNoticesUseCase
 import com.jamieadkins.gwent.main.BasePresenter
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -22,6 +26,8 @@ import javax.inject.Inject
 class CardDatabasePresenter @Inject constructor(
     private val view: CardDatabaseContract.View,
     private val getCardsUseCase: GetCardsUseCase,
+    private val filterCardsUseCase: FilterCardsUseCase,
+    private val getFilterUseCase: GetFilterUseCase,
     private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase,
     private val getNoticesUseCase: GetNoticesUseCase
 ) : BasePresenter(), CardDatabaseContract.Presenter {
@@ -61,7 +67,15 @@ class CardDatabasePresenter @Inject constructor(
                     getCardsUseCase.searchCards(query)
                 }
 
-                cards.map { Pair(it, query) }
+                Observable.combineLatest(
+                    cards,
+                    getFilterUseCase.getFilter(),
+                    BiFunction { cardList: List<GwentCard>, filter: CardFilter ->
+                        Pair(cardList, filter)
+                    }
+                )
+                    .flatMapSingle { filterCardsUseCase.filter(it.first, it.second) }
+                    .map { Pair(it, query) }
                     .doOnSubscribe { view.showLoadingIndicator(true) }
             }
 

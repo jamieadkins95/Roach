@@ -12,9 +12,25 @@ import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor() : FilterRepository {
 
-    private val filter = BehaviorSubject.createDefault(CardFilter())
+    private val filters = mutableMapOf<String, BehaviorSubject<CardFilter>>()
 
-    override fun getFilter(): Observable<CardFilter> = filter
+    override fun getFilter(deckId: String): Observable<CardFilter> {
+        return internalGetFilter(deckId)
+    }
 
-    override fun setFilter(cardFilter: CardFilter) = filter.onNext(cardFilter)
+    override fun setFilter(deckId: String, cardFilter: CardFilter) {
+        internalGetFilter(deckId).onNext(cardFilter)
+    }
+
+    override fun resetFilter(deckId: String) {
+        internalGetFilter(deckId).onNext(CardFilter())
+    }
+
+    private fun getKey(deckId: String): String {
+        return if (deckId.isEmpty()) "card-database" else deckId
+    }
+
+    private fun internalGetFilter(deckId: String): BehaviorSubject<CardFilter> {
+        return filters.getOrPut(getKey(deckId)) { BehaviorSubject.createDefault(CardFilter()) }
+    }
 }

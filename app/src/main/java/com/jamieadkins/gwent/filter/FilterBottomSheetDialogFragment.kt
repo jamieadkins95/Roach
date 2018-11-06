@@ -27,6 +27,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.setDeck(arguments?.getString(KEY_DECK_ID) ?: "")
         presenter.onAttach()
         btnApply.setOnClickListener { presenter.applyFilters() }
         btnReset.setOnClickListener { presenter.resetFilters() }
@@ -117,4 +118,18 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setTypeLeaderFilter(checked: Boolean) { filter_type_leader.isChecked = checked }
 
     override fun close() = dismiss()
+
+    companion object {
+
+        private const val KEY_DECK_ID = "KEY_DECK_ID"
+
+        fun getInstance(deckId: String): FilterBottomSheetDialogFragment {
+            val dialog = FilterBottomSheetDialogFragment()
+            val arguments = Bundle().apply {
+                putString(KEY_DECK_ID, deckId)
+            }
+            dialog.arguments = arguments
+            return dialog
+        }
+    }
 }

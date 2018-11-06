@@ -6,15 +6,19 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
+import com.jamieadkins.gwent.domain.filter.ResetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.main.BasePresenter
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
     private val view: FilterContract.View,
     private val getFilterUseCase: GetFilterUseCase,
-    private val setFilterUseCase: SetFilterUseCase
+    private val setFilterUseCase: SetFilterUseCase,
+    private val resetFilterUseCase: ResetFilterUseCase
 ) : BasePresenter(), FilterContract.Presenter {
 
     var nilfgaard = false
@@ -40,8 +44,10 @@ class FilterPresenter @Inject constructor(
     var minProvisions = 0
     var maxProvisions = 100
 
+    private var deckId: String = ""
+
     override fun onAttach() {
-        getFilterUseCase.getFilter()
+        getFilterUseCase.getFilter(deckId)
             .firstOrError()
             .subscribeWith(object : BaseDisposableSingle<CardFilter>() {
                 override fun onSuccess(filter: CardFilter) {
@@ -105,7 +111,7 @@ class FilterPresenter @Inject constructor(
     }
 
     override fun resetFilters() {
-        setFilterUseCase.setFilter(CardFilter())
+        resetFilterUseCase.resetFilter(deckId)
         view.close()
     }
 
@@ -188,5 +194,9 @@ class FilterPresenter @Inject constructor(
 
     override fun onRefresh() {
         // Do nothing
+    }
+
+    override fun setDeck(deckId: String) {
+        this.deckId = deckId
     }
 }

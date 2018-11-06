@@ -15,8 +15,8 @@ class GetFilterUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) {
 
-    fun getFilter(): Observable<CardFilter> {
-        return filterRepository.getFilter()
+    fun getFilter(deckId: String = ""): Observable<CardFilter> {
+        return filterRepository.getFilter(deckId)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }
