@@ -50,6 +50,7 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
                     .cardTooltip(card.tooltip)
                     .count(count)
                     .provisionCost(card.provisions)
+                    .strength(card.strength)
                     .clickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckClick(card.id)) }
                     .longClickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckLongClick(card.id)); true }
                     .addTo(this)

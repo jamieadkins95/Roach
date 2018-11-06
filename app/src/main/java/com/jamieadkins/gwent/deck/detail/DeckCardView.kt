@@ -49,4 +49,14 @@ class DeckCardView @JvmOverloads constructor(context: Context, attrs: AttributeS
     fun setCount(countInDeck: Int) {
         count.text = "x$countInDeck"
     }
+
+    @ModelProp
+    fun setStrength(cardStrength: Int) {
+        if (cardStrength > 0) {
+            strength.visibility = View.VISIBLE
+            strength.text = cardStrength.toString()
+        } else {
+            strength.visibility = View.INVISIBLE
+        }
+    }
 }
