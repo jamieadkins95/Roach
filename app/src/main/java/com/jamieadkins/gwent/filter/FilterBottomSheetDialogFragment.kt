@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
+import com.jamieadkins.gwent.domain.GwentFaction
 import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
 
@@ -118,6 +119,27 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setTypeLeaderFilter(checked: Boolean) { filter_type_leader.isChecked = checked }
 
     override fun close() = dismiss()
+
+    override fun showFiltersForDeckBuilder(faction: GwentFaction) {
+        val factionFilters = mapOf(
+            GwentFaction.NILFGAARD to filter_faction_ng,
+            GwentFaction.MONSTER to filter_faction_mon,
+            GwentFaction.NORTHERN_REALMS to filter_faction_nr,
+            GwentFaction.SKELLIGE to filter_faction_sk,
+            GwentFaction.SCOIATAEL to filter_faction_sc
+        )
+
+        factionFilters.entries.forEach {
+            if (it.key == faction) {
+                it.value.visibility = View.VISIBLE
+            } else {
+                it.value.visibility = View.GONE
+            }
+        }
+
+        filter_type_leader.visibility = View.GONE
+        filter_color_leader.visibility = View.GONE
+    }
 
     companion object {
 

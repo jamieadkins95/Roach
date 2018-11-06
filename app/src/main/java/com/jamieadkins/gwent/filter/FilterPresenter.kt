@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
+import com.jamieadkins.gwent.domain.deck.GetDeckUseCase
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.ResetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
@@ -18,7 +19,8 @@ class FilterPresenter @Inject constructor(
     private val view: FilterContract.View,
     private val getFilterUseCase: GetFilterUseCase,
     private val setFilterUseCase: SetFilterUseCase,
-    private val resetFilterUseCase: ResetFilterUseCase
+    private val resetFilterUseCase: ResetFilterUseCase,
+    private val getDeckUseCase: GetDeckUseCase
 ) : BasePresenter(), FilterContract.Presenter {
 
     var nilfgaard = false
@@ -108,6 +110,18 @@ class FilterPresenter @Inject constructor(
                 }
             })
             .addToComposite()
+
+        if (!deckId.isEmpty()) {
+            getDeckUseCase.get(deckId)
+                .firstOrError()
+                .map { it.faction }
+                .subscribeWith(object : BaseDisposableSingle<GwentFaction>() {
+                    override fun onSuccess(faction: GwentFaction) {
+                        view.showFiltersForDeckBuilder(faction)
+                    }
+                })
+                .addToComposite()
+        }
     }
 
     override fun resetFilters() {

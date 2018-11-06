@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.filter
 
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.main.MvpPresenter
 
 interface FilterContract {
@@ -44,6 +45,8 @@ interface FilterContract {
         fun setSpellFilter(checked: Boolean)
 
         fun setTypeLeaderFilter(checked: Boolean)
+
+        fun showFiltersForDeckBuilder(faction: GwentFaction)
     }
 
     interface Presenter : MvpPresenter {
