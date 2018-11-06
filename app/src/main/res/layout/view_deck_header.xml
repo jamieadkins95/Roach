@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:fontFamily="@font/gwent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        tools:text="Deck Name"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintStart_toEndOf="@id/start"
+        app:layout_constraintEnd_toStartOf="@id/provisionCost"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardCount"
+        tools:text="25/25 cards in deck"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintStart_toEndOf="@id/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/provisionCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gwent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/gwentAccent"
+        tools:text="165/165"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end" />
+
+</merge>

@@ -13,15 +13,16 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 
 class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>() {
 
-    @AutoModel lateinit var headerView: HeaderViewModel_
+    @AutoModel lateinit var headerView: DeckHeaderViewModel_
     @AutoModel lateinit var leaderSubHeader: SubHeaderViewModel_
     @AutoModel lateinit var cardsSubHeader: SubHeaderViewModel_
 
     override fun buildModels(deck: GwentDeck) {
 
         headerView
-            .title(deck.name)
-            .secondaryText(resources.getString(R.string.cards_in_deck, deck.totalCardCount, 25))
+            .deckName(deck.name)
+            .cardCount(deck.totalCardCount)
+            .provisionCost(deck.provisionCost)
             .addTo(this)
 
         leaderSubHeader
