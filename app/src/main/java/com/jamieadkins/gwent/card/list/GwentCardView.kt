@@ -43,6 +43,11 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
         setOnClickListener(listener)
     }
 
+    @CallbackProp
+    fun setLongClickListener(listener: View.OnLongClickListener?) {
+        setOnLongClickListener(listener)
+    }
+
     @TextProp
     fun setCardName(text: CharSequence) {
         tvName.text = text

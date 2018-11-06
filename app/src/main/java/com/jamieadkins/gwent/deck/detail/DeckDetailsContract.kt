@@ -21,6 +21,8 @@ interface DeckDetailsContract {
         fun showRenameDeckMenu()
 
         fun close()
+
+        fun showCardDetails(cardId: String)
     }
 
     interface Presenter : MvpPresenter {

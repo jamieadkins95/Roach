@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.deck.detail
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.card.detail.CardDetailsActivity
+import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
@@ -130,6 +133,12 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
 
     override fun close() {
         activity?.finish()
+    }
+
+    override fun showCardDetails(cardId: String) {
+        val intent = Intent(requireContext(), CardDetailsActivity::class.java)
+        intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
+        activity?.startActivity(intent)
     }
 
     companion object {
