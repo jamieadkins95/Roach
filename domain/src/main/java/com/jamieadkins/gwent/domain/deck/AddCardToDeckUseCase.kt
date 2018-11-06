@@ -13,7 +13,7 @@ class AddCardToDeckUseCase @Inject constructor(
 ) {
 
     fun addCard(deckId: String, cardId: String): Single<AddCardToDeckResult> {
-        val countInDeck = deckRepository.getDeckOnce(deckId).map { it.cards[cardId] ?: 0 }
+        val countInDeck = deckRepository.getDeckOnce(deckId).map { it.cardCounts[cardId] ?: 0 }
         val cardTier = cardRepository.getCard(cardId).firstOrError().map { it.colour }
         return Single.zip(countInDeck, cardTier, BiFunction { inDeck: Int, tier: GwentCardColour -> Pair(inDeck, tier) })
             .flatMap {

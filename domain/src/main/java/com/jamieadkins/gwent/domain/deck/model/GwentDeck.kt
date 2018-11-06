@@ -10,7 +10,8 @@ data class GwentDeck(
     val faction: GwentFaction,
     val leader: GwentCard,
     val createdAt: Date,
-    val cards: Map<String, Int> = mapOf()) {
+    val cards: Map<String, GwentCard> = emptyMap(),
+    val cardCounts: Map<String, Int> = emptyMap()) {
 
     override fun toString(): String {
         return "$name $faction ${leader.name}"

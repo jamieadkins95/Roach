@@ -20,7 +20,7 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
     override fun buildModels(deck: GwentDeck) {
 
         var cardCount = 0
-        deck.cards.entries.forEach { cardCount += it.value }
+        deck.cardCounts.entries.forEach { cardCount += it.value }
 
         headerView
             .title(R.string.deck)
@@ -49,16 +49,18 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
             .title(R.string.cards)
             .addTo(this)
 
-        deck.cards.entries.forEach {
-            DeckCardViewModel_()
-                .id(it.key.toLong())
-                .cardName(it.key)
-                .cardTooltip(it.key)
-                .count(it.value)
-                .provisionCost(it.value)
-                .clickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckClick(it.key)) }
-                .longClickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckLongClick(it.key)); true }
-                .addTo(this)
-        }
+        deck.cards.values.sortedByDescending { it.provisions }
+            .forEach { card ->
+                val count = deck.cardCounts[card.id] ?: 0
+                DeckCardViewModel_()
+                    .id(card.id.toLong())
+                    .cardName(card.name)
+                    .cardTooltip(card.tooltip)
+                    .count(count)
+                    .provisionCost(card.provisions)
+                    .clickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckClick(card.id)) }
+                    .longClickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.DeckLongClick(card.id)); true }
+                    .addTo(this)
+            }
     }
 }

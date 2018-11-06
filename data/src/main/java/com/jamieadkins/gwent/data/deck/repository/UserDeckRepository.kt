@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.data.card.model.Faction
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
+import com.jamieadkins.gwent.database.entity.DeckWithCardsEntity
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
@@ -25,21 +26,33 @@ class UserDeckRepository @Inject constructor(
     override fun getDecks(): Observable<List<GwentDeck>> {
         return database.deckDao().getDecks()
             .toObservable()
+            .map {
+                it.map {
+                    val deck = DeckWithCardsEntity()
+                    deck.deck = it.deck
+                    deck.cards = it.cards.filter { it.count > 0 }
+                    deck
+                }
+            }
             .switchMap { decks ->
                 Observable.fromIterable(decks)
                     .flatMapSingle { deckWithCards ->
-                        cardRepository.getCard(deckWithCards.deck.leaderId)
-                            .firstOrError()
-                            .map { leader ->
+                        Single.zip(
+                            cardRepository.getCard(deckWithCards.deck.leaderId).firstOrError(),
+                            cardRepository.getCards(deckWithCards.cards.map { it.cardId }).firstOrError(),
+                            BiFunction { leader: GwentCard, cards: List<GwentCard> ->
                                 GwentDeck(
                                     deckWithCards.deck.id.toString(),
                                     deckWithCards.deck.name,
                                     factionMapper.map(deckWithCards.deck.factionId),
                                     leader,
                                     deckWithCards.deck.created,
-                                    deckWithCards.cards.map { Pair(it.cardId, it.count) }.toMap()
+                                    cards.map { Pair(it.id, it) }.toMap(),
+                                    deckWithCards.cards
+                                        .map { Pair(it.cardId, it.count) }
+                                        .toMap()
                                 )
-                            }
+                            })
                     }
                     .toList()
                     .toObservable()
@@ -49,18 +62,29 @@ class UserDeckRepository @Inject constructor(
     override fun getDeck(deckId: String): Observable<GwentDeck> {
         return database.deckDao().getDeck(deckId)
             .toObservable()
+            .map {
+                val deck = DeckWithCardsEntity()
+                deck.deck = it.deck
+                deck.cards = it.cards.filter { it.count > 0 }
+                deck
+            }
             .switchMap { deckWithCards ->
-                cardRepository.getCard(deckWithCards.deck.leaderId)
-                    .map { leader ->
+                Observable.combineLatest(
+                    cardRepository.getCard(deckWithCards.deck.leaderId),
+                    cardRepository.getCards(deckWithCards.cards.map { it.cardId }),
+                    BiFunction { leader: GwentCard, cards: List<GwentCard> ->
                         GwentDeck(
                             deckWithCards.deck.id.toString(),
                             deckWithCards.deck.name,
                             factionMapper.map(deckWithCards.deck.factionId),
                             leader,
                             deckWithCards.deck.created,
-                            deckWithCards.cards.asSequence().filter { it.count > 0 }.map { Pair(it.cardId, it.count) }.toList().toMap()
+                            cards.map { Pair(it.id, it) }.toMap(),
+                            deckWithCards.cards
+                                .map { Pair(it.cardId, it.count) }
+                                .toMap()
                         )
-                    }
+                    })
             }
     }
 
