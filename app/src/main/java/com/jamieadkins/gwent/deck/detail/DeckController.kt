@@ -19,12 +19,9 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
 
     override fun buildModels(deck: GwentDeck) {
 
-        var cardCount = 0
-        deck.cardCounts.entries.forEach { cardCount += it.value }
-
         headerView
-            .title(R.string.deck)
-            .secondaryText(resources.getString(R.string.cards_in_deck, cardCount, 25))
+            .title(deck.name)
+            .secondaryText(resources.getString(R.string.cards_in_deck, deck.totalCardCount, 25))
             .addTo(this)
 
         leaderSubHeader
@@ -32,15 +29,10 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
             .addTo(this)
 
         val leader = deck.leader
-        GwentCardViewModel_()
+        DeckLeaderViewModel_()
             .id(leader.id)
             .cardName(leader.name)
             .cardTooltip(leader.tooltip)
-            .cardCategories(leader.categories)
-            .cardProvisions(leader.provisions)
-            .cardImage(leader.cardArt.medium)
-            .cardFaction(leader.faction)
-            .cardRarity(leader.rarity)
             .clickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.LeaderClick(leader.id)) }
             .longClickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.LeaderLongClick(leader.id)); true }
             .addTo(this)

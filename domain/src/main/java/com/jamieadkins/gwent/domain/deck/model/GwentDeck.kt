@@ -16,4 +16,7 @@ data class GwentDeck(
     override fun toString(): String {
         return "$name $faction ${leader.name}"
     }
+
+    val totalCardCount: Int = cardCounts.values.sum()
+    val provisionCost: Int = cards.values.map { it.provisions }.sum()
 }
