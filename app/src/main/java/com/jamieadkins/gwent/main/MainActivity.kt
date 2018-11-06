@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private fun getFragmentForMenuItem(itemId: Int): Fragment {
         return when (itemId) {
             R.id.navigation_card_db -> CardDatabaseFragment()
-            R.id.navigation_collection -> CollectionPlaceholderFragment()
             R.id.navigation_decks -> if (BuildConfig.DEBUG) DeckListFragment() else DeckListPlaceholderFragment()
             R.id.navigation_gwent -> GwentFragment()
             else -> CardDatabaseFragment()

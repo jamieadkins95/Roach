@@ -5,10 +5,6 @@
         android:icon="@drawable/ic_cards_filled"
         android:title="@string/cards" />
     <item
-        android:id="@+id/navigation_collection"
-        android:icon="@drawable/ic_cards_outline"
-        android:title="@string/collection" />
-    <item
         android:id="@+id/navigation_decks"
         android:icon="@drawable/ic_deck"
         android:title="@string/decks" />
