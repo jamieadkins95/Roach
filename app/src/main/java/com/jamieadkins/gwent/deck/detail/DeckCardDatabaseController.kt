@@ -8,6 +8,8 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.card.list.GwentCardViewModel_
 import com.jamieadkins.gwent.card.list.HeaderViewModel_
+import com.jamieadkins.gwent.deck.DeckBuilderEvent
+import com.jamieadkins.gwent.deck.DeckBuilderEvents
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 
 class DeckCardDatabaseController(val resources: Resources) : Typed2EpoxyController<List<GwentCard>, String>() {
@@ -31,7 +33,8 @@ class DeckCardDatabaseController(val resources: Resources) : Typed2EpoxyControll
                     .cardImage(card.cardArt.medium)
                     .cardFaction(card.faction)
                     .cardRarity(card.rarity)
-                    .clickListener { _ -> RxBus.post(GwentCardClickEvent(card.id)) }
+                    .clickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.CardDatabaseClick(card.id)) }
+                    .longClickListener { _ -> DeckBuilderEvents.post(DeckBuilderEvent.CardDatabaseLongClick(card.id)); true }
 
             model.addTo(this)
         }

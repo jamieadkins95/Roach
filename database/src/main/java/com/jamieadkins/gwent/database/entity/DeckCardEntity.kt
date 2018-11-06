@@ -16,11 +16,9 @@ import com.jamieadkins.gwent.database.GwentDatabase
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("deckId")))],
         tableName = GwentDatabase.DECK_CARD_TABLE,
-        indices = [Index(value = ["cardId"]), Index(value = ["deckId"])])
+        indices = [Index(value = ["cardId"]), Index(value = ["deckId"])],
+        primaryKeys = ["deckId", "cardId"])
 data class DeckCardEntity(
     val deckId: String,
     val cardId: String,
-    val count: Int = 0) {
-
-    @PrimaryKey(autoGenerate = true) var id: Long? = null
-}
+    val count: Int = 0)

@@ -14,6 +14,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserDeckRepository @Inject constructor(
@@ -57,7 +58,7 @@ class UserDeckRepository @Inject constructor(
                             factionMapper.map(deckWithCards.deck.factionId),
                             leader,
                             deckWithCards.deck.created,
-                            deckWithCards.cards.map { Pair(it.cardId, it.count) }.toMap()
+                            deckWithCards.cards.asSequence().filter { it.count > 0 }.map { Pair(it.cardId, it.count) }.toList().toMap()
                         )
                     }
             }
