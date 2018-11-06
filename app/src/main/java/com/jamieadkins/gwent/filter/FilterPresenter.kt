@@ -116,36 +116,54 @@ class FilterPresenter @Inject constructor(
     }
 
     override fun applyFilters() {
-        val factions = mapOf(
-            GwentFaction.NILFGAARD to nilfgaard,
-            GwentFaction.NORTHERN_REALMS to northernRealms,
-            GwentFaction.MONSTER to monster,
-            GwentFaction.SKELLIGE to skellige,
-            GwentFaction.SCOIATAEL to scoiatael,
-            GwentFaction.NEUTRAL to neutral
-        )
+        getFilterUseCase.getFilter(deckId)
+            .firstOrError()
+            .subscribeWith(object : BaseDisposableSingle<CardFilter>() {
+                override fun onSuccess(filter: CardFilter) {
+                    val factions = mapOf(
+                        GwentFaction.NILFGAARD to nilfgaard,
+                        GwentFaction.NORTHERN_REALMS to northernRealms,
+                        GwentFaction.MONSTER to monster,
+                        GwentFaction.SKELLIGE to skellige,
+                        GwentFaction.SCOIATAEL to scoiatael,
+                        GwentFaction.NEUTRAL to neutral
+                    )
 
-        val colours = mapOf(
-            GwentCardColour.BRONZE to bronze,
-            GwentCardColour.GOLD to gold,
-            GwentCardColour.LEADER to leader
-        )
+                    val colours = mapOf(
+                        GwentCardColour.BRONZE to bronze,
+                        GwentCardColour.GOLD to gold,
+                        GwentCardColour.LEADER to leader
+                    )
 
-        val rarities = mapOf(
-            GwentCardRarity.COMMON to common,
-            GwentCardRarity.RARE to rare,
-            GwentCardRarity.EPIC to epic,
-            GwentCardRarity.LEGENDARY to legendary
-        )
+                    val rarities = mapOf(
+                        GwentCardRarity.COMMON to common,
+                        GwentCardRarity.RARE to rare,
+                        GwentCardRarity.EPIC to epic,
+                        GwentCardRarity.LEGENDARY to legendary
+                    )
 
-        val types = mapOf(
-            GwentCardType.Unit to unit,
-            GwentCardType.Spell to spell,
-            GwentCardType.Artifact to artifact,
-            GwentCardType.Leader to leader
-        )
-        setFilterUseCase.setFilter(CardFilter(rarities, colours, factions, types, minProvisions, maxProvisions))
-        view.close()
+                    val types = mapOf(
+                        GwentCardType.Unit to unit,
+                        GwentCardType.Spell to spell,
+                        GwentCardType.Artifact to artifact,
+                        GwentCardType.Leader to leader
+                    )
+
+                    val newFilter = CardFilter(
+                        rarities,
+                        colours,
+                        factions,
+                        types,
+                        minProvisions,
+                        maxProvisions,
+                        filter.isCollectibleOnly,
+                        filter.sortedBy
+                    )
+                    setFilterUseCase.setFilter(deckId, newFilter)
+                    view.close()
+                }
+            })
+            .addToComposite()
     }
 
     override fun onNilfgaardFilterChanged(checked: Boolean) { nilfgaard = checked }

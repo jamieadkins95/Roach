@@ -35,10 +35,6 @@ object Injection {
         return CardRepositoryImpl(database, cardMapper, FromFactionMapper(),  localeRepository)
     }
 
-    fun provideFilterRepository(key: String): FilterRepository {
-        return filterRepositories.getOrPut(key, { FilterRepositoryImpl() })
-    }
-
     fun provideSchedulerProvider(): BaseSchedulerProvider {
         return SchedulerProvider
     }

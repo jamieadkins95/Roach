@@ -25,4 +25,6 @@ interface DeckRepository {
     fun renameDeck(deckId: String, newName: String): Completable
 
     fun deleteDeck(deckId: String): Completable
+
+    fun getDeckFaction(deckId: String): Single<GwentFaction>
 }

@@ -34,5 +34,9 @@ interface DeckDetailsContract {
         fun onRenameClicked()
 
         fun onDeleteClicked()
+
+        fun search(query: String)
+
+        fun clearSearch()
     }
 }

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
@@ -19,6 +20,7 @@ import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
+import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.main.CardResourceHelper
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
@@ -75,6 +77,25 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.search, menu)
+        val searchMenuItem = menu?.findItem(R.id.action_search)
+        val searchView = searchMenuItem?.actionView as? SearchView
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                presenter.search(query)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                return false
+            }
+        })
+
+        searchView?.setOnCloseListener {
+            presenter.clearSearch()
+            false
+        }
+
         inflater?.inflate(R.menu.deck_builder, menu)
     }
 
@@ -90,6 +111,11 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
             }
             R.id.action_delete -> {
                 presenter.onDeleteClicked()
+                true
+            }
+            R.id.action_filter -> {
+                val dialog = FilterBottomSheetDialogFragment.getInstance(deckId)
+                dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

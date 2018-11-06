@@ -13,7 +13,12 @@ import com.jamieadkins.gwent.domain.deck.DeleteDeckUseCase
 import com.jamieadkins.gwent.domain.deck.GetDeckUseCase
 import com.jamieadkins.gwent.domain.deck.RemoveCardFromDeckUseCase
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
+import com.jamieadkins.gwent.domain.filter.FilterCardsUseCase
+import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
+import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.main.BasePresenter
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -23,6 +28,8 @@ class DeckDetailsPresenter @Inject constructor(
     private val deleteDeckUseCase: DeleteDeckUseCase,
     private val getDeckUseCase: GetDeckUseCase,
     private val getCardsUseCase: GetCardsUseCase,
+    private val filterCardsUseCase: FilterCardsUseCase,
+    private val getFilterUseCase: GetFilterUseCase,
     private val addCardToDeckUseCase: AddCardToDeckUseCase,
     private val removeCardFromDeckUseCase: RemoveCardFromDeckUseCase
 ) : BasePresenter(), DeckDetailsContract.Presenter {
@@ -72,7 +79,15 @@ class DeckDetailsPresenter @Inject constructor(
                     getCardsUseCase.searchCards(query)
                 }
 
-                cards.map { Pair(it, query) }
+                Observable.combineLatest(
+                    cards,
+                    latestDeckId.switchMap { getFilterUseCase.getFilter(it) },
+                    BiFunction { cardList: List<GwentCard>, filter: CardFilter ->
+                        Pair(cardList, filter)
+                    }
+                )
+                    .flatMapSingle { filterCardsUseCase.filter(it.first, it.second) }
+                    .map { Pair(it, query) }
                     .doOnSubscribe { view.showLoadingIndicator() }
             }
             .subscribeWith(object : BaseDisposableObserver<Pair<List<GwentCard>, String>>() {
@@ -110,6 +125,14 @@ class DeckDetailsPresenter @Inject constructor(
 
     override fun onChangeLeaderClicked() {
         view.showLeaderPicker()
+    }
+
+    override fun search(query: String) {
+        searches.onNext(query)
+    }
+
+    override fun clearSearch() {
+        searches.onNext("")
     }
 
     private fun addCardToDeck(cardId: String) {

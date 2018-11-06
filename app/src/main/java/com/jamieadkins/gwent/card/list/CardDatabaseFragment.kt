@@ -83,8 +83,6 @@ class CardDatabaseFragment :
             presenter.clearSearch()
             false
         }
-
-        inflater?.inflate(R.menu.card_filters, menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

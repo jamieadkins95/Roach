@@ -131,6 +131,11 @@ class UserDeckRepository @Inject constructor(
         }
     }
 
+    override fun getDeckFaction(deckId: String): Single<GwentFaction> {
+        return database.deckDao().getDeckOnce(deckId)
+            .map { factionMapper.map(it.deck.factionId) }
+    }
+
     private fun factionToFactionId(faction: GwentFaction): String {
         return when (faction) {
             GwentFaction.MONSTER -> Faction.MONSTERS_ID

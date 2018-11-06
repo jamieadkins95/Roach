@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class SetFilterUseCase @Inject constructor(private val filterRepository: FilterRepository) {
 
-    fun setFilter(cardFilter: CardFilter, deckId: String = "") = filterRepository.setFilter(deckId, cardFilter)
+    fun setFilter(deckId: String = "", cardFilter: CardFilter) = filterRepository.setFilter(deckId, cardFilter)
 }
