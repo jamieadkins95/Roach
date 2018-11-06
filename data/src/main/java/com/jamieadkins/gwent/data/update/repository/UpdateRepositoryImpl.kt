@@ -10,13 +10,13 @@ import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.functions.Function3
 import io.reactivex.functions.Function4
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Named
 
 class UpdateRepositoryImpl @Inject constructor(
-    private val database: GwentDatabase,
     @Named("files") filesDirectory: File,
     preferences: RxSharedPreferences,
     @NotificationsUpdate private val notificationsRepository: UpdateRepository,
@@ -30,12 +30,11 @@ class UpdateRepositoryImpl @Inject constructor(
 
     override fun isUpdateAvailable(): Observable<Boolean> {
         return Observable.combineLatest(
-            database.cardDao().count().toObservable(),
             cardUpdateRepository.isUpdateAvailable(),
             keywordUpdateRepository.isUpdateAvailable(),
             categoryUpdateRepository.isUpdateAvailable(),
-            Function4 { cardsInDb: Int, card: Boolean, keyword: Boolean, category: Boolean ->
-                cardsInDb == 0 || card || keyword || category
+            Function3 { card: Boolean, keyword: Boolean, category: Boolean ->
+                card || keyword || category
             })
             .onErrorReturnItem(false)
             .distinctUntilChanged()

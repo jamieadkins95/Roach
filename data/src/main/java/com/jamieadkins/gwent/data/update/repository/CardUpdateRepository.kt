@@ -79,6 +79,10 @@ class CardUpdateRepository @Inject constructor(
             .doOnComplete { preferences.getInteger(LAST_DATABASE_VERSION_KEY).set(GwentDatabase.DATABASE_VERSION) }
     }
 
+    override fun hasDoneFirstTimeSetup(): Observable<Boolean> {
+        return database.cardDao().count().toObservable().map { it > 0 }
+    }
+
     private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
         return Completable.fromCallable {
             val cards = cardMapper.map(cardList)
