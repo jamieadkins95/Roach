@@ -13,6 +13,7 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
 
     @AutoModel lateinit var headerView: HeaderViewModel_
     @AutoModel lateinit var leaderSubHeader: SubHeaderViewModel_
+    @AutoModel lateinit var cardsSubHeader: SubHeaderViewModel_
 
     override fun buildModels(deck: GwentDeck) {
 
@@ -39,5 +40,19 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
             .cardFaction(leader.faction)
             .cardRarity(leader.rarity)
             .addTo(this)
+
+        cardsSubHeader
+            .title(R.string.cards)
+            .addTo(this)
+
+        deck.cards.entries.forEach {
+            DeckCardViewModel_()
+                .id(it.key.toLong())
+                .cardName(it.key)
+                .cardTooltip(it.key)
+                .count(it.value)
+                .provisionCost(it.value)
+                .addTo(this)
+        }
     }
 }
