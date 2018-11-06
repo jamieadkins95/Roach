@@ -62,4 +62,14 @@ class DeckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             image.setImageDrawable(null)
         }
     }
+
+    @ModelProp
+    fun setCardCount(count: Int) {
+        cardCount.text = "$count/25"
+    }
+
+    @ModelProp
+    fun setProvisionCost(provisions: Int) {
+        provisionCost.text = "$provisions/165"
+    }
 }
