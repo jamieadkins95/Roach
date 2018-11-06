@@ -15,6 +15,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCard
 class DeckCardDatabaseController(val resources: Resources) : Typed2EpoxyController<List<GwentCard>, String>() {
 
     @AutoModel lateinit var headerView: HeaderViewModel_
+    @AutoModel lateinit var spaceView: SpaceViewModel_
 
     override fun buildModels(cards: List<GwentCard>, searchQuery: String) {
 
@@ -38,5 +39,7 @@ class DeckCardDatabaseController(val resources: Resources) : Typed2EpoxyControll
 
             model.addTo(this)
         }
+
+        spaceView.addTo(this)
     }
 }
