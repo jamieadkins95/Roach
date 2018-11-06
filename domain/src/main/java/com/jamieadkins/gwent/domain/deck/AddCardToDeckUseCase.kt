@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.domain.deck
 
+import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 class AddCardToDeckUseCase @Inject constructor(
     private val cardRepository: CardRepository,
-    private val deckRepository: DeckRepository
+    private val deckRepository: DeckRepository,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     fun addCard(deckId: String, cardId: String): Single<AddCardToDeckResult> {
@@ -29,6 +31,8 @@ class AddCardToDeckUseCase @Inject constructor(
                     GwentCardColour.LEADER -> Single.just(AddCardToDeckResult.CantAddLeaders)
                 }
             }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
     }
 
     private fun updateCardCount(deckId: String, cardId: String, count: Int): Single<AddCardToDeckResult> {

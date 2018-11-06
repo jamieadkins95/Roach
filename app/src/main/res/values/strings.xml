@@ -56,5 +56,6 @@
     <string name="create_deck">Create Deck</string>
     <string name="deck">Deck</string>
     <string name="cards_in_deck">%1$d/%2$d cards in deck</string>
+    <string name="maximum_card_count_reached">Deck already contains maximum number of that card!</string>
 
 </resources>

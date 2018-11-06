@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -165,6 +166,12 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         val intent = Intent(requireContext(), CardDetailsActivity::class.java)
         intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
         activity?.startActivity(intent)
+    }
+
+    override fun showMaximumCardCountReached() {
+        context?.let {
+            Toast.makeText(it, R.string.maximum_card_count_reached, Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {

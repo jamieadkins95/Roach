@@ -143,7 +143,9 @@ class DeckDetailsPresenter @Inject constructor(
             }
             .subscribeWith(object : BaseDisposableSingle<AddCardToDeckResult>() {
                 override fun onSuccess(result: AddCardToDeckResult) {
-                    // Do nothing.
+                    when (result) {
+                        is AddCardToDeckResult.MaximumReached -> view.showMaximumCardCountReached()
+                    }
                 }
             })
             .addToComposite()

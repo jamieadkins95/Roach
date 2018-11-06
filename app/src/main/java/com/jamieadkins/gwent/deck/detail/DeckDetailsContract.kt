@@ -23,6 +23,8 @@ interface DeckDetailsContract {
         fun close()
 
         fun showCardDetails(cardId: String)
+
+        fun showMaximumCardCountReached()
     }
 
     interface Presenter : MvpPresenter {
