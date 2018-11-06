@@ -5,6 +5,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.commonutils.mvp2.SchedulerProvider
 import com.jamieadkins.gwent.data.FactionMapper
+import com.jamieadkins.gwent.data.FromFactionMapper
 import com.jamieadkins.gwent.data.LocaleRepositoryImpl
 import com.jamieadkins.gwent.data.card.mapper.GwentCardArtMapper
 import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
@@ -31,11 +32,7 @@ object Injection {
     private val localeRepository by lazy { LocaleRepositoryImpl(preferences, resources) }
 
     fun provideCardRepository(): CardRepository {
-        return CardRepositoryImpl(database, cardMapper, localeRepository)
-    }
-
-    fun provideFilterRepository(key: String): FilterRepository {
-        return filterRepositories.getOrPut(key, { FilterRepositoryImpl() })
+        return CardRepositoryImpl(database, cardMapper, FromFactionMapper(), localeRepository)
     }
 
     fun provideSchedulerProvider(): BaseSchedulerProvider {
