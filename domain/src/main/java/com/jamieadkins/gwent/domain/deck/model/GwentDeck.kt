@@ -18,5 +18,5 @@ data class GwentDeck(
     }
 
     val totalCardCount: Int = cardCounts.values.sum()
-    val provisionCost: Int = cards.values.map { it.provisions }.sum()
+    val provisionCost: Int = cards.values.map { it.provisions * cardCounts.getValue(it.id) }.sum()
 }
