@@ -8,7 +8,7 @@ import com.jamieadkins.gwent.database.GwentDatabase
 
 @Entity(foreignKeys = [
     (ForeignKey(entity = CardEntity::class,
-                onDelete = ForeignKey.CASCADE,
+                onDelete = ForeignKey.NO_ACTION,
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("cardId"))),
     (ForeignKey(entity = DeckEntity::class,
