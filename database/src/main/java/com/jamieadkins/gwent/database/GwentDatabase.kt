@@ -21,6 +21,8 @@ abstract class GwentDatabase : RoomDatabase() {
         const val COLLECTION_TABLE = "collection"
         const val CATEGORY_TABLE = "category"
         const val KEYWORD_TABLE = "keyword"
+        const val DECK_TRACKER_GAME_TABLE = "deck_tracker_games"
+        const val DECK_TRACKER_CARDS_TABLE = "deck_tracker_cards"
 
         const val DATABASE_VERSION = 5
     }
