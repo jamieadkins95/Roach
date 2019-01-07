@@ -2,7 +2,7 @@ object Libs {
     const val gradle_plugin = "com.android.tools.build:gradle:${Versions.gradle_plugin}"
     const val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val google_services_plugin = "com.google.gms:google-services:${Versions.google_services_plugin}"
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jre7:${Versions.kotlin}"
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
     const val support_appcompat_v7 = "com.android.support:appcompat-v7:${Versions.support_lib}"
     const val support_compat = "com.android.support:support-compat:${Versions.support_lib}"
     const val support_design = "com.android.support:design:${Versions.support_lib}"
