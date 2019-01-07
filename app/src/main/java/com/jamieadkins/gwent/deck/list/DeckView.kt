@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import com.airbnb.epoxy.AfterPropsSet
 import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
@@ -68,8 +69,11 @@ class DeckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         cardCount.text = "$count/25"
     }
 
-    @ModelProp
-    fun setProvisionCost(provisions: Int) {
-        provisionCost.text = "$provisions/165"
+    @AfterPropsSet
+    fun updateProvisionCost() {
+        deckProvisionCost.text = "$provisionCost/$provisionAllowance"
     }
+
+    @JvmField @ModelProp var provisionCost: Int = 0
+    @JvmField @ModelProp var provisionAllowance: Int = 0
 }

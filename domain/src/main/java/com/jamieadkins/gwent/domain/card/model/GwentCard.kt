@@ -12,7 +12,7 @@ data class GwentCard(
         val faction: GwentFaction,
         val strength: Int = 0,
         val provisions: Int = 0,
-        val mulligans: Int = 0,
+        val extraProvisions: Int = 0,
         val colour: GwentCardColour,
         val rarity: GwentCardRarity,
         val type: GwentCardType,

@@ -23,6 +23,7 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
             .deckName(deck.name)
             .cardCount(deck.totalCardCount)
             .provisionCost(deck.provisionCost)
+            .provisionAllowance(deck.maxProvisionCost)
             .addTo(this)
 
         leaderSubHeader

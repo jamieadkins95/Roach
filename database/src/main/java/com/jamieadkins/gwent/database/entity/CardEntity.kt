@@ -15,7 +15,7 @@ data class CardEntity(
         val faction: String,
         val type: String,
         val provisions: Int = 0,
-        val mulligans: Int = 0,
+        val extraProvisions: Int = 0,
         val name: Map<String, String>,
         val tooltip: Map<String, String>,
         val flavor: Map<String, String>,

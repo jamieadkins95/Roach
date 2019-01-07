@@ -41,17 +41,7 @@ class UserDeckRepository @Inject constructor(
                             cardRepository.getCard(deckWithCards.deck.leaderId).firstOrError(),
                             cardRepository.getCards(deckWithCards.cards.map { it.cardId }).firstOrError(),
                             BiFunction { leader: GwentCard, cards: List<GwentCard> ->
-                                GwentDeck(
-                                    deckWithCards.deck.id.toString(),
-                                    deckWithCards.deck.name,
-                                    factionMapper.map(deckWithCards.deck.factionId),
-                                    leader,
-                                    deckWithCards.deck.created,
-                                    cards.map { Pair(it.id, it) }.toMap(),
-                                    deckWithCards.cards
-                                        .map { Pair(it.cardId, it.count) }
-                                        .toMap()
-                                )
+                                createGwentDeck(deckWithCards, leader, cards)
                             })
                     }
                     .toList()
@@ -73,17 +63,7 @@ class UserDeckRepository @Inject constructor(
                     cardRepository.getCard(deckWithCards.deck.leaderId),
                     cardRepository.getCards(deckWithCards.cards.map { it.cardId }),
                     BiFunction { leader: GwentCard, cards: List<GwentCard> ->
-                        GwentDeck(
-                            deckWithCards.deck.id.toString(),
-                            deckWithCards.deck.name,
-                            factionMapper.map(deckWithCards.deck.factionId),
-                            leader,
-                            deckWithCards.deck.created,
-                            cards.map { Pair(it.id, it) }.toMap(),
-                            deckWithCards.cards
-                                .map { Pair(it.cardId, it.count) }
-                                .toMap()
-                        )
+                        createGwentDeck(deckWithCards, leader, cards)
                     })
             }
     }
@@ -146,5 +126,24 @@ class UserDeckRepository @Inject constructor(
             GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
             else -> throw Exception("Faction not found")
         }
+    }
+
+    private fun createGwentDeck(deck: DeckWithCardsEntity, leader: GwentCard, cards: List<GwentCard>): GwentDeck {
+        return GwentDeck(
+            deck.deck.id.toString(),
+            deck.deck.name,
+            factionMapper.map(deck.deck.factionId),
+            leader,
+            deck.deck.created,
+            cards.map { Pair(it.id, it) }.toMap(),
+            deck.cards
+                .map { Pair(it.cardId, it.count) }
+                .toMap(),
+            BASE_PROVISION_ALLOWANCE + leader.extraProvisions
+        )
+    }
+
+    private companion object {
+        const val BASE_PROVISION_ALLOWANCE = 150
     }
 }

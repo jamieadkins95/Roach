@@ -12,6 +12,7 @@
     <string name="mill">Mill</string>
     <string name="provisions">Provisions</string>
     <string name="mulligans">Mulligans</string>
+    <string name="extra_provisions">Extra Provisions</string>
     <string name="related">Related Cards</string>
 
     <string name="update_available_title">Update Available</string>

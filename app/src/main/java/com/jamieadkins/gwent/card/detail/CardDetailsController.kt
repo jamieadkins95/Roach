@@ -28,8 +28,8 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
     @AutoModel lateinit var craft: CraftCostViewModel_
     @AutoModel lateinit var provisionsHeader: SubHeaderViewModel_
     @AutoModel lateinit var provisions: ElevatedTextViewModel_
-    @AutoModel lateinit var mulligansHeader: SubHeaderViewModel_
-    @AutoModel lateinit var mulligans: ElevatedTextViewModel_
+    @AutoModel lateinit var extraProvisionsHeader: SubHeaderViewModel_
+    @AutoModel lateinit var extraProvisions: ElevatedTextViewModel_
     @AutoModel lateinit var millHeader: SubHeaderViewModel_
     @AutoModel lateinit var mill: CraftCostViewModel_
 
@@ -70,13 +70,13 @@ class CardDetailsController(val resources: Resources) : Typed2EpoxyController<Gw
             .typeface(Typeface.DEFAULT)
             .addIf(showProvisions, this)
 
-        val showMulligans = card.colour == GwentCardColour.LEADER
-        mulligansHeader
-            .title(R.string.mulligans)
-            .addIf(showMulligans, this)
-        mulligans.text(card.mulligans.toString())
+        val showExtraProvisions = card.colour == GwentCardColour.LEADER
+        extraProvisionsHeader
+            .title(R.string.extra_provisions)
+            .addIf(showExtraProvisions, this)
+        extraProvisions.text(card.extraProvisions.toString())
             .typeface(Typeface.DEFAULT)
-            .addIf(showMulligans, this)
+            .addIf(showExtraProvisions, this)
 
         val showCraft = card.collectible
         craftHeader.title(R.string.craft).addIf(showCraft, this)

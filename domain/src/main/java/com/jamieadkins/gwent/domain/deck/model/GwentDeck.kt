@@ -11,7 +11,8 @@ data class GwentDeck(
     val leader: GwentCard,
     val createdAt: Date,
     val cards: Map<String, GwentCard> = emptyMap(),
-    val cardCounts: Map<String, Int> = emptyMap()) {
+    val cardCounts: Map<String, Int> = emptyMap(),
+    val maxProvisionCost: Int = 150) {
 
     override fun toString(): String {
         return "$name $faction ${leader.name}"

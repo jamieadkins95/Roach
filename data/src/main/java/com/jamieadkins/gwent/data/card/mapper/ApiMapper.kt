@@ -20,7 +20,7 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                     it.faction ?: "",
                     it.cardType ?: "",
                     it.provision ?: 0,
-                    it.mulligans ?: 0,
+                    it.mulligans, // TODO swap API object
                     it.name ?: mapOf(),
                     it.info ?: mapOf(),
                     it.flavor ?: mapOf(),
