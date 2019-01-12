@@ -3,6 +3,8 @@ package com.jamieadkins.gwent.data
 import androidx.room.Room
 import android.content.Context
 import android.preference.PreferenceManager
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.database.GwentDatabase
 import dagger.Module
@@ -31,7 +33,14 @@ class DataModule {
     @Provides
     @Singleton
     fun database(context: Context): GwentDatabase {
+        val migration5to6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE $GwentDatabase.CARD_TABLE ADD COLUMN extraProvisions INTEGER")
+            }
+        }
+
         return Room.databaseBuilder(context, GwentDatabase::class.java, GwentDatabase.DB_NAME)
+            .addMigrations(migration5to6)
             .fallbackToDestructiveMigration()
             .build()
     }

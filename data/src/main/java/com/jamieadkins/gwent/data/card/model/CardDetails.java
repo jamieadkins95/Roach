@@ -19,6 +19,7 @@ public class CardDetails {
     private boolean released;
     private int strength;
     private int provision;
+    private int provisionBoost;
     private int mulligans;
     private String type;
     private String cardType;
@@ -161,6 +162,14 @@ public class CardDetails {
 
     public void setProvision(int provision) {
         this.provision = provision;
+    }
+
+    public int getProvisionBoost() {
+        return provisionBoost;
+    }
+
+    public void setProvisionBoost(int provisionBoost) {
+        this.provisionBoost = provisionBoost;
     }
 
     public int getMulligans() {
