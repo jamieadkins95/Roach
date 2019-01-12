@@ -21,6 +21,7 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                     it.faction ?: "",
                     it.cardType ?: "",
                     if (it.type == Type.LEADER_ID) it.provisionBoost else it.provision,
+                    it.mulligans ?: 0,
                     it.name ?: mapOf(),
                     it.info ?: mapOf(),
                     it.flavor ?: mapOf(),
