@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.data.card.mapper
 
 import com.jamieadkins.gwent.data.Mapper
 import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
+import com.jamieadkins.gwent.data.card.model.Type
 import com.jamieadkins.gwent.database.entity.CardEntity
 import javax.inject.Inject
 
@@ -19,8 +20,7 @@ class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<Ca
                     it.type ?: "",
                     it.faction ?: "",
                     it.cardType ?: "",
-                    it.provision ?: 0,
-                    it.provisionBoost ?: 0,
+                    if (it.type == Type.LEADER_ID) it.provisionBoost else it.provision,
                     it.name ?: mapOf(),
                     it.info ?: mapOf(),
                     it.flavor ?: mapOf(),

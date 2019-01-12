@@ -33,14 +33,7 @@ class DataModule {
     @Provides
     @Singleton
     fun database(context: Context): GwentDatabase {
-        val migration5to6 = object : Migration(5, 6) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE $GwentDatabase.CARD_TABLE ADD COLUMN extraProvisions INTEGER")
-            }
-        }
-
         return Room.databaseBuilder(context, GwentDatabase::class.java, GwentDatabase.DB_NAME)
-            .addMigrations(migration5to6)
             .fallbackToDestructiveMigration()
             .build()
     }
