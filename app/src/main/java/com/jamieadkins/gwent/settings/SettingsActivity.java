@@ -5,7 +5,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
+import timber.log.Timber;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,9 +58,11 @@ public class SettingsActivity extends BasePreferenceActivity implements
                 }
 
                 String topic = "news-" + news;
-                FirebaseMessaging.getInstance().subscribeToTopic(topic);
+                FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                    .addOnCompleteListener(task -> Timber.i("Subscribed to " + topic));
                 if (BuildConfig.DEBUG) {
-                    FirebaseMessaging.getInstance().subscribeToTopic(topic + "-debug");
+                    FirebaseMessaging.getInstance().subscribeToTopic("news-debug")
+                        .addOnCompleteListener(task -> Timber.i("Subscribed to news-debug"));
                 }
                 break;
             case NOTIFICATIONS_PATCH:
@@ -92,7 +96,7 @@ public class SettingsActivity extends BasePreferenceActivity implements
         for (String key : resources.getStringArray(R.array.locales_news)) {
             FirebaseMessaging.getInstance().unsubscribeFromTopic("news-" + key);
             if (BuildConfig.DEBUG) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("news-" + key + "-debug");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("news-debug");
             }
         }
     }

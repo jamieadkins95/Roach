@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.data.R
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ class NotificationsRepository @Inject constructor(
     }
 
     override fun hasDoneFirstTimeSetup(): Observable<Boolean> {
-        return preferences.getBoolean(resources.getString(R.string.shown_news)).asObservable()
+        return preferences.getBoolean(KEY_NEWS_NOTIFCATIONS_SETUP).asObservable()
     }
 
     override fun performFirstTimeSetup(): Completable {
@@ -54,23 +55,28 @@ class NotificationsRepository @Inject constructor(
         val language = Locale.getDefault().language
         val newsLanguage = resources.getStringArray(R.array.locales_news).firstOrNull { it.contains(language) } ?: "en"
         preferences.getString(resources.getString(R.string.pref_news_notifications_key)).set(newsLanguage)
-        preferences.getBoolean(resources.getString(R.string.shown_news)).set(true)
+        preferences.getBoolean(KEY_NEWS_NOTIFCATIONS_SETUP).set(true)
 
         unsubscribeFromAllNews(resources)
 
         val topic = "news-$newsLanguage"
+        Timber.i("Subscribing to $topic")
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            .addOnCompleteListener { Timber.i("Subscribed to $topic") }
         if (BuildConfig.DEBUG) {
-            FirebaseMessaging.getInstance().subscribeToTopic("$topic-debug")
+            Timber.i("Subscribing to $DEBUG_NEWS_TOPIC")
+            FirebaseMessaging.getInstance().subscribeToTopic(DEBUG_NEWS_TOPIC)
+                .addOnCompleteListener { Timber.i("Subscribed to $DEBUG_NEWS_TOPIC") }
         }
     }
 
     private fun unsubscribeFromAllNews(resources: Resources) {
         for (key in resources.getStringArray(R.array.locales_news)) {
             FirebaseMessaging.getInstance().unsubscribeFromTopic("news-$key")
-            if (BuildConfig.DEBUG) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("news-$key-debug")
-            }
+        }
+        if (BuildConfig.DEBUG) {
+            Timber.i("Unsubscribing from $DEBUG_NEWS_TOPIC")
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(DEBUG_NEWS_TOPIC)
         }
     }
 
@@ -88,5 +94,10 @@ class NotificationsRepository @Inject constructor(
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
         val key = resources.getString(R.string.pref_patch_notifications_topic_key)
         preferences.getString(key).set(topic)
+    }
+
+    private companion object {
+        const val KEY_NEWS_NOTIFCATIONS_SETUP = "com.jamieadkins.gwent.notifications.news.setup"
+        const val DEBUG_NEWS_TOPIC = "news-debug"
     }
 }
