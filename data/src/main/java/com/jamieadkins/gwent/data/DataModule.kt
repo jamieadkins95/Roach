@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jamieadkins.gwent.database.GwentDatabase
 import dagger.Module
 import dagger.Provides
@@ -37,4 +38,7 @@ class DataModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+    @Provides
+    fun firestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 }

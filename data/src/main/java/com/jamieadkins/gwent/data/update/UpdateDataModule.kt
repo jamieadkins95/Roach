@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.data.update
 
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jamieadkins.gwent.data.update.repository.CardUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.CategoryUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.KeywordUpdateRepository
@@ -10,6 +11,7 @@ import com.jamieadkins.gwent.domain.update.repository.NoticesRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
 @Module

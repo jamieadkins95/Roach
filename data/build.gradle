@@ -20,7 +20,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
-            buildConfigField "String", "CARD_DATA_VERSION", '"4"'
+            buildConfigField "String", "CARD_DATA_VERSION", '"5"'
         }
         debug {
             buildConfigField "String", "CARD_DATA_VERSION", '"debug"'
@@ -48,6 +48,7 @@ dependencies {
     api 'com.google.firebase:firebase-core:16.0.4'
     api "com.google.firebase:firebase-storage:16.0.3"
     api "com.google.firebase:firebase-messaging:17.3.4"
+    api 'com.google.firebase:firebase-firestore:18.0.0'
 
     implementation Libs.dagger
     kapt Libs.dagger_compiler
