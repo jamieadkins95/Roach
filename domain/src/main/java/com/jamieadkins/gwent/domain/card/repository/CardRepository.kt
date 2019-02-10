@@ -15,4 +15,6 @@ interface CardRepository {
     fun getCard(id: String): Observable<GwentCard>
 
     fun getLeaders(faction: GwentFaction): Observable<List<GwentCard>>
+
+    fun invalidateMemoryCache()
 }

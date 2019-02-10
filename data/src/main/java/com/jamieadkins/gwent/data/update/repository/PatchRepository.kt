@@ -1,16 +1,9 @@
 package com.jamieadkins.gwent.data.update.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jamieadkins.gwent.data.update.model.FirebasePatchResult
-import com.nytimes.android.external.store3.base.impl.BarCode
+import com.jamieadkins.gwent.data.BuildConfig
 import io.reactivex.Single
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import com.google.gson.Gson
-import com.jamieadkins.gwent.data.*
 import timber.log.Timber
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 class PatchRepository @Inject constructor(private val firestore: FirebaseFirestore) {

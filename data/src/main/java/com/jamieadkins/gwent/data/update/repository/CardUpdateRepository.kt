@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.data.card.mapper.ApiMapper
 import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
 import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
 import com.jamieadkins.gwent.database.GwentDatabase
+import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -24,7 +25,8 @@ class CardUpdateRepository @Inject constructor(
     private val cardMapper: ApiMapper,
     private val artMapper: ArtApiMapper,
     private val preferences: RxSharedPreferences,
-    private val assetManager: AssetManager
+    private val assetManager: AssetManager,
+    private val cardRepository: CardRepository
 ) : BaseUpdateRepository(filesDirectory, preferences) {
 
     override val FILE_NAME = "cards.json"
@@ -74,6 +76,8 @@ class CardUpdateRepository @Inject constructor(
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
             .flatMapCompletable { updateCardDatabase(it) }
+            // Invalidate the card memory cache that has cards from the old patch.
+            .doOnComplete { cardRepository.invalidateMemoryCache() }
             .andThen(updateLastUpdated())
             // Finally, note that we are up to date with the database schema.
             .doOnComplete { preferences.getInteger(LAST_DATABASE_VERSION_KEY).set(GwentDatabase.DATABASE_VERSION) }
