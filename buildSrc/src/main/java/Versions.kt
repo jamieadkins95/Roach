@@ -8,7 +8,7 @@ object Versions {
 
     const val gradle_plugin = "3.2.0"
     const val google_services_plugin = "4.1.0"
-    const val kotlin = "1.3.11"
+    const val kotlin = "1.3.20"
     const val support_lib = "28.0.0"
     const val support_constraint_layout = "1.1.2"
     const val dagger = "2.16"
@@ -32,4 +32,11 @@ object Versions {
     const val mockito_kotlin = "1.5.0"
     const val support_test_runner = "1.0.1"
     const val support_espresso = "3.0.1"
+
+    // Firebase
+    const val firebase_core = "16.0.7"
+    const val firebase_storage = "16.0.5"
+    const val firebase_messaging = "17.3.4"
+    const val firebase_firestore = "18.0.1"
+    const val firebase_crashlytics = "2.9.9"
 }
