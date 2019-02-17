@@ -1,11 +1,10 @@
 package com.jamieadkins.gwent.deck.list
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
@@ -15,7 +14,6 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_deck_list.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class DeckListFragment : DaggerFragment(), DeckListContract.View {
