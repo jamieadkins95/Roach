@@ -9,6 +9,7 @@ import com.jamieadkins.gwent.card.list.HeaderViewModel_
 import com.jamieadkins.gwent.card.list.SubHeaderViewModel_
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
 import com.jamieadkins.gwent.deck.DeckBuilderEvents
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 
 class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>() {
@@ -43,7 +44,8 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
             .title(R.string.cards)
             .addTo(this)
 
-        deck.cards.values.sortedByDescending { it.provisions }
+        // Sort cards by provision cost descending and then by name ascending.
+        deck.cards.values.sortedWith(compareByDescending<GwentCard> { it.provisions }.thenBy { it.name })
             .forEach { card ->
                 val count = deck.cardCounts[card.id] ?: 0
                 DeckCardViewModel_()
