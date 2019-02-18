@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.card.list
 
 import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
@@ -16,10 +17,10 @@ import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.update.model.Notice
 import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.domain.update.repository.GetNoticesUseCase
+import com.jamieadkins.gwent.domain.update.repository.StartCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.main.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function3
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -29,6 +30,7 @@ class CardDatabasePresenter @Inject constructor(
     private val filterCardsUseCase: FilterCardsUseCase,
     private val getFilterUseCase: GetFilterUseCase,
     private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase,
+    private val startCardDatabaseUpdateUseCase: StartCardDatabaseUpdateUseCase,
     private val getNoticesUseCase: GetNoticesUseCase
 ) : BasePresenter(), CardDatabaseContract.Presenter {
 
@@ -80,10 +82,9 @@ class CardDatabasePresenter @Inject constructor(
             }
 
         Observable.combineLatest(getCards,
-                                 getUpdates(),
                                  getNotices(),
-                                 Function3 { pair: Pair<List<GwentCard>, String>, updateAvaliable: Boolean, notices: List<Notice> ->
-                                     CardDatabaseScreenModel(pair.first, pair.second, updateAvaliable, notices)
+                                 BiFunction { pair: Pair<List<GwentCard>, String>, notices: List<Notice> ->
+                                     CardDatabaseScreenModel(pair.first, pair.second, false, notices)
                                  })
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
@@ -92,6 +93,14 @@ class CardDatabasePresenter @Inject constructor(
                 }
             })
             .addToComposite()
+
+        // Don't dispose this, let the update continue.
+        startCardDatabaseUpdateUseCase.start()
+            .subscribeWith(object : BaseDisposableCompletableObserver() {
+                override fun onComplete() {
+                    // Do nothing.
+                }
+            })
     }
 
     private fun getUpdates(): Observable<Boolean> {
