@@ -1,55 +1,41 @@
 package com.jamieadkins.gwent.card.detail
 
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.jamieadkins.commonutils.mvp2.BasePresenter
-import com.jamieadkins.commonutils.mvp3.MvpFragment
-import com.jamieadkins.gwent.Injection
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.main.CardResourceHelper
-import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.GwentFaction
-import kotterknife.bindView
+import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.main.CardResourceHelper
+import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.appbar_layout.*
+import kotlinx.android.synthetic.main.fragment_card_details.*
+import javax.inject.Inject
 
-class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.View {
+class CardDetailsFragment : DaggerFragment(), DetailContract.View {
 
     lateinit var cardId: String
     private lateinit var controller: CardDetailsController
-
-    private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
-    private val toolbar by bindView<Toolbar>(R.id.toolbar)
-    private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
-    private val imgCard by bindView<ImageView>(R.id.card_image)
+    @Inject lateinit var presenter: DetailContract.Presenter
 
     companion object {
         const val KEY_ID = "cardId"
-    }
-
-    override fun setupPresenter(): BasePresenter<DetailContract.View> {
-        return DetailPresenter(cardId, Injection.provideCardRepository(), Injection.provideSchedulerProvider())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         cardId = savedInstanceState?.getString(KEY_ID) ?: arguments?.getString(KEY_ID) ?: throw Exception("Card id not found.")
         super.onCreate(savedInstanceState)
         controller = CardDetailsController(resources)
+
+        presenter.setCardId(cardId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,9 +52,17 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = controller.adapter
-        val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
+        val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
+        refreshLayout.isEnabled = false
+
+        presenter.onAttach()
+    }
+
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
     }
 
     override fun showScreen(cardDetailsScreenData: CardDetailsScreenData) {
@@ -111,9 +105,12 @@ class CardDetailsFragment : MvpFragment<DetailContract.View>(), DetailContract.V
         }
     }
 
-    override fun setLoadingIndicator(loading: Boolean) {
-        refreshLayout.isEnabled = loading
-        refreshLayout.isRefreshing = loading
+    override fun showLoadingIndicator() {
+        refreshLayout.isRefreshing = true
+    }
+
+    override fun hideLoadingIndicator() {
+        refreshLayout.isRefreshing = false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

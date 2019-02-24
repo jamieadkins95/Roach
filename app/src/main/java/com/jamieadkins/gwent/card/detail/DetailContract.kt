@@ -1,12 +1,18 @@
 package com.jamieadkins.gwent.card.detail
 
-import com.jamieadkins.commonutils.mvp2.BaseView
+import com.jamieadkins.gwent.main.MvpPresenter
 
 interface DetailContract {
-    interface View : BaseView {
+    interface View {
 
         fun showScreen(cardDetailsScreenData: CardDetailsScreenData)
+
+        fun showLoadingIndicator()
+
+        fun hideLoadingIndicator()
     }
 
-    interface Presenter
+    interface Presenter : MvpPresenter {
+        fun setCardId(cardId: String)
+    }
 }

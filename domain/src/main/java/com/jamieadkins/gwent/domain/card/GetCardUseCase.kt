@@ -10,25 +10,13 @@ import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
-class GetCardsUseCase @Inject constructor(
+class GetCardUseCase @Inject constructor(
     private val cardRepository: CardRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
 
-    fun getCards(): Observable<List<GwentCard>> {
-        return internalGetCards(cardRepository.getCards())
-    }
-
-    fun getCards(ids: List<String>): Observable<List<GwentCard>> {
-        return internalGetCards(cardRepository.getCards(ids))
-    }
-
-    fun searchCards(query: String): Observable<List<GwentCard>> {
-        return internalGetCards(cardRepository.searchCards(query))
-    }
-
-    private fun internalGetCards(cardObservable: Observable<List<GwentCard>>): Observable<List<GwentCard>> {
-        return cardObservable
+    fun getCard(cardId: String): Observable<GwentCard> {
+        return cardRepository.getCard(cardId)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }

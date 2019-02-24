@@ -1,5 +1,7 @@
 package com.jamieadkins.gwent.di
 
+import com.jamieadkins.gwent.card.detail.CardDetailModule
+import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.deck.create.CreateDeckModule
 import com.jamieadkins.gwent.deck.detail.DeckDetailsFragment
@@ -40,4 +42,8 @@ abstract class FragmentInjectionModule private constructor() {
     @FragmentScoped
     @ContributesAndroidInjector(modules = [RenameDeckModule::class])
     internal abstract fun renameDeck(): RenameDeckDialog
+
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [CardDetailModule::class])
+    internal abstract fun detail(): CardDetailsFragment
 }

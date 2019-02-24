@@ -1,34 +1,38 @@
 package com.jamieadkins.gwent.card.detail
 
-import com.jamieadkins.commonutils.mvp2.BasePresenter
-import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
-import com.jamieadkins.commonutils.mvp2.addToComposite
 import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.base.BaseDisposableSingle
-import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.card.GetCardUseCase
+import com.jamieadkins.gwent.domain.card.GetCardsUseCase
+import com.jamieadkins.gwent.main.BasePresenter
+import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class DetailPresenter(var cardId: String,
-                      private val cardRepository: CardRepository,
-                      schedulerProvider: BaseSchedulerProvider) :
-        BasePresenter<DetailContract.View>(schedulerProvider), DetailContract.Presenter {
+class DetailPresenter @Inject constructor(
+    private val view: DetailContract.View,
+    private val getCardUseCase: GetCardUseCase,
+    private val getCardsUseCase: GetCardsUseCase
+) : BasePresenter(), DetailContract.Presenter {
 
-    override fun onRefresh() {
-        view?.setLoadingIndicator(true)
-        cardRepository.getCard(cardId)
-                .switchMap { card ->
-                    cardRepository.getCards(card.relatedCards)
-                            .map { related ->
-                                CardDetailsScreenData(card, related.toList())
-                            }
-                }
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribeWith(object : BaseDisposableObserver<CardDetailsScreenData>() {
-                    override fun onNext(result: CardDetailsScreenData) {
-                        view?.showScreen(result)
-                        view?.setLoadingIndicator(false)
+    private val cardId = BehaviorSubject.create<String>()
+
+    override fun onAttach() {
+        cardId
+            .switchMap { getCardUseCase.getCard(it) }
+            .switchMap { card ->
+                getCardsUseCase.getCards(card.relatedCards)
+                    .map { related ->
+                        CardDetailsScreenData(card, related.toList())
                     }
-                })
-                .addToComposite(disposable)
+            }
+            .doOnSubscribe { view.showLoadingIndicator() }
+            .subscribeWith(object : BaseDisposableObserver<CardDetailsScreenData>() {
+                override fun onNext(result: CardDetailsScreenData) {
+                    view.showScreen(result)
+                    view.hideLoadingIndicator()
+                }
+            })
+            .addToComposite()
     }
+
+    override fun setCardId(cardId: String) = this.cardId.onNext(cardId)
 }

@@ -20,6 +20,7 @@ import com.jamieadkins.commonutils.bus.RefreshEvent
 import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
@@ -100,7 +101,7 @@ class CardDatabaseFragment :
 
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
-        val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f, requireContext()).toInt())
+        val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = controller.adapter
 
@@ -152,12 +153,5 @@ class CardDatabaseFragment :
         val intent = Intent(requireContext(), CardDetailsActivity::class.java)
         intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
         activity?.startActivity(intent)
-    }
-
-    private fun convertDpToPixel(dp: Float, context: Context): Float {
-        val resources = context.resources
-        val metrics = resources.displayMetrics
-        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        return px
     }
 }

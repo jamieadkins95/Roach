@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.di
 
+import com.jamieadkins.gwent.card.detail.CardDetailModule
 import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.card.CardDataModule
