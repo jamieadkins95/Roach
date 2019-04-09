@@ -1,33 +1,26 @@
 package com.jamieadkins.gwent.card.list
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.jamieadkins.commonutils.bus.RefreshEvent
-import com.jamieadkins.commonutils.bus.RxBus
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.commonutils.mvp3.ScrollView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
-import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
-import com.jamieadkins.gwent.filter.FilterType
-import com.jamieadkins.gwent.update.UpdateActivity
+import com.jamieadkins.gwent.update.UpdateService
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotterknife.bindView
@@ -137,8 +130,8 @@ class CardDatabaseFragment :
     }
 
     override fun openUpdateScreen() {
-        val intent = Intent(requireContext(), UpdateActivity::class.java)
-        activity?.startActivity(intent)
+        val intent = Intent(requireContext(), UpdateService::class.java)
+        activity?.startService(intent)
     }
 
     override fun onRefresh() {

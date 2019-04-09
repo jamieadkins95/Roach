@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.di
 
-import com.jamieadkins.gwent.card.detail.CardDetailModule
 import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.card.CardDataModule
@@ -10,12 +9,12 @@ import com.jamieadkins.gwent.data.update.UpdateDataModule
 import com.jamieadkins.gwent.filter.FilterModule
 import com.jamieadkins.gwent.launch.LaunchModule
 import com.jamieadkins.gwent.main.GwentApplication
-import com.jamieadkins.gwent.update.UpdateModule
+import com.jamieadkins.gwent.update.UpdateUiModule
+import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
-import dagger.BindsInstance
 
 @Component(
     modules = [
@@ -25,7 +24,7 @@ import dagger.BindsInstance
         DataModule::class,
         CardDataModule::class,
         FilterDataModule::class,
-        UpdateModule::class,
+        UpdateUiModule::class,
         UpdateDataModule::class,
         CardDatabaseModule::class,
         LaunchModule::class,

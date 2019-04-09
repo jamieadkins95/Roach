@@ -5,6 +5,8 @@ import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import com.jamieadkins.gwent.main.BasePresenter
 import io.reactivex.Completable
+import java.lang.IllegalArgumentException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UpdatePresenter @Inject constructor(
@@ -20,13 +22,12 @@ class UpdatePresenter @Inject constructor(
             .subscribeWith(object : BaseDisposableCompletableObserver() {
                 override fun onComplete() {
                     super.onComplete()
-                    view.openCardDatabase()
+                    view.finish()
                 }
 
                 override fun onError(e: Throwable) {
                     super.onError(e)
                     view.showError()
-                    view.openCardDatabase()
                 }
             })
             .addToComposite()

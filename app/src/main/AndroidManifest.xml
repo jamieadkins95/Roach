@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".main.GwentApplication"
@@ -58,8 +59,7 @@
             android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
-        <activity android:name=".update.UpdateActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar.Full" />
+        <service android:name=".update.UpdateService" />
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@ interface UpdateContract {
 
     interface View {
 
-        fun openCardDatabase()
+        fun finish()
 
         fun showError()
     }

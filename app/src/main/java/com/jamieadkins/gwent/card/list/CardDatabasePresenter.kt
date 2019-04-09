@@ -53,14 +53,6 @@ class CardDatabasePresenter @Inject constructor(
             })
             .addToComposite()
 
-        RxBus.register(DownloadUpdateClickEvent::class.java)
-            .subscribeWith(object : BaseDisposableObserver<DownloadUpdateClickEvent>() {
-                override fun onNext(event: DownloadUpdateClickEvent) {
-                    view.openUpdateScreen()
-                }
-            })
-            .addToComposite()
-
         val getCards = searches
             .switchMap { query ->
                 val cards = if (query.isEmpty()) {
@@ -94,13 +86,15 @@ class CardDatabasePresenter @Inject constructor(
             })
             .addToComposite()
 
-        // Don't dispose this, let the update continue.
-        startCardDatabaseUpdateUseCase.start()
-            .subscribeWith(object : BaseDisposableCompletableObserver() {
-                override fun onComplete() {
-                    // Do nothing.
+        getUpdates()
+            .subscribeWith(object : BaseDisposableObserver<Boolean>() {
+                override fun onNext(update: Boolean) {
+                    if (update) {
+                        view.openUpdateScreen()
+                    }
                 }
             })
+            .addToComposite()
     }
 
     private fun getUpdates(): Observable<Boolean> {

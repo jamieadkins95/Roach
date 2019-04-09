@@ -59,4 +59,10 @@
     <string name="cards_in_deck">%1$d/%2$d cards in deck</string>
     <string name="maximum_card_count_reached">Deck already contains maximum number of that card!</string>
 
+    <string name="update_notification_channel_name">Gwent Card Database Updates</string>
+    <string name="update_notification_progress_title">Updating Gwent Card Database</string>
+    <string name="update_notification_complete_title">Gwent Card Database updated successfully</string>
+    <string name="update_notification_error_title">Failed to update Gwent Card Database</string>
+    <string name="retry">Retry</string>
+
 </resources>
