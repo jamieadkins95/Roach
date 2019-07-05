@@ -4,8 +4,6 @@ import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.card.list.GwentCardViewModel_
-import com.jamieadkins.gwent.card.list.HeaderViewModel_
 import com.jamieadkins.gwent.card.list.SubHeaderViewModel_
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
 import com.jamieadkins.gwent.deck.DeckBuilderEvents
@@ -23,6 +21,7 @@ class DeckController(val resources: Resources) : TypedEpoxyController<GwentDeck>
         headerView
             .deckName(deck.name)
             .cardCount(deck.totalCardCount)
+            .unitCount(deck.unitCount)
             .provisionCost(deck.provisionCost)
             .provisionAllowance(deck.maxProvisionCost)
             .addTo(this)

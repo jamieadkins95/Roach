@@ -70,6 +70,11 @@ class DeckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         cardCount.text = "$count/25"
     }
 
+    @ModelProp
+    fun setUnitCount(count: Int) {
+        deckUnitCount.text = "$count/13"
+    }
+
     @AfterPropsSet
     fun updateProvisionCost() {
         deckProvisionCost.text = "$provisionCost/$provisionAllowance"

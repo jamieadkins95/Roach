@@ -29,6 +29,11 @@ class DeckHeaderView @JvmOverloads constructor(context: Context, attrs: Attribut
         cardCount.text = resources.getString(R.string.cards_in_deck, count, 25)
     }
 
+    @ModelProp
+    fun setUnitCount(count: Int) {
+        unitCount.text = resources.getString(R.string.units_in_deck, count, 13)
+    }
+
     @AfterPropsSet
     fun updateProvisionCost() {
         deckProvisionCost.text = "$provisionCost/$provisionAllowance"

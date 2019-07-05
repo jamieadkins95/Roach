@@ -53,12 +53,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gwent"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/gwentAccent"
         tools:text="165/165"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end" />
+
+    <TextView
+        android:id="@+id/unitCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="13 units (minimum 13)"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deckProvisionCost"
+        android:layout_marginBottom="8dp" />
 
 </merge>

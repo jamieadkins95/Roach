@@ -14,6 +14,7 @@ class DeckListController : TypedEpoxyController<List<GwentDeck>>() {
                 .deckName(deck.name)
                 .leader(deck.leader)
                 .cardCount(deck.totalCardCount)
+                .unitCount(deck.unitCount)
                 .provisionCost(deck.provisionCost)
                 .provisionAllowance(deck.maxProvisionCost)
                 .clickListener { _ -> RxBus.post(GwentDeckClickEvent(deck.id)) }

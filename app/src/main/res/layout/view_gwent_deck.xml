@@ -93,7 +93,6 @@
         android:text="@string/provisions"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@id/center"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardCount" />
 
     <TextView
@@ -107,5 +106,29 @@
         tools:text="165/165"
         app:layout_constraintStart_toStartOf="@id/center"
         app:layout_constraintTop_toBottomOf="@id/provisionsSubheader"/>
+
+    <TextView
+        android:id="@+id/unitCountSubheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:text="@string/unit_count"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/provisionsSubheader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardCount" />
+
+    <TextView
+        android:id="@+id/deckUnitCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gwent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="13/13"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintStart_toStartOf="@id/unitCountSubheader"
+        app:layout_constraintTop_toBottomOf="@id/unitCountSubheader"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
