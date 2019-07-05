@@ -36,6 +36,7 @@ class CreateDeckDialog : DaggerSupportDialogFragment(), CreateDeckContract.View 
                 R.id.faction_sk -> GwentFaction.SKELLIGE
                 R.id.faction_sc -> GwentFaction.SCOIATAEL
                 R.id.faction_ng -> GwentFaction.NILFGAARD
+                R.id.faction_sy -> GwentFaction.SYNDICATE
                 else -> GwentFaction.NORTHERN_REALMS
             }
             presenter.createDeck(inputName.text?.toString() ?: "", faction)

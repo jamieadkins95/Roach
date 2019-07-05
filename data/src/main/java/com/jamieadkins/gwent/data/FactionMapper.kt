@@ -14,6 +14,7 @@ class FactionMapper @Inject constructor() : Mapper<String, GwentFaction>() {
             Faction.SKELLIGE_ID -> GwentFaction.SKELLIGE
             Faction.NILFGAARD_ID -> GwentFaction.NILFGAARD
             Faction.NEUTRAL_ID -> GwentFaction.NEUTRAL
+            Faction.SYNDICATE_ID -> GwentFaction.SYNDICATE
             else -> throw Exception("Faction not found")
         }
     }

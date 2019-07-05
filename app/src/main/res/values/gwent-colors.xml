@@ -28,6 +28,10 @@
     <color name="nilfgaardLight">#FFC107</color>
     <color name="nilfgaardDark">#000000</color>
 
+    <color name="syndicate">#ef6c00</color>
+    <color name="syndicateLight">#ff9d3f</color>
+    <color name="syndicateDark">#b53d00</color>
+
     <!-- Rarities -->
     <color name="common">#80FFFFFF</color>
     <color name="rare">#6ec6ff</color>

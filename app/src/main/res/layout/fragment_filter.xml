@@ -73,6 +73,13 @@
                 android:text="@string/nilfgaard" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/filter_faction_sy"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/syndicate" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/filter_faction_ne"
                 style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
                 android:layout_width="wrap_content"

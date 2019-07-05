@@ -14,6 +14,7 @@ object CardResourceHelper {
             GwentFaction.SCOIATAEL -> ResourcesCompat.getColor(resources, R.color.scoiatael, null)
             GwentFaction.SKELLIGE -> ResourcesCompat.getColor(resources, R.color.skellige, null)
             GwentFaction.NILFGAARD -> ResourcesCompat.getColor(resources, R.color.nilfgaard, null)
+            GwentFaction.SYNDICATE -> ResourcesCompat.getColor(resources, R.color.syndicate, null)
             else -> ResourcesCompat.getColor(resources, R.color.gwentGreen, null)
         }
     }
@@ -25,6 +26,7 @@ object CardResourceHelper {
             GwentFaction.SCOIATAEL -> ResourcesCompat.getColor(resources, R.color.scoiataelDark, null)
             GwentFaction.SKELLIGE -> ResourcesCompat.getColor(resources, R.color.skelligeDark, null)
             GwentFaction.NILFGAARD -> ResourcesCompat.getColor(resources, R.color.nilfgaardDark, null)
+            GwentFaction.SYNDICATE -> ResourcesCompat.getColor(resources, R.color.syndicateDark, null)
             else -> ResourcesCompat.getColor(resources, R.color.gwentGreenDark, null)
         }
     }

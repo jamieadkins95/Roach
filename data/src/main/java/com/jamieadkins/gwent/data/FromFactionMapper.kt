@@ -14,6 +14,7 @@ class FromFactionMapper @Inject constructor() : Mapper<GwentFaction, String>() {
             GwentFaction.SKELLIGE -> Faction.SKELLIGE_ID
             GwentFaction.NILFGAARD -> Faction.NILFGAARD_ID
             GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
+            GwentFaction.SYNDICATE -> Faction.SYNDICATE_ID
         }
     }
 }

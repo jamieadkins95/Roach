@@ -29,6 +29,7 @@ class FilterPresenter @Inject constructor(
     var skellige = false
     var scoiatael = false
     var neutral = false
+    var syndicate = false
 
     var bronze = false
     var gold = false
@@ -70,6 +71,9 @@ class FilterPresenter @Inject constructor(
 
                     neutral = filter.factionFilter[GwentFaction.NEUTRAL] ?: false
                     view.setNeutralFilter(neutral)
+
+                    syndicate = filter.factionFilter[GwentFaction.SYNDICATE] ?: false
+                    view.setSyndicateFilter(syndicate)
 
                     bronze = filter.colourFilter[GwentCardColour.BRONZE] ?: false
                     view.setBronzeFilter(bronze)
@@ -140,7 +144,8 @@ class FilterPresenter @Inject constructor(
                         GwentFaction.MONSTER to monster,
                         GwentFaction.SKELLIGE to skellige,
                         GwentFaction.SCOIATAEL to scoiatael,
-                        GwentFaction.NEUTRAL to neutral
+                        GwentFaction.NEUTRAL to neutral,
+                        GwentFaction.SYNDICATE to syndicate
                     )
 
                     val colours = mapOf(
@@ -191,6 +196,8 @@ class FilterPresenter @Inject constructor(
     override fun onScoiataelFilterChanged(checked: Boolean) { scoiatael = checked }
 
     override fun onNeutralFilterChanged(checked: Boolean) { neutral = checked }
+
+    override fun onSyndicateFilterChanged(checked: Boolean) { syndicate = checked }
 
     override fun onBronzeChanged(checked: Boolean) { bronze = checked }
 

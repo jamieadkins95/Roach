@@ -82,6 +82,7 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
             GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
             GwentFaction.MONSTER -> R.drawable.cardback_monster
             GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
+            else -> R.drawable.cardback_neutral
         }
 
         if (cardImage != null) {

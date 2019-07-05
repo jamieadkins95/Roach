@@ -89,6 +89,7 @@ class CardDetailsFragment : DaggerFragment(), DetailContract.View {
             GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
             GwentFaction.MONSTER -> R.drawable.cardback_monster
             GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
+            else -> R.drawable.cardback_neutral
         }
 
         if (imageUrl != null) {

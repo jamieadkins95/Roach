@@ -6,5 +6,6 @@ enum class GwentFaction {
     SCOIATAEL,
     SKELLIGE,
     NILFGAARD,
+    SYNDICATE,
     NEUTRAL,
 }

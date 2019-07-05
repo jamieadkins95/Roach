@@ -11,4 +11,5 @@ public class Faction {
     public static final String NEUTRAL_ID = "Neutral";
     public static final String NILFGAARD_ID = "Nilfgaard";
     public static final String MONSTERS_ID = "Monster";
+    public static final String SYNDICATE_ID = "Syndicate";
 }

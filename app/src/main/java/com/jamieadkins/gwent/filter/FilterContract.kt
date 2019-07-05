@@ -20,6 +20,8 @@ interface FilterContract {
 
         fun setNeutralFilter(checked: Boolean)
 
+        fun setSyndicateFilter(checked: Boolean)
+
         fun setBronzeFilter(checked: Boolean)
 
         fun setGoldFilter(checked: Boolean)
@@ -68,6 +70,8 @@ interface FilterContract {
         fun onScoiataelFilterChanged(checked: Boolean)
 
         fun onNeutralFilterChanged(checked: Boolean)
+
+        fun onSyndicateFilterChanged(checked: Boolean)
 
         fun onBronzeChanged(checked: Boolean)
 

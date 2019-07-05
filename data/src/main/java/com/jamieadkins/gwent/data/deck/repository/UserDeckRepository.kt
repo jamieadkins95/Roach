@@ -80,6 +80,7 @@ class UserDeckRepository @Inject constructor(
                 GwentFaction.SKELLIGE -> "200160" // Crach
                 GwentFaction.SCOIATAEL -> "201589" // Filavandrel
                 GwentFaction.NILFGAARD -> "200162" // Emhyr
+                GwentFaction.SYNDICATE -> "202373" // Gudrun Bjornsdottir
                 else -> throw IllegalArgumentException("Unrecognised Faction $faction")
             }
             val deck = DeckEntity(name, factionToFactionId(faction), defaultLeaderId)
@@ -124,6 +125,7 @@ class UserDeckRepository @Inject constructor(
             GwentFaction.SKELLIGE -> Faction.SKELLIGE_ID
             GwentFaction.NILFGAARD -> Faction.NILFGAARD_ID
             GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
+            GwentFaction.SYNDICATE -> Faction.SYNDICATE_ID
             else -> throw Exception("Faction not found")
         }
     }

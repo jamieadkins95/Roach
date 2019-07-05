@@ -39,6 +39,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_faction_sk.setOnCheckedChangeListener { _, checked -> presenter.onSkelligeFilterChanged(checked) }
         filter_faction_sc.setOnCheckedChangeListener { _, checked -> presenter.onScoiataelFilterChanged(checked) }
         filter_faction_ne.setOnCheckedChangeListener { _, checked -> presenter.onNeutralFilterChanged(checked) }
+        filter_faction_sy.setOnCheckedChangeListener { _, checked -> presenter.onSyndicateFilterChanged(checked) }
 
         filter_color_bronze.setOnCheckedChangeListener { _, checked -> presenter.onBronzeChanged(checked) }
         filter_color_gold.setOnCheckedChangeListener { _, checked -> presenter.onGoldChanged(checked) }
@@ -92,6 +93,8 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
 
     override fun setNeutralFilter(checked: Boolean) { filter_faction_ne.isChecked = checked }
 
+    override fun setSyndicateFilter(checked: Boolean) { filter_faction_sy.isChecked = checked }
+
     override fun setBronzeFilter(checked: Boolean) { filter_color_bronze.isChecked = checked }
 
     override fun setGoldFilter(checked: Boolean) { filter_color_gold.isChecked = checked }
@@ -126,7 +129,8 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
             GwentFaction.MONSTER to filter_faction_mon,
             GwentFaction.NORTHERN_REALMS to filter_faction_nr,
             GwentFaction.SKELLIGE to filter_faction_sk,
-            GwentFaction.SCOIATAEL to filter_faction_sc
+            GwentFaction.SCOIATAEL to filter_faction_sc,
+            GwentFaction.SYNDICATE to filter_faction_sy
         )
 
         factionFilters.entries.forEach {

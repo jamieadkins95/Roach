@@ -37,6 +37,7 @@ object GwentStringHelper {
             GwentFaction.SCOIATAEL -> context.getString(R.string.scoiatael)
             GwentFaction.SKELLIGE -> context.getString(R.string.skellige)
             GwentFaction.NILFGAARD -> context.getString(R.string.nilfgaard)
+            GwentFaction.SYNDICATE -> context.getString(R.string.syndicate)
             GwentFaction.NEUTRAL -> context.getString(R.string.neutral)
             else -> null
         }

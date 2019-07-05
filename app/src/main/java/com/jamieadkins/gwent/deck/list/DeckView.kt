@@ -48,6 +48,7 @@ class DeckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             GwentFaction.SKELLIGE -> ContextCompat.getColor(context, R.color.skelligeLight)
             GwentFaction.NEUTRAL -> ContextCompat.getColor(context, R.color.neutral)
             GwentFaction.NILFGAARD -> ContextCompat.getColor(context, R.color.nilfgaardLight)
+            GwentFaction.SYNDICATE -> ContextCompat.getColor(context, R.color.syndicateLight)
             else -> ContextCompat.getColor(context, R.color.neutral)
         }
         leaderName.setTextColor(factionColor)
