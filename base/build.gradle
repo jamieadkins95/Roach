@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-
     implementation Libs.kotlin
     implementation Libs.dagger
     kapt Libs.dagger_compiler
