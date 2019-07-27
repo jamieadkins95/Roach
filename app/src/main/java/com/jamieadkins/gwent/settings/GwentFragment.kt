@@ -14,12 +14,26 @@ import android.view.ViewGroup
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_LAYOUT
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_TITLE
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
-class GwentFragment : Fragment(), GwentController.SettingsNavigationCallback {
+class GwentFragment : Fragment() {
 
-    private val controller = GwentController()
+    private val adapter = GroupAdapter<ViewHolder>().apply {
+        update(listOf(
+            SettingsItem(R.string.news, R.drawable.ic_news),
+            SettingsItem(R.string.esports, R.drawable.ic_swords),
+            SettingsItem(R.string.forums, R.drawable.ic_forum),
+            SettingsItem(R.string.reddit, R.drawable.ic_reddit),
+            SettingsItem(R.string.discord, R.drawable.ic_discord),
+            SettingsItem(R.string.twitch, R.drawable.ic_twitch),
+            SettingsItem(R.string.youtube, R.drawable.ic_youtube),
+            SettingsItem(R.string.settings, R.drawable.ic_settings),
+            SettingsItem(R.string.about, R.drawable.ic_info)
+        ))
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -43,49 +57,59 @@ class GwentFragment : Fragment(), GwentController.SettingsNavigationCallback {
 
         val layoutManager = LinearLayoutManager(recycler_view.context)
         recycler_view.layoutManager = layoutManager
-        recycler_view.adapter = controller.adapter
-        controller.listener = this
-        controller.requestModelBuild()
+        recycler_view.adapter = adapter
+        adapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is SettingsItem -> {
+                    when (item.title) {
+                        R.string.news -> onNewsClicked()
+                        R.string.esports -> onEsportsClicked()
+                        R.string.forums -> onForumsClicked()
+                        R.string.reddit -> onRedditClicked()
+                        R.string.discord -> onDiscordClicked()
+                        R.string.twitch -> onTwitchClicked()
+                        R.string.youtube -> onYoutubeClicked()
+                        R.string.settings -> onSettingsClicked()
+                        R.string.about -> onAboutClicked()
+                    }
+                }
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        controller.listener = null
-    }
-
-    override fun onNewsClicked() {
+    fun onNewsClicked() {
         showChromeCustomTab("https://www.playgwent.com/news")
     }
 
-    override fun onEsportsClicked() {
+    fun onEsportsClicked() {
         showChromeCustomTab("https://masters.playgwent.com/")
     }
 
-    override fun onForumsClicked() {
+    fun onForumsClicked() {
         showChromeCustomTab("https://forums.cdprojektred.com/forum/en/gwent")
     }
 
-    override fun onRedditClicked() {
+    fun onRedditClicked() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.reddit.com/r/gwent/"))
         startActivity(intent)
     }
 
-    override fun onDiscordClicked() {
+    fun onDiscordClicked() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/playgwent"))
         startActivity(intent)
     }
 
-    override fun onTwitchClicked() {
+    fun onTwitchClicked() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitch.tv/directory/game/Gwent%3A%20The%20Witcher%20Card%20Game"))
         startActivity(intent)
     }
 
-    override fun onYoutubeClicked() {
+    fun onYoutubeClicked() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCKS8WtM7U144j4fAU4xqiCw"))
         startActivity(intent)
     }
 
-    override fun onSettingsClicked() {
+    fun onSettingsClicked() {
         context?.let {
             val intent = Intent(it, SettingsActivity::class.java)
             intent.putExtra(EXTRA_PREFERENCE_TITLE, R.string.settings)
@@ -94,7 +118,7 @@ class GwentFragment : Fragment(), GwentController.SettingsNavigationCallback {
         }
     }
 
-    override fun onAboutClicked() {
+    fun onAboutClicked() {
         context?.let {
             val intent = Intent(it, SettingsActivity::class.java)
             intent.putExtra(EXTRA_PREFERENCE_TITLE, R.string.about)
