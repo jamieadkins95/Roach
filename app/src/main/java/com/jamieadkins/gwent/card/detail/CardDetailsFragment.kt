@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.card.detail
 
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +12,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
+import com.jamieadkins.gwent.card.list.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.main.CardResourceHelper
+import com.jamieadkins.gwent.main.GwentStringHelper
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_card_details.*
@@ -23,8 +30,9 @@ import javax.inject.Inject
 class CardDetailsFragment : DaggerFragment(), DetailContract.View {
 
     lateinit var cardId: String
-    private lateinit var controller: CardDetailsController
     @Inject lateinit var presenter: DetailContract.Presenter
+
+    private val adapter = GroupAdapter<ViewHolder>()
 
     companion object {
         const val KEY_ID = "cardId"
@@ -33,7 +41,6 @@ class CardDetailsFragment : DaggerFragment(), DetailContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         cardId = savedInstanceState?.getString(KEY_ID) ?: arguments?.getString(KEY_ID) ?: throw Exception("Card id not found.")
         super.onCreate(savedInstanceState)
-        controller = CardDetailsController(resources)
 
         presenter.setCardId(cardId)
     }
@@ -51,7 +58,7 @@ class CardDetailsFragment : DaggerFragment(), DetailContract.View {
 
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = controller.adapter
+        recyclerView.adapter = adapter
         val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
@@ -66,8 +73,45 @@ class CardDetailsFragment : DaggerFragment(), DetailContract.View {
     }
 
     override fun showScreen(cardDetailsScreenData: CardDetailsScreenData) {
-        showCard(cardDetailsScreenData.card)
-        controller.setData(cardDetailsScreenData.card, cardDetailsScreenData.relatedCards)
+        val card = cardDetailsScreenData.card
+        showCard(card)
+        val items = mutableListOf<Item>()
+        if (card.tooltip.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.tooltip))
+            items.add(ElevatedTextItem(card.tooltip))
+        }
+        if (card.flavor.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.flavor))
+            items.add(ElevatedTextItem(card.flavor, Typeface.defaultFromStyle(Typeface.ITALIC)))
+        }
+        if (card.categories.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.categories))
+            items.add(ElevatedTextItem(card.categories.joinToString()))
+        }
+        items.add(SubHeaderItem(R.string.type))
+        items.add(ElevatedTextItem(GwentStringHelper.getTypeString(resources, card.type)))
+
+        if (card.colour != GwentCardColour.LEADER && card.provisions > 0) {
+            items.add(SubHeaderItem(R.string.provisions))
+            items.add(ElevatedTextItem(card.provisions.toString()))
+        }
+
+        if (card.colour == GwentCardColour.LEADER) {
+            items.add(SubHeaderItem(R.string.extra_provisions))
+            items.add(ElevatedTextItem(card.extraProvisions.toString()))
+        }
+
+        if (card.collectible) {
+            items.add(SubHeaderItem(R.string.craft))
+            items.add(CraftCostItem(card.craftCost))
+            items.add(SubHeaderItem(R.string.mill))
+            items.add(CraftCostItem(card.millValue))
+        }
+
+        if (card.relatedCards.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.related))
+        }
+        adapter.update(items)
     }
 
     private fun showCard(card: GwentCard) {
