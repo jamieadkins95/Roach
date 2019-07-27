@@ -16,13 +16,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
+import com.jamieadkins.gwent.card.list.GwentCardItem
+import com.jamieadkins.gwent.card.list.HeaderItem
+import com.jamieadkins.gwent.card.list.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.deck.DeckBuilderEvent
+import com.jamieadkins.gwent.deck.DeckBuilderEvents
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
 import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.main.CardResourceHelper
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_deck_details.*
@@ -34,8 +43,16 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
 
     @Inject lateinit var presenter: DeckDetailsContract.Presenter
 
-    private lateinit var cardDatabaseController: DeckCardDatabaseController
-    private lateinit var deckController: DeckController
+    private val cardDatabaseAdapter = GroupAdapter<ViewHolder>()
+    private val cardDatabaseSection = Section().apply {
+        setFooter(SpaceItem())
+        setHideWhenEmpty(true)
+    }
+    private val deckAdapter = GroupAdapter<ViewHolder>()
+
+    init {
+        cardDatabaseAdapter.add(cardDatabaseSection)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         deckId = arguments?.getString(KEY_ID) ?: throw Exception("Deck id not found.")
@@ -57,13 +74,36 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         cardDatabase.layoutManager = LinearLayoutManager(cardDatabase.context)
         val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
         cardDatabase.addItemDecoration(dividerItemDecoration)
-        cardDatabaseController = DeckCardDatabaseController(resources)
-        cardDatabase.adapter = cardDatabaseController.adapter
+        cardDatabase.adapter = cardDatabaseAdapter
+        cardDatabaseAdapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is GwentCardItem -> DeckBuilderEvents.post(DeckBuilderEvent.CardDatabaseClick(item.card.id))
+            }
+        }
+        cardDatabaseAdapter.setOnItemLongClickListener { item, _ ->
+            when (item) {
+                is GwentCardItem -> DeckBuilderEvents.post(DeckBuilderEvent.CardDatabaseLongClick(item.card.id))
+            }
+            true
+        }
 
-        deckController = DeckController(resources)
+
         deckList.layoutManager = LinearLayoutManager(deckList.context)
         deckList.addItemDecoration(dividerItemDecoration)
-        deckList.adapter = deckController.adapter
+        deckList.adapter = deckAdapter
+        deckAdapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is DeckLeaderItem -> DeckBuilderEvents.post(DeckBuilderEvent.LeaderClick(item.leader.id))
+                is DeckCardItem -> DeckBuilderEvents.post(DeckBuilderEvent.DeckClick(item.card.id))
+            }
+        }
+        deckAdapter.setOnItemLongClickListener { item, _ ->
+            when (item) {
+                is DeckLeaderItem -> DeckBuilderEvents.post(DeckBuilderEvent.LeaderLongClick(item.leader.id))
+                is DeckCardItem -> DeckBuilderEvents.post(DeckBuilderEvent.DeckLongClick(item.card.id))
+            }
+            true
+        }
 
         refreshLayout.setColorSchemeResources(R.color.gwentAccent)
 
@@ -124,7 +164,12 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     }
 
     override fun showCardDatabase(cards: List<GwentCard>, searchQuery: String) {
-        cardDatabaseController.setData(cards, searchQuery)
+        val searchResults: List<Item> = if (searchQuery.isNotEmpty()) {
+            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, cards.size, searchQuery)))
+        } else {
+            emptyList()
+        }
+        cardDatabaseSection.update(searchResults + cards.map { GwentCardItem(it) })
     }
 
     override fun showDeck(deck: GwentDeck) {
@@ -135,7 +180,16 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
             activity?.window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, deck.faction)
         }
 
-        deckController.setData(deck)
+        val cards = deck.cards.values.sortedWith(compareByDescending<GwentCard> { it.provisions }.thenBy { it.name })
+        deckAdapter.update(
+            listOf(
+                DeckHeaderItem(deck.id, deck.name, deck.totalCardCount, deck.unitCount, deck.provisionCost, deck.maxProvisionCost),
+                SubHeaderItem(R.string.leader),
+                DeckLeaderItem(deck.leader),
+                SubHeaderItem(R.string.cards)
+            ) +
+            cards.map { DeckCardItem(it, deck.cardCounts[it.id] ?: 0) }
+        )
     }
 
     override fun showLeaderPicker() {
