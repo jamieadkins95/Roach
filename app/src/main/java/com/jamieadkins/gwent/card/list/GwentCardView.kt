@@ -73,28 +73,6 @@ class GwentCardView  @JvmOverloads constructor(context: Context, attrs: Attribut
     @JvmField @ModelProp var cardImage: String? = null
     lateinit var faction: GwentFaction
 
-    @AfterPropsSet
-    fun handleImage() {
-        val cardBack = when (faction) {
-            GwentFaction.NORTHERN_REALMS -> R.drawable.cardback_northern_realms
-            GwentFaction.NILFGAARD -> R.drawable.cardback_nilfgaard
-            GwentFaction.NEUTRAL -> R.drawable.cardback_neutral
-            GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
-            GwentFaction.MONSTER -> R.drawable.cardback_monster
-            GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
-            else -> R.drawable.cardback_neutral
-        }
-
-        if (cardImage != null) {
-            Glide.with(context)
-                .load(cardImage)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imgCard)
-        } else {
-            imgCard.setImageDrawable(null)
-        }
-    }
 
     @ModelProp
     fun setCardFaction(cardFaction: GwentFaction) {

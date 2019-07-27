@@ -16,11 +16,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
+import com.jamieadkins.gwent.bus.GwentCardClickEvent
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.update.UpdateService
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotterknife.bindView
@@ -32,23 +38,31 @@ class CardDatabaseFragment :
     SwipeRefreshLayout.OnRefreshListener,
     ScrollView {
 
-    private val screenKey = javaClass.name
-
     @Inject
     lateinit var presenter: CardDatabaseContract.Presenter
 
     private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
     private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
-    private lateinit var controller: CardDatabaseController
+    private val adapter = GroupAdapter<ViewHolder>()
+    private val noticesSection = Section().apply {
+        setHideWhenEmpty(true)
+    }
+    private val searchResultsSection = Section().apply {
+        setHideWhenEmpty(true)
+    }
+    private val cardsSection = Section().apply {
+        setHideWhenEmpty(true)
+    }
+
+    init {
+        adapter.add(noticesSection)
+        adapter.add(searchResultsSection)
+        adapter.add(cardsSection)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        controller = CardDatabaseController(resources)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -96,7 +110,13 @@ class CardDatabaseFragment :
         recyclerView.layoutManager = layoutManager
         val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
-        recyclerView.adapter = controller.adapter
+        recyclerView.adapter = adapter
+
+        adapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is GwentCardItem -> RxBus.post(GwentCardClickEvent(item.card.id))
+            }
+        }
 
         presenter.onAttach()
     }
@@ -122,7 +142,15 @@ class CardDatabaseFragment :
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
-        controller.setData(data)
+        noticesSection.update(data.notices.map { NoticeItem(it) })
+        val searchResults: List<Item> = if (data.searchQuery.isNotEmpty()) {
+            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)))
+        } else {
+            emptyList()
+        }
+        searchResultsSection.update(searchResults)
+        cardsSection.update(data.cards.map { GwentCardItem(it) })
+
         recyclerView.visibility = View.VISIBLE
         recyclerView.post {
             recyclerView.scrollToPosition(0)

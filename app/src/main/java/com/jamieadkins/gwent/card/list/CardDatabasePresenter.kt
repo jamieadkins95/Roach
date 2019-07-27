@@ -72,7 +72,7 @@ class CardDatabasePresenter @Inject constructor(
         Observable.combineLatest(getCards,
                                  getNotices(),
                                  BiFunction { pair: Pair<List<GwentCard>, String>, notices: List<Notice> ->
-                                     CardDatabaseScreenModel(pair.first, pair.second, false, notices)
+                                     CardDatabaseScreenModel(pair.first, pair.second, notices)
                                  })
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
