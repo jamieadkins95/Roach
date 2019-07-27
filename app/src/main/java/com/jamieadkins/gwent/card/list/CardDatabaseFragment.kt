@@ -13,7 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.jamieadkins.commonutils.mvp3.ScrollView
+import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity

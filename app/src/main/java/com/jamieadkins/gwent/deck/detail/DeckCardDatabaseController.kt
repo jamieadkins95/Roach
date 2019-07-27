@@ -3,9 +3,7 @@ package com.jamieadkins.gwent.deck.detail
 import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.Typed2EpoxyController
-import com.jamieadkins.commonutils.bus.RxBus
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.card.list.GwentCardViewModel_
 import com.jamieadkins.gwent.card.list.HeaderViewModel_
 import com.jamieadkins.gwent.deck.DeckBuilderEvent

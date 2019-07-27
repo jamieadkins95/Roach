@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.deck.list
 
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.domain.deck.GetDecksUseCase

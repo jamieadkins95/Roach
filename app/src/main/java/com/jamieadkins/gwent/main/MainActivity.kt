@@ -1,17 +1,13 @@
 package com.jamieadkins.gwent.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.BuildConfig
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
-import com.jamieadkins.gwent.collection.CollectionPlaceholderFragment
 import com.jamieadkins.gwent.deck.list.DeckListFragment
-import com.jamieadkins.gwent.deck.list.DeckListPlaceholderFragment
 import com.jamieadkins.gwent.settings.GwentFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

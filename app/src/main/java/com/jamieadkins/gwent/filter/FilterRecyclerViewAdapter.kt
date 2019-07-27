@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.bus.RxBus
 
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.*

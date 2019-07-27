@@ -1,17 +1,14 @@
 package com.jamieadkins.gwent.update
 
-import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
+import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import com.jamieadkins.gwent.main.BasePresenter
-import io.reactivex.Completable
-import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UpdatePresenter @Inject constructor(
     private val view: UpdateContract.View,
-    private val schedulerProvider: BaseSchedulerProvider,
+    private val schedulerProvider: SchedulerProvider,
     private val updateRepository: UpdateRepository)
     : BasePresenter(), UpdateContract.Presenter {
 

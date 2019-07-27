@@ -1,14 +1,10 @@
 package com.jamieadkins.gwent.card.list
 
-import com.jamieadkins.commonutils.bus.RxBus
-import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.base.BaseDisposableObserver
-import com.jamieadkins.gwent.bus.DownloadUpdateClickEvent
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
-import com.jamieadkins.gwent.bus.ResetFiltersEvent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.domain.card.GetCardsUseCase
-import com.jamieadkins.gwent.domain.card.model.CardDatabaseResult
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.domain.filter.FilterCardsUseCase

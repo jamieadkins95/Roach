@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.deck.detail.leader
 import android.content.res.Resources
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.TypedEpoxyController
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.LeaderPickerEvent
 import com.jamieadkins.gwent.card.list.GwentCardViewModel_

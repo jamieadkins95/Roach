@@ -1,4 +1,4 @@
-package com.jamieadkins.commonutils.mvp3
+package com.jamieadkins.gwent.base
 
 interface ScrollView {
 

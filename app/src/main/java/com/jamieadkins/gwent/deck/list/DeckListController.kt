@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.deck.list
 
 import com.airbnb.epoxy.TypedEpoxyController
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 

@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Typeface
 import com.airbnb.epoxy.AutoModel
 import com.airbnb.epoxy.Typed2EpoxyController
-import com.jamieadkins.commonutils.bus.RxBus
+import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.bus.GwentCardClickEvent

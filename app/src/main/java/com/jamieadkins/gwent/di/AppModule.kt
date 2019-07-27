@@ -4,7 +4,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.res.AssetManager
 import android.content.res.Resources
-import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.main.SchedulerProviderImpl
@@ -48,10 +47,6 @@ abstract class AppModule {
         @Provides
         @JvmStatic
         fun schedulerProvider(): SchedulerProvider = SchedulerProviderImpl()
-
-        @Provides
-        @JvmStatic
-        fun baseSchedulerProvider(): BaseSchedulerProvider = com.jamieadkins.commonutils.mvp2.SchedulerProvider
 
         @Provides
         @JvmStatic
