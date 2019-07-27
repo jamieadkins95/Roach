@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
@@ -63,9 +64,26 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         }
         toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
 
-        cardDatabase.layoutManager = LinearLayoutManager(cardDatabase.context)
+        val cardDatabaseLayoutManager = LinearLayoutManager(cardDatabase.context)
+        cardDatabase.layoutManager = cardDatabaseLayoutManager
         val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
         cardDatabase.addItemDecoration(dividerItemDecoration)
+        cardDatabase.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (cardDatabaseLayoutManager.findLastVisibleItemPosition() -
+                    cardDatabaseLayoutManager.findFirstVisibleItemPosition() + 1 < cardDatabaseAdapter.itemCount) {
+                    buttonReturnToTop.visibility = if (dy < 0) View.VISIBLE else View.GONE
+                }
+                if (cardDatabaseLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    buttonReturnToTop.visibility = View.GONE
+                }
+            }
+        })
+
+        buttonReturnToTop.setOnClickListener {
+            cardDatabase.scrollToPosition(0)
+        }
         cardDatabase.adapter = cardDatabaseAdapter
         cardDatabaseAdapter.setOnItemClickListener { item, _ ->
             when (item) {

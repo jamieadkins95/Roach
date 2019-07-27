@@ -4,6 +4,7 @@
     <string name="search_results">Search Results</string>
     <string name="results_found">%1$d results found for \"%2$s\"</string>
     <string name="filters_applied">%d filters applied</string>
+    <string name="return_to_top">Return to top</string>
     <string name="tooltip">Tooltip</string>
     <string name="flavor">Flavor</string>
     <string name="categories">Categories</string>

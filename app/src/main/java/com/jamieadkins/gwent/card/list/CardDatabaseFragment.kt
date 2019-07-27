@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
@@ -93,6 +94,21 @@ class CardDatabaseFragment :
         val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recycler_view.addItemDecoration(dividerItemDecoration)
         recycler_view.adapter = adapter
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (layoutManager.findLastVisibleItemPosition() - layoutManager.findFirstVisibleItemPosition() + 1 < adapter.itemCount) {
+                    buttonReturnToTop.visibility = if (dy < 0) View.VISIBLE else View.GONE
+                }
+                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    buttonReturnToTop.visibility = View.GONE
+                }
+            }
+        })
+
+        buttonReturnToTop.setOnClickListener {
+            recycler_view.scrollToPosition(0)
+        }
 
         adapter.setOnItemClickListener { item, _ ->
             when (item) {

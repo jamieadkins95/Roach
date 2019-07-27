@@ -20,6 +20,21 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonReturnToTop"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:text="@string/return_to_top"
+        app:backgroundTint="?colorPrimary"
+        app:cornerRadius="24dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="116dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deckList"
         android:layout_width="match_parent"
