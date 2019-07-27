@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion Versions.compile_sdk
+
+    defaultConfig {
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+        debug {
+        }
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+
+    implementation Libs.kotlin
+    implementation Libs.dagger
+    kapt Libs.dagger_compiler
+
+    implementation Libs.retrofit
+    implementation Libs.retrofit_gson_coverter
+    implementation Libs.retrofit_rxjava_adapter
+    implementation Libs.gson
+
+
+
+    testImplementation 'junit:junit:4.12'
+}
