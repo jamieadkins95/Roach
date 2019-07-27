@@ -9,10 +9,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class CardDatabaseModule {
 
     @FragmentScoped
-    @ContributesAndroidInjector()
-    internal abstract fun view(): CardDatabaseFragment
-
-    @FragmentScoped
     @Binds
     internal abstract fun view(activity: CardDatabaseFragment): CardDatabaseContract.View
 

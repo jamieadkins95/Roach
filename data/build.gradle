@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation Libs.kotlin
-    implementation project(':card-data')
+    api project(':card-data')
     implementation project(':database')
     api project(':domain')
 

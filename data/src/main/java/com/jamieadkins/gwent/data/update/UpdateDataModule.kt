@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.data.update
 
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jamieadkins.gwent.data.update.repository.CardUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.CategoryUpdateRepository
 import com.jamieadkins.gwent.data.update.repository.KeywordUpdateRepository
@@ -11,37 +10,36 @@ import com.jamieadkins.gwent.domain.update.repository.NoticesRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dagger.Reusable
 
 @Module
 abstract class UpdateDataModule {
 
     @Binds
-    @Singleton
+    @Reusable
     abstract fun repository(repository: UpdateRepositoryImpl): UpdateRepository
 
     @CardUpdate
     @Binds
-    @Singleton
+    @Reusable
     abstract fun card(repository: CardUpdateRepository): UpdateRepository
 
     @KeywordUpdate
     @Binds
-    @Singleton
+    @Reusable
     abstract fun keyword(repository: KeywordUpdateRepository): UpdateRepository
 
     @CategoryUpdate
     @Binds
-    @Singleton
+    @Reusable
     abstract fun category(repository: CategoryUpdateRepository): UpdateRepository
 
     @NotificationsUpdate
     @Binds
-    @Singleton
+    @Reusable
     abstract fun notifications(repository: NotificationsRepository): UpdateRepository
 
     @Binds
-    @Singleton
+    @Reusable
     abstract fun notices(repository: NoticesRepositoryImpl): NoticesRepository
 }

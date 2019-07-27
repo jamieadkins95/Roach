@@ -4,12 +4,12 @@ import com.jamieadkins.gwent.data.deck.repository.UserDeckRepository
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 import dagger.Binds
 import dagger.Module
-import javax.inject.Singleton
+import dagger.Reusable
 
 @Module
 abstract class DeckDataModule {
 
     @Binds
-    @Singleton
+    @Reusable
     abstract fun repository(repository: UserDeckRepository): DeckRepository
 }

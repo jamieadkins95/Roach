@@ -3,17 +3,14 @@ package com.jamieadkins.gwent.settings;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-import timber.log.Timber;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jamieadkins.gwent.R;
 import com.jamieadkins.gwent.data.BuildConfig;
+
+import timber.log.Timber;
 
 public class SettingsActivity extends BasePreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {

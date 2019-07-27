@@ -6,13 +6,21 @@ import android.os.Bundle
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
+import com.jamieadkins.gwent.main.DaggerAndroidActivity
 import com.jamieadkins.gwent.main.MainActivity
-import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class LaunchActivity : DaggerAppCompatActivity(), LaunchContract.View {
+class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
 
     @Inject lateinit var presenter: LaunchContract.Presenter
+
+    override fun onInject() {
+        DaggerLaunchComponent.builder()
+            .core(coreComponent)
+            .build()
+            .inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

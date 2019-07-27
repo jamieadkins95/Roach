@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.di
 
 import com.jamieadkins.gwent.card.detail.CardDetailModule
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
+import com.jamieadkins.gwent.card.list.CardDatabaseFragment
+import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.deck.create.CreateDeckModule
 import com.jamieadkins.gwent.deck.detail.DeckDetailsFragment
@@ -13,6 +15,7 @@ import com.jamieadkins.gwent.deck.detail.rename.RenameDeckModule
 import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.deck.list.DeckListModule
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
+import com.jamieadkins.gwent.filter.FilterModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,7 +23,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentInjectionModule private constructor() {
 
     @FragmentScoped
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [FilterModule::class])
     internal abstract fun view(): FilterBottomSheetDialogFragment
 
     @FragmentScoped
@@ -46,4 +49,8 @@ abstract class FragmentInjectionModule private constructor() {
     @FragmentScoped
     @ContributesAndroidInjector(modules = [CardDetailModule::class])
     internal abstract fun detail(): CardDetailsFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [CardDatabaseModule::class])
+    internal abstract fun cardDatabase(): CardDatabaseFragment
 }

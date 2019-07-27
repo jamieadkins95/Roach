@@ -3,6 +3,7 @@ package com.jamieadkins.gwent.update
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -11,10 +12,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.jamieadkins.gwent.R
-import dagger.android.DaggerService
+import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import javax.inject.Inject
 
-class UpdateService : DaggerService(), UpdateContract.View {
+class UpdateService : Service(), UpdateContract.View {
 
     @Inject
     lateinit var presenter: UpdateContract.Presenter
@@ -25,6 +26,11 @@ class UpdateService : DaggerService(), UpdateContract.View {
     }
 
     override fun onCreate() {
+        DaggerUpdateComponent.builder()
+            .core(coreComponent)
+            .service(this)
+            .build()
+            .inject(this)
         super.onCreate()
 
         setupNotificationChannel()

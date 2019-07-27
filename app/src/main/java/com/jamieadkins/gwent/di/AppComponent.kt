@@ -1,20 +1,16 @@
 package com.jamieadkins.gwent.di
 
-import com.jamieadkins.gwent.card.list.CardDatabaseModule
-import com.jamieadkins.gwent.data.DataModule
+import com.jamieadkins.gwent.base.CoreComponent
 import com.jamieadkins.gwent.card.data.CardDataModule
+import com.jamieadkins.gwent.card.detail.CardDetailsActivity
+import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.deck.DeckDataModule
 import com.jamieadkins.gwent.data.filter.FilterDataModule
 import com.jamieadkins.gwent.data.update.UpdateDataModule
-import com.jamieadkins.gwent.filter.FilterModule
-import com.jamieadkins.gwent.launch.LaunchModule
-import com.jamieadkins.gwent.main.GwentApplication
-import com.jamieadkins.gwent.update.UpdateUiModule
-import dagger.BindsInstance
+import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
+import com.jamieadkins.gwent.main.MainActivity
 import dagger.Component
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import javax.inject.Singleton
 
 @Component(
     modules = [
@@ -22,24 +18,24 @@ import javax.inject.Singleton
         FragmentInjectionModule::class,
         AppModule::class,
         DataModule::class,
-        com.jamieadkins.gwent.card.data.CardDataModule::class,
+        CardDataModule::class,
         FilterDataModule::class,
-        UpdateUiModule::class,
         UpdateDataModule::class,
-        CardDatabaseModule::class,
-        LaunchModule::class,
-        FilterModule::class,
         DeckDataModule::class
-    ]
+    ],
+    dependencies = [CoreComponent::class]
 )
-@Singleton
-abstract class AppComponent : AndroidInjector<GwentApplication> {
+@ActivityScoped
+interface AppComponent {
+
+    fun inject(target: MainActivity)
+    fun inject(target: CardDetailsActivity)
+    fun inject(target: DeckDetailsActivity)
 
     @Component.Builder
-    internal interface Builder {
+    interface Builder {
 
-        @BindsInstance
-        fun application(application: GwentApplication): AppComponent.Builder
+        fun core(coreComponent: CoreComponent): Builder
 
         fun build(): AppComponent
     }

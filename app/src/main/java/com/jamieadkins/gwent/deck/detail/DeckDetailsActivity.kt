@@ -5,9 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment.Companion.KEY_ID
+import com.jamieadkins.gwent.main.DaggerAndroidActivity
 
-class DeckDetailsActivity : AppCompatActivity() {
+class DeckDetailsActivity : DaggerAndroidActivity() {
+
+    override fun onInject() {
+        DaggerAppComponent.builder()
+            .core(coreComponent)
+            .build()
+            .inject(this)
+    }
 
     lateinit var deckId: String
 

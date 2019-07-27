@@ -7,9 +7,7 @@ import android.content.res.Resources
 import com.jamieadkins.commonutils.mvp2.BaseSchedulerProvider
 import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.domain.SchedulerProvider
-import com.jamieadkins.gwent.main.GwentApplication
 import com.jamieadkins.gwent.main.SchedulerProviderImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.reactivex.exceptions.UndeliverableException
@@ -20,9 +18,6 @@ import timber.log.Timber
 abstract class AppModule {
 
     init {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
         initErrorHandling()
     }
 
@@ -42,9 +37,6 @@ abstract class AppModule {
             }
         }
     }
-
-    @Binds
-    abstract fun provideContext(application: GwentApplication): Context
 
     @Module
     companion object {

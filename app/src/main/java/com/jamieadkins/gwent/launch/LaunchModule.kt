@@ -9,10 +9,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class LaunchModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector
-    internal abstract fun activity(): LaunchActivity
-
-    @ActivityScoped
     @Binds
     internal abstract fun view(activity: LaunchActivity): LaunchContract.View
 

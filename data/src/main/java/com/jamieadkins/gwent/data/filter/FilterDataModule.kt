@@ -4,12 +4,12 @@ import com.jamieadkins.gwent.data.filter.repository.FilterRepositoryImpl
 import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
 import dagger.Binds
 import dagger.Module
-import javax.inject.Singleton
+import dagger.Reusable
 
 @Module
 abstract class FilterDataModule {
 
     @Binds
-    @Singleton
+    @Reusable
     abstract fun filter(repository: FilterRepositoryImpl): FilterRepository
 }
