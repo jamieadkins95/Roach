@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.view_deck_leader.*
 
 data class DeckLeaderItem(
     val leader: GwentCard
-) : Item() {
+) : Item(leader.id.toLongOrNull() ?: leader.id.hashCode().toLong()) {
 
     override fun getLayout(): Int = R.layout.view_deck_leader
 

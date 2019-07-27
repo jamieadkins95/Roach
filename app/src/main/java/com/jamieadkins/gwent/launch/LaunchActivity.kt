@@ -18,6 +18,7 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
     override fun onInject() {
         DaggerLaunchComponent.builder()
             .core(coreComponent)
+            .activity(this)
             .build()
             .inject(this)
     }
