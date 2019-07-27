@@ -8,6 +8,8 @@ interface CardRepository {
 
     fun searchCards(searchQuery: String): Observable<List<GwentCard>>
 
+    fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>): Observable<List<GwentCard>>
+
     fun getCards(): Observable<List<GwentCard>>
 
     fun getCards(cardIds: List<String>): Observable<List<GwentCard>>
@@ -15,6 +17,8 @@ interface CardRepository {
     fun getCard(id: String): Observable<GwentCard>
 
     fun getLeaders(faction: GwentFaction): Observable<List<GwentCard>>
+
+    fun getCardsInFactions(factions: List<GwentFaction>): Observable<List<GwentCard>>
 
     fun invalidateMemoryCache()
 }

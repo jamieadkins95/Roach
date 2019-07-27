@@ -37,6 +37,10 @@ interface CardDao {
     @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + " WHERE faction=:faction AND type='Leader'")
     fun getLeaders(faction: String): Flowable<List<CardWithArtEntity>>
 
+    @Transaction
+    @Query("SELECT * FROM " + GwentDatabase.CARD_TABLE + " WHERE faction IN(:factions)")
+    fun getCardsInFactions(factions: List<String>): Flowable<List<CardWithArtEntity>>
+
     @Query("SELECT COUNT(*) FROM " + GwentDatabase.CARD_TABLE)
     fun count(): Flowable<Int>
 }

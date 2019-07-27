@@ -28,8 +28,13 @@ class CardRepositoryImpl @Inject constructor(
     }
 
     override fun searchCards(searchQuery: String): Observable<List<GwentCard>> {
+        return searchCardsInFactions(searchQuery, GwentFaction.values().toList())
+    }
+
+    override fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>): Observable<List<GwentCard>> {
+        val factions = factions.map { fromFactionMapper.map(it) }
         return Observable.combineLatest(
-            getCardEntities(),
+            database.cardDao().getCardsInFactions(factions).toObservable(),
             database.keywordDao().getAllKeywords().toObservable(),
             database.categoryDao().getAllCategories().toObservable(),
             localeRepository.getLocale(),
@@ -112,6 +117,19 @@ class CardRepositoryImpl @Inject constructor(
     override fun getLeaders(faction: GwentFaction): Observable<List<GwentCard>> {
         return Observable.combineLatest(
             database.cardDao().getLeaders(fromFactionMapper.map(faction)).toObservable(),
+            database.keywordDao().getAllKeywords().toObservable(),
+            database.categoryDao().getAllCategories().toObservable(),
+            localeRepository.getLocale(),
+            Function4 { cards: List<CardWithArtEntity>, keywords: List<KeywordEntity>,
+                        categories: List<CategoryEntity>, locale: String ->
+                cardMapper.mapList(cards, locale, keywords, categories)
+            })
+    }
+
+    override fun getCardsInFactions(factions: List<GwentFaction>): Observable<List<GwentCard>> {
+        val factions = factions.map { fromFactionMapper.map(it) }
+        return Observable.combineLatest(
+            database.cardDao().getCardsInFactions(factions).toObservable(),
             database.keywordDao().getAllKeywords().toObservable(),
             database.categoryDao().getAllCategories().toObservable(),
             localeRepository.getLocale(),
