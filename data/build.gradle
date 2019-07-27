@@ -36,16 +36,16 @@ dependencies {
 
     implementation Libs.timber
 
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
-    api 'com.nytimes.android:cache3:3.0.1'
+    implementation Libs.retrofit
+    implementation Libs.retrofit_gson_coverter
+    implementation Libs.retrofit_rxjava_adapter
+    implementation Libs.gson
+    api Libs.nytimes_store_cache
     api Libs.rxpreferences
-    api "com.google.firebase:firebase-core:${Versions.firebase_core}"
-    api "com.google.firebase:firebase-storage:${Versions.firebase_storage}"
-    api "com.google.firebase:firebase-messaging:${Versions.firebase_messaging}"
-    api "com.google.firebase:firebase-firestore:${Versions.firebase_firestore}"
+    api Libs.firebase
+    api Libs.firebase_storage
+    api Libs.firebase_messaging
+    api Libs.firebase_firestore
 
     implementation Libs.dagger
     kapt Libs.dagger_compiler

@@ -32,9 +32,9 @@ repositories {
 dependencies {
     implementation Libs.kotlin
     implementation Libs.rxjava
-    api "androidx.room:room-runtime:2.1.0-alpha01"
-    api "androidx.room:room-rxjava2:2.1.0-alpha01"
-    kapt "androidx.room:room-compiler:2.1.0-alpha01"
-    implementation "com.google.code.gson:gson:2.8.2"
+    api "androidx.room:room-runtime:2.1.0"
+    api "androidx.room:room-rxjava2:2.1.0"
+    kapt "androidx.room:room-compiler:2.1.0"
+    implementation Libs.gson
     implementation project(':domain')
 }

@@ -1,10 +1,11 @@
 apply plugin: "kotlin"
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation Libs.kotlin
     implementation Libs.rxjava
-
-    implementation Libs.javaxInject
+    implementation Libs.dagger
+    kapt Libs.dagger_compiler
 }
 
 sourceCompatibility = "1.7"
