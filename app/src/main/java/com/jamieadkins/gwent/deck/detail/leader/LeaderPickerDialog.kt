@@ -9,9 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
+import com.jamieadkins.gwent.bus.LeaderPickerEvent
+import com.jamieadkins.gwent.bus.RxBus
+import com.jamieadkins.gwent.card.list.GwentCardItem
+import com.jamieadkins.gwent.card.list.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_create_deck.*
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 import timber.log.Timber
@@ -21,7 +27,7 @@ class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.V
 
     @Inject lateinit var presenter: LeaderPickerContract.Presenter
 
-    private lateinit var controller: LeaderPickerController
+    private val adapter = GroupAdapter<ViewHolder>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), this.theme)
@@ -38,8 +44,12 @@ class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.V
         recyclerView.layoutManager = layoutManager
         val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
         recyclerView.addItemDecoration(dividerItemDecoration)
-        controller = LeaderPickerController(resources)
-        recyclerView.adapter = controller.adapter
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is GwentCardItem -> RxBus.post(LeaderPickerEvent(item.card.id))
+            }
+        }
 
         presenter.setDeckId(arguments?.getString(KEY_DECK_ID) ?: throw IllegalArgumentException("No Deck id"))
         presenter.onAttach()
@@ -51,7 +61,7 @@ class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.V
     }
 
     override fun showLeaders(cards: List<GwentCard>) {
-        controller.setData(cards)
+        adapter.update(listOf(SubHeaderItem (R.string.change_leader)) + cards.map { GwentCardItem(it) })
     }
 
     override fun close() {
