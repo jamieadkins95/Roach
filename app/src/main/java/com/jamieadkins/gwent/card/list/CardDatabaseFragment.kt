@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
@@ -29,7 +28,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.fragment_card_list.*
 import javax.inject.Inject
 
 class CardDatabaseFragment :
@@ -41,8 +40,6 @@ class CardDatabaseFragment :
     @Inject
     lateinit var presenter: CardDatabaseContract.Presenter
 
-    private val recyclerView by bindView<RecyclerView>(R.id.recycler_view)
-    private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refreshContainer)
     private val adapter = GroupAdapter<ViewHolder>()
     private val noticesSection = Section().apply {
         setHideWhenEmpty(true)
@@ -103,14 +100,14 @@ class CardDatabaseFragment :
 
         toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
 
-        refreshLayout.setColorSchemeResources(R.color.gwentAccent)
-        refreshLayout.setOnRefreshListener(this)
+        refreshContainer.setColorSchemeResources(R.color.gwentAccent)
+        refreshContainer.setOnRefreshListener(this)
 
-        val layoutManager = LinearLayoutManager(recyclerView.context)
-        recyclerView.layoutManager = layoutManager
+        val layoutManager = LinearLayoutManager(recycler_view.context)
+        recycler_view.layoutManager = layoutManager
         val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
-        recyclerView.addItemDecoration(dividerItemDecoration)
-        recyclerView.adapter = adapter
+        recycler_view.addItemDecoration(dividerItemDecoration)
+        recycler_view.adapter = adapter
 
         adapter.setOnItemClickListener { item, _ ->
             when (item) {
@@ -138,7 +135,7 @@ class CardDatabaseFragment :
     }
 
     override fun showLoadingIndicator(loading: Boolean) {
-        refreshLayout.isRefreshing = loading
+        refreshContainer.isRefreshing = loading
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
@@ -151,9 +148,9 @@ class CardDatabaseFragment :
         searchResultsSection.update(searchResults)
         cardsSection.update(data.cards.map { GwentCardItem(it) })
 
-        recyclerView.visibility = View.VISIBLE
-        recyclerView.post {
-            recyclerView.scrollToPosition(0)
+        recycler_view.visibility = View.VISIBLE
+        recycler_view.post {
+            recycler_view.scrollToPosition(0)
         }
     }
 
@@ -167,7 +164,7 @@ class CardDatabaseFragment :
     }
 
     override fun scrollToTop() {
-        recyclerView.smoothScrollToPosition(0)
+        recycler_view.smoothScrollToPosition(0)
     }
 
     override fun showCardDetails(cardId: String) {
