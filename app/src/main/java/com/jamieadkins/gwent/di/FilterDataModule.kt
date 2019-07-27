@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data.filter
+package com.jamieadkins.gwent.di
 
 import com.jamieadkins.gwent.data.filter.repository.FilterRepositoryImpl
 import com.jamieadkins.gwent.domain.filter.repository.FilterRepository
@@ -10,6 +10,6 @@ import dagger.Reusable
 abstract class FilterDataModule {
 
     @Binds
-    @Reusable
+    @ActivityScoped
     abstract fun filter(repository: FilterRepositoryImpl): FilterRepository
 }

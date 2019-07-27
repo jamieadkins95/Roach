@@ -5,7 +5,6 @@ import com.jamieadkins.gwent.card.data.CardDataModule
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.deck.DeckDataModule
-import com.jamieadkins.gwent.data.filter.FilterDataModule
 import com.jamieadkins.gwent.data.update.UpdateDataModule
 import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
 import com.jamieadkins.gwent.main.MainActivity
