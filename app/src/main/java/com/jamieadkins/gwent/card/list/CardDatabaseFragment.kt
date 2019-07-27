@@ -124,22 +124,12 @@ class CardDatabaseFragment :
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
-        val searchResults: List<Item> = if (data.searchQuery.isNotEmpty()) {
-            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)))
-        } else {
-            emptyList()
-        }
-
         adapter.updateAsync(
             data.notices.map { NoticeItem(it) } +
-            searchResults +
             data.cards.map { GwentCardItem(it) }
         )
 
         recycler_view.visibility = View.VISIBLE
-        recycler_view.post {
-            recycler_view.scrollToPosition(0)
-        }
     }
 
     override fun openUpdateScreen() {
