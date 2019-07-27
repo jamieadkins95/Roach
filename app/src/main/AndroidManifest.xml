@@ -40,6 +40,7 @@
 
         <activity
             android:name=".main.MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/Theme.Gwent.NoActionBar"/>
 
         <activity
@@ -48,6 +49,7 @@
 
         <activity
             android:name=".deck.detail.DeckDetailsActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
         <activity

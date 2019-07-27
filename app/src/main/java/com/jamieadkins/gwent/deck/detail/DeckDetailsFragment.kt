@@ -44,15 +44,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     @Inject lateinit var presenter: DeckDetailsContract.Presenter
 
     private val cardDatabaseAdapter = GroupAdapter<ViewHolder>()
-    private val cardDatabaseSection = Section().apply {
-        setFooter(SpaceItem())
-        setHideWhenEmpty(true)
-    }
     private val deckAdapter = GroupAdapter<ViewHolder>()
-
-    init {
-        cardDatabaseAdapter.add(cardDatabaseSection)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         deckId = arguments?.getString(KEY_ID) ?: throw Exception("Deck id not found.")
@@ -169,7 +161,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         } else {
             emptyList()
         }
-        cardDatabaseSection.update(searchResults + cards.map { GwentCardItem(it) })
+        cardDatabaseAdapter.updateAsync(searchResults + cards.map { GwentCardItem(it) } + listOf(SpaceItem()))
     }
 
     override fun showDeck(deck: GwentDeck) {

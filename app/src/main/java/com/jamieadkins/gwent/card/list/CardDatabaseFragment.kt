@@ -41,21 +41,6 @@ class CardDatabaseFragment :
     lateinit var presenter: CardDatabaseContract.Presenter
 
     private val adapter = GroupAdapter<ViewHolder>()
-    private val noticesSection = Section().apply {
-        setHideWhenEmpty(true)
-    }
-    private val searchResultsSection = Section().apply {
-        setHideWhenEmpty(true)
-    }
-    private val cardsSection = Section().apply {
-        setHideWhenEmpty(true)
-    }
-
-    init {
-        adapter.add(noticesSection)
-        adapter.add(searchResultsSection)
-        adapter.add(cardsSection)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -139,14 +124,17 @@ class CardDatabaseFragment :
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
-        noticesSection.update(data.notices.map { NoticeItem(it) })
         val searchResults: List<Item> = if (data.searchQuery.isNotEmpty()) {
             listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)))
         } else {
             emptyList()
         }
-        searchResultsSection.update(searchResults)
-        cardsSection.update(data.cards.map { GwentCardItem(it) })
+
+        adapter.updateAsync(
+            data.notices.map { NoticeItem(it) } +
+            searchResults +
+            data.cards.map { GwentCardItem(it) }
+        )
 
         recycler_view.visibility = View.VISIBLE
         recycler_view.post {
