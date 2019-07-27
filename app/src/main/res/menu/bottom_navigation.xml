@@ -8,6 +8,11 @@
         android:id="@+id/navigation_decks"
         android:icon="@drawable/ic_deck"
         android:title="@string/decks" />
+
+    <item
+        android:id="@+id/navigation_deck_tracker"
+        android:icon="@drawable/ic_tracker"
+        android:title="@string/deck_tracker" />
     <item
         android:id="@+id/navigation_gwent"
         android:icon="@drawable/ic_notification"

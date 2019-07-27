@@ -32,9 +32,14 @@ class MainActivity : DaggerAndroidActivity() {
         }
 
         navigation.setOnNavigationItemSelectedListener { item ->
-            val fragment = getFragmentForMenuItem(item.itemId)
-            launchFragment(fragment, fragment.javaClass.simpleName)
-            true
+            if (item.itemId == R.id.navigation_deck_tracker) {
+                // Launch Deck Tracker Activity
+                false
+            } else {
+                val fragment = getFragmentForMenuItem(item.itemId)
+                launchFragment(fragment, fragment.javaClass.simpleName)
+                true
+            }
         }
 
         navigation.setOnNavigationItemReselectedListener { RxBus.post(ScrollToTopEvent()) }
