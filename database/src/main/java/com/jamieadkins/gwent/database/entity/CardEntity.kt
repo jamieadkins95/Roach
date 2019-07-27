@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.database.entity
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.jamieadkins.gwent.database.GwentDatabase
 
@@ -24,7 +23,4 @@ data class CardEntity(
         val categoryIds: List<String>,
         val keywordIds: List<String>,
         val loyalties: List<String>,
-        val related: List<String>) {
-
-    @Ignore var art: List<ArtEntity>? = null
-}
+        val related: List<String>)
