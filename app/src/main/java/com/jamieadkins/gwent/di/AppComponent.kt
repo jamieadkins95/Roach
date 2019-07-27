@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.di
 
 import com.jamieadkins.gwent.card.list.CardDatabaseModule
 import com.jamieadkins.gwent.data.DataModule
-import com.jamieadkins.gwent.data.card.CardDataModule
+import com.jamieadkins.gwent.card.data.CardDataModule
 import com.jamieadkins.gwent.data.deck.DeckDataModule
 import com.jamieadkins.gwent.data.filter.FilterDataModule
 import com.jamieadkins.gwent.data.update.UpdateDataModule
@@ -22,7 +22,7 @@ import javax.inject.Singleton
         FragmentInjectionModule::class,
         AppModule::class,
         DataModule::class,
-        CardDataModule::class,
+        com.jamieadkins.gwent.card.data.CardDataModule::class,
         FilterDataModule::class,
         UpdateUiModule::class,
         UpdateDataModule::class,

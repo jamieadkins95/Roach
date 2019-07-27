@@ -1,14 +1,13 @@
 package com.jamieadkins.gwent.card.data
 
-import com.jamieadkins.gwent.data.Mapper
 import com.jamieadkins.gwent.card.data.model.FirebaseCardResult
 import com.jamieadkins.gwent.card.data.model.Type
 import com.jamieadkins.gwent.database.entity.CardEntity
 import javax.inject.Inject
 
-class ApiMapper @Inject constructor() : Mapper<FirebaseCardResult, Collection<CardEntity>>() {
+class ApiMapper @Inject constructor() {
 
-    override fun map(from: FirebaseCardResult): Collection<CardEntity> {
+    fun map(from: FirebaseCardResult): Collection<CardEntity> {
         return from.values.mapNotNull {
             if (it.isReleased) {
                 val variation = it.variations.values.firstOrNull()

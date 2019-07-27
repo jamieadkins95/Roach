@@ -18,7 +18,8 @@ class CardRepositoryImpl @Inject constructor(
     private val database: GwentDatabase,
     private val cardMapper: GwentCardMapper,
     private val fromFactionMapper: FromFactionMapper,
-    private val localeRepository: LocaleRepository) : CardRepository {
+    private val localeRepository: LocaleRepository
+) : CardRepository {
 
     private val cardMemoryCache = mutableMapOf<String, GwentCard>()
 

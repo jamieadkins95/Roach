@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.card.data
 
-import com.jamieadkins.gwent.data.FactionMapper
 import com.jamieadkins.gwent.card.data.model.Rarity
 import com.jamieadkins.gwent.card.data.model.Type
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
@@ -16,7 +15,8 @@ import javax.inject.Inject
 
 class GwentCardMapper @Inject constructor(
     private val artMapper: GwentCardArtMapper,
-    private val factionMapper: FactionMapper) {
+    private val factionMapper: FactionMapper
+) {
 
     fun map(from: CardWithArtEntity, locale: String, allKeywords: List<KeywordEntity>, allCategories: List<CategoryEntity>): GwentCard {
         val cardEntity = from.card

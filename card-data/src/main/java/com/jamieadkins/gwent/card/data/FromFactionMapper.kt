@@ -4,9 +4,9 @@ import com.jamieadkins.gwent.card.data.model.Faction
 import com.jamieadkins.gwent.domain.GwentFaction
 import javax.inject.Inject
 
-class FromFactionMapper @Inject constructor() : Mapper<GwentFaction, String>() {
+class FromFactionMapper @Inject constructor() {
 
-    override fun map(from: GwentFaction): String {
+    fun map(from: GwentFaction): String {
         return when (from) {
             GwentFaction.MONSTER -> Faction.MONSTERS_ID
             GwentFaction.NORTHERN_REALMS -> Faction.NORTHERN_REALMS_ID

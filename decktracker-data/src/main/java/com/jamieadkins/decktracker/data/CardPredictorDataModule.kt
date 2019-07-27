@@ -1,8 +1,9 @@
 package com.jamieadkins.decktracker.data
 
 import com.google.gson.Gson
-import com.jamieadkins.gwent.card.data.CardRepositoryImpl
-import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.card.data.LocaleRepositoryImpl
+import com.jamieadkins.gwent.domain.LocaleRepository
+import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
 import dagger.Binds
 import dagger.Lazy
 import dagger.Module
@@ -17,7 +18,11 @@ abstract class CardPredictorDataModule {
 
     @Binds
     @DeckTrackerScope
-    abstract fun cardRepository(cardRepository: CardRepositoryImpl): CardRepository
+    abstract fun cardPredictorRepository(repository: CardPredictorRepositoryImpl): CardPredictorRepository
+
+    @Binds
+    @DeckTrackerScope
+    abstract fun locale(repository: LocaleRepositoryImpl): LocaleRepository
 
     @Module
     companion object {
