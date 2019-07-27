@@ -94,6 +94,7 @@ class FilterRepositoryImpl @Inject constructor(
             GwentCardType.Unit to true,
             GwentCardType.Spell to true,
             GwentCardType.Artifact to true,
+            GwentCardType.Strategem to true,
             GwentCardType.Leader to true
         ), 0,
         20, false,

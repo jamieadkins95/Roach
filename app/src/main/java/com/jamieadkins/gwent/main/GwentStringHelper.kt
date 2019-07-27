@@ -48,6 +48,7 @@ object GwentStringHelper {
             GwentCardType.Unit -> resources.getString(R.string.unit)
             GwentCardType.Artifact -> resources.getString(R.string.artifact)
             GwentCardType.Spell -> resources.getString(R.string.spell)
+            GwentCardType.Strategem -> resources.getString(R.string.strategem)
             GwentCardType.Leader -> resources.getString(R.string.leader)
         }
     }

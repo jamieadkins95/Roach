@@ -85,6 +85,7 @@ class GwentCardMapper @Inject constructor(
             "Unit" -> GwentCardType.Unit
             "Spell" -> GwentCardType.Spell
             "Artifact" -> GwentCardType.Artifact
+            "Strategem" -> GwentCardType.Strategem
             "Leader" -> GwentCardType.Leader
             else -> {
                 Timber.e("Type $type not found. Defaulting to Unit")

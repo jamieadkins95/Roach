@@ -19,5 +19,6 @@
     <string name="legendary">Legendary</string>
     <string name="unit">Unit</string>
     <string name="spell">Spell</string>
+    <string name="strategem">Strategem</string>
     <string name="artifact">Artifact</string>
 </resources>
