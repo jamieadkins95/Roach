@@ -1,8 +1,8 @@
-package com.jamieadkins.gwent.data.card.mapper
+package com.jamieadkins.gwent.card.data
 
 import com.jamieadkins.gwent.data.FactionMapper
-import com.jamieadkins.gwent.data.card.model.Rarity
-import com.jamieadkins.gwent.data.card.model.Type
+import com.jamieadkins.gwent.card.data.model.Rarity
+import com.jamieadkins.gwent.card.data.model.Type
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity
 import com.jamieadkins.gwent.database.entity.KeywordEntity

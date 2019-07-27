@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data
+package com.jamieadkins.gwent.card.data
 
 import android.content.res.Resources
 import com.f2prateek.rx.preferences2.RxSharedPreferences

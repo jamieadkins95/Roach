@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data.card.model;
+package com.jamieadkins.gwent.card.data.model;
 
 import java.util.List;
 import java.util.Map;

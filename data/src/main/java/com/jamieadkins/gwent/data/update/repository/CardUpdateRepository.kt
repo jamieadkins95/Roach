@@ -2,12 +2,11 @@ package com.jamieadkins.gwent.data.update.repository
 
 import android.content.res.AssetManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.jamieadkins.gwent.data.card.mapper.ApiMapper
-import com.jamieadkins.gwent.data.card.mapper.ArtApiMapper
-import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
+import com.jamieadkins.gwent.card.data.ApiMapper
+import com.jamieadkins.gwent.card.data.ArtApiMapper
+import com.jamieadkins.gwent.card.data.model.FirebaseCardResult
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
-import com.jamieadkins.gwent.domain.update.model.UpdateResult
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -22,8 +21,8 @@ class CardUpdateRepository @Inject constructor(
     private val database: GwentDatabase,
     @Named("files") filesDirectory: File,
     private val patchRepository: PatchRepository,
-    private val cardMapper: ApiMapper,
-    private val artMapper: ArtApiMapper,
+    private val cardMapper: com.jamieadkins.gwent.card.data.ApiMapper,
+    private val artMapper: com.jamieadkins.gwent.card.data.ArtApiMapper,
     private val preferences: RxSharedPreferences,
     private val assetManager: AssetManager,
     private val cardRepository: CardRepository
@@ -65,7 +64,7 @@ class CardUpdateRepository @Inject constructor(
         return Single.fromCallable {
             with(assetManager.open(FILE_NAME)) {
                 val reader = InputStreamReader(this, "UTF-8")
-                gson.fromJson<FirebaseCardResult>(reader, FirebaseCardResult::class.java)
+                gson.fromJson<com.jamieadkins.gwent.card.data.model.FirebaseCardResult>(reader, com.jamieadkins.gwent.card.data.model.FirebaseCardResult::class.java)
             }
         }.flatMapCompletable(::updateCardDatabase)
     }
@@ -74,7 +73,7 @@ class CardUpdateRepository @Inject constructor(
         return patchRepository.getLatestPatchId()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())
-            .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
+            .flatMap { parseJsonFile<com.jamieadkins.gwent.card.data.model.FirebaseCardResult>(it, com.jamieadkins.gwent.card.data.model.FirebaseCardResult::class.java) }
             .flatMapCompletable { updateCardDatabase(it) }
             // Invalidate the card memory cache that has cards from the old patch.
             .doOnComplete { cardRepository.invalidateMemoryCache() }
@@ -87,7 +86,7 @@ class CardUpdateRepository @Inject constructor(
         return database.cardDao().count().toObservable().map { it > 0 }
     }
 
-    private fun updateCardDatabase(cardList: FirebaseCardResult): Completable {
+    private fun updateCardDatabase(cardList: com.jamieadkins.gwent.card.data.model.FirebaseCardResult): Completable {
         return Completable.fromCallable {
             val cards = cardMapper.map(cardList)
             database.cardDao().insertCards(cards)

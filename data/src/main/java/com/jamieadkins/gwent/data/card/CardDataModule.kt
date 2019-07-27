@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.data.card
 
-import com.jamieadkins.gwent.data.LocaleRepositoryImpl
-import com.jamieadkins.gwent.data.card.repository.CardRepositoryImpl
+import com.jamieadkins.gwent.card.data.LocaleRepositoryImpl
+import com.jamieadkins.gwent.card.data.CardRepositoryImpl
 import com.jamieadkins.gwent.domain.LocaleRepository
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import dagger.Binds

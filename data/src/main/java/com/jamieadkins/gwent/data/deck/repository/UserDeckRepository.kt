@@ -1,7 +1,6 @@
 package com.jamieadkins.gwent.data.deck.repository
 
-import com.jamieadkins.gwent.data.FactionMapper
-import com.jamieadkins.gwent.data.card.model.Faction
+import com.jamieadkins.gwent.card.data.FactionMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.DeckCardEntity
 import com.jamieadkins.gwent.database.entity.DeckEntity
@@ -15,7 +14,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import timber.log.Timber
 import javax.inject.Inject
 
 class UserDeckRepository @Inject constructor(
@@ -119,13 +117,13 @@ class UserDeckRepository @Inject constructor(
 
     private fun factionToFactionId(faction: GwentFaction): String {
         return when (faction) {
-            GwentFaction.MONSTER -> Faction.MONSTERS_ID
-            GwentFaction.NORTHERN_REALMS -> Faction.NORTHERN_REALMS_ID
-            GwentFaction.SCOIATAEL -> Faction.SCOIATAEL_ID
-            GwentFaction.SKELLIGE -> Faction.SKELLIGE_ID
-            GwentFaction.NILFGAARD -> Faction.NILFGAARD_ID
-            GwentFaction.NEUTRAL -> Faction.NEUTRAL_ID
-            GwentFaction.SYNDICATE -> Faction.SYNDICATE_ID
+            GwentFaction.MONSTER -> com.jamieadkins.gwent.card.data.model.Faction.MONSTERS_ID
+            GwentFaction.NORTHERN_REALMS -> com.jamieadkins.gwent.card.data.model.Faction.NORTHERN_REALMS_ID
+            GwentFaction.SCOIATAEL -> com.jamieadkins.gwent.card.data.model.Faction.SCOIATAEL_ID
+            GwentFaction.SKELLIGE -> com.jamieadkins.gwent.card.data.model.Faction.SKELLIGE_ID
+            GwentFaction.NILFGAARD -> com.jamieadkins.gwent.card.data.model.Faction.NILFGAARD_ID
+            GwentFaction.NEUTRAL -> com.jamieadkins.gwent.card.data.model.Faction.NEUTRAL_ID
+            GwentFaction.SYNDICATE -> com.jamieadkins.gwent.card.data.model.Faction.SYNDICATE_ID
             else -> throw Exception("Faction not found")
         }
     }

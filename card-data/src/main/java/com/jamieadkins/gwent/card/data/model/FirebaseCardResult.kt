@@ -1,3 +1,3 @@
-package com.jamieadkins.gwent.data.card.model
+package com.jamieadkins.gwent.card.data.model
 
 class FirebaseCardResult : HashMap<String, CardDetails>()

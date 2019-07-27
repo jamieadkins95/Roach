@@ -1,7 +1,7 @@
-package com.jamieadkins.gwent.data.card.mapper
+package com.jamieadkins.gwent.card.data
 
 import com.jamieadkins.gwent.data.Mapper
-import com.jamieadkins.gwent.data.card.model.FirebaseCardResult
+import com.jamieadkins.gwent.card.data.model.FirebaseCardResult
 import com.jamieadkins.gwent.database.entity.ArtEntity
 import javax.inject.Inject
 

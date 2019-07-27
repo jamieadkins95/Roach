@@ -1,6 +1,6 @@
-package com.jamieadkins.gwent.data
+package com.jamieadkins.gwent.card.data
 
-import com.jamieadkins.gwent.data.card.model.Faction
+import com.jamieadkins.gwent.card.data.model.Faction
 import com.jamieadkins.gwent.domain.GwentFaction
 import javax.inject.Inject
 

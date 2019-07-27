@@ -1,9 +1,5 @@
-package com.jamieadkins.gwent.data.card.repository
+package com.jamieadkins.gwent.card.data
 
-import com.jamieadkins.gwent.data.CardSearch
-import com.jamieadkins.gwent.data.CardSearchData
-import com.jamieadkins.gwent.data.FromFactionMapper
-import com.jamieadkins.gwent.data.card.mapper.GwentCardMapper
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data
+package com.jamieadkins.gwent.card.data
 
 import com.jamieadkins.gwent.database.entity.CardWithArtEntity
 import com.jamieadkins.gwent.database.entity.CategoryEntity

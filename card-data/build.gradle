@@ -28,16 +28,16 @@ android {
 
 dependencies {
     implementation project(':domain')
-    implementation project(':card-data')
+    implementation project(':database')
 
     implementation Libs.kotlin
     implementation Libs.dagger
     kapt Libs.dagger_compiler
 
-    implementation Libs.retrofit
-    implementation Libs.retrofit_gson_coverter
-    implementation Libs.retrofit_rxjava_adapter
-    implementation Libs.gson
+    implementation Libs.timber
+
+    implementation 'me.xdrop:fuzzywuzzy:1.1.8'
+    implementation Libs.rxpreferences
 
     testImplementation 'junit:junit:4.12'
 }

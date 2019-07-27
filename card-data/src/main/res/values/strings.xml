@@ -1,0 +1,16 @@
+<resources>
+    <string name="pref_locale_key" translatable="false">com.jamieadkins.gwent.crowd.locale</string>
+
+    <array translatable="false" name="locales">
+        <item>en-US</item>
+        <item>de-DE</item>
+        <item>es-ES</item>
+        <item>es-MX</item>
+        <item>fr-FR</item>
+        <item>it-IT</item>
+        <item>ja-JP</item>
+        <item>pl-PL</item>
+        <item>pt-BR</item>
+        <item>ru-RU</item>
+    </array>
+</resources>

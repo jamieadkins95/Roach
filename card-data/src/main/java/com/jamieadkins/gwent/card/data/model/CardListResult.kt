@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.data.card.model
+package com.jamieadkins.gwent.card.data.model
 
 sealed class CardListResult {
     data class Success(val cards: MutableList<CardDetails>) : CardListResult()

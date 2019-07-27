@@ -1,1 +1,1 @@
-include ':app', ':commonutils', ':database', ':domain', ':data', ':decktracker-data'
+include ':app', ':commonutils', ':database', ':domain', ':data', ':decktracker-data', ':card-data'
