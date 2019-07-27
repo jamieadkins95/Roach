@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.view_header.*
 
 data class HeaderItem(private val text: Int, private val secondaryText: String): Item(text.toLong()) {
 
-    override fun getLayout(): Int = R.layout.view_notice
+    override fun getLayout(): Int = R.layout.view_header
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.header_primary_text.setText(text)

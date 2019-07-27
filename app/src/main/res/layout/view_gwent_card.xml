@@ -1,124 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:foreground="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/card_image"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="2186:2924"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/center"
-        tools:src="@drawable/cardback_nilfgaard" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="Regis: Higher Vampire"
-        android:textSize="18sp"
-        android:textColor="@color/text_primary"
-        android:layout_marginTop="16sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/center" />
-
-    <TextView
-        android:id="@+id/categories"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_hint"
-        android:textSize="12sp"
-        android:textStyle="italic"
-        tools:text="Vampire"
-        android:lines="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintStart_toEndOf="@id/center" />
-
-    <TextView
-        android:id="@+id/tooltip"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        tools:text="Look at 3 Bronze units from your opponent's deck. Consume 1, then boost self by its base power."
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:layout_marginTop="8sp"
-        android:layout_marginBottom="16sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categories"
-        app:layout_constraintStart_toEndOf="@id/center"
-        app:layout_constraintBottom_toTopOf="@id/layout_info" />
-
-    <LinearLayout
-        android:layout_marginTop="8dp"
-        android:id="@+id/layout_info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:divider="?android:listDivider"
-        android:dividerPadding="2.5dp"
-        android:orientation="horizontal"
-        android:showDividers="middle"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/center"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
+        <ImageView
+            android:id="@+id/card_image"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            tools:text="Monsters"
-            android:gravity="center"
-            android:textSize="12sp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/faction" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="2186:2924"
+            app:layout_constraintEnd_toStartOf="@id/center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/cardback_nilfgaard" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/layout_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            tools:text="Epic"
-            android:textSize="12sp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/rarity" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:divider="?android:listDivider"
+            android:dividerPadding="2.5dp"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center">
+
+            <TextView
+                android:id="@+id/faction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="12sp"
+                tools:text="Monsters" />
+
+            <TextView
+                android:id="@+id/rarity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="12sp"
+                tools:text="Epic" />
+
+            <TextView
+                android:id="@+id/strength"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/gwent"
+                android:gravity="center"
+                android:textColor="@color/gwentAccent"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="0" />
+
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/categories"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/strength"
-            android:fontFamily="@font/gwent"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/gwentAccent"
-            tools:text="0" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:lines="1"
+            android:textColor="@color/text_hint"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="Vampire" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tooltip"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16sp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8sp"
+            android:ellipsize="end"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/layout_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/categories"
+            tools:text="Look at 3 Bronze units from your opponent's deck. Consume 1, then boost self by its base power." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16sp"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Regis: Higher Vampire" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

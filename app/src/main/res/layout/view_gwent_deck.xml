@@ -1,134 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:foreground="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="2186:2924"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/center"
-        tools:src="@drawable/cardback_nilfgaard" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="2186:2924"
+            app:layout_constraintEnd_toStartOf="@id/center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/cardback_nilfgaard" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="Some Gwent Deck"
-        android:textSize="18sp"
-        android:textColor="@color/text_primary"
-        android:layout_marginTop="16sp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/leaderName"
-        app:layout_constraintStart_toEndOf="@id/center" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16sp"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/leaderName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Some Gwent Deck" />
 
-    <TextView
-        android:id="@+id/leaderName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_hint"
-        android:textSize="12sp"
-        android:textStyle="italic"
-        tools:text="Eredin"
-        tools:textColor="@color/monstersLight"
-        android:lines="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintStart_toEndOf="@id/center"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <TextView
+            android:id="@+id/leaderName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:lines="1"
+            android:textColor="@color/text_hint"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="Eredin"
+            tools:textColor="@color/monstersLight" />
 
-    <TextView
-        android:id="@+id/cardsSubheader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:text="@string/cards"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@id/center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/leaderName" />
+        <TextView
+            android:id="@+id/cardsSubheader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/cards"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/leaderName" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cardCount"
-        tools:text="25/25"
-        android:textColor="@color/text_secondary"
-        android:fontFamily="@font/gwent"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/center"
-        app:layout_constraintTop_toBottomOf="@id/cardsSubheader" />
+        <TextView
+            android:id="@+id/cardCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gwent"
+            android:textColor="@color/text_secondary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/cardsSubheader"
+            tools:text="25/25" />
 
-    <TextView
-        android:id="@+id/provisionsSubheader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:text="@string/provisions"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@id/center"
-        app:layout_constraintTop_toBottomOf="@id/cardCount" />
+        <TextView
+            android:id="@+id/provisionsSubheader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/provisions"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/cardCount" />
 
-    <TextView
-        android:id="@+id/deckProvisionCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gwent"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/gwentAccent"
-        tools:text="165/165"
-        app:layout_constraintStart_toStartOf="@id/center"
-        app:layout_constraintTop_toBottomOf="@id/provisionsSubheader"/>
+        <TextView
+            android:id="@+id/deckProvisionCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gwent"
+            android:textColor="@color/gwentAccent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/center"
+            app:layout_constraintTop_toBottomOf="@id/provisionsSubheader"
+            tools:text="165/165" />
 
-    <TextView
-        android:id="@+id/unitCountSubheader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:text="@string/unit_count"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@id/provisionsSubheader"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardCount" />
+        <TextView
+            android:id="@+id/unitCountSubheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/unit_count"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/provisionsSubheader"
+            app:layout_constraintTop_toBottomOf="@id/cardCount" />
 
-    <TextView
-        android:id="@+id/deckUnitCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gwent"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:text="13/13"
-        android:textColor="@color/text_secondary"
-        app:layout_constraintStart_toStartOf="@id/unitCountSubheader"
-        app:layout_constraintTop_toBottomOf="@id/unitCountSubheader"/>
+        <TextView
+            android:id="@+id/deckUnitCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gwent"
+            android:textColor="@color/text_secondary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/unitCountSubheader"
+            app:layout_constraintTop_toBottomOf="@id/unitCountSubheader"
+            tools:text="13/13" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
