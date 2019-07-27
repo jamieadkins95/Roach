@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.deck.list.DeckListFragment
+import com.jamieadkins.gwent.di.DaggerAppComponent
 import com.jamieadkins.gwent.settings.GwentFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

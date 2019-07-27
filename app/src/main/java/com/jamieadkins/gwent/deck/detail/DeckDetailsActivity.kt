@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment.Companion.KEY_ID
+import com.jamieadkins.gwent.di.DaggerAppComponent
 import com.jamieadkins.gwent.main.DaggerAndroidActivity
 
 class DeckDetailsActivity : DaggerAndroidActivity() {

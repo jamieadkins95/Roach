@@ -4,57 +4,23 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.res.AssetManager
 import android.content.res.Resources
-import com.jamieadkins.gwent.BuildConfig
 import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.main.SchedulerProviderImpl
 import dagger.Module
 import dagger.Provides
-import io.reactivex.exceptions.UndeliverableException
-import io.reactivex.plugins.RxJavaPlugins
-import timber.log.Timber
 
 @Module
-abstract class AppModule {
+class AppModule {
 
-    init {
-        initErrorHandling()
-    }
+    @Provides
+    fun resources(context: Context): Resources = context.resources
 
-    /**
-     * Rx can trigger crashes if exceptions occur after an Observable stream has completed/disposed.
-     * Generally, we don't care about them, they are usually IOExceptions. For example, NYTimes Store
-     * will try to write data to disk after the Observable stream has completed.
-     *
-     * https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling
-     */
-    private fun initErrorHandling() {
-        RxJavaPlugins.setErrorHandler { e ->
-            if (e is UndeliverableException) {
-                // Do nothing, we don't have to worry about these.
-            } else {
-                Thread.currentThread().uncaughtExceptionHandler.uncaughtException(Thread.currentThread(), e)
-            }
-        }
-    }
+    @Provides
+    fun schedulerProvider(): SchedulerProvider = SchedulerProviderImpl()
 
-    @Module
-    companion object {
+    @Provides
+    fun notificationManager(context: Context): NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        @Provides
-        @JvmStatic
-        fun resources(context: Context): Resources = context.resources
-
-        @Provides
-        @JvmStatic
-        fun schedulerProvider(): SchedulerProvider = SchedulerProviderImpl()
-
-        @Provides
-        @JvmStatic
-        fun notificationManager(context: Context): NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-
-        @Provides
-        @JvmStatic
-        fun assetManager(context: Context): AssetManager = context.assets
-    }
+    @Provides
+    fun assetManager(context: Context): AssetManager = context.assets
 }
