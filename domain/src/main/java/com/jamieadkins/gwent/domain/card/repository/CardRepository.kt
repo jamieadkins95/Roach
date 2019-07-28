@@ -8,7 +8,7 @@ interface CardRepository {
 
     fun searchCards(searchQuery: String): Observable<List<GwentCard>>
 
-    fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>): Observable<List<GwentCard>>
+    fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>, quickSearch: Boolean = false): Observable<List<GwentCard>>
 
     fun getCards(): Observable<List<GwentCard>>
 

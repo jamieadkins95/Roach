@@ -31,7 +31,7 @@ class CardRepositoryImpl @Inject constructor(
         return searchCardsInFactions(searchQuery, GwentFaction.values().toList())
     }
 
-    override fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>): Observable<List<GwentCard>> {
+    override fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>, quickSearch: Boolean): Observable<List<GwentCard>> {
         val factions = factions.map { fromFactionMapper.map(it) }
         return Observable.combineLatest(
             database.cardDao().getCardsInFactions(factions).toObservable(),
@@ -45,7 +45,11 @@ class CardRepositoryImpl @Inject constructor(
                         userLocale: String,
                         defaultLocale: String ->
                 val cardSearchData = CardSearchData(cards, keywords, categories)
-                CardSearch.quickSearch(searchQuery, cardSearchData, userLocale, defaultLocale)
+                if (quickSearch) {
+                    CardSearch.quickSearch(searchQuery, cardSearchData, userLocale, defaultLocale)
+                } else {
+                    CardSearch.searchCards(searchQuery, cardSearchData, userLocale, defaultLocale)
+                }
             })
             .switchMap { getCards(it) }
     }
