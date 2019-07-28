@@ -22,7 +22,7 @@
         android:theme="@style/Widget.BottomNavigationView.Gwent"
         android:id="@+id/navigation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         app:menu="@menu/bottom_navigation"
         app:labelVisibilityMode="labeled"
         app:layout_constraintStart_toStartOf="parent"
