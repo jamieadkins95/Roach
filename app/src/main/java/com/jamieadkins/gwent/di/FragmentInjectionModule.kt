@@ -16,6 +16,8 @@ import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.deck.list.DeckListModule
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.filter.FilterModule
+import com.jamieadkins.gwent.tracker.DeckTrackerSetupFragment
+import com.jamieadkins.gwent.tracker.DeckTrackerSetupModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -53,4 +55,8 @@ abstract class FragmentInjectionModule private constructor() {
     @FragmentScoped
     @ContributesAndroidInjector(modules = [CardDatabaseModule::class])
     internal abstract fun cardDatabase(): CardDatabaseFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [DeckTrackerSetupModule::class])
+    internal abstract fun deckTrackerSetup(): DeckTrackerSetupFragment
 }

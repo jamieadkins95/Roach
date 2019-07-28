@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/groupFaction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_nr"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/northern_realms" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_mon"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monster" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_sk"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skellige" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_sc"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scoiatael" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_ng"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nilfgaard" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/faction_sy"
+            style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/syndicate" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

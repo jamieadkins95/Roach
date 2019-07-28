@@ -10,6 +10,7 @@ import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.di.DaggerAppComponent
 import com.jamieadkins.gwent.settings.GwentFragment
+import com.jamieadkins.gwent.tracker.DeckTrackerSetupFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : DaggerAndroidActivity() {
@@ -32,14 +33,9 @@ class MainActivity : DaggerAndroidActivity() {
         }
 
         navigation.setOnNavigationItemSelectedListener { item ->
-            if (item.itemId == R.id.navigation_deck_tracker) {
-                // Launch Deck Tracker Activity
-                false
-            } else {
-                val fragment = getFragmentForMenuItem(item.itemId)
-                launchFragment(fragment, fragment.javaClass.simpleName)
-                true
-            }
+            val fragment = getFragmentForMenuItem(item.itemId)
+            launchFragment(fragment, fragment.javaClass.simpleName)
+            true
         }
 
         navigation.setOnNavigationItemReselectedListener { RxBus.post(ScrollToTopEvent()) }
@@ -49,6 +45,7 @@ class MainActivity : DaggerAndroidActivity() {
         return when (itemId) {
             R.id.navigation_card_db -> CardDatabaseFragment()
             R.id.navigation_decks -> DeckListFragment()
+            R.id.navigation_deck_tracker -> DeckTrackerSetupFragment()
             R.id.navigation_gwent -> GwentFragment()
             else -> CardDatabaseFragment()
         }

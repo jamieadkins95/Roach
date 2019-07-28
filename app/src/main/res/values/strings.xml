@@ -69,4 +69,8 @@
     <string name="update_notification_error_title">Failed to update Gwent Card Database</string>
     <string name="retry">Retry</string>
 
+    <!-- Deck Tracker -->
+    <string name="deck_tracker_oppo_faction">What faction is your opponent playing?</string>
+    <string name="deck_tracker_oppo_leader">What leader is your opponent playing?</string>
+
 </resources>
