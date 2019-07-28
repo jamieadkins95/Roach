@@ -31,4 +31,5 @@ object Libs {
     const val groupie = "com.xwray:groupie:${Versions.groupie}"
     const val groupie_extensions = "com.xwray:groupie-kotlin-android-extensions:${Versions.groupie}"
     const val appcompat = "androidx.appcompat:appcompat:1.0.2"
+    const val material = "com.google.android.material:material:1.0.0"
 }

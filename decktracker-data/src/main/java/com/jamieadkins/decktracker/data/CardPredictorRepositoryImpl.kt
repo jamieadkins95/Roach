@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.domain.card.repository.CardRepository
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
+import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -24,7 +25,10 @@ class CardPredictorRepositoryImpl @Inject constructor(
                                CardPrediction(card, (entry.value * 100).toInt())
                            }
                         } ?: emptyList()
-                        CardPredictions(response.similarDecks ?: 0, predictions)
+                        val similarDecks = response.similarDecks?.map {
+                            SimilarDeck(it.name ?: "", it.id ?: "", it.url ?: "")
+                        } ?: emptyList()
+                        CardPredictions(similarDecks, predictions)
                     }
             }
     }
