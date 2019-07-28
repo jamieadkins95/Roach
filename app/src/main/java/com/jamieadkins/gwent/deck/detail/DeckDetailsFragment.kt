@@ -174,7 +174,15 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     }
 
     override fun showCardDatabase(cards: List<GwentCard>, searchQuery: String) {
-        cardDatabaseAdapter.updateAsync(cards.map { GwentCardItem(it) } + listOf(SpaceItem()))
+        // Diffing here is too expensive.
+        cardDatabaseAdapter.clear()
+
+        val searchResults: List<Item> = if (searchQuery.isNotEmpty()) {
+            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, cards.size, searchQuery)))
+        } else {
+            emptyList()
+        }
+        cardDatabaseAdapter.update(searchResults + cards.map { GwentCardItem(it) } + listOf(SpaceItem()))
     }
 
     override fun showDeck(deck: GwentDeck) {

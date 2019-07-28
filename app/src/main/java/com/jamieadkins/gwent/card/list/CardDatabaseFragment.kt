@@ -140,8 +140,18 @@ class CardDatabaseFragment :
     }
 
     override fun showData(data: CardDatabaseScreenModel) {
-        adapter.updateAsync(
+        // Diffing here is too expensive.
+        adapter.clear()
+
+        val searchResults: List<Item> = if (data.searchQuery.isNotEmpty()) {
+            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)))
+        } else {
+            emptyList()
+        }
+
+        adapter.update(
             data.notices.map { NoticeItem(it) } +
+            searchResults +
             data.cards.map { GwentCardItem(it) }
         )
 
