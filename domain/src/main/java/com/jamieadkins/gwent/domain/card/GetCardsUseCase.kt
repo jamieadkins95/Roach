@@ -27,6 +27,10 @@ class GetCardsUseCase @Inject constructor(
         return internalGetCards(cardRepository.searchCards(query))
     }
 
+    fun quickSearchCards(query: String): Observable<List<GwentCard>> {
+        return internalGetCards(cardRepository.searchCards(query, true))
+    }
+
     private fun internalGetCards(cardObservable: Observable<List<GwentCard>>): Observable<List<GwentCard>> {
         return cardObservable
             .subscribeOn(schedulerProvider.io())

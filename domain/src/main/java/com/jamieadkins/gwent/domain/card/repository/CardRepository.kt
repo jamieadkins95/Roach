@@ -6,7 +6,7 @@ import io.reactivex.Observable
 
 interface CardRepository {
 
-    fun searchCards(searchQuery: String): Observable<List<GwentCard>>
+    fun searchCards(searchQuery: String, quickSearch: Boolean = false): Observable<List<GwentCard>>
 
     fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>, quickSearch: Boolean = false): Observable<List<GwentCard>>
 

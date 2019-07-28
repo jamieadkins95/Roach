@@ -27,8 +27,8 @@ class CardRepositoryImpl @Inject constructor(
         return database.cardDao().getCards().toObservable()
     }
 
-    override fun searchCards(searchQuery: String): Observable<List<GwentCard>> {
-        return searchCardsInFactions(searchQuery, GwentFaction.values().toList())
+    override fun searchCards(searchQuery: String, quickSearch: Boolean): Observable<List<GwentCard>> {
+        return searchCardsInFactions(searchQuery, GwentFaction.values().toList(), quickSearch)
     }
 
     override fun searchCardsInFactions(searchQuery: String, factions: List<GwentFaction>, quickSearch: Boolean): Observable<List<GwentCard>> {
