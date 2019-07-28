@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion Versions.compile_sdk
+
+    defaultConfig {
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+        debug {
+        }
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':decktracker-data')
+
+    implementation Libs.kotlin
+    implementation Libs.dagger
+    implementation Libs.dagger_support
+    kapt Libs.dagger_compiler
+    kapt Libs.dagger_processor
+
+    implementation Libs.groupie
+    implementation Libs.groupie_extensions
+
+    testImplementation 'junit:junit:4.12'
+}

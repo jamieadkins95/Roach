@@ -25,6 +25,7 @@ object Versions {
     const val junit = "4.12"
     const val mockito = "2.18.3"
     const val mockito_kotlin = "1.5.0"
+    const val groupie = "2.3.0"
 
     // Firebase
     const val firebase_core = "17.0.1"

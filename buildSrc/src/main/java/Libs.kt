@@ -28,4 +28,6 @@ object Libs {
     const val dagger_compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val javaxAnnotation = "javax.annotation:javax.annotation-api:${Versions.javaxAnnotation}"
     const val javaxInject = "javax.inject:javax.inject:${Versions.javaxInject}"
+    const val groupie = "com.xwray:groupie:${Versions.groupie}"
+    const val groupie_extensions = "com.xwray:groupie-kotlin-android-extensions:${Versions.groupie}"
 }
