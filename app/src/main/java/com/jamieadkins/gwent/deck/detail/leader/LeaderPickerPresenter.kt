@@ -8,7 +8,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.ChangeLeaderUseCase
 import com.jamieadkins.gwent.domain.deck.GetDeckUseCase
 import com.jamieadkins.gwent.domain.deck.GetLeadersUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject

@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.launch
 
 import com.jamieadkins.gwent.domain.launch.PerformFirstTimeSetupUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.observers.DisposableCompletableObserver
 import javax.inject.Inject
 

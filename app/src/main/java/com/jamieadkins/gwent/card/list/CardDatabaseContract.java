@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.card.list;
 
 import com.jamieadkins.gwent.base.ScrollView;
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel;
-import com.jamieadkins.gwent.main.MvpPresenter;
+import com.jamieadkins.gwent.base.MvpPresenter;
 
 import org.jetbrains.annotations.NotNull;
 

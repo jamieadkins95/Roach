@@ -27,8 +27,10 @@ android {
 }
 
 dependencies {
+    implementation project(':base')
     implementation project(':domain')
     implementation project(':decktracker-data')
+    implementation project(':card-data')
 
     implementation Libs.kotlin
     implementation Libs.dagger

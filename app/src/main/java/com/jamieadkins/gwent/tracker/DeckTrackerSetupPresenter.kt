@@ -4,7 +4,7 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.GetLeadersUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 

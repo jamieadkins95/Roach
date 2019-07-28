@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.deck.create
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.deck.CreateDeckUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import javax.inject.Inject
 
 class CreateDeckPresenter @Inject constructor(

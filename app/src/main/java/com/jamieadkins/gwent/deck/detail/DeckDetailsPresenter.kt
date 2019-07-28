@@ -16,7 +16,7 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.filter.FilterCardsUseCase
 import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.observers.DisposableCompletableObserver

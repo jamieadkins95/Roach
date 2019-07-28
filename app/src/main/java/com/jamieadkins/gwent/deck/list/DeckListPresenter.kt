@@ -5,7 +5,7 @@ import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.domain.deck.GetDecksUseCase
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import javax.inject.Inject
 
 class DeckListPresenter @Inject constructor(

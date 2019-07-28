@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.update
 import com.jamieadkins.gwent.base.BaseDisposableCompletableObserver
 import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import javax.inject.Inject
 
 class UpdatePresenter @Inject constructor(

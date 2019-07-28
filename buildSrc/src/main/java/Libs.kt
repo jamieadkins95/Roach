@@ -30,4 +30,5 @@ object Libs {
     const val javaxInject = "javax.inject:javax.inject:${Versions.javaxInject}"
     const val groupie = "com.xwray:groupie:${Versions.groupie}"
     const val groupie_extensions = "com.xwray:groupie-kotlin-android-extensions:${Versions.groupie}"
+    const val appcompat = "androidx.appcompat:appcompat:1.0.2"
 }

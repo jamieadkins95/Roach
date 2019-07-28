@@ -1,6 +1,6 @@
 package com.jamieadkins.gwent.update
 
-import com.jamieadkins.gwent.main.MvpPresenter
+import com.jamieadkins.gwent.base.MvpPresenter
 
 interface UpdateContract {
 

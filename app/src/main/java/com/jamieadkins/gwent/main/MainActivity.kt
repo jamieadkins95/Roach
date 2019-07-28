@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.DaggerAndroidActivity
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment

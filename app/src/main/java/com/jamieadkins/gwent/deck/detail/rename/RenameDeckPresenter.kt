@@ -2,7 +2,7 @@ package com.jamieadkins.gwent.deck.detail.rename
 
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.domain.deck.RenameDeckUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 

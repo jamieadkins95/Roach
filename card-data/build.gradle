@@ -37,7 +37,7 @@ dependencies {
     implementation Libs.timber
 
     implementation 'me.xdrop:fuzzywuzzy:1.1.8'
-    implementation Libs.rxpreferences
+    api Libs.rxpreferences
 
     testImplementation 'junit:junit:4.12'
 }

@@ -14,12 +14,6 @@ import javax.inject.Named
 class DataModule {
 
     @Provides
-    @Reusable
-    fun preferences(context: Context): RxSharedPreferences {
-        return RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
-    }
-
-    @Provides
     @Named("files")
     fun filesDir(context: Context): File = context.filesDir
 

@@ -1,7 +1,7 @@
 package com.jamieadkins.gwent.filter
 
 import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.main.MvpPresenter
+import com.jamieadkins.gwent.base.MvpPresenter
 
 interface FilterContract {
     interface View {

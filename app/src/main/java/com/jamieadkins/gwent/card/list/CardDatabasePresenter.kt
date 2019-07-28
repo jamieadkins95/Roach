@@ -14,7 +14,7 @@ import com.jamieadkins.gwent.domain.update.model.Notice
 import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.domain.update.repository.GetNoticesUseCase
 import com.jamieadkins.gwent.domain.update.repository.StartCardDatabaseUpdateUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject

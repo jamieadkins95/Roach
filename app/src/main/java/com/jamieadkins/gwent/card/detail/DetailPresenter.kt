@@ -3,7 +3,7 @@ package com.jamieadkins.gwent.card.detail
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.domain.card.GetCardUseCase
 import com.jamieadkins.gwent.domain.card.GetCardsUseCase
-import com.jamieadkins.gwent.main.BasePresenter
+import com.jamieadkins.gwent.base.BasePresenter
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 

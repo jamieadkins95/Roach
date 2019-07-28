@@ -7,7 +7,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
-import com.jamieadkins.gwent.main.DaggerAndroidActivity
+import com.jamieadkins.gwent.base.DaggerAndroidActivity
 import com.jamieadkins.gwent.main.MainActivity
 import javax.inject.Inject
 

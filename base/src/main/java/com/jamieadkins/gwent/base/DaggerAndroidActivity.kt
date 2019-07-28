@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.main
+package com.jamieadkins.gwent.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

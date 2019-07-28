@@ -34,10 +34,10 @@ dependencies {
     implementation Libs.dagger
     kapt Libs.dagger_compiler
 
-    implementation Libs.retrofit
+    api Libs.retrofit
     implementation Libs.retrofit_gson_coverter
     implementation Libs.retrofit_rxjava_adapter
-    implementation Libs.gson
+    api Libs.gson
 
     testImplementation 'junit:junit:4.12'
 }

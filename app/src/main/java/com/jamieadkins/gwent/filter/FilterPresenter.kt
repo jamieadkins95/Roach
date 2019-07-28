@@ -10,9 +10,7 @@ import com.jamieadkins.gwent.domain.filter.GetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.ResetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
-import com.jamieadkins.gwent.main.BasePresenter
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import com.jamieadkins.gwent.base.BasePresenter
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
