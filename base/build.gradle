@@ -3,6 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+androidExtensions {
+    experimental = true
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
 android {
     compileSdkVersion Versions.compile_sdk
 
@@ -36,6 +44,8 @@ dependencies {
 
     implementation Libs.appcompat
     implementation Libs.material
+    api Libs.groupie
+    api Libs.groupie_extensions
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation Libs.timber
     implementation "com.crashlytics.sdk.android:crashlytics:${Versions.firebase_crashlytics}"

@@ -1,2 +1,4 @@
 <resources>
+    <string name="cards_played_subheader">Cards your opponent has played</string>
+    <string name="remaining_in_opponents_deck">Remaining in opponent\'s deck</string>
 </resources>

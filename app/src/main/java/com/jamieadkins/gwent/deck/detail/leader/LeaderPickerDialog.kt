@@ -12,15 +12,12 @@ import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
 import com.jamieadkins.gwent.bus.LeaderPickerEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.list.GwentCardItem
-import com.jamieadkins.gwent.card.list.SubHeaderItem
+import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
-import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.fragment_create_deck.*
 import kotlinx.android.synthetic.main.fragment_deck_list.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.View {
@@ -61,7 +58,7 @@ class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.V
     }
 
     override fun showLeaders(cards: List<GwentCard>) {
-        adapter.update(listOf(SubHeaderItem (R.string.change_leader)) + cards.map { GwentCardItem(it) })
+        adapter.update(listOf(SubHeaderItem(R.string.change_leader)) + cards.map { GwentCardItem(it) })
     }
 
     override fun close() {

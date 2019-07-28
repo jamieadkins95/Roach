@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.card.list.GwentCardItem
-import com.jamieadkins.gwent.card.list.SubHeaderItem
+import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard

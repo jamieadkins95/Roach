@@ -19,7 +19,7 @@ import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.card.list.HeaderItem
-import com.jamieadkins.gwent.card.list.SubHeaderItem
+import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
 import com.jamieadkins.gwent.deck.DeckBuilderEvents

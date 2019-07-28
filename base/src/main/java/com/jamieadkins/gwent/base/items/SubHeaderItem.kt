@@ -1,6 +1,6 @@
-package com.jamieadkins.gwent.card.list
+package com.jamieadkins.gwent.base.items
 
-import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_subheader.*
