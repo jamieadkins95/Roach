@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
+import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
@@ -143,7 +144,11 @@ class CardDatabaseFragment :
         adapter.clear()
 
         val searchResults: List<Item> = if (data.searchQuery.isNotEmpty()) {
-            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)))
+            listOf(
+                HeaderItem(
+                    R.string.search_results, resources.getString(R.string.results_found, data.cards.size, data.searchQuery)
+                )
+            )
         } else {
             emptyList()
         }

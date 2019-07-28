@@ -13,6 +13,6 @@ class DeckAnalysisItem(
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.provisionsRemaining.text = provisionsRemaining.toString()
-        viewHolder.averageProvisionsRemaining.text = averageProvisionsRemaining.toString()
+        viewHolder.averageProvisionsRemaining.text = "%.1f".format(averageProvisionsRemaining)
     }
 }

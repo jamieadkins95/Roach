@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
+import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
@@ -28,8 +29,14 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHeader(SubHeaderItem(R.string.remaining_in_opponents_deck))
         setHideWhenEmpty(true)
     }
-    private val predictionsSection = Section()
-    private val similarDecksSection = Section()
+    private val predictionsSection = Section().apply {
+        setHeader(HeaderItem(R.string.card_predictions_title, secondaryTextRes = R.string.card_predictions_subtitle))
+        setHideWhenEmpty(true)
+    }
+    private val similarDecksSection = Section().apply {
+        setHeader(SubHeaderItem(R.string.similar_decks))
+        setHideWhenEmpty(true)
+    }
 
     init {
         adapter.add(cardsPlayedSection)

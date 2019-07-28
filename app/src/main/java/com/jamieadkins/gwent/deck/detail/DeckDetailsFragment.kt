@@ -18,7 +18,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.GwentCardItem
-import com.jamieadkins.gwent.card.list.HeaderItem
+import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
@@ -177,7 +177,11 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         cardDatabaseAdapter.clear()
 
         val searchResults: List<Item> = if (searchQuery.isNotEmpty()) {
-            listOf(HeaderItem(R.string.search_results, resources.getString(R.string.results_found, cards.size, searchQuery)))
+            listOf(
+                HeaderItem(
+                    R.string.search_results, resources.getString(R.string.results_found, cards.size, searchQuery)
+                )
+            )
         } else {
             emptyList()
         }

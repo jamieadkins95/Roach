@@ -4,4 +4,7 @@
     <string name="remaining_in_opponents_deck">Remaining in opponent\'s deck</string>
     <string name="provisions_remaining">Provisions Remaining</string>
     <string name="average_provisions_remaining">Average Provisions Remaining Per Card</string>
+    <string name="similar_decks">Similar Decks on Gwent Deck Library</string>
+    <string name="card_predictions_title">Card Predictions</string>
+    <string name="card_predictions_subtitle">Based on similar decks uploaded to Gwent Deck Library</string>
 </resources>
