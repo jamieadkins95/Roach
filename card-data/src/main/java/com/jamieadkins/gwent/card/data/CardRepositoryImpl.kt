@@ -45,7 +45,7 @@ class CardRepositoryImpl @Inject constructor(
                         userLocale: String,
                         defaultLocale: String ->
                 val cardSearchData = CardSearchData(cards, keywords, categories)
-                CardSearch.searchCards(searchQuery, cardSearchData, userLocale, defaultLocale)
+                CardSearch.quickSearch(searchQuery, cardSearchData, userLocale, defaultLocale)
             })
             .switchMap { getCards(it) }
     }
