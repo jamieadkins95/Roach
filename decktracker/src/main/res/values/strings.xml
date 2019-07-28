@@ -1,4 +1,7 @@
 <resources>
+    <string name="deck_tracker">Deck Tracker</string>
     <string name="cards_played_subheader">Cards your opponent has played</string>
     <string name="remaining_in_opponents_deck">Remaining in opponent\'s deck</string>
+    <string name="provisions_remaining">Provisions Remaining</string>
+    <string name="average_provisions_remaining">Average Provisions Remaining Per Card</string>
 </resources>

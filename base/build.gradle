@@ -7,10 +7,6 @@ androidExtensions {
     experimental = true
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 android {
     compileSdkVersion Versions.compile_sdk
 

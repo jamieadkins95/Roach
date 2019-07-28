@@ -32,4 +32,6 @@ object Libs {
     const val groupie_extensions = "com.xwray:groupie-kotlin-android-extensions:${Versions.groupie}"
     const val appcompat = "androidx.appcompat:appcompat:1.0.2"
     const val material = "com.google.android.material:material:1.0.0"
+    const val card_view = "androidx.cardview:cardview:1.0.0"
+    const val constraint_layout = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
 }

@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion Versions.compile_sdk
 
@@ -39,6 +43,8 @@ dependencies {
     kapt Libs.dagger_compiler
     kapt Libs.dagger_processor
 
+    implementation Libs.card_view
+    implementation Libs.constraint_layout
     implementation Libs.groupie
     implementation Libs.groupie_extensions
 

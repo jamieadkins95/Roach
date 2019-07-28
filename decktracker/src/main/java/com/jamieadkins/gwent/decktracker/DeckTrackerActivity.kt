@@ -59,13 +59,24 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
             finish()
         }
 
+        setSupportActionBar(toolbar)
+        title = getString(R.string.deck_tracker)
+        toolbar.setTitleTextAppearance(this, R.style.GwentTextAppearance)
+
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
+
+        presenter.onAttach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDetach()
     }
 
     override fun showDeckAnalysis(analysis: DeckTrackerAnalysis) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        remainingSection.update(listOf(DeckAnalysisItem(analysis.opponentProvisionsRemaining, analysis.opponentAverageProvisionsRemaining)))
     }
 
     override fun showPredictions(cardPredictions: CardPredictions) {
