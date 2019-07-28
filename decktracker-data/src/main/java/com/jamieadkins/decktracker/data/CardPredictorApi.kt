@@ -14,7 +14,6 @@ interface CardPredictorApi {
      */
     @GET("analyseDeck")
     fun analyseDeck(
-        @Query("faction") faction: String,
         @Query("leaderId") leaderId: String,
         @Query("cardIds") cardIds: String
     ): Single<CardPredictorResponse>

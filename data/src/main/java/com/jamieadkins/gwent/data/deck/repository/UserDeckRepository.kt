@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.database.entity.DeckWithCardsEntity
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.deck.DeckConstants.BASE_PROVISION_ALLOWANCE
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 import io.reactivex.Completable
@@ -141,9 +142,5 @@ class UserDeckRepository @Inject constructor(
                 .toMap(),
             BASE_PROVISION_ALLOWANCE + leader.extraProvisions
         )
-    }
-
-    private companion object {
-        const val BASE_PROVISION_ALLOWANCE = 150
     }
 }

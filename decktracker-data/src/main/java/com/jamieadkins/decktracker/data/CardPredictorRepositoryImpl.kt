@@ -13,8 +13,8 @@ class CardPredictorRepositoryImpl @Inject constructor(
     private val cardRepository: CardRepository
 ) : CardPredictorRepository {
 
-    override fun getPredictions(faction: GwentFaction, leaderId: Long, cardIds: List<Long>): Single<CardPredictions> {
-        return api.analyseDeck(mapFactionToString(faction), leaderId.toString(), cardIds.joinToString(","))
+    override fun getPredictions(leaderId: String, cardIds: List<String>): Single<CardPredictions> {
+        return api.analyseDeck(leaderId, cardIds.joinToString(","))
             .flatMap { response ->
                 cardRepository.getCards(response.probabilities?.keys?.map { it.toString() } ?: emptyList())
                     .first(emptyList())

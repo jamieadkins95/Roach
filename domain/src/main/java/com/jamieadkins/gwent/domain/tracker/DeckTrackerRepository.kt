@@ -7,9 +7,11 @@ import io.reactivex.Single
 
 interface DeckTrackerRepository {
 
-    fun newGame(opponentFaction: GwentFaction, opponentLeaderId: Long): Single<Long>
+    fun newGame(opponentFaction: GwentFaction, opponentLeaderId: String)
 
-    fun observeGame(gameId: Long): Observable<DeckTrackerAnalysis>
+    fun observeGame(): Observable<DeckTrackerAnalysis>
 
-    fun trackOpponentCard(gameId: Long, cardId: Long)
+    fun observePredictions(): Observable<CardPredictions>
+
+    fun trackOpponentCard(cardId: String)
 }
