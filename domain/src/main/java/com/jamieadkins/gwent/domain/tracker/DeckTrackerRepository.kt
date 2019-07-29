@@ -14,4 +14,6 @@ interface DeckTrackerRepository {
     fun observePredictions(): Observable<CardPredictions>
 
     fun trackOpponentCard(cardId: String)
+
+    fun removeOpponentCard(cardId: String)
 }

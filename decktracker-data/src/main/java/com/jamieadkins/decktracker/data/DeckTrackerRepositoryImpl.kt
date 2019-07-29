@@ -45,6 +45,18 @@ class DeckTrackerRepositoryImpl @Inject constructor(
             .subscribe { newCardsPlayed: List<GwentCard> -> opponentCardsPlayed.onNext(newCardsPlayed) }
     }
 
+    @SuppressLint("CheckResult")
+    override fun removeOpponentCard(cardId: String) {
+        Single.zip(
+            opponentCardsPlayed.first(emptyList()),
+            cardRepository.getCard(cardId).firstOrError(),
+            BiFunction { cardsPlayed: List<GwentCard>, cardPlayed: GwentCard ->
+                cardsPlayed - cardPlayed
+            }
+        )
+            .subscribe { newCardsPlayed: List<GwentCard> -> opponentCardsPlayed.onNext(newCardsPlayed) }
+    }
+
     override fun observeGame(): Observable<DeckTrackerAnalysis> {
         return Observable.combineLatest(
             currentLeader.distinctUntilChanged(),
