@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.domain.card
 
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.SortedBy
@@ -27,8 +28,8 @@ class GetCardsUseCase @Inject constructor(
         return internalGetCards(cardRepository.searchCards(query))
     }
 
-    fun quickSearchCards(query: String): Observable<List<GwentCard>> {
-        return internalGetCards(cardRepository.searchCards(query, true))
+    fun quickSearchCards(query: String, factions: List<GwentFaction> = GwentFaction.values().toList()): Observable<List<GwentCard>> {
+        return internalGetCards(cardRepository.searchCardsInFactions(query, factions, true))
     }
 
     private fun internalGetCards(cardObservable: Observable<List<GwentCard>>): Observable<List<GwentCard>> {

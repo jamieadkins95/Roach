@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
+import com.jamieadkins.gwent.decktracker.cardpicker.CardPickerDialog
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
@@ -62,7 +63,8 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deck_tracker)
         val url = intent?.data
-        val faction = url?.getQueryParameter("faction")?.let { factionMapper.map(it) }
+        val factionId = url?.getQueryParameter("faction")
+        val faction = factionId?.let(factionMapper::map)
         val leaderId = url?.getQueryParameter("leaderId")
 
         if (faction != null && leaderId != null) {
@@ -80,6 +82,13 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         recyclerView.adapter = adapter
         val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
+
+        btnAddCard.setOnClickListener {
+            factionId?.let {
+                val dialog = CardPickerDialog.withFaction(factionId)
+                dialog.show(supportFragmentManager, dialog.tag)
+            }
+        }
 
         presenter.onAttach()
     }

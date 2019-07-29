@@ -1,21 +1,20 @@
-package com.jamieadkins.gwent.decktracker
+package com.jamieadkins.gwent.decktracker.cardpicker
 
+import com.jamieadkins.gwent.decktracker.R
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.view_deck_analysis.*
-import kotlinx.android.synthetic.main.view_predicted_card.*
+import kotlinx.android.synthetic.main.view_search_result.*
 
-data class PredictedCardItem(
-    private val card: GwentCard,
-    private val prediction: Int
+data class SearchResultItem(
+    private val card: GwentCard
 ): Item(card.id.toLongOrNull() ?: card.id.hashCode().toLong()) {
 
-    override fun getLayout(): Int = R.layout.view_predicted_card
+    override fun getLayout(): Int = R.layout.view_search_result
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.name.text = card.name
         viewHolder.tooltip.text = card.tooltip
-        viewHolder.prediction.text = "$prediction%"
+        viewHolder.provisions.text = card.provisions.toString()
     }
 }

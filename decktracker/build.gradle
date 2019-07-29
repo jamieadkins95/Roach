@@ -13,6 +13,7 @@ android {
     defaultConfig {
         minSdkVersion Versions.min_sdk
         targetSdkVersion Versions.target_sdk
+        vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
@@ -45,6 +46,7 @@ dependencies {
 
     implementation Libs.card_view
     implementation Libs.constraint_layout
+    implementation Libs.material
     implementation Libs.groupie
     implementation Libs.groupie_extensions
 
