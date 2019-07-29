@@ -94,7 +94,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     }
 
     override fun showPredictions(cardPredictions: CardPredictions) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        predictionsSection.update(cardPredictions.cards.map { PredictedCardItem(it.card, it.percentage) })
     }
 
     override fun showFaction(faction: GwentFaction) {
