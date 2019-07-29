@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.decktracker
 
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.base.MvpPresenter
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 
@@ -11,7 +12,9 @@ interface DeckTrackerContract {
 
         fun showFaction(faction: GwentFaction)
 
-        fun showDeckAnalysis(analysis: DeckTrackerAnalysis)
+        fun showCardsPlayed(cards: List<GwentCard>)
+
+        fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float)
 
         fun showPredictions(cardPredictions: CardPredictions)
     }

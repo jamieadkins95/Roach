@@ -14,6 +14,7 @@ import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
 import com.jamieadkins.gwent.decktracker.cardpicker.CardPickerDialog
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.xwray.groupie.GroupAdapter
@@ -99,9 +100,12 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         presenter.onDetach()
     }
 
-    override fun showDeckAnalysis(analysis: DeckTrackerAnalysis) {
-        cardsPlayedSection.update(analysis.opponentCardsPlayed.map(::SimpleGwentCardItem))
-        remainingSection.update(listOf(DeckAnalysisItem(analysis.opponentProvisionsRemaining, analysis.opponentAverageProvisionsRemaining)))
+    override fun showCardsPlayed(cards: List<GwentCard>) {
+        cardsPlayedSection.update(cards.map(::SimpleGwentCardItem))
+    }
+
+    override fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float) {
+        remainingSection.update(listOf(DeckAnalysisItem(opponentProvisionsRemaining, opponentAverageProvisionsRemaining)))
     }
 
     override fun showPredictions(cardPredictions: CardPredictions) {
