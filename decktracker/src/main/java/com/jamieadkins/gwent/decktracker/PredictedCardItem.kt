@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.view_deck_analysis.*
 import kotlinx.android.synthetic.main.view_predicted_card.*
 
 data class PredictedCardItem(
-    private val card: GwentCard,
+    val card: GwentCard,
     private val prediction: Int
 ): Item(card.id.toLongOrNull() ?: card.id.hashCode().toLong()) {
 

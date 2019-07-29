@@ -21,6 +21,8 @@ interface DeckTrackerContract {
         fun showPredictions(cardPredictions: List<CardPrediction>)
 
         fun showSimilarDecks(similar: List<SimilarDeck>)
+
+        fun openCardDetails(cardId: String)
     }
 
     interface Presenter : MvpPresenter {

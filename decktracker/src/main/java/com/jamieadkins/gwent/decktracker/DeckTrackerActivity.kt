@@ -87,6 +87,22 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
 
+        adapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is SimpleGwentCardItem -> presenter.onCardClicked(item.card.id)
+                is PredictedCardItem -> presenter.onCardClicked(item.card.id)
+                is SimilarDeckItem -> presenter.onSimilarDeckClicked(item.deck.id)
+            }
+        }
+
+        adapter.setOnItemLongClickListener { item, _ ->
+            when (item) {
+                is SimpleGwentCardItem -> presenter.onOpponentCardDeleted(item.card.id)
+                is PredictedCardItem -> presenter.onOpponentCardPlayed(item.card.id)
+            }
+            true
+        }
+
         btnAddCard.setOnClickListener {
             factionId?.let {
                 val dialog = CardPickerDialog.withFaction(factionId)
@@ -123,5 +139,9 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, faction)
         }
+    }
+
+    override fun openCardDetails(cardId: String) {
+
     }
 }
