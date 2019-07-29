@@ -12,7 +12,7 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FromFactionMapper
-import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.decktracker.DeckTrackerActivity
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard

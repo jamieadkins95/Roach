@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.bus.GwentCardClickEvent

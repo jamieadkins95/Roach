@@ -7,4 +7,5 @@
     <string name="similar_decks">Similar Decks on Gwent Deck Library</string>
     <string name="card_predictions_title">Card Predictions</string>
     <string name="card_predictions_subtitle">Based on similar decks uploaded to Gwent Deck Library</string>
+    <string name="cards_played_placeholder">Your opponent hasn\'t played any cards yet. Press the circle card button in the bottom right to get started.</string>
 </resources>

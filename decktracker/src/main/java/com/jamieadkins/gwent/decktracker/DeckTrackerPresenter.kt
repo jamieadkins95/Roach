@@ -37,6 +37,7 @@ class DeckTrackerPresenter @Inject constructor(
 
     override fun init(faction: GwentFaction, leaderId: String) {
         startDeckTrackerUseCase.newGame(faction, leaderId)
+        view?.showFaction(faction)
     }
 
     override fun onOpponentCardPlayed(cardId: String) {

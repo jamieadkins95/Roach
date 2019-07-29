@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck

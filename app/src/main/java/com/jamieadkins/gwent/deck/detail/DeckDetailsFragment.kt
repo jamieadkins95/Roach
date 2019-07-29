@@ -20,7 +20,7 @@ import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
-import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
 import com.jamieadkins.gwent.deck.DeckBuilderEvents
 import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
@@ -28,7 +28,7 @@ import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
-import com.jamieadkins.gwent.main.CardResourceHelper
+import com.jamieadkins.gwent.base.CardResourceHelper
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

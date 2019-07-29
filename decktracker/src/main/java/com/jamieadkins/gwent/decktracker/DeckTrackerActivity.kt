@@ -1,12 +1,17 @@
 package com.jamieadkins.gwent.decktracker
 
+import android.os.Build
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
+import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.xwray.groupie.GroupAdapter
@@ -23,7 +28,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     private val adapter = GroupAdapter<ViewHolder>()
     private val cardsPlayedSection = Section().apply {
         setHeader(SubHeaderItem(R.string.cards_played_subheader))
-        setHideWhenEmpty(true)
+        setPlaceholder(CardsPlayedPlaceholderItem())
     }
     private val remainingSection = Section().apply {
         setHeader(SubHeaderItem(R.string.remaining_in_opponents_deck))
@@ -73,6 +78,8 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
+        val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f).toInt())
+        recyclerView.addItemDecoration(dividerItemDecoration)
 
         presenter.onAttach()
     }
@@ -88,5 +95,12 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
     override fun showPredictions(cardPredictions: CardPredictions) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showFaction(faction: GwentFaction) {
+        toolbar.setBackgroundColor(CardResourceHelper.getColorForFaction(resources, faction))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, faction)
+        }
     }
 }

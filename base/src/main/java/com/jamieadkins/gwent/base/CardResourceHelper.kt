@@ -1,9 +1,8 @@
-package com.jamieadkins.gwent.main
+package com.jamieadkins.gwent.base
 
 import android.content.res.Resources
 import androidx.core.content.res.ResourcesCompat
 import com.jamieadkins.gwent.domain.GwentFaction
-import com.jamieadkins.gwent.R
 
 object CardResourceHelper {
 

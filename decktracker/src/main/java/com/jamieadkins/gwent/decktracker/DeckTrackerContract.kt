@@ -9,6 +9,8 @@ interface DeckTrackerContract {
 
     interface View {
 
+        fun showFaction(faction: GwentFaction)
+
         fun showDeckAnalysis(analysis: DeckTrackerAnalysis)
 
         fun showPredictions(cardPredictions: CardPredictions)

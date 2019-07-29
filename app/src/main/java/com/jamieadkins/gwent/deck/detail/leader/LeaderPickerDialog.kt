@@ -13,7 +13,7 @@ import com.jamieadkins.gwent.bus.LeaderPickerEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
-import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

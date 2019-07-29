@@ -14,11 +14,11 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
-import com.jamieadkins.gwent.card.list.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
-import com.jamieadkins.gwent.main.CardResourceHelper
+import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.main.GwentStringHelper
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
