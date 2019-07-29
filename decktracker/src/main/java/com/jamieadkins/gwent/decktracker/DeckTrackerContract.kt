@@ -23,6 +23,8 @@ interface DeckTrackerContract {
         fun showSimilarDecks(similar: List<SimilarDeck>)
 
         fun openCardDetails(cardId: String)
+
+        fun openSimilarDeck(deckUrl: String)
     }
 
     interface Presenter : MvpPresenter {
@@ -33,7 +35,7 @@ interface DeckTrackerContract {
 
         fun onOpponentCardDeleted(cardId: String)
 
-        fun onSimilarDeckClicked(deckId: String)
+        fun onSimilarDeckClicked(deck: SimilarDeck)
 
         fun onCardClicked(cardId: String)
     }

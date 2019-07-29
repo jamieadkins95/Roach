@@ -47,6 +47,7 @@ dependencies {
     implementation Libs.card_view
     implementation Libs.constraint_layout
     implementation Libs.material
+    implementation Libs.custom_tabs
     implementation Libs.groupie
     implementation Libs.groupie_extensions
 

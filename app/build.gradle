@@ -83,7 +83,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation Libs.card_view
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation Libs.custom_tabs
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
     implementation Libs.constraint_layout
 

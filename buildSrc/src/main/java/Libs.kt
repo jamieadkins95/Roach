@@ -34,4 +34,5 @@ object Libs {
     const val material = "com.google.android.material:material:1.0.0"
     const val card_view = "androidx.cardview:cardview:1.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
+    const val custom_tabs = "androidx.browser:browser:1.0.0"
 }

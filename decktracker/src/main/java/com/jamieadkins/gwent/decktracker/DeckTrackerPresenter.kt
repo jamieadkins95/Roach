@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.domain.tracker.ObserveDeckTrackerUseCase
 import com.jamieadkins.gwent.domain.tracker.RemoveCardFromDeckTrackerUseCase
 import com.jamieadkins.gwent.domain.tracker.StartDeckTrackerUseCase
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
+import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 import javax.inject.Inject
 
 class DeckTrackerPresenter @Inject constructor(
@@ -62,8 +63,8 @@ class DeckTrackerPresenter @Inject constructor(
 
     override fun onOpponentCardDeleted(cardId: String) = removeCardFromDeckTrackerUseCase.remove(cardId)
 
-    override fun onSimilarDeckClicked(deckId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onSimilarDeckClicked(deck: SimilarDeck) {
+        view.openSimilarDeck(deck.url)
     }
 
     override fun onCardClicked(cardId: String) {

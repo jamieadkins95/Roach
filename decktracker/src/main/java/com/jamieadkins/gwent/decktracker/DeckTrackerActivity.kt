@@ -1,7 +1,10 @@
 package com.jamieadkins.gwent.decktracker
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
@@ -91,7 +94,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
             when (item) {
                 is SimpleGwentCardItem -> presenter.onCardClicked(item.card.id)
                 is PredictedCardItem -> presenter.onCardClicked(item.card.id)
-                is SimilarDeckItem -> presenter.onSimilarDeckClicked(item.deck.id)
+                is SimilarDeckItem -> presenter.onSimilarDeckClicked(item.deck)
             }
         }
 
@@ -143,5 +146,13 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
     override fun openCardDetails(cardId: String) {
 
+    }
+
+    override fun openSimilarDeck(deckUrl: String) {
+        CustomTabsIntent.Builder()
+            .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
+            .setShowTitle(true)
+            .build()
+            .launchUrl(this, Uri.parse(deckUrl))
     }
 }
