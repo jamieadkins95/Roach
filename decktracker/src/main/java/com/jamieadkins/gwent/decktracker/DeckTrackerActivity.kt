@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
@@ -32,6 +33,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
     @Inject lateinit var factionMapper: FactionMapper
     @Inject lateinit var presenter: DeckTrackerContract.Presenter
+    private val featureNavigator = FeatureNavigator(this)
 
     private val adapter = GroupAdapter<ViewHolder>()
     private val cardsPlayedSection = Section().apply {
@@ -144,9 +146,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         }
     }
 
-    override fun openCardDetails(cardId: String) {
-
-    }
+    override fun openCardDetails(cardId: String) = featureNavigator.openCardDetails(cardId)
 
     override fun openSimilarDeck(deckUrl: String) {
         CustomTabsIntent.Builder()

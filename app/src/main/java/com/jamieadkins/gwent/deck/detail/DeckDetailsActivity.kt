@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
-import com.jamieadkins.gwent.card.detail.CardDetailsFragment.Companion.KEY_ID
 import com.jamieadkins.gwent.di.DaggerAppComponent
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
 
@@ -24,7 +23,7 @@ class DeckDetailsActivity : DaggerAndroidActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        deckId = savedInstanceState?.getString(KEY_ID)
+        deckId = savedInstanceState?.getString(DeckDetailsFragment.KEY_ID)
                 ?: intent?.getStringExtra(DeckDetailsFragment.KEY_ID)
                 ?: throw Exception("Deck ID not found")
 

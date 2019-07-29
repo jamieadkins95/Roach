@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jamieadkins.gwent.base.ScrollView
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.bus.RxBus
-import com.jamieadkins.gwent.card.detail.CardDetailsActivity
-import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.update.UpdateService
@@ -177,8 +176,6 @@ class CardDatabaseFragment :
     }
 
     override fun showCardDetails(cardId: String) {
-        val intent = Intent(requireContext(), CardDetailsActivity::class.java)
-        intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
-        activity?.startActivity(intent)
+        activity?.let { FeatureNavigator(it).openCardDetails(cardId) }
     }
 }

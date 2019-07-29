@@ -1,6 +1,5 @@
 package com.jamieadkins.gwent.deck.detail
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +14,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jamieadkins.gwent.R
-import com.jamieadkins.gwent.card.detail.CardDetailsActivity
-import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
@@ -29,6 +26,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.base.CardResourceHelper
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -233,9 +231,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
     }
 
     override fun showCardDetails(cardId: String) {
-        val intent = Intent(requireContext(), CardDetailsActivity::class.java)
-        intent.putExtra(CardDetailsFragment.KEY_ID, cardId)
-        activity?.startActivity(intent)
+        activity?.let { FeatureNavigator(it).openCardDetails(cardId) }
     }
 
     override fun showMaximumCardCountReached() {

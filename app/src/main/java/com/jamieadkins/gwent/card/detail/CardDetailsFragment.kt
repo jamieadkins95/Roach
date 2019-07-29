@@ -36,7 +36,15 @@ class CardDetailsFragment : DaggerFragment(), DetailContract.View {
     private val adapter = GroupAdapter<ViewHolder>()
 
     companion object {
-        const val KEY_ID = "cardId"
+        private const val KEY_ID = "cardId"
+
+        fun withCardId(cardId: String): CardDetailsFragment {
+            return CardDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_ID, cardId)
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
