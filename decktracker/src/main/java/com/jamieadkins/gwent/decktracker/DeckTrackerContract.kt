@@ -14,6 +14,8 @@ interface DeckTrackerContract {
 
         fun showFaction(faction: GwentFaction)
 
+        fun showLeader(card: GwentCard)
+
         fun showCardsPlayed(cards: List<GwentCard>)
 
         fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float)

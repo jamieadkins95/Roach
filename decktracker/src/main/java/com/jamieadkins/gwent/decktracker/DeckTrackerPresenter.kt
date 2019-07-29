@@ -36,6 +36,7 @@ class DeckTrackerPresenter @Inject constructor(
                     val cardsPlayed = analysis.opponentCardsPlayed.sortedByDescending { it.provisions }
                     view.showCardsPlayed(cardsPlayed)
                     view.showDeckAnalysis(analysis.opponentProvisionsRemaining, analysis.opponentAverageProvisionsRemaining)
+                    view.showLeader(analysis.leader)
                 }
             })
             .addToComposite()

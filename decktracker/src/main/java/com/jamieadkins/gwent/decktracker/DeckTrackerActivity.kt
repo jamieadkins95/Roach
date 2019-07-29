@@ -83,7 +83,6 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         }
 
         setSupportActionBar(toolbar)
-        title = getString(R.string.deck_tracker)
         toolbar.setTitleTextAppearance(this, R.style.GwentTextAppearance)
 
         val layoutManager = LinearLayoutManager(this)
@@ -145,6 +144,8 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
             window?.statusBarColor = CardResourceHelper.getDarkColorForFaction(resources, faction)
         }
     }
+
+    override fun showLeader(card: GwentCard) { toolbar.title = card.name }
 
     override fun openCardDetails(cardId: String) = featureNavigator.openCardDetails(cardId)
 
