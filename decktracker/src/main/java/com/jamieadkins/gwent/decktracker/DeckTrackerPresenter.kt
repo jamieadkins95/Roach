@@ -48,7 +48,7 @@ class DeckTrackerPresenter @Inject constructor(
                         .filter { it.card.type != GwentCardType.Leader }
                         .sortedByDescending { it.percentage }
                         .take(20)
-                    view.showPredictions(cards)
+                    view.showPredictions(predictions.similarDecksFound.size, cards)
                     view.showSimilarDecks(predictions.similarDecksFound.take(20))
                 }
             })

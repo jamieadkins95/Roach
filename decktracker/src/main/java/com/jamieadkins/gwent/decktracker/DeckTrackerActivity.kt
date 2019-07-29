@@ -44,8 +44,11 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHeader(SubHeaderItem(R.string.remaining_in_opponents_deck))
         setHideWhenEmpty(true)
     }
+    private val predictionsHeaderSection = Section().apply {
+        update(listOf(H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle), BetaNoticeItem()))
+    }
     private val predictionsSection = Section().apply {
-        setHeader(H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle))
+        setHeader(predictionsHeaderSection)
         setHideWhenEmpty(true)
     }
     private val similarDecksSection = Section().apply {
@@ -130,7 +133,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         remainingSection.update(listOf(DeckAnalysisItem(opponentProvisionsRemaining, opponentAverageProvisionsRemaining)))
     }
 
-    override fun showPredictions(cardPredictions: List<CardPrediction>) {
+    override fun showPredictions(similarDeckCount: Int, cardPredictions: List<CardPrediction>) {
         predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
     }
 
