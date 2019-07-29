@@ -13,6 +13,7 @@ import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.card.data.FactionMapper
 import com.jamieadkins.gwent.decktracker.R
+import com.jamieadkins.gwent.decktracker.SimpleGwentCardItem
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.GroupAdapter
@@ -44,7 +45,7 @@ class CardPickerDialog : DaggerSupportDialogFragment(), CardPickerContract.View 
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener { item, _ ->
             when (item) {
-                is SearchResultItem -> presenter.onCardPicked(item.card.id)
+                is SimpleGwentCardItem -> presenter.onCardPicked(item.card.id)
             }
         }
 
@@ -63,7 +64,7 @@ class CardPickerDialog : DaggerSupportDialogFragment(), CardPickerContract.View 
     }
 
     override fun showCards(cards: List<GwentCard>) {
-        adapter.update(cards.map { SearchResultItem(it) })
+        adapter.update(cards.map { SimpleGwentCardItem(it) })
     }
 
     override fun close() {

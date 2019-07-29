@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.base.DaggerAndroidActivity
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
+import com.jamieadkins.gwent.base.items.H2HeaderItem
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
@@ -28,7 +29,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
     private val adapter = GroupAdapter<ViewHolder>()
     private val cardsPlayedSection = Section().apply {
-        setHeader(SubHeaderItem(R.string.cards_played_subheader))
+        setHeader(H2HeaderItem(R.string.cards_played_title, R.string.cards_played_subtitle))
         setPlaceholder(CardsPlayedPlaceholderItem())
     }
     private val remainingSection = Section().apply {
@@ -99,6 +100,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     }
 
     override fun showDeckAnalysis(analysis: DeckTrackerAnalysis) {
+        cardsPlayedSection.update(analysis.opponentCardsPlayed.map(::SimpleGwentCardItem))
         remainingSection.update(listOf(DeckAnalysisItem(analysis.opponentProvisionsRemaining, analysis.opponentAverageProvisionsRemaining)))
     }
 
