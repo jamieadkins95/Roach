@@ -3,6 +3,8 @@ package com.jamieadkins.gwent.decktracker.cardpicker
 import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.base.BasePresenter
+import com.jamieadkins.gwent.decktracker.bus.DeckTrackerEvent
+import com.jamieadkins.gwent.decktracker.bus.DeckTrackerEvents
 import com.jamieadkins.gwent.domain.card.GetCardsUseCase
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
@@ -31,6 +33,7 @@ class CardPickerPresenter @Inject constructor(
     }
 
     override fun onCardPicked(cardId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        DeckTrackerEvents.post(DeckTrackerEvent.CardPlayed(cardId))
+        view.close()
     }
 }

@@ -7,7 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_search_result.*
 
 data class SearchResultItem(
-    private val card: GwentCard
+    val card: GwentCard
 ): Item(card.id.toLongOrNull() ?: card.id.hashCode().toLong()) {
 
     override fun getLayout(): Int = R.layout.view_search_result

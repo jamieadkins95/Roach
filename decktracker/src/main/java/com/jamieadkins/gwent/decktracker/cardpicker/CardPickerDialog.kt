@@ -42,6 +42,11 @@ class CardPickerDialog : DaggerSupportDialogFragment(), CardPickerContract.View 
         val dividerItemDecoration = VerticalSpaceItemDecoration(requireContext().convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = adapter
+        adapter.setOnItemClickListener { item, _ ->
+            when (item) {
+                is SearchResultItem -> presenter.onCardPicked(item.card.id)
+            }
+        }
 
         val faction = arguments?.getString(KEY_FACTION)?.let(factionMapper::map) ?: GwentFaction.NEUTRAL
 
