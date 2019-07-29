@@ -4,7 +4,9 @@ import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.base.MvpPresenter
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
+import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
+import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 
 interface DeckTrackerContract {
 
@@ -16,7 +18,9 @@ interface DeckTrackerContract {
 
         fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float)
 
-        fun showPredictions(cardPredictions: CardPredictions)
+        fun showPredictions(cardPredictions: List<CardPrediction>)
+
+        fun showSimilarDecks(cardPredictions: List<SimilarDeck>)
     }
 
     interface Presenter : MvpPresenter {

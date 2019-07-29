@@ -16,7 +16,9 @@ import com.jamieadkins.gwent.decktracker.cardpicker.CardPickerDialog
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
+import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
+import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -38,7 +40,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHideWhenEmpty(true)
     }
     private val predictionsSection = Section().apply {
-        setHeader(HeaderItem(R.string.card_predictions_title, secondaryTextRes = R.string.card_predictions_subtitle))
+        setHeader(H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle))
         setHideWhenEmpty(true)
     }
     private val similarDecksSection = Section().apply {
@@ -108,8 +110,12 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         remainingSection.update(listOf(DeckAnalysisItem(opponentProvisionsRemaining, opponentAverageProvisionsRemaining)))
     }
 
-    override fun showPredictions(cardPredictions: CardPredictions) {
-        predictionsSection.update(cardPredictions.cards.map { PredictedCardItem(it.card, it.percentage) })
+    override fun showPredictions(cardPredictions: List<CardPrediction>) {
+        predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
+    }
+
+    override fun showSimilarDecks(cardPredictions: List<SimilarDeck>) {
+        
     }
 
     override fun showFaction(faction: GwentFaction) {

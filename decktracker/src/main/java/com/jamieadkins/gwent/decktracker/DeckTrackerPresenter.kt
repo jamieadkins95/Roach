@@ -5,6 +5,7 @@ import com.jamieadkins.gwent.base.BasePresenter
 import com.jamieadkins.gwent.decktracker.bus.DeckTrackerEvent
 import com.jamieadkins.gwent.decktracker.bus.DeckTrackerEvents
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCardType
 import com.jamieadkins.gwent.domain.tracker.AddCardToDeckTrackerUseCase
 import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.GetCardPredictionsUseCase
@@ -41,7 +42,12 @@ class DeckTrackerPresenter @Inject constructor(
         getCardPredictionsUseCase.observe()
             .subscribeWith(object : BaseDisposableObserver<CardPredictions>() {
                 override fun onNext(predictions: CardPredictions) {
-                    view.showPredictions(predictions)
+                    val cards = predictions.cards
+                        .filter { it.card.type != GwentCardType.Leader }
+                        .sortedByDescending { it.percentage }
+                        .take(20)
+                    view.showPredictions(cards)
+                    view.showSimilarDecks(predictions.similarDecksFound)
                 }
             })
             .addToComposite()
