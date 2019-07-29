@@ -20,7 +20,7 @@ interface DeckTrackerContract {
 
         fun showPredictions(cardPredictions: List<CardPrediction>)
 
-        fun showSimilarDecks(cardPredictions: List<SimilarDeck>)
+        fun showSimilarDecks(similar: List<SimilarDeck>)
     }
 
     interface Presenter : MvpPresenter {

@@ -5,9 +5,10 @@
     <string name="remaining_in_opponents_deck">Remaining in opponent\'s deck</string>
     <string name="provisions_remaining">Provisions Remaining</string>
     <string name="average_provisions_remaining">Average Provisions Remaining Per Card</string>
-    <string name="similar_decks">Similar Decks on Gwent Deck Library</string>
     <string name="card_predictions_title">Card Predictions</string>
     <string name="card_predictions_subtitle">Based on similar decks uploaded to Gwent Deck Library</string>
+    <string name="similar_decks_title">Similar Decks</string>
+    <string name="similar_decks_subtitle">Decks on Gwent Deck Library that are similar to your opponent\'s deck</string>
     <string name="cards_played_placeholder">Your opponent hasn\'t played any cards yet. Press the circle card button in the bottom right to get started.</string>
     <string name="what_card">What card did your opponent play?</string>
     <string name="card_search_example">Card Name</string>

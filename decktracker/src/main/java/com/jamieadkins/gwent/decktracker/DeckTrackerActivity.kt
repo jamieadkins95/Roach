@@ -44,7 +44,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHideWhenEmpty(true)
     }
     private val similarDecksSection = Section().apply {
-        setHeader(SubHeaderItem(R.string.similar_decks))
+        setHeader(H2HeaderItem(R.string.similar_decks_title, R.string.similar_decks_subtitle))
         setHideWhenEmpty(true)
     }
 
@@ -114,8 +114,8 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
     }
 
-    override fun showSimilarDecks(cardPredictions: List<SimilarDeck>) {
-        
+    override fun showSimilarDecks(similar: List<SimilarDeck>) {
+        similarDecksSection.update(similar.map(::SimilarDeckItem))
     }
 
     override fun showFaction(faction: GwentFaction) {

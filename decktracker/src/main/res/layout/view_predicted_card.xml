@@ -36,6 +36,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
+            android:fontFamily="@font/gwent"
             app:layout_constraintBottom_toTopOf="@id/tooltip"
             app:layout_constraintEnd_toStartOf="@id/prediction"
             app:layout_constraintStart_toStartOf="parent"
