@@ -101,10 +101,10 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
         adapter.setOnItemLongClickListener { item, _ ->
             when (item) {
-                is SimpleGwentCardItem -> presenter.onOpponentCardDeleted(item.card.id)
-                is PredictedCardItem -> presenter.onOpponentCardPlayed(item.card.id)
+                is SimpleGwentCardItem -> { presenter.onOpponentCardDeleted(item.card.id); true }
+                is PredictedCardItem -> { presenter.onOpponentCardPlayed(item.card.id); true }
+                else -> false
             }
-            true
         }
 
         btnAddCard.setOnClickListener {
