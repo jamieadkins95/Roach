@@ -37,7 +37,7 @@ class DeckTrackerRepositoryImpl @Inject constructor(
     override fun trackOpponentCard(cardId: String) {
         Single.zip(
             opponentCardsPlayed.first(emptyList()),
-            cardRepository.getCard(cardId).firstOrError(),
+            cardRepository.getCard(cardId).subscribeOn(schedulerProvider.io()).firstOrError(),
             BiFunction { cardsPlayed: List<GwentCard>, cardPlayed: GwentCard ->
                 cardsPlayed + cardPlayed
             }
@@ -49,7 +49,7 @@ class DeckTrackerRepositoryImpl @Inject constructor(
     override fun removeOpponentCard(cardId: String) {
         Single.zip(
             opponentCardsPlayed.first(emptyList()),
-            cardRepository.getCard(cardId).firstOrError(),
+            cardRepository.getCard(cardId).subscribeOn(schedulerProvider.io()).firstOrError(),
             BiFunction { cardsPlayed: List<GwentCard>, cardPlayed: GwentCard ->
                 cardsPlayed - cardPlayed
             }
@@ -81,6 +81,10 @@ class DeckTrackerRepositoryImpl @Inject constructor(
                 leader.id to cardsPlayed.map { it.id }
             }
         )
-            .switchMapSingle { cardPredictorRepository.getPredictions(it.first, it.second) }
+            .switchMapSingle {
+                cardPredictorRepository.getPredictions(it.first, it.second)
+                    .subscribeOn(schedulerProvider.io())
+            }
+
     }
 }

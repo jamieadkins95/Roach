@@ -30,6 +30,9 @@ dependencies {
     implementation project(':domain')
     implementation project(':card-data')
 
+    implementation Libs.timber
+    implementation 'com.github.mrmike:ok2curl:0.5.0'
+
     implementation Libs.kotlin
     implementation Libs.dagger
     kapt Libs.dagger_compiler

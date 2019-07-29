@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
 import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 class CardPredictorRepositoryImpl @Inject constructor(
@@ -15,6 +16,9 @@ class CardPredictorRepositoryImpl @Inject constructor(
 ) : CardPredictorRepository {
 
     override fun getPredictions(leaderId: String, cardIds: List<String>): Single<CardPredictions> {
+        if (cardIds.isEmpty()) {
+            return Single.just(CardPredictions(emptyList(), emptyList()))
+        }
         return api.analyseDeck(leaderId, cardIds.joinToString(","))
             .flatMap { response ->
                 cardRepository.getCards(response.probabilities?.keys?.map { it.toString() } ?: emptyList())
@@ -30,6 +34,10 @@ class CardPredictorRepositoryImpl @Inject constructor(
                         } ?: emptyList()
                         CardPredictions(similarDecks, predictions)
                     }
+            }
+            .onErrorReturn {
+                Timber.e(it)
+                CardPredictions(emptyList(), emptyList())
             }
     }
 

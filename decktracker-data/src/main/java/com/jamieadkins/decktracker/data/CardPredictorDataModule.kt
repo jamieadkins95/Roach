@@ -2,6 +2,7 @@ package com.jamieadkins.decktracker.data
 
 import com.google.gson.Gson
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
+import com.moczul.ok2curl.CurlInterceptor
 import dagger.Binds
 import dagger.Lazy
 import dagger.Module
@@ -10,6 +11,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -48,6 +50,7 @@ abstract class CardPredictorDataModule {
             return okHttpBuilder
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
+                .addInterceptor(CurlInterceptor { message -> Timber.d("Ok2Curl: $message") })
                 .build()
         }
 
