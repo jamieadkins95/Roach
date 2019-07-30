@@ -9,11 +9,11 @@
     <string name="card_predictions_subtitle">Based on similar decks uploaded to Gwent Deck Library\n(Tap to play card, long press to see details)</string>
     <string name="similar_decks_title">Similar Decks</string>
     <string name="similar_decks_subtitle">Decks on Gwent Deck Library that are similar to your opponent\'s deck</string>
-    <string name="cards_played_placeholder">Your opponent hasn\'t played any cards yet. Press the circle card button in the bottom right to get started.</string>
+    <string name="cards_played_placeholder">Your opponent hasn\'t played any cards yet. Press the card button in the bottom right to get started.</string>
     <string name="what_card">What card did your opponent play?</string>
     <string name="card_search_example">Card Name</string>
     <string name="search">Search</string>
-    <string name="beta_notice">Card Predictions is a beta feature. See something odd? Let us know!</string>
+    <string name="beta_notice">After a new patch, Roach may struggle to give predictions because a lot of decks on Gwent Deck Library will be out of date.\n\nCard Predictions is a beta feature. See something odd? Let us know!</string>
     <string name="feedback">Feedback</string>
     <string name="gwent_deck_library">Gwent Deck Library</string>
     <string name="no_predictions">Roach couldn\'t find any similar decks on Gwent Deck Library. Your opponent might be playing something new!</string>

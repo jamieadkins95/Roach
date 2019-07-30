@@ -40,22 +40,22 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     private val featureNavigator = FeatureNavigator(this)
 
     private val adapter = GroupAdapter<ViewHolder>()
+    private val headerSection = Section().apply {
+        update(listOf(
+            BetaNoticeItem { presenter.onFeedbackClicked() },
+            H2HeaderItem(R.string.cards_played_title, R.string.cards_played_subtitle)
+        ))
+    }
     private val cardsPlayedSection = Section().apply {
-        setHeader(H2HeaderItem(R.string.cards_played_title, R.string.cards_played_subtitle))
+        setHeader(headerSection)
         setPlaceholder(CardsPlayedPlaceholderItem())
     }
     private val remainingSection = Section().apply {
         setHeader(SubHeaderItem(R.string.remaining_in_opponents_deck))
         setHideWhenEmpty(true)
     }
-    private val predictionsHeaderSection = Section().apply {
-        update(listOf(
-            H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle),
-            BetaNoticeItem { presenter.onFeedbackClicked() }
-        ))
-    }
     private val predictionsSection = Section().apply {
-        setHeader(predictionsHeaderSection)
+        setHeader(H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle))
         setHideWhenEmpty(true)
     }
     private val similarDecksSection = Section().apply {
