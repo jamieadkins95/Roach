@@ -103,16 +103,16 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
         adapter.setOnItemClickListener { item, _ ->
             when (item) {
-                is SimpleGwentCardItem -> presenter.onCardClicked(item.card.id)
-                is PredictedCardItem -> presenter.onCardClicked(item.card.id)
+                is SimpleGwentCardItem -> presenter.onOpponentCardDeleted(item.card.id)
+                is PredictedCardItem -> presenter.onOpponentCardPlayed(item.card.id)
                 is SimilarDeckItem -> presenter.onSimilarDeckClicked(item.deck)
             }
         }
 
         adapter.setOnItemLongClickListener { item, _ ->
             when (item) {
-                is SimpleGwentCardItem -> { presenter.onOpponentCardDeleted(item.card.id); true }
-                is PredictedCardItem -> { presenter.onOpponentCardPlayed(item.card.id); true }
+                is SimpleGwentCardItem -> { presenter.onCardClicked(item.card.id); true }
+                is PredictedCardItem -> { presenter.onCardClicked(item.card.id); true }
                 else -> false
             }
         }
