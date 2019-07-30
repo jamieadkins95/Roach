@@ -1,5 +1,6 @@
 package com.jamieadkins.gwent.decktracker
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -183,12 +184,9 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     }
 
     override fun openFeedback() {
-        ShareCompat.IntentBuilder.from(this)
-            .setType("message/rfc822")
-            .addEmailTo("jamieadkins95+gwent@gmail.com")
-            .setSubject("Roach Deck Tracker")
-            //.setHtmlText(body) //If you are using HTML in your body text
-            .startChooser()
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:jamieadkins95+gwent@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Roach Deck Tracker")
+        startActivity(intent)
     }
 
     private fun openUrl(url: String) {
