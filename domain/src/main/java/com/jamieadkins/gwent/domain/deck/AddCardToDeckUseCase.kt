@@ -3,6 +3,8 @@ package com.jamieadkins.gwent.domain.deck
 import com.jamieadkins.gwent.domain.SchedulerProvider
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.deck.DeckConstants.BRONZE_MAX
+import com.jamieadkins.gwent.domain.deck.DeckConstants.GOLD_MAX
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -37,10 +39,5 @@ class AddCardToDeckUseCase @Inject constructor(
 
     private fun updateCardCount(deckId: String, cardId: String, count: Int): Single<AddCardToDeckResult> {
         return deckRepository.updateCardCount(deckId, cardId, count).toSingleDefault(AddCardToDeckResult.Success)
-    }
-
-    companion object {
-        private const val BRONZE_MAX = 2
-        private const val GOLD_MAX = 1
     }
 }

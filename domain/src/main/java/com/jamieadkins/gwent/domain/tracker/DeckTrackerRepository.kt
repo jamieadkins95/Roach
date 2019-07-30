@@ -1,7 +1,9 @@
 package com.jamieadkins.gwent.domain.tracker
 
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -13,7 +15,9 @@ interface DeckTrackerRepository {
 
     fun observePredictions(): Observable<CardPredictions>
 
-    fun trackOpponentCard(cardId: String)
+    fun getCardsPlayed(): Observable<List<GwentCard>>
 
-    fun removeOpponentCard(cardId: String)
+    fun trackOpponentCard(cardId: String): Completable
+
+    fun removeOpponentCard(cardId: String): Completable
 }

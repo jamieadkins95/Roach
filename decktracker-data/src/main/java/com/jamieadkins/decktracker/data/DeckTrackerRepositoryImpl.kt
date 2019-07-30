@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.domain.tracker.DeckTrackerRepository
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -33,28 +34,28 @@ class DeckTrackerRepositoryImpl @Inject constructor(
             .subscribe(currentLeader)
     }
 
-    @SuppressLint("CheckResult")
-    override fun trackOpponentCard(cardId: String) {
-        Single.zip(
+    override fun trackOpponentCard(cardId: String): Completable {
+        return Single.zip(
             opponentCardsPlayed.first(emptyList()),
             cardRepository.getCard(cardId).subscribeOn(schedulerProvider.io()).firstOrError(),
             BiFunction { cardsPlayed: List<GwentCard>, cardPlayed: GwentCard ->
                 cardsPlayed + cardPlayed
             }
         )
-            .subscribe { newCardsPlayed: List<GwentCard> -> opponentCardsPlayed.onNext(newCardsPlayed) }
+            .flatMap { Single.fromCallable { opponentCardsPlayed.onNext(it) } }
+            .ignoreElement()
     }
 
-    @SuppressLint("CheckResult")
-    override fun removeOpponentCard(cardId: String) {
-        Single.zip(
+    override fun removeOpponentCard(cardId: String): Completable {
+       return Single.zip(
             opponentCardsPlayed.first(emptyList()),
             cardRepository.getCard(cardId).subscribeOn(schedulerProvider.io()).firstOrError(),
             BiFunction { cardsPlayed: List<GwentCard>, cardPlayed: GwentCard ->
                 cardsPlayed - cardPlayed
             }
         )
-            .subscribe { newCardsPlayed: List<GwentCard> -> opponentCardsPlayed.onNext(newCardsPlayed) }
+            .flatMap { Single.fromCallable { opponentCardsPlayed.onNext(it) } }
+            .ignoreElement()
     }
 
     override fun observeGame(): Observable<DeckTrackerAnalysis> {
@@ -72,6 +73,8 @@ class DeckTrackerRepositoryImpl @Inject constructor(
             }
         )
     }
+
+    override fun getCardsPlayed(): Observable<List<GwentCard>> = opponentCardsPlayed.distinctUntilChanged()
 
     override fun observePredictions(): Observable<CardPredictions> {
         return Observable.combineLatest(

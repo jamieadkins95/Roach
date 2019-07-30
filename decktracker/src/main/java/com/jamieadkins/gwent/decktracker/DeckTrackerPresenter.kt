@@ -27,7 +27,7 @@ class DeckTrackerPresenter @Inject constructor(
 
     override fun onAttach() {
         DeckTrackerEvents.register(DeckTrackerEvent.CardPlayed::class.java)
-            .subscribe { addCardToDeckTrackerUseCase.addCard(it.cardId) }
+            .subscribe { onOpponentCardPlayed(it.cardId) }
             .addToComposite()
 
         observeDeckTrackerUseCase.observe()
@@ -62,9 +62,13 @@ class DeckTrackerPresenter @Inject constructor(
         view.showFaction(faction)
     }
 
-    override fun onOpponentCardPlayed(cardId: String) = addCardToDeckTrackerUseCase.addCard(cardId)
+    override fun onOpponentCardPlayed(cardId: String) {
+        addCardToDeckTrackerUseCase.addCard(cardId).subscribe({},{}).addToComposite()
+    }
 
-    override fun onOpponentCardDeleted(cardId: String) = removeCardFromDeckTrackerUseCase.remove(cardId)
+    override fun onOpponentCardDeleted(cardId: String) {
+        removeCardFromDeckTrackerUseCase.remove(cardId).subscribe({},{}).addToComposite()
+    }
 
     override fun onSimilarDeckClicked(deck: SimilarDeck) {
         view.openSimilarDeck(deck.url)
