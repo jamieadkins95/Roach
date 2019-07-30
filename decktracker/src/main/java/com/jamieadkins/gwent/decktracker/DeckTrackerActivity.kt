@@ -3,7 +3,11 @@ package com.jamieadkins.gwent.decktracker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.base.CardResourceHelper
@@ -45,7 +49,10 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHideWhenEmpty(true)
     }
     private val predictionsHeaderSection = Section().apply {
-        update(listOf(H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle), BetaNoticeItem()))
+        update(listOf(
+            H2HeaderItem(R.string.card_predictions_title, R.string.card_predictions_subtitle),
+            BetaNoticeItem { presenter.onFeedbackClicked() }
+        ))
     }
     private val predictionsSection = Section().apply {
         setHeader(predictionsHeaderSection)
@@ -125,6 +132,19 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         presenter.onDetach()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.deck_tracker, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_feedback -> { presenter.onFeedbackClicked(); true }
+            R.id.action_gwent_deck_library -> { openGwentDeckLibrary(); true }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun showCardsPlayed(cards: List<GwentCard>) {
         cardsPlayedSection.update(cards.map(::SimpleGwentCardItem))
     }
@@ -152,11 +172,26 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
     override fun openCardDetails(cardId: String) = featureNavigator.openCardDetails(cardId)
 
-    override fun openSimilarDeck(deckUrl: String) {
+    override fun openSimilarDeck(deckUrl: String) = openUrl(deckUrl)
+
+    override fun openGwentDeckLibrary() {
+        openUrl("https://www.playgwent.com/en/decks")
+    }
+
+    override fun openFeedback() {
+        ShareCompat.IntentBuilder.from(this)
+            .setType("message/rfc822")
+            .addEmailTo("jamieadkins95+gwent@gmail.com")
+            .setSubject("Roach Deck Tracker")
+            //.setHtmlText(body) //If you are using HTML in your body text
+            .startChooser()
+    }
+
+    private fun openUrl(url: String) {
         CustomTabsIntent.Builder()
             .setToolbarColor(ContextCompat.getColor(this, R.color.gwentGreen))
             .setShowTitle(true)
             .build()
-            .launchUrl(this, Uri.parse(deckUrl))
+            .launchUrl(this, Uri.parse(url))
     }
 }

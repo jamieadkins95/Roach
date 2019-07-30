@@ -27,6 +27,10 @@ interface DeckTrackerContract {
         fun openCardDetails(cardId: String)
 
         fun openSimilarDeck(deckUrl: String)
+
+        fun openFeedback()
+
+        fun openGwentDeckLibrary()
     }
 
     interface Presenter : MvpPresenter {
@@ -40,5 +44,7 @@ interface DeckTrackerContract {
         fun onSimilarDeckClicked(deck: SimilarDeck)
 
         fun onCardClicked(cardId: String)
+
+        fun onFeedbackClicked()
     }
 }

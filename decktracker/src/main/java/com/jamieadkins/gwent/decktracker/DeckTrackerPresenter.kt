@@ -71,4 +71,8 @@ class DeckTrackerPresenter @Inject constructor(
     override fun onCardClicked(cardId: String) {
         view.openCardDetails(cardId)
     }
+
+    override fun onFeedbackClicked() {
+        view.openFeedback()
+    }
 }
