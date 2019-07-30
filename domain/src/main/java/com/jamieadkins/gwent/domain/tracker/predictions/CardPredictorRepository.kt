@@ -1,8 +1,8 @@
 package com.jamieadkins.gwent.domain.tracker.predictions
 
-import io.reactivex.Single
+import io.reactivex.Maybe
 
 interface CardPredictorRepository {
 
-    fun getPredictions(leaderId: String, cardIds: List<String>): Single<CardPredictions>
+    fun getPredictions(leaderId: String, cardIds: List<String>): Maybe<CardPredictions>
 }

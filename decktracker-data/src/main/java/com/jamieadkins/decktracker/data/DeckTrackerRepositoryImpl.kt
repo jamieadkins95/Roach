@@ -76,12 +76,14 @@ class DeckTrackerRepositoryImpl @Inject constructor(
     override fun observePredictions(): Observable<CardPredictions> {
         return Observable.combineLatest(
             currentLeader.distinctUntilChanged(),
-            opponentCardsPlayed.distinctUntilChanged(),
+            opponentCardsPlayed
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged(),
             BiFunction { leader: GwentCard, cardsPlayed: List<GwentCard> ->
                 leader.id to cardsPlayed.map { it.id }
             }
         )
-            .switchMapSingle {
+            .switchMapMaybe {
                 cardPredictorRepository.getPredictions(it.first, it.second)
                     .subscribeOn(schedulerProvider.io())
             }

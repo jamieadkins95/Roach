@@ -153,8 +153,12 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         remainingSection.update(listOf(DeckAnalysisItem(opponentProvisionsRemaining, opponentAverageProvisionsRemaining)))
     }
 
-    override fun showPredictions(similarDeckCount: Int, cardPredictions: List<CardPrediction>) {
-        predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
+    override fun showPredictions(cardPredictions: List<CardPrediction>) {
+        if (cardPredictions.isNotEmpty()) {
+            predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
+        } else {
+            predictionsSection.update(listOf(NoPredictionsItem()))
+        }
     }
 
     override fun showSimilarDecks(similar: List<SimilarDeck>) {

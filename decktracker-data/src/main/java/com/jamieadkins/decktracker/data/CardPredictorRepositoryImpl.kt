@@ -6,6 +6,7 @@ import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictorRepository
 import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
+import io.reactivex.Maybe
 import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
@@ -15,14 +16,12 @@ class CardPredictorRepositoryImpl @Inject constructor(
     private val cardRepository: CardRepository
 ) : CardPredictorRepository {
 
-    override fun getPredictions(leaderId: String, cardIds: List<String>): Single<CardPredictions> {
-        if (cardIds.isEmpty()) {
-            return Single.just(CardPredictions(emptyList(), emptyList()))
-        }
+    override fun getPredictions(leaderId: String, cardIds: List<String>): Maybe<CardPredictions> {
+        if (cardIds.isEmpty()) return Maybe.empty()
         return api.analyseDeck(leaderId, cardIds.joinToString(","))
-            .flatMap { response ->
+            .flatMapMaybe { response ->
                 cardRepository.getCards(response.probabilities?.keys?.map { it.toString() } ?: emptyList())
-                    .first(emptyList())
+                    .firstElement()
                     .map { cards ->
                         val predictions = response.probabilities?.entries?.mapNotNull { entry ->
                            cards.find { it.id == entry.key.toString() }?.let { card ->

@@ -16,9 +16,5 @@
     <string name="beta_notice">Card Predictions is a beta feature. See something odd? Let us know!</string>
     <string name="feedback">Feedback</string>
     <string name="gwent_deck_library">Gwent Deck Library</string>
-
-    <plurals name="predictions_based_on">
-        <item quantity="one">Roach found %d similar deck in Gwent Deck Library.</item>
-        <item quantity="other">Roach found %d similar decks in the Gwent Deck Library.</item>
-    </plurals>
+    <string name="no_predictions">Roach couldn\'t find any similar decks on Gwent Deck Library. Your opponent might be playing something new!</string>
 </resources>
