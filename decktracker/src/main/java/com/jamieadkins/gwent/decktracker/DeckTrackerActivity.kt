@@ -5,10 +5,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.base.CardResourceHelper
@@ -18,21 +16,21 @@ import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.H2HeaderItem
-import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.card.data.FactionMapper
 import com.jamieadkins.gwent.decktracker.cardpicker.CardPickerDialog
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCard
-import com.jamieadkins.gwent.domain.tracker.DeckTrackerAnalysis
 import com.jamieadkins.gwent.domain.tracker.predictions.CardPrediction
-import com.jamieadkins.gwent.domain.tracker.predictions.CardPredictions
 import com.jamieadkins.gwent.domain.tracker.predictions.SimilarDeck
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_deck_tracker.*
 import javax.inject.Inject
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.xwray.groupie.TouchCallback
 
 class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
 
@@ -102,9 +100,12 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         val dividerItemDecoration = VerticalSpaceItemDecoration(convertDpToPixel(8f).toInt())
         recyclerView.addItemDecoration(dividerItemDecoration)
 
+        val itemTouchHelper = ItemTouchHelper(touchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
         adapter.setOnItemClickListener { item, _ ->
             when (item) {
-                is SimpleGwentCardItem -> presenter.onOpponentCardDeleted(item.card.id)
+                is SimpleGwentCardItem -> presenter.onOpponentCardPlayed(item.card.id)
                 is PredictedCardItem -> presenter.onOpponentCardPlayed(item.card.id)
                 is SimilarDeckItem -> presenter.onSimilarDeckClicked(item.deck)
             }
@@ -147,7 +148,13 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     }
 
     override fun showCardsPlayed(cards: List<GwentCard>) {
-        cardsPlayedSection.update(cards.map(::SimpleGwentCardItem))
+        cardsPlayedSection.update(
+            cards.mapIndexed { index: Int, card: GwentCard ->
+                val id = card.id.toLongOrNull() ?: card.hashCode().toLong()
+                val unique = id.times(10 * (index + 1))
+                SimpleGwentCardItem(card, unique)
+            }
+        )
     }
 
     override fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float) {
@@ -195,5 +202,18 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
             .setShowTitle(true)
             .build()
             .launchUrl(this, Uri.parse(url))
+    }
+
+    private val touchCallback = object : TouchCallback() {
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val item = adapter.getItem(viewHolder.adapterPosition)
+            cardsPlayedSection.remove(item)
+            (item as? SimpleGwentCardItem)?.let { presenter.onOpponentCardDeleted(item.card.id) }
+        }
     }
 }

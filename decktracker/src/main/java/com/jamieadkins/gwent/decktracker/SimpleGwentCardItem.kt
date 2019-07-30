@@ -6,10 +6,12 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_search_result.*
+import androidx.recyclerview.widget.ItemTouchHelper
 
 data class SimpleGwentCardItem(
-    val card: GwentCard
-): Item(card.id.toLongOrNull() ?: card.id.hashCode().toLong()) {
+    val card: GwentCard,
+    private val listId: Long = card.id.toLongOrNull() ?: card.id.hashCode().toLong()
+): Item(listId) {
 
     override fun getLayout(): Int = R.layout.view_search_result
 
@@ -19,5 +21,9 @@ data class SimpleGwentCardItem(
         viewHolder.name.setTextColor(ContextCompat.getColor(viewHolder.itemView.context, colour))
         viewHolder.tooltip.text = card.tooltip
         viewHolder.provisions.text = card.provisions.toString()
+    }
+
+    override fun getSwipeDirs(): Int {
+        return ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     }
 }
