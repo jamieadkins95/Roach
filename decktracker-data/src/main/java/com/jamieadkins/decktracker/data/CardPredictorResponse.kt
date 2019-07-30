@@ -10,5 +10,6 @@ data class CardPredictorResponse(
 data class SimilarDeckResponse(
     @SerializedName("name") val name: String?,
     @SerializedName("id") val id: String?,
-    @SerializedName("url") val url: String?
+    @SerializedName("url") val url: String?,
+    @SerializedName("votes") val votes: Int?
 )

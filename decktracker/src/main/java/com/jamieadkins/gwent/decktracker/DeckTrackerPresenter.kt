@@ -49,7 +49,10 @@ class DeckTrackerPresenter @Inject constructor(
                         .sortedByDescending { it.percentage }
                         .take(20)
                     view.showPredictions(cards)
-                    view.showSimilarDecks(predictions.similarDecksFound.take(20))
+                    val decks = predictions.similarDecksFound
+                        .sortedByDescending { it.votes }
+                        .take(20)
+                    view.showSimilarDecks(decks)
                 }
             })
             .addToComposite()

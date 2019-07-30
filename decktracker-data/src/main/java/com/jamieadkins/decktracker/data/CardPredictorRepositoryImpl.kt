@@ -29,7 +29,7 @@ class CardPredictorRepositoryImpl @Inject constructor(
                            }
                         } ?: emptyList()
                         val similarDecks = response.similarDecks?.map {
-                            SimilarDeck(it.name ?: "", it.id ?: "", it.url ?: "")
+                            SimilarDeck(it.name ?: "", it.id ?: "", it.url ?: "", it.votes ?: 0)
                         } ?: emptyList()
                         CardPredictions(similarDecks, predictions)
                     }
