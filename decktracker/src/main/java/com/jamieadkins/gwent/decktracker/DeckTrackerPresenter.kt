@@ -33,8 +33,7 @@ class DeckTrackerPresenter @Inject constructor(
         observeDeckTrackerUseCase.observe()
             .subscribeWith(object : BaseDisposableObserver<DeckTrackerAnalysis>() {
                 override fun onNext(analysis: DeckTrackerAnalysis) {
-                    val cardsPlayed = analysis.opponentCardsPlayed.sortedByDescending { it.provisions }
-                    view.showCardsPlayed(cardsPlayed)
+                    view.showCardsPlayed(analysis.opponentCardsPlayed)
                     view.showDeckAnalysis(analysis.opponentProvisionsRemaining, analysis.opponentAverageProvisionsRemaining)
                     view.showLeader(analysis.leader)
                 }
