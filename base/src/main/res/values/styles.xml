@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/gwentGreenDark</item>
         <item name="colorAccent">@color/gwentAccent</item>
         <item name="preferenceTheme">@style/PreferenceFragment.Material</item>
+        <item name="textAppearanceButton">@style/DefaultButtonTextAppearance</item>
     </style>
 
     <style name="Theme.Gwent" parent="Base.Theme.Gwent">
@@ -52,5 +53,10 @@
         <item name="checkedIconVisible">false</item>
         <item name="closeIconVisible">false</item>
         <item name="checkedIcon">@drawable/ic_check</item>
+    </style>
+
+    <style name="DefaultButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/gwent</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 </resources>

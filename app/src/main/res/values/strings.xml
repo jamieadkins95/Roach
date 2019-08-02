@@ -73,4 +73,8 @@
     <string name="deck_tracker_oppo_faction">What faction is your opponent playing?</string>
     <string name="deck_tracker_oppo_leader">What leader is your opponent playing?</string>
 
+    <!-- Card Details -->
+    <string name="card_image">Image</string>
+    <string name="card_info">Info</string>
+
 </resources>
