@@ -45,6 +45,10 @@ class CardDetailsView @JvmOverloads constructor(
             items.add(SubHeaderItem(R.string.tooltip))
             items.add(ElevatedTextItem(card.tooltip))
         }
+        if (card.keywords.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.keywords))
+            items.addAll(card.keywords.map { ElevatedTextItem(it.description) })
+        }
         if (card.flavor.isNotEmpty()) {
             items.add(SubHeaderItem(R.string.flavor))
             items.add(ElevatedTextItem(card.flavor, Typeface.defaultFromStyle(Typeface.ITALIC)))
@@ -61,14 +65,14 @@ class CardDetailsView @JvmOverloads constructor(
             items.add(ElevatedTextItem(card.provisions.toString()))
         }
 
+        if (card.strength > 0) {
+            items.add(SubHeaderItem(R.string.strength))
+            items.add(ElevatedTextItem(card.strength.toString()))
+        }
+
         if (card.colour == GwentCardColour.LEADER) {
             items.add(SubHeaderItem(R.string.extra_provisions))
             items.add(ElevatedTextItem(card.extraProvisions.toString()))
-        }
-
-        if (card.keywords.isNotEmpty()) {
-            items.add(SubHeaderItem(R.string.keywords))
-            items.addAll(card.keywords.map { ElevatedTextItem(it.description) })
         }
 
         if (card.collectible) {
