@@ -10,6 +10,7 @@ data class GwentCard(
     val categories: List<String> = emptyList(),
     val keywords: List<GwentKeyword> = emptyList(),
     val faction: GwentFaction,
+    val secondaryFaction: GwentFaction?,
     val strength: Int = 0,
     val provisions: Int = 0,
     val extraProvisions: Int = 0,

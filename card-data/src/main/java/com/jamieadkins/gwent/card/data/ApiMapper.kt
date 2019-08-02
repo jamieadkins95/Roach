@@ -18,6 +18,7 @@ class ApiMapper @Inject constructor() {
                     it.rarity ?: "",
                     it.type ?: "",
                     it.faction ?: "",
+                    it.secondaryFaction,
                     it.cardType ?: "",
                     if (it.type == Type.LEADER_ID) it.provisionBoost else it.provision,
                     it.mulligans ?: 0,

@@ -42,6 +42,7 @@ class GwentCardMapper @Inject constructor(
                          categories,
                          keywords,
                          factionMapper.map(cardEntity.faction),
+                         cardEntity.secondaryFaction?.let(factionMapper::map),
                          cardEntity.strength,
                          cardEntity.provisions,
                          cardEntity.provisions,

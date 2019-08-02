@@ -9,6 +9,7 @@ public class CardDetails {
     private List<String> categoryIds;
     private List<String> keywords;
     private String faction;
+    private String secondaryFaction;
     private Map<String, String> flavor;
     private Map<String, String> info;
     private String ingameId;
@@ -57,6 +58,10 @@ public class CardDetails {
 
     public String getFaction() {
         return faction;
+    }
+
+    public String getSecondaryFaction() {
+        return secondaryFaction;
     }
 
     public String getIngameId() {
