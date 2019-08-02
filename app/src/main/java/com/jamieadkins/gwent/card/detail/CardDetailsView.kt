@@ -53,6 +53,13 @@ class CardDetailsView @JvmOverloads constructor(
             items.add(SubHeaderItem(R.string.flavor))
             items.add(ElevatedTextItem(card.flavor, Typeface.defaultFromStyle(Typeface.ITALIC)))
         }
+        if (card.secondaryFaction != null) {
+            val factionName = GwentStringHelper.getFactionString(context, card.secondaryFaction)
+            factionName?.let {
+                items.add(SubHeaderItem(R.string.secondary_faction))
+                items.add(ElevatedTextItem(it))
+            }
+        }
         if (card.categories.isNotEmpty()) {
             items.add(SubHeaderItem(R.string.categories))
             items.add(ElevatedTextItem(card.categories.joinToString()))
