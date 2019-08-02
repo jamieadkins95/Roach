@@ -40,16 +40,6 @@ data class GwentCardItem(
     }
 
     private fun setCardArt(view: ImageView, image: String?, faction: GwentFaction) {
-        val cardBack = when (faction) {
-            GwentFaction.NORTHERN_REALMS -> R.drawable.cardback_northern_realms
-            GwentFaction.NILFGAARD -> R.drawable.cardback_nilfgaard
-            GwentFaction.NEUTRAL -> R.drawable.cardback_neutral
-            GwentFaction.SCOIATAEL -> R.drawable.cardback_scoiatel
-            GwentFaction.MONSTER -> R.drawable.cardback_monster
-            GwentFaction.SKELLIGE -> R.drawable.cardback_skellige
-            else -> R.drawable.cardback_neutral
-        }
-
         if (image != null) {
             Glide.with(view.context)
                 .load(image)

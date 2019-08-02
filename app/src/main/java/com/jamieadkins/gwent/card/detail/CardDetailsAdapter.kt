@@ -14,11 +14,19 @@ class CardDetailsAdapter(
     private val relatedCards: List<GwentCard>
 ) : PagerAdapter() {
 
+    private val hasCardArt = card.cardArt.medium != null
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = when (position) {
-            0 -> CardImageView(container.context).apply { setCardImage(card.cardArt.medium, card.faction)}
+            0 -> {
+                if (hasCardArt) {
+                    CardImageView(container.context).apply { setCardImage(card.cardArt.medium)}
+                } else {
+                    CardDetailsView(container.context).apply { showCardDetails(card, relatedCards) }
+                }
+            }
             1 -> CardDetailsView(container.context).apply { showCardDetails(card, relatedCards) }
             else -> throw IllegalArgumentException("Invalid position $position")
         }
@@ -32,11 +40,11 @@ class CardDetailsAdapter(
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
-            0 -> resources.getString(R.string.card_image)
+            0 -> if (hasCardArt) resources.getString(R.string.card_image) else resources.getString(R.string.card_info)
             1 -> resources.getString(R.string.card_info)
             else -> throw IllegalArgumentException("Invalid position $position")
         }
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = if (card.cardArt.medium != null) 2 else 1
 }

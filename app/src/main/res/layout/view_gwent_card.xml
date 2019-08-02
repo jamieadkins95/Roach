@@ -19,8 +19,7 @@
             app:layout_constraintDimensionRatio="2186:2924"
             app:layout_constraintEnd_toStartOf="@id/center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/cardback_nilfgaard" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/layout_info"
