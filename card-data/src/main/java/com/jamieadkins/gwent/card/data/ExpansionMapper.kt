@@ -16,7 +16,7 @@ class ExpansionMapper @Inject constructor() {
             Expansion.THRONEBREAKER_ID -> GwentExpansion.Thronebreaker
             Expansion.CRIMSONCURSE_ID -> GwentExpansion.CrimsonCurse
             Expansion.NOVIGRAD_ID -> GwentExpansion.Novigrad
-            else -> throw Exception("Expansion not found")
+            else -> GwentExpansion.Base
         }
     }
 }

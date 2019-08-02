@@ -4,6 +4,7 @@ import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
+import com.jamieadkins.gwent.domain.card.model.GwentExpansion
 import com.jamieadkins.gwent.domain.card.model.SortedBy
 import com.jamieadkins.gwent.domain.deck.repository.DeckRepository
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
@@ -80,6 +81,13 @@ class FilterRepositoryImpl @Inject constructor(
                 GwentCardType.Spell to true,
                 GwentCardType.Artifact to true
             ),
+            mapOf(
+                GwentExpansion.Base to true,
+                GwentExpansion.Unmillable to true,
+                GwentExpansion.Thronebreaker to true,
+                GwentExpansion.CrimsonCurse to true,
+                GwentExpansion.Novigrad to true
+            ),
             0,
             20,
             true,
@@ -90,13 +98,28 @@ class FilterRepositoryImpl @Inject constructor(
         GwentCardRarity.values().map { it to true }.toMap(),
         GwentCardColour.values().map { it to true }.toMap(),
         GwentFaction.values().map { it to true }.toMap(),
-        mapOf(
+        getDefaultTypeFilter(), getDefaultExpansionFilter(), 0,
+        20, false,
+        SortedBy.ALPHABETICALLY_ASC)
+
+    private fun getDefaultExpansionFilter(): Map<GwentExpansion, Boolean> {
+        return mapOf(
+            GwentExpansion.Base to true,
+            GwentExpansion.Unmillable to true,
+            GwentExpansion.Token to true,
+            GwentExpansion.Thronebreaker to true,
+            GwentExpansion.CrimsonCurse to true,
+            GwentExpansion.Novigrad to true
+        )
+    }
+
+    private fun getDefaultTypeFilter(): Map<GwentCardType, Boolean> {
+        return mapOf(
             GwentCardType.Unit to true,
             GwentCardType.Spell to true,
             GwentCardType.Artifact to true,
             GwentCardType.Strategem to true,
             GwentCardType.Leader to true
-        ), 0,
-        20, false,
-        SortedBy.ALPHABETICALLY_ASC)
+        )
+    }
 }

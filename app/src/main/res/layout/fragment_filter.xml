@@ -241,6 +241,73 @@
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
+            android:id="@+id/subheader_expansion"
+            android:text="@string/expansion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/group_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Expansion -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/group_expansion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/subheader_expansion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_base"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/base_set" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_unmillable"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unmillable_set" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_token"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/token_set" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_thronebreaker"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thronebreaker" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_crimson_curse"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crimson_curse" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_novigrad"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/novigrad" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
             android:id="@+id/subheader_provisions"
             android:text="@string/provisions"
             android:layout_width="0dp"
@@ -249,7 +316,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:textColor="@color/text_secondary"
-            app:layout_constraintTop_toBottomOf="@id/group_type"
+            app:layout_constraintTop_toBottomOf="@id/group_expansion"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

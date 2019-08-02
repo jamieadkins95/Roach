@@ -55,6 +55,13 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_type_spell.setOnCheckedChangeListener { _, checked -> presenter.onTypeSpellChanged(checked) }
         filter_type_leader.setOnCheckedChangeListener { _, checked -> presenter.onTypeLeaderChanged(checked) }
 
+        filter_expansion_base.setOnCheckedChangeListener { _, checked -> presenter.onBaseSetChanged(checked) }
+        filter_expansion_unmillable.setOnCheckedChangeListener { _, checked -> presenter.onUnmillableSetChanged(checked) }
+        filter_expansion_token.setOnCheckedChangeListener { _, checked -> presenter.onTokenSetChanged(checked) }
+        filter_expansion_thronebreaker.setOnCheckedChangeListener { _, checked -> presenter.onThronebreakerSetChanged(checked) }
+        filter_expansion_crimson_curse.setOnCheckedChangeListener { _, checked -> presenter.onCrimsonCurseSetChanged(checked) }
+        filter_expansion_novigrad.setOnCheckedChangeListener { _, checked -> presenter.onNovigradSetChanged(checked) }
+
         inputMin.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) { /* Do nothing. */ }
 
@@ -120,6 +127,18 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setUnitFilter(checked: Boolean) { filter_type_unit.isChecked = checked }
 
     override fun setTypeLeaderFilter(checked: Boolean) { filter_type_leader.isChecked = checked }
+
+    override fun setBaseSetFilter(checked: Boolean) { filter_expansion_base.isChecked = checked }
+
+    override fun setUnmillableSetFilter(checked: Boolean) { filter_expansion_unmillable.isChecked = checked }
+
+    override fun setTokenSetFilter(checked: Boolean) { filter_expansion_token.isChecked = checked }
+
+    override fun setThronebreakerSetFilter(checked: Boolean) { filter_expansion_thronebreaker.isChecked = checked }
+
+    override fun setCrimsonCurseSetFilter(checked: Boolean) { filter_expansion_crimson_curse.isChecked = checked }
+
+    override fun setNovigradSetFilter(checked: Boolean) { filter_expansion_novigrad.isChecked = checked }
 
     override fun close() = dismiss()
 

@@ -11,6 +11,7 @@ import com.jamieadkins.gwent.domain.filter.ResetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.base.BasePresenter
+import com.jamieadkins.gwent.domain.card.model.GwentExpansion
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -41,6 +42,13 @@ class FilterPresenter @Inject constructor(
     var unit = false
     var spell = false
     var artifact = false
+
+    var baseSet = false
+    var tokenSet = false
+    var unmillableSet = false
+    var thronebreaker = false
+    var crimsonCurse = false
+    var novigrad = false
 
     var minProvisions = 0
     var maxProvisions = 100
@@ -109,6 +117,24 @@ class FilterPresenter @Inject constructor(
 
                     artifact = filter.typeFilter[GwentCardType.Artifact] ?: false
                     view.setArtifactFilter(artifact)
+
+                    baseSet = filter.expansionFilter[GwentExpansion.Base] ?: false
+                    view.setBaseSetFilter(baseSet)
+
+                    unmillableSet = filter.expansionFilter[GwentExpansion.Unmillable] ?: false
+                    view.setUnmillableSetFilter(unmillableSet)
+
+                    tokenSet = filter.expansionFilter[GwentExpansion.Token] ?: false
+                    view.setTokenSetFilter(tokenSet)
+
+                    thronebreaker = filter.expansionFilter[GwentExpansion.Thronebreaker] ?: false
+                    view.setThronebreakerSetFilter(thronebreaker)
+
+                    crimsonCurse = filter.expansionFilter[GwentExpansion.CrimsonCurse] ?: false
+                    view.setCrimsonCurseSetFilter(crimsonCurse)
+
+                    novigrad = filter.expansionFilter[GwentExpansion.Novigrad] ?: false
+                    view.setNovigradSetFilter(novigrad)
                 }
             })
             .addToComposite()
@@ -166,11 +192,21 @@ class FilterPresenter @Inject constructor(
                         GwentCardType.Leader to leader
                     )
 
+                    val expansions = mapOf(
+                        GwentExpansion.Base to baseSet,
+                        GwentExpansion.Token to tokenSet,
+                        GwentExpansion.Unmillable to unmillableSet,
+                        GwentExpansion.Thronebreaker to thronebreaker,
+                        GwentExpansion.CrimsonCurse to crimsonCurse,
+                        GwentExpansion.Novigrad to novigrad
+                    )
+
                     val newFilter = CardFilter(
                         rarities,
                         colours,
                         factions,
                         types,
+                        expansions,
                         minProvisions,
                         maxProvisions,
                         filter.isCollectibleOnly,
@@ -223,6 +259,18 @@ class FilterPresenter @Inject constructor(
     override fun onTypeArtifactChanged(checked: Boolean) { artifact = checked }
 
     override fun onTypeSpellChanged(checked: Boolean) { spell = checked }
+
+    override fun onBaseSetChanged(checked: Boolean) { baseSet = checked }
+
+    override fun onTokenSetChanged(checked: Boolean) { tokenSet = checked }
+
+    override fun onUnmillableSetChanged(checked: Boolean) { unmillableSet = checked }
+
+    override fun onThronebreakerSetChanged(checked: Boolean) { thronebreaker = checked }
+
+    override fun onCrimsonCurseSetChanged(checked: Boolean) { crimsonCurse = checked }
+
+    override fun onNovigradSetChanged(checked: Boolean) { novigrad = checked }
 
     override fun onTypeLeaderChanged(checked: Boolean) {
         leader = checked
