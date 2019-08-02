@@ -19,6 +19,7 @@ class ApiMapper @Inject constructor() {
                     it.type ?: "",
                     it.faction ?: "",
                     it.secondaryFaction,
+                    variation?.availability ?: "BaseSet",
                     it.cardType ?: "",
                     if (it.type == Type.LEADER_ID) it.provisionBoost else it.provision,
                     it.mulligans ?: 0,

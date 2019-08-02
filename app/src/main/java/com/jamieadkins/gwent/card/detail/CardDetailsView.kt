@@ -82,6 +82,9 @@ class CardDetailsView @JvmOverloads constructor(
             items.add(ElevatedTextItem(card.extraProvisions.toString()))
         }
 
+        items.add(SubHeaderItem(R.string.expansion))
+        items.add(ElevatedTextItem(GwentStringHelper.getExpansion(context.resources, card.expansion)))
+
         if (card.collectible) {
             items.add(SubHeaderItem(R.string.craft))
             items.add(CraftCostItem(card.craftCost))

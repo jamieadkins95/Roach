@@ -8,6 +8,7 @@ import com.jamieadkins.gwent.domain.card.model.GwentCardColour
 import com.jamieadkins.gwent.domain.card.model.GwentCardLoyalty
 import com.jamieadkins.gwent.domain.card.model.GwentCardRarity
 import com.jamieadkins.gwent.domain.card.model.GwentCardType
+import com.jamieadkins.gwent.domain.card.model.GwentExpansion
 
 object GwentStringHelper {
 
@@ -50,6 +51,17 @@ object GwentStringHelper {
             GwentCardType.Spell -> resources.getString(R.string.spell)
             GwentCardType.Strategem -> resources.getString(R.string.strategem)
             GwentCardType.Leader -> resources.getString(R.string.leader)
+        }
+    }
+
+    fun getExpansion(resources: Resources, type: GwentExpansion): String {
+        return when(type) {
+            GwentExpansion.Base-> resources.getString(R.string.base_set)
+            GwentExpansion.Unmillable -> resources.getString(R.string.unmillable_set)
+            GwentExpansion.Token -> resources.getString(R.string.token_set)
+            GwentExpansion.Thronebreaker -> resources.getString(R.string.thronebreaker)
+            GwentExpansion.CrimsonCurse -> resources.getString(R.string.crimson_curse)
+            GwentExpansion.Novigrad -> resources.getString(R.string.novigrad)
         }
     }
 }

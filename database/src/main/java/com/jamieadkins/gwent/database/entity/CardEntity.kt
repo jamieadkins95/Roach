@@ -13,6 +13,7 @@ data class CardEntity(
         val color: String,
         val faction: String,
         val secondaryFaction: String?,
+        val expansion: String,
         val type: String,
         val provisions: Int = 0,
         val mulligans: Int = 0,
@@ -24,4 +25,5 @@ data class CardEntity(
         val categoryIds: List<String>,
         val keywordIds: List<String>,
         val loyalties: List<String>,
-        val related: List<String>)
+        val related: List<String>
+)

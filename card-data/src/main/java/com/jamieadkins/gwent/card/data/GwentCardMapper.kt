@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 class GwentCardMapper @Inject constructor(
     private val artMapper: GwentCardArtMapper,
-    private val factionMapper: FactionMapper
+    private val factionMapper: FactionMapper,
+    private val expansionMapper: ExpansionMapper
 ) {
 
     fun map(from: CardWithArtEntity, locale: String, allKeywords: List<KeywordEntity>, allCategories: List<CategoryEntity>): GwentCard {
@@ -43,6 +44,7 @@ class GwentCardMapper @Inject constructor(
                          keywords,
                          factionMapper.map(cardEntity.faction),
                          cardEntity.secondaryFaction?.let(factionMapper::map),
+                         expansionMapper.map(cardEntity.expansion),
                          cardEntity.strength,
                          cardEntity.provisions,
                          cardEntity.provisions,

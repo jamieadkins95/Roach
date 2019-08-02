@@ -21,4 +21,12 @@
     <string name="spell">Spell</string>
     <string name="strategem">Strategem</string>
     <string name="artifact">Artifact</string>
+
+    <!-- Expansions -->
+    <string name="base_set">Base Set</string>
+    <string name="unmillable_set">Unmillable</string>
+    <string name="token_set">Token</string>
+    <string name="thronebreaker">Thronebreaker</string>
+    <string name="crimson_curse">Crimson Curse</string>
+    <string name="novigrad">Novigrad</string>
 </resources>
