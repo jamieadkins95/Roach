@@ -6,7 +6,7 @@ object Versions {
     const val app_version_code = 57
     const val app_version_name = "3.2.3"
 
-    const val gradle_plugin = "3.5.0-rc01"
+    const val gradle_plugin = "3.5.0-rc02"
     const val google_services_plugin = "4.1.0"
     const val kotlin = "1.3.41"
     const val dagger = "2.24"
