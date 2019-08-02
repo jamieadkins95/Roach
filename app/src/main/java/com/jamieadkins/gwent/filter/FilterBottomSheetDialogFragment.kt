@@ -164,6 +164,10 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_color_leader.visibility = View.GONE
     }
 
+    override fun hideTokenFilterForDeckBuilder() {
+        filter_expansion_token.visibility = View.GONE
+    }
+
     companion object {
 
         private const val KEY_DECK_ID = "KEY_DECK_ID"

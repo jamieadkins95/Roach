@@ -140,6 +140,7 @@ class FilterPresenter @Inject constructor(
             .addToComposite()
 
         if (!deckId.isEmpty()) {
+            view.hideTokenFilterForDeckBuilder()
             getDeckUseCase.get(deckId)
                 .firstOrError()
                 .map { it.faction }

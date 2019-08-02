@@ -41,6 +41,7 @@ interface FilterContract {
         fun setNovigradSetFilter(checked: Boolean)
 
         fun showFiltersForDeckBuilder(faction: GwentFaction)
+        fun hideTokenFilterForDeckBuilder()
     }
 
     interface Presenter : MvpPresenter {
