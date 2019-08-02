@@ -28,7 +28,7 @@ class FilterCardsUseCase @Inject constructor(
 
     private fun doesCardMeetFilter(card: GwentCard, filter: CardFilter): Boolean {
         val include = !filter.isCollectibleOnly || card.collectible
-        val faction = filter.factionFilter[card.faction] ?: false
+        val faction = filter.factionFilter[card.faction] ?: false || filter.factionFilter[card.secondaryFaction] ?: false
         val rarity = filter.rarityFilter[card.rarity] ?: false
         val colour = filter.colourFilter[card.colour] ?: false
         val type = filter.typeFilter[card.type] ?: false
