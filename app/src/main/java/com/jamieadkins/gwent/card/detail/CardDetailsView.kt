@@ -66,6 +66,11 @@ class CardDetailsView @JvmOverloads constructor(
             items.add(ElevatedTextItem(card.extraProvisions.toString()))
         }
 
+        if (card.keywords.isNotEmpty()) {
+            items.add(SubHeaderItem(R.string.keywords))
+            items.addAll(card.keywords.map { ElevatedTextItem(it.description) })
+        }
+
         if (card.collectible) {
             items.add(SubHeaderItem(R.string.craft))
             items.add(CraftCostItem(card.craftCost))
