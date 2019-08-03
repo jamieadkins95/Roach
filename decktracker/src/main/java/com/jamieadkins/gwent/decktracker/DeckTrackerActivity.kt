@@ -1,11 +1,13 @@
 package com.jamieadkins.gwent.decktracker
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -149,6 +151,18 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
             R.id.action_gwent_deck_library -> { openGwentDeckLibrary(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.exit_title)
+            .setMessage(R.string.exit_warning)
+            .setPositiveButton(R.string.exit) { _, _ ->
+                super.onBackPressed()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .create()
+            .show()
     }
 
     override fun showCardsPlayed(cards: List<GwentCard>) {

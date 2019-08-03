@@ -13,9 +13,13 @@
     <string name="what_card">What card did your opponent play?</string>
     <string name="card_search_example">Card Name</string>
     <string name="search">Search</string>
-    <string name="beta_notice">Card Predictions is a beta feature. See something odd? Let us know!</string>
+    <string name="beta_notice">Deck Tracker is a beta feature. Got some feedback? Let us know!</string>
     <string name="not_many_decks_warning">Roach has not seen many decks with this leader. Card predictions may be inaccurate/unavailable. You will see this more often after a new patch as old decks are invalidated.</string>
     <string name="feedback">Feedback</string>
     <string name="gwent_deck_library">Gwent Deck Library</string>
     <string name="no_predictions">Roach couldn\'t find any similar decks on Gwent Deck Library. Try adding some more cards.\n\nOtherwise your opponent might be playing something new and original!</string>
+    <string name="exit_title">Finished with this game?</string>
+    <string name="exit_warning">You will not be able to return to this game once you exit</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
 </resources>
