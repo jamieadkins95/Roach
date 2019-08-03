@@ -34,7 +34,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintStart_toEndOf="@id/start"
-        app:layout_constraintEnd_toStartOf="@id/provisionCost"
+        app:layout_constraintEnd_toStartOf="@id/deckProvisionCost"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
