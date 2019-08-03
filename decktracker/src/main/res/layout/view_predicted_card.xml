@@ -52,14 +52,14 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
-            android:lines="1"
+            android:maxLines="2"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/prediction"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name"
-            tools:text="Look at 3 Bronze units from your opponent's deck. Consume 1, then boost self by its base power." />
+            tools:text="Look at 3 Bronze units from your opponent's deck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
