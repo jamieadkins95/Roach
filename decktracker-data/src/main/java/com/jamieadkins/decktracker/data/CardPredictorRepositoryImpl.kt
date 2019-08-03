@@ -23,6 +23,7 @@ class CardPredictorRepositoryImpl @Inject constructor(
                 cardRepository.getCards(response.probabilities?.keys?.map { it.toString() } ?: emptyList())
                     .firstElement()
                     .map { cards ->
+                        val notEnoughDecks = (response.deckCountForLeader ?: 0) < MIN_DECK_COUNT_FOR_LEADER
                         val predictions = response.probabilities?.entries?.mapNotNull { entry ->
                            cards.find { it.id == entry.key.toString() }?.let { card ->
                                CardPrediction(card, (entry.value * 100).toInt())
@@ -31,12 +32,12 @@ class CardPredictorRepositoryImpl @Inject constructor(
                         val similarDecks = response.similarDecks?.map {
                             SimilarDeck(it.name ?: "", it.id ?: "", it.url ?: "", it.votes ?: 0)
                         } ?: emptyList()
-                        CardPredictions(similarDecks, predictions)
+                        CardPredictions(notEnoughDecks, similarDecks, predictions)
                     }
             }
             .onErrorReturn {
                 Timber.e(it)
-                CardPredictions(emptyList(), emptyList())
+                CardPredictions(false, emptyList(), emptyList())
             }
     }
 
@@ -62,5 +63,9 @@ class CardPredictorRepositoryImpl @Inject constructor(
             "syndicate" -> GwentFaction.SYNDICATE
             else -> throw IllegalArgumentException("Unrecognised faction $faction")
         }
+    }
+
+    private companion object {
+        private const val MIN_DECK_COUNT_FOR_LEADER = 15
     }
 }

@@ -19,6 +19,7 @@ import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.base.items.HeaderItem
+import com.jamieadkins.gwent.base.items.NoticeItem
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.domain.card.screen.CardDatabaseScreenModel
@@ -154,7 +155,7 @@ class CardDatabaseFragment :
         }
 
         adapter.update(
-            data.notices.map { NoticeItem(it) } +
+            data.notices.map { NoticeItem(it.title) } +
             searchResults +
             data.cards.map { GwentCardItem(it) }
         )

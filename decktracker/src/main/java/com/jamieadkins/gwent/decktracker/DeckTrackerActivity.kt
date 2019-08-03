@@ -30,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_deck_tracker.*
 import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.jamieadkins.gwent.base.items.NoticeItem
+import com.jamieadkins.gwent.base.items.SpaceItem
 import com.xwray.groupie.TouchCallback
 
 class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
@@ -61,12 +63,14 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         setHeader(H2HeaderItem(R.string.similar_decks_title, R.string.similar_decks_subtitle))
         setHideWhenEmpty(true)
     }
+    private val spaceSection = Section().apply { update(listOf(SpaceItem())) }
 
     init {
         adapter.add(cardsPlayedSection)
         adapter.add(remainingSection)
         adapter.add(predictionsSection)
         adapter.add(similarDecksSection)
+        adapter.add(spaceSection)
     }
 
     override fun onInject() {
@@ -161,12 +165,14 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
         remainingSection.update(listOf(DeckAnalysisItem(opponentProvisionsRemaining, opponentAverageProvisionsRemaining)))
     }
 
-    override fun showPredictions(cardPredictions: List<CardPrediction>) {
-        if (cardPredictions.isNotEmpty()) {
-            predictionsSection.update(cardPredictions.map { PredictedCardItem(it.card, it.percentage) })
+    override fun showPredictions(cardPredictions: List<CardPrediction>, showPatchWarning: Boolean) {
+        val items = if (showPatchWarning) listOf(NoticeItem(getString(R.string.not_many_decks_warning))) else emptyList()
+        val predictions = if (cardPredictions.isNotEmpty()) {
+            cardPredictions.map { PredictedCardItem(it.card, it.percentage) }
         } else {
-            predictionsSection.update(listOf(NoPredictionsItem()))
+            listOf(NoPredictionsItem())
         }
+        predictionsSection.update(items + predictions)
     }
 
     override fun showSimilarDecks(similar: List<SimilarDeck>) {

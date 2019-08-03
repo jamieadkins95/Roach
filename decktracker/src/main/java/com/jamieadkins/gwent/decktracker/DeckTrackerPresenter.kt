@@ -47,7 +47,7 @@ class DeckTrackerPresenter @Inject constructor(
                         .filter { it.card.type != GwentCardType.Leader }
                         .sortedByDescending { it.percentage }
                         .take(20)
-                    view.showPredictions(cards)
+                    view.showPredictions(cards, predictions.showNewPatchWarning)
                     val decks = predictions.similarDecksFound
                         .sortedByDescending { it.votes }
                         .take(20)

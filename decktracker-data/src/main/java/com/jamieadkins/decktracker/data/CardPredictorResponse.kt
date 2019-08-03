@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CardPredictorResponse(
     @SerializedName("similarDecks") val similarDecks: List<SimilarDeckResponse>?,
+    @SerializedName("deckCount") val deckCountForLeader: Int?,
     @SerializedName("probabilities") val probabilities: Map<Long, Float>?
 )
 

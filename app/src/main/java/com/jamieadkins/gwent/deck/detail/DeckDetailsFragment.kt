@@ -27,6 +27,7 @@ import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.base.FeatureNavigator
+import com.jamieadkins.gwent.base.items.SpaceItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

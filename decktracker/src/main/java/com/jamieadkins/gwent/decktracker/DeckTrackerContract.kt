@@ -20,7 +20,7 @@ interface DeckTrackerContract {
 
         fun showDeckAnalysis(opponentProvisionsRemaining: Int, opponentAverageProvisionsRemaining: Float)
 
-        fun showPredictions(cardPredictions: List<CardPrediction>)
+        fun showPredictions(cardPredictions: List<CardPrediction>, showPatchWarning: Boolean)
 
         fun showSimilarDecks(similar: List<SimilarDeck>)
 

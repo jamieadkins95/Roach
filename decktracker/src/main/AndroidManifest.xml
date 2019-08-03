@@ -5,7 +5,8 @@
 
         <activity
             android:name=".DeckTrackerActivity"
-            android:theme="@style/Theme.Gwent.NoActionBar" />
+            android:theme="@style/Theme.Gwent.NoActionBar"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
