@@ -22,8 +22,8 @@ class AddCardToDeckTrackerUseCase @Inject constructor(
             BiFunction { cards: List<GwentCard>, newCard: GwentCard ->
                 val ids = cards.map { it.id }
                 when (newCard.colour) {
-                    GwentCardColour.GOLD -> ids.count { it == newCard.id } < BRONZE_MAX
-                    GwentCardColour.BRONZE -> ids.count { it == newCard.id } < GOLD_MAX
+                    GwentCardColour.GOLD -> ids.count { it == newCard.id } < GOLD_MAX
+                    GwentCardColour.BRONZE -> ids.count { it == newCard.id } < BRONZE_MAX
                     else -> false
                 }
             }
