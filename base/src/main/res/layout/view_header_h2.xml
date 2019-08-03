@@ -8,15 +8,8 @@
     android:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/header_primary_text"
         android:textSize="16sp"
@@ -24,17 +17,23 @@
         tools:text="Opponent Cards Played"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@id/start"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/header_secondary_text"
-        tools:text="(Long press to remove cards)"
+        tools:text="(Long press to remove cards) Here is some more text that goes onto 2 lines"
         android:textColor="@color/text_hint"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/start"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_primary_text"
         android:layout_marginBottom="4dp" />

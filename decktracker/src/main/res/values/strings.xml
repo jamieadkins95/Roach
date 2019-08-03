@@ -19,7 +19,7 @@
     <string name="gwent_deck_library">Gwent Deck Library</string>
     <string name="no_predictions">Roach couldn\'t find any similar decks on Gwent Deck Library. Try adding some more cards.\n\nOtherwise your opponent might be playing something new and original!</string>
     <string name="exit_title">Finished with this game?</string>
-    <string name="exit_warning">You will not be able to return to this game once you exit</string>
+    <string name="exit_warning">You will not be able to return to this game after you exit</string>
     <string name="exit">Exit</string>
     <string name="cancel">Cancel</string>
 </resources>
