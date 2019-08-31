@@ -63,10 +63,13 @@ class CategoryUpdateRepository @Inject constructor(
     }
 
     private fun updateCategoriesDatabase(result: FirebaseCategoryResult): Completable {
-        return Completable.fromCallable {
-            val categories = GwentCategoryMapper.mapToCategoryEntityList(result)
-            database.categoryDao().insert(categories)
-        }
+        return database.categoryDao().clear()
+            .andThen(
+                Completable.fromCallable {
+                    val categories = GwentCategoryMapper.mapToCategoryEntityList(result)
+                    database.categoryDao().insert(categories)
+                }
+            )
     }
 
     private fun updateLastUpdated(): Completable {

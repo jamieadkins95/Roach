@@ -27,4 +27,7 @@ interface CategoryDao {
 
     @Query("SELECT * FROM ${GwentDatabase.CATEGORY_TABLE}")
     fun getAllCategories(): Flowable<List<CategoryEntity>>
+
+    @Query("DELETE FROM ${GwentDatabase.CATEGORY_TABLE}")
+    fun clear(): Completable
 }

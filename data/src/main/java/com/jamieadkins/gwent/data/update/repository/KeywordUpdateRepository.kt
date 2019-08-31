@@ -62,10 +62,13 @@ class KeywordUpdateRepository @Inject constructor(
     }
 
     private fun updateKeywordDatabase(result: FirebaseKeywordResult): Completable {
-        return Completable.fromCallable {
-            val keywords = GwentKeywordMapper.mapToKeywordEntityList(result)
-            database.keywordDao().insert(keywords)
-        }
+        return database.keywordDao().clear()
+            .andThen(
+                Completable.fromCallable {
+                    val keywords = GwentKeywordMapper.mapToKeywordEntityList(result)
+                    database.keywordDao().insert(keywords)
+                }
+            )
     }
 
     private fun updateLastUpdated(): Completable {

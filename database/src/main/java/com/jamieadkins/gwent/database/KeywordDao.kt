@@ -27,4 +27,7 @@ interface KeywordDao {
 
     @Query("SELECT * FROM ${GwentDatabase.KEYWORD_TABLE}")
     fun getAllKeywords(): Flowable<List<KeywordEntity>>
+
+    @Query("DELETE FROM ${GwentDatabase.KEYWORD_TABLE}")
+    fun clear(): Completable
 }
