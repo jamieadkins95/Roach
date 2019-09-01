@@ -1,17 +1,14 @@
-package com.jamieadkins.gwent.deck.detail
+package com.jamieadkins.gwent.deckbuilder
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
-import com.jamieadkins.gwent.di.DaggerAppComponent
+import com.jamieadkins.gwent.deckbuilder.di.DaggerDeckBuilderComponent
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
 
 class DeckDetailsActivity : DaggerAndroidActivity() {
 
     override fun onInject() {
-        DaggerAppComponent.builder()
+        DaggerDeckBuilderComponent.builder()
             .core(coreComponent)
             .build()
             .inject(this)
@@ -21,10 +18,10 @@ class DeckDetailsActivity : DaggerAndroidActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        setContentView(R.layout.activity_deck_detail)
 
         deckId = savedInstanceState?.getString(DeckDetailsFragment.KEY_ID)
-                ?: intent?.getStringExtra(DeckDetailsFragment.KEY_ID)
+                ?: intent?.data?.getQueryParameter("deckId")
                 ?: throw Exception("Deck ID not found")
 
         if (savedInstanceState == null) {
@@ -42,15 +39,6 @@ class DeckDetailsActivity : DaggerAndroidActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(DeckDetailsFragment.KEY_ID, deckId)
         super.onSaveInstanceState(outState)
-    }
-
-    companion object {
-
-        fun getIntent(context: Context, deckId: String): Intent {
-            val intent = Intent(context, DeckDetailsActivity::class.java)
-            intent.putExtra(DeckDetailsFragment.KEY_ID, deckId)
-            return intent
-        }
     }
 
 }

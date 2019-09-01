@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail.rename
+package com.jamieadkins.gwent.deckbuilder.rename
 
 import com.jamieadkins.gwent.di.FragmentScoped
 import dagger.Binds

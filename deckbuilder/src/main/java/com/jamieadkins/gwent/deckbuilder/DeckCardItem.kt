@@ -1,7 +1,6 @@
-package com.jamieadkins.gwent.deck.detail
+package com.jamieadkins.gwent.deckbuilder
 
 import android.view.View
-import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

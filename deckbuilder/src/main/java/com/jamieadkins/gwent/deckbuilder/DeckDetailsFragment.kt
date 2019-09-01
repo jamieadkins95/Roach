@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail
+package com.jamieadkins.gwent.deckbuilder
 
 import android.os.Build
 import android.os.Bundle
@@ -13,26 +13,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.HeaderItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.DeckBuilderEvent
 import com.jamieadkins.gwent.deck.DeckBuilderEvents
-import com.jamieadkins.gwent.deck.detail.leader.LeaderPickerDialog
-import com.jamieadkins.gwent.deck.detail.rename.RenameDeckDialog
+import com.jamieadkins.gwent.deckbuilder.leader.LeaderPickerDialog
+import com.jamieadkins.gwent.deckbuilder.rename.RenameDeckDialog
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.jamieadkins.gwent.filter.FilterBottomSheetDialogFragment
 import com.jamieadkins.gwent.base.CardResourceHelper
 import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.base.items.SpaceItem
+import com.jamieadkins.gwent.R as BaseR
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_deck_details.*
 import javax.inject.Inject
 
@@ -60,11 +59,11 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(toolbar)
         }
-        toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
+        toolbar.setTitleTextAppearance(requireContext(), BaseR.style.GwentTextAppearance)
 
         val cardDatabaseLayoutManager = LinearLayoutManager(cardDatabase.context)
         cardDatabase.layoutManager = cardDatabaseLayoutManager
-        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
+        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(BaseR.dimen.divider_spacing))
         cardDatabase.addItemDecoration(dividerItemDecoration)
         cardDatabase.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -113,7 +112,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
             true
         }
 
-        refreshLayout.setColorSchemeResources(R.color.gwentAccent)
+        refreshLayout.setColorSchemeResources(BaseR.color.gwentAccent)
 
         presenter.setDeckId(deckId)
         presenter.onAttach()
@@ -126,8 +125,8 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.search, menu)
-        val searchMenuItem = menu?.findItem(R.id.action_search)
+        inflater?.inflate(BaseR.menu.search, menu)
+        val searchMenuItem = menu?.findItem(BaseR.id.action_search)
         val searchView = searchMenuItem?.actionView as? SearchView
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -162,7 +161,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
                 presenter.onDeleteClicked()
                 true
             }
-            R.id.action_filter -> {
+            BaseR.id.action_filter -> {
                 val dialog = FilterBottomSheetDialogFragment.getInstance(deckId)
                 dialog.show(activity?.supportFragmentManager, dialog.javaClass.simpleName)
                 true
@@ -178,7 +177,7 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         val searchResults: List<Item> = if (searchQuery.isNotEmpty()) {
             listOf(
                 HeaderItem(
-                    R.string.search_results, resources.getString(R.string.results_found, cards.size, searchQuery)
+                    BaseR.string.search_results, resources.getString(BaseR.string.results_found, cards.size, searchQuery)
                 )
             )
         } else {
@@ -198,10 +197,12 @@ class DeckDetailsFragment : DaggerFragment(), DeckDetailsContract.View {
         val cards = deck.cards.values.sortedWith(compareByDescending<GwentCard> { it.provisions }.thenBy { it.name })
         deckAdapter.update(
             listOf(
-                DeckHeaderItem(deck.id, deck.name, deck.totalCardCount, deck.unitCount, deck.provisionCost, deck.maxProvisionCost),
-                SubHeaderItem(R.string.leader),
+                DeckHeaderItem(
+                    deck.id, deck.name, deck.totalCardCount, deck.unitCount, deck.provisionCost, deck.maxProvisionCost
+                ),
+                SubHeaderItem(BaseR.string.leader),
                 DeckLeaderItem(deck.leader),
-                SubHeaderItem(R.string.cards)
+                SubHeaderItem(BaseR.string.cards)
             ) +
             cards.map { DeckCardItem(it, deck.cardCounts[it.id] ?: 0) }
         )

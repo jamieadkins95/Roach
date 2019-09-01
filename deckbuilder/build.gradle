@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion Versions.compile_sdk
     defaultConfig {
@@ -34,5 +38,18 @@ android {
 }
 
 dependencies {
+    implementation Libs.kotlin
     implementation project(':app')
+    implementation project(':base')
+    implementation Libs.appcompat
+    implementation Libs.material
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation Libs.constraint_layout
+    implementation Libs.groupie
+    implementation Libs.groupie_extensions
+
+    implementation Libs.dagger
+    implementation Libs.dagger_support
+    kapt Libs.dagger_compiler
+    kapt Libs.dagger_processor
 }

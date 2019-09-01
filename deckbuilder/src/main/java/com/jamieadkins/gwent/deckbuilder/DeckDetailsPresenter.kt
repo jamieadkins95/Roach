@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail
+package com.jamieadkins.gwent.deckbuilder
 
 import com.jamieadkins.gwent.base.BaseCompletableObserver
 import com.jamieadkins.gwent.base.BaseDisposableObserver

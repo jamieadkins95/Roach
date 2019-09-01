@@ -91,7 +91,7 @@ dependencies {
     implementation Libs.kotlin
 
     implementation project(':database')
-    implementation project(':data')
+    api project(':data')
     implementation project(':base')
     implementation project(':decktracker')
 

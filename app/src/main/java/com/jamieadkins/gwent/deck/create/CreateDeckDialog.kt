@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
-import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.domain.GwentFaction
 import kotlinx.android.synthetic.main.fragment_create_deck.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class CreateDeckDialog : DaggerSupportDialogFragment(), CreateDeckContract.View {
@@ -44,7 +43,7 @@ class CreateDeckDialog : DaggerSupportDialogFragment(), CreateDeckContract.View 
     }
 
     override fun showDeckDetails(deckId: String) {
-        startActivity(DeckDetailsActivity.getIntent(requireContext(), deckId))
+        activity?.let(::FeatureNavigator)?.openDeckBuilder(deckId)
     }
 
     override fun close() {

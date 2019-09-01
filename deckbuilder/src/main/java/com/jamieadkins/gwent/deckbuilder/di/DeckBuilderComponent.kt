@@ -1,39 +1,37 @@
-package com.jamieadkins.gwent.di
+package com.jamieadkins.gwent.deckbuilder.di
 
 import com.jamieadkins.gwent.base.CoreComponent
 import com.jamieadkins.gwent.card.data.CardDataModule
-import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.data.DataModule
 import com.jamieadkins.gwent.data.deck.DeckDataModule
-import com.jamieadkins.gwent.data.update.UpdateDataModule
-import com.jamieadkins.gwent.main.MainActivity
+import com.jamieadkins.gwent.deckbuilder.DeckDetailsActivity
+import com.jamieadkins.gwent.di.ActivityScoped
+import com.jamieadkins.gwent.di.FilterDataModule
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
-        FragmentInjectionModule::class,
-        AppModule::class,
+        DeckBuilderFragmentInjectionModule::class,
         DataModule::class,
         CardDataModule::class,
         FilterDataModule::class,
-        UpdateDataModule::class,
         DeckDataModule::class
     ],
     dependencies = [CoreComponent::class]
 )
 @ActivityScoped
-interface AppComponent {
+interface DeckBuilderComponent {
 
-    fun inject(target: MainActivity)
-    fun inject(target: CardDetailsActivity)
+    fun inject(target: DeckDetailsActivity)
 
     @Component.Builder
     interface Builder {
 
         fun core(coreComponent: CoreComponent): Builder
 
-        fun build(): AppComponent
+        fun build(): DeckBuilderComponent
     }
 }
+

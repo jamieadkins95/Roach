@@ -10,5 +10,14 @@
         </dist:delivery>
         <dist:fusing dist:include="true" />
     </dist:module>
+
+    <application>
+
+        <activity
+            android:name="DeckDetailsActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
+
+    </application>
 </manifest>
 

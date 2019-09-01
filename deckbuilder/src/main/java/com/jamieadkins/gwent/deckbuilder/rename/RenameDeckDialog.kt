@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail.rename
+package com.jamieadkins.gwent.deckbuilder.rename
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
+import com.jamieadkins.gwent.deckbuilder.R
 import kotlinx.android.synthetic.main.fragment_rename_deck.*
 import javax.inject.Inject
 

@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.bus.GwentDeckClickEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
-import com.jamieadkins.gwent.deck.detail.DeckDetailsActivity
 import com.jamieadkins.gwent.domain.deck.model.GwentDeck
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -73,7 +73,7 @@ class DeckListFragment : DaggerFragment(), DeckListContract.View {
     }
 
     override fun showDeckDetails(deckId: String) {
-        startActivity(DeckDetailsActivity.getIntent(requireContext(), deckId))
+        activity?.let(::FeatureNavigator)?.openDeckBuilder(deckId)
     }
 
     override fun showLoadingIndicator(loading: Boolean) { loadingIndicator.isRefreshing = loading }

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail.leader
+package com.jamieadkins.gwent.deckbuilder.leader
 
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.jamieadkins.gwent.base.MvpPresenter

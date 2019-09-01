@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.deck.detail.leader
+package com.jamieadkins.gwent.deckbuilder.leader
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,17 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
 import com.jamieadkins.gwent.bus.LeaderPickerEvent
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.card.list.GwentCardItem
 import com.jamieadkins.gwent.base.items.SubHeaderItem
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.deckbuilder.R
 import com.jamieadkins.gwent.domain.card.model.GwentCard
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.fragment_deck_list.*
+import kotlinx.android.synthetic.main.fragment_leader_picker.*
 import javax.inject.Inject
 
 class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.View {
@@ -39,7 +39,7 @@ class LeaderPickerDialog : DaggerSupportDialogFragment(), LeaderPickerContract.V
 
         val layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.layoutManager = layoutManager
-        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.divider_spacing))
+        val dividerItemDecoration = VerticalSpaceItemDecoration(resources.getDimensionPixelSize(com.jamieadkins.gwent.R.dimen.divider_spacing))
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener { item, _ ->

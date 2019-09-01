@@ -56,16 +56,9 @@
     <string name="pref_licenses">Open Source Licenses</string>
     <string name="contact">Contact Developer</string>
 
-    <!-- Deck Buidler -->
-    <string name="change_leader">Change Leader</string>
-    <string name="rename">Rename</string>
-    <string name="delete">Delete</string>
+    <!-- Deck Builder -->
     <string name="deck_name">Deck Name</string>
     <string name="create_deck">Create Deck</string>
-    <string name="deck">Deck</string>
-    <string name="cards_in_deck">%1$d/%2$d cards in deck</string>
-    <string name="units_in_deck">%1$d units (minimum %2$d)</string>
-    <string name="maximum_card_count_reached">Deck already contains maximum number of that card!</string>
 
     <string name="update_notification_channel_name">Gwent Card Database Updates</string>
     <string name="update_notification_progress_title">Updating Gwent Card Database</string>
