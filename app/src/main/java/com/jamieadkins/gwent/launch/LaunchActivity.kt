@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.GwentApplication.Companion.coreComponent
 import com.jamieadkins.gwent.base.DaggerAndroidActivity
+import com.jamieadkins.gwent.base.FeatureNavigator
 import com.jamieadkins.gwent.main.MainActivity
 import javax.inject.Inject
 
@@ -30,12 +31,14 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
 
     override fun onStart() {
         super.onStart()
+
         val url = intent?.extras?.getString("url")
         if (url != null) {
             showChromeCustomTab(url)
             finish()
         } else {
-            presenter.onAttach()
+            val tryNow = intent?.data?.getQueryParameter("trynow")?.toBoolean() ?: false
+            presenter.onAttach(tryNow)
         }
     }
 
@@ -47,6 +50,10 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
     override fun onSetupComplete() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+    }
+
+    override fun goToDeck(deckId: String) {
+        FeatureNavigator(this).openDeckBuilder(deckId)
     }
 
     private fun showChromeCustomTab(url: String) {

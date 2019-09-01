@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jamieadkins.gwent.deckbuilder">
 
     <dist:module
-        dist:instant="false"
+        dist:instant="true"
         dist:title="@string/title_deckbuilder">
         <dist:delivery>
             <dist:install-time />

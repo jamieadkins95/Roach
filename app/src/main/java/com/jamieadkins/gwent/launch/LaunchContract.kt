@@ -7,7 +7,12 @@ interface LaunchContract {
     interface View {
 
         fun onSetupComplete()
+
+        fun goToDeck(deckId: String)
     }
 
-    interface Presenter : MvpPresenter
+    interface Presenter : MvpPresenter {
+
+        fun onAttach(tryNow: Boolean)
+    }
 }
