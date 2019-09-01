@@ -22,24 +22,27 @@ class GwentCardMapper @Inject constructor(
     fun map(from: CardWithArtEntity, locale: String, allKeywords: List<KeywordEntity>, allCategories: List<CategoryEntity>): GwentCard {
         val cardEntity = from.card
 
+        // If we don't have other languages downloaded yet, use the default locale
+        val localeToUse = cardEntity.name[locale]?.let { locale } ?: Constants.DEFAULT_LOCALE
+
         val categories = allCategories.asSequence()
             .filter { category ->
-                cardEntity.categoryIds.contains(category.categoryId) && category.locale == locale }
+                cardEntity.categoryIds.contains(category.categoryId) && category.locale == localeToUse }
             .distinct()
             .map { it.name }
             .toList()
 
         val keywords = allKeywords
             .asSequence()
-            .filter { cardEntity.keywordIds.contains(it.keywordId) && it.locale == locale }
+            .filter { cardEntity.keywordIds.contains(it.keywordId) && it.locale == localeToUse }
             .distinct()
             .map { GwentKeyword(it.keywordId, it.name, it.description) }
             .toList()
 
         return GwentCard(cardEntity.id,
-                         cardEntity.name[locale] ?: "",
-                         cardEntity.tooltip[locale] ?: "",
-                         cardEntity.flavor[locale] ?: "",
+                         cardEntity.name[localeToUse] ?: "",
+                         cardEntity.tooltip[localeToUse] ?: "",
+                         cardEntity.flavor[localeToUse] ?: "",
                          categories,
                          keywords,
                          factionMapper.map(cardEntity.faction),

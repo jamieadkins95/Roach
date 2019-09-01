@@ -15,17 +15,14 @@ class LocaleRepositoryImpl @Inject constructor(
         val key = resources.getString(R.string.pref_locale_key)
         if (!preferences.getString(key).isSet) {
             val deviceLanguage = Locale.getDefault().language
-            val cardLanguage = resources.getStringArray(R.array.locales).firstOrNull { it.contains(deviceLanguage) } ?: DEFAULT_LOCALE
+            val cardLanguage = resources.getStringArray(R.array.locales).firstOrNull { it.contains(deviceLanguage) } ?: Constants.DEFAULT_LOCALE
             preferences.getString(key).set(cardLanguage)
         }
         return preferences.getString(key).asObservable()
     }
 
     override fun getDefaultLocale(): Observable<String> {
-        return Observable.just(DEFAULT_LOCALE)
+        return Observable.just(Constants.DEFAULT_LOCALE)
     }
 
-    companion object {
-        private const val DEFAULT_LOCALE = "en-US"
-    }
 }
