@@ -50,12 +50,12 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="www.jamieadkins95.com" android:path="/gwent/deck"/>
+                <data android:host="gwent-9e62a.firebaseapp.com" android:path="/gwent/deck"/>
             </intent-filter>
 
             <meta-data
                 android:name="default-url"
-                android:value="https://www.jamieadkins95.com/gwent/deck?trynow=true" />
+                android:value="https://gwent-9e62a.firebaseapp.com/gwent/deck?trynow=true" />
         </activity>
 
         <activity
