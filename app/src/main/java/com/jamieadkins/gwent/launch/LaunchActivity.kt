@@ -54,6 +54,7 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
 
     override fun goToDeck(deckId: String) {
         FeatureNavigator(this).openDeckBuilder(deckId)
+        finish()
     }
 
     private fun showChromeCustomTab(url: String) {
