@@ -308,6 +308,60 @@
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
+            android:id="@+id/subheader_sort_by"
+            android:text="@string/sort_by"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/group_expansion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Expansion -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/group_sort_by"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@id/subheader_sort_by"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_sort_alphabetical"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_alphabetical" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_sort_alphabetical_desc"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_alphabetical_desc" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_sort_provisions"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_provisions" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_sort_provisions_desc"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_provisions_desc" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
             android:id="@+id/subheader_provisions"
             android:text="@string/provisions"
             android:layout_width="0dp"
@@ -316,7 +370,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:textColor="@color/text_secondary"
-            app:layout_constraintTop_toBottomOf="@id/group_expansion"
+            app:layout_constraintTop_toBottomOf="@id/group_sort_by"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

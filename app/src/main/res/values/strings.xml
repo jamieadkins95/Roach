@@ -81,4 +81,11 @@
     <string name="card_image">Image</string>
     <string name="card_info">Info</string>
 
+    <!-- Sort -->
+    <string name="sort_by">Sort by</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_alphabetical_desc">Alphabetical Desc</string>
+    <string name="sort_provisions">Provision Cost</string>
+    <string name="sort_provisions_desc">Provision Cost Desc</string>
+
 </resources>

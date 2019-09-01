@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.DaggerSupportDialogFragment
 import com.jamieadkins.gwent.domain.GwentFaction
+import com.jamieadkins.gwent.domain.card.model.SortedBy
 import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
 
@@ -61,6 +62,17 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_expansion_thronebreaker.setOnCheckedChangeListener { _, checked -> presenter.onThronebreakerSetChanged(checked) }
         filter_expansion_crimson_curse.setOnCheckedChangeListener { _, checked -> presenter.onCrimsonCurseSetChanged(checked) }
         filter_expansion_novigrad.setOnCheckedChangeListener { _, checked -> presenter.onNovigradSetChanged(checked) }
+
+        group_sort_by.setOnCheckedChangeListener { _, id ->
+            val sortBy = when (id) {
+                R.id.filter_sort_alphabetical -> SortedBy.ALPHABETICALLY_ASC
+                R.id.filter_sort_alphabetical_desc -> SortedBy.ALPHABETICALLY_DESC
+                R.id.filter_sort_provisions -> SortedBy.PROVISIONS_ASC
+                R.id.filter_sort_provisions_desc -> SortedBy.PROVISIONS_DESC
+                else -> SortedBy.ALPHABETICALLY_ASC
+            }
+            presenter.onSortedByChanged(sortBy)
+        }
 
         inputMin.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) { /* Do nothing. */ }
@@ -139,6 +151,15 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setCrimsonCurseSetFilter(checked: Boolean) { filter_expansion_crimson_curse.isChecked = checked }
 
     override fun setNovigradSetFilter(checked: Boolean) { filter_expansion_novigrad.isChecked = checked }
+
+    override fun setSortedBy(sortedBy: SortedBy) {
+        when (sortedBy) {
+            SortedBy.ALPHABETICALLY_ASC -> filter_sort_alphabetical.isChecked = true
+            SortedBy.ALPHABETICALLY_DESC -> filter_sort_alphabetical_desc.isChecked = true
+            SortedBy.PROVISIONS_ASC -> filter_sort_provisions.isChecked = true
+            SortedBy.PROVISIONS_DESC -> filter_sort_provisions_desc.isChecked = true
+        }
+    }
 
     override fun close() = dismiss()
 

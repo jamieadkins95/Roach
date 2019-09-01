@@ -12,6 +12,7 @@ import com.jamieadkins.gwent.domain.filter.SetFilterUseCase
 import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.base.BasePresenter
 import com.jamieadkins.gwent.domain.card.model.GwentExpansion
+import com.jamieadkins.gwent.domain.card.model.SortedBy
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -52,6 +53,8 @@ class FilterPresenter @Inject constructor(
 
     var minProvisions = 0
     var maxProvisions = 100
+
+    var sortedBy = SortedBy.ALPHABETICALLY_ASC
 
     private var deckId: String = ""
 
@@ -135,6 +138,9 @@ class FilterPresenter @Inject constructor(
 
                     novigrad = filter.expansionFilter[GwentExpansion.Novigrad] ?: false
                     view.setNovigradSetFilter(novigrad)
+
+                    sortedBy = filter.sortedBy
+                    view.setSortedBy(sortedBy)
                 }
             })
             .addToComposite()
@@ -211,7 +217,7 @@ class FilterPresenter @Inject constructor(
                         minProvisions,
                         maxProvisions,
                         filter.isCollectibleOnly,
-                        filter.sortedBy
+                        sortedBy
                     )
                     setFilterUseCase.setFilter(deckId, newFilter)
                     view.close()
@@ -272,6 +278,8 @@ class FilterPresenter @Inject constructor(
     override fun onCrimsonCurseSetChanged(checked: Boolean) { crimsonCurse = checked }
 
     override fun onNovigradSetChanged(checked: Boolean) { novigrad = checked }
+
+    override fun onSortedByChanged(sort: SortedBy) { sortedBy = sort}
 
     override fun onTypeLeaderChanged(checked: Boolean) {
         leader = checked

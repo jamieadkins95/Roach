@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.filter
 
 import com.jamieadkins.gwent.domain.GwentFaction
 import com.jamieadkins.gwent.base.MvpPresenter
+import com.jamieadkins.gwent.domain.card.model.SortedBy
 
 interface FilterContract {
     interface View {
@@ -39,6 +40,8 @@ interface FilterContract {
         fun setThronebreakerSetFilter(checked: Boolean)
         fun setCrimsonCurseSetFilter(checked: Boolean)
         fun setNovigradSetFilter(checked: Boolean)
+
+        fun setSortedBy(sortedBy: SortedBy)
 
         fun showFiltersForDeckBuilder(faction: GwentFaction)
         fun hideTokenFilterForDeckBuilder()
@@ -83,5 +86,7 @@ interface FilterContract {
         fun onThronebreakerSetChanged(checked: Boolean)
         fun onCrimsonCurseSetChanged(checked: Boolean)
         fun onNovigradSetChanged(checked: Boolean)
+
+        fun onSortedByChanged(sort: SortedBy)
     }
 }
