@@ -19,7 +19,6 @@ import javax.inject.Singleton
         UpdateDataModule::class,
         CardDataModule::class,
         DataModule::class,
-        DeckDataModule::class,
         AppModule::class
     ],
     dependencies = [CoreComponent::class]

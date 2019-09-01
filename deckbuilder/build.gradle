@@ -47,6 +47,7 @@ dependencies {
     implementation Libs.constraint_layout
     implementation Libs.groupie
     implementation Libs.groupie_extensions
+    implementation Libs.timber
 
     implementation Libs.dagger
     implementation Libs.dagger_support

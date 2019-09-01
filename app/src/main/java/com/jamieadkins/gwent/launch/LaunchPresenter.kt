@@ -10,30 +10,16 @@ import javax.inject.Inject
 
 class LaunchPresenter @Inject constructor(
     private val view: LaunchContract.View,
-    private val performFirstTimeSetupUseCase: PerformFirstTimeSetupUseCase,
-    private val getTryNowDeckUseCase: GetTryNowDeckUseCase
+    private val performFirstTimeSetupUseCase: PerformFirstTimeSetupUseCase
 ) : BasePresenter(), LaunchContract.Presenter {
 
-    override fun onAttach() = onAttach(false)
+    override fun onAttach() {
+        performFirstTimeSetupUseCase.performFirstTimeSetup()
+            .subscribeWith(object : DisposableCompletableObserver() {
+                override fun onComplete() = view.onSetupComplete()
 
-    override fun onAttach(tryNow: Boolean) {
-        if (tryNow) {
-            performFirstTimeSetupUseCase.performFirstTimeSetup()
-                .andThen(getTryNowDeckUseCase.get())
-                .subscribeWith(object : DisposableSingleObserver<String>() {
-                    override fun onSuccess(deckId: String) = view.goToDeck(deckId)
-
-                    override fun onError(e: Throwable) { Timber.e(e) }
-                })
-                .addToComposite()
-        } else {
-            performFirstTimeSetupUseCase.performFirstTimeSetup()
-                .subscribeWith(object : DisposableCompletableObserver() {
-                    override fun onComplete() = view.onSetupComplete()
-
-                    override fun onError(e: Throwable) = view.onSetupComplete()
-                })
-                .addToComposite()
-        }
+                override fun onError(e: Throwable) = view.onSetupComplete()
+            })
+            .addToComposite()
     }
 }

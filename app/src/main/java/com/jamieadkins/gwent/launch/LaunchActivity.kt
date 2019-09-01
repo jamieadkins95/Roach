@@ -37,8 +37,7 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
             showChromeCustomTab(url)
             finish()
         } else {
-            val tryNow = intent?.data?.getQueryParameter("trynow")?.toBoolean() ?: false
-            presenter.onAttach(tryNow)
+            presenter.onAttach()
         }
     }
 
@@ -49,11 +48,6 @@ class LaunchActivity : DaggerAndroidActivity(), LaunchContract.View {
 
     override fun onSetupComplete() {
         startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
-
-    override fun goToDeck(deckId: String) {
-        FeatureNavigator(this).openDeckBuilder(deckId)
         finish()
     }
 
