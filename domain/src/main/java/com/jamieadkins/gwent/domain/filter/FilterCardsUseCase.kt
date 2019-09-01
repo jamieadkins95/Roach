@@ -11,15 +11,17 @@ class FilterCardsUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) {
 
-    fun filter(cards: List<GwentCard>, filter: CardFilter): Single<List<GwentCard>> {
+    fun filter(cards: List<GwentCard>, filter: CardFilter, isSearch: Boolean): Single<List<GwentCard>> {
         return Single.fromCallable { cards.filter { doesCardMeetFilter(it, filter) } }
             .map { filtered ->
+                if (isSearch) return@map filtered //  Don't sort search results
                 when (filter.sortedBy) {
-                    SortedBy.SEARCH_RELEVANCE -> filtered
                     SortedBy.ALPHABETICALLY_ASC -> filtered.sortedBy { it.name }
                     SortedBy.ALPHABETICALLY_DESC -> filtered.sortedByDescending { it.name }
                     SortedBy.STRENGTH_ASC -> filtered.sortedBy { it.strength }
                     SortedBy.STRENGTH_DESC -> filtered.sortedByDescending { it.strength }
+                    SortedBy.PROVISIONS_ASC -> filtered.sortedBy { it.provisions }
+                    SortedBy.PROVISIONS_DESC -> filtered.sortedByDescending { it.provisions }
                 }
             }
             .subscribeOn(schedulerProvider.io())

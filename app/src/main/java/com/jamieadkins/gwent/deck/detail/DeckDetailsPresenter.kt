@@ -73,6 +73,7 @@ class DeckDetailsPresenter @Inject constructor(
 
         searches
             .switchMap { query ->
+                val isSearch = query.isNotEmpty()
                 val cards = if (query.isEmpty()) {
                     getCardsUseCase.getCards()
                 } else {
@@ -86,7 +87,7 @@ class DeckDetailsPresenter @Inject constructor(
                         Pair(cardList, filter)
                     }
                 )
-                    .flatMapSingle { filterCardsUseCase.filter(it.first, it.second) }
+                    .flatMapSingle { filterCardsUseCase.filter(it.first, it.second, isSearch) }
                     .map { Pair(it, query) }
                     .doOnSubscribe { view.showLoadingIndicator() }
             }

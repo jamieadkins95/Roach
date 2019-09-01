@@ -21,11 +21,11 @@ object CardSearch {
             val lowerCaseQuery = query.toLowerCase()
 
             // Search in user's language
-            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase() + 1))
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[userLocale]?.toLowerCase()))
 
             // Search in the default language
-            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase() + 1))
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[defaultLocale]?.toLowerCase()))
 
             card.card.categoryIds.forEach { categoryId ->
@@ -56,7 +56,7 @@ object CardSearch {
     }
 
     /**
-     * Only searches by name.
+     * Only searches by name and tooltip.
      */
     fun quickSearch(query: String, cardSearchData: CardSearchData, userLocale: String, defaultLocale: String): List<String> {
         val searchResults = mutableListOf<CardSearchResult>()
@@ -67,11 +67,11 @@ object CardSearch {
             val lowerCaseQuery = query.toLowerCase()
 
             // Search in user's language
-            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase() + 1))
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[userLocale]?.toLowerCase()))
 
             // Search in the default language
-            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase()))
+            scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase() + 1))
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[defaultLocale]?.toLowerCase()))
             val score = Collections.max(scores)
             if (score > maxScore) {

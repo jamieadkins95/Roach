@@ -51,7 +51,14 @@ class CardRepositoryImpl @Inject constructor(
                     CardSearch.searchCards(searchQuery, cardSearchData, userLocale, defaultLocale)
                 }
             })
-            .switchMap { getCards(it) }
+            .switchMap { cardIds ->
+                getCards(cardIds)
+                    .map { cards ->
+                        // Need to ensure we preserve the order of the cardIds. They are sorted by search relevance
+                        val orderById = cardIds.withIndex().associate { it.value to it.index }
+                        cards.sortedBy { orderById[it.id] }
+                    }
+            }
     }
 
     override fun getCards(): Observable<List<GwentCard>> {
