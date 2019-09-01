@@ -44,23 +44,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    flavorDimensions "injection"
-
+    flavorDimensions "default"
     productFlavors {
-        prod {
-            dimension "injection"
-        }
-        mock {
-            dimension "injection"
-        }
-    }
-
-    // Remove mockRelease as it's not needed.
-    android.variantFilter { variant ->
-        if (variant.buildType.name.equals('release')
-                && variant.getFlavors().get(0).name.equals('mock')) {
-            variant.setIgnore(true)
-        }
+        mock {}
+        prod {}
     }
 
     applicationVariants.all { variant ->
@@ -74,6 +61,8 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    dynamicFeatures = [":deckbuilder"]
 }
 
 dependencies {

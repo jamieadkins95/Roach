@@ -87,5 +87,6 @@
     <string name="sort_alphabetical_desc">Alphabetical Desc</string>
     <string name="sort_provisions">Provision Cost</string>
     <string name="sort_provisions_desc">Provision Cost Desc</string>
+    <string name="title_deckbuilder">Roach Deck Builder</string>
 
 </resources>
