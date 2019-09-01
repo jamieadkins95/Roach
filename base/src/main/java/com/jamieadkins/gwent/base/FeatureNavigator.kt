@@ -6,7 +6,7 @@ import android.net.Uri
 
 class FeatureNavigator(private val activity: Activity) {
 
-    fun openIntent(intent: Intent) = activity.startActivity(intent.setPackage(activity.packageName))
+    fun openIntent(intent: Intent) = activity.startActivity(intent)
 
     fun openCardDetails(cardId: String) = openIntent(getIntentForClassName(CARD_DETAIL_ACTIVITY, Uri.parse(CARD_DETAILS.format(cardId))))
 
