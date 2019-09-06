@@ -7,7 +7,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.jamieadkins.gwent.domain.latest.NewsRepository
 import io.reactivex.Observable
-import timber.log.Timber
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
@@ -21,7 +20,7 @@ class NewsRepositoryImpl @Inject constructor(
                 .document(locale)
                 .collection("articles")
                 .whereEqualTo("isPatchNotes", true)
-                .orderBy("timestamp")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
@@ -52,7 +51,7 @@ class NewsRepositoryImpl @Inject constructor(
                 .document(locale)
                 .collection("articles")
 
-            val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING)
+            val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING).limit(5)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
                         emitter.onError(e)

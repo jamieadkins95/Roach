@@ -30,8 +30,16 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     @Inject lateinit var presenter: GwentLatestContract.Presenter
 
     private val adapter = GroupAdapter<ViewHolder>()
-    private val patchNotesSection = Section()
+    private val patchNotesSection = Section().apply {
+        setHeader(LatestHeaderItem(R.string.latest_patch_notes))
+        setHideWhenEmpty(true)
+    }
+    private val latestNewsSection = Section().apply {
+        setHeader(LatestHeaderItem(R.string.latest_news))
+        setHideWhenEmpty(true)
+    }
     private val moreSection = Section().apply {
+        setHeader(LatestHeaderItem(R.string.more))
         update(listOf(
             SettingsItem(R.string.news, R.drawable.ic_news),
             SettingsItem(R.string.esports, R.drawable.ic_swords),
@@ -47,6 +55,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
     init {
         adapter.add(patchNotesSection)
+        adapter.add(latestNewsSection)
         adapter.add(moreSection)
     }
 
@@ -104,7 +113,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     }
 
     override fun showLatestNews(news: List<GwentNewsArticle>) {
-        Timber.e("News: $news")
+        latestNewsSection.update(news.map(::NewsItem))
     }
 
     override fun showLiveOnTwitch(live: Boolean) {
