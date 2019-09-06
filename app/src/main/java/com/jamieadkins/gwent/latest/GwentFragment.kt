@@ -31,12 +31,11 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     private val logoSection = Section().apply { update(listOf(LogoItem())) }
     private val patchNotesSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.latest_patch_notes))
+        setPlaceholder(NewsHeroPlaceholderItem())
         setFooter(LatestDividerItem())
-        setHideWhenEmpty(true)
     }
     private val latestNewsSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.latest_news))
-        setHideWhenEmpty(true)
     }
     private val moreSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.more))
