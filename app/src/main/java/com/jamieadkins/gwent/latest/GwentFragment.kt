@@ -5,17 +5,17 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jamieadkins.gwent.R
+import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
+import com.jamieadkins.gwent.base.convertDpToPixel
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_LAYOUT
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_TITLE
 import com.jamieadkins.gwent.settings.SettingsActivity
-import com.jamieadkins.gwent.settings.SettingsItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -31,6 +31,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     private val logoSection = Section().apply { update(listOf(LogoItem())) }
     private val patchNotesSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.latest_patch_notes))
+        setFooter(LatestDividerItem())
         setHideWhenEmpty(true)
     }
     private val latestNewsSection = Section().apply {
@@ -40,15 +41,15 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     private val moreSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.more))
         update(listOf(
-            SettingsItem(R.string.news, R.drawable.ic_news),
-            SettingsItem(R.string.esports, R.drawable.ic_swords),
-            SettingsItem(R.string.forums, R.drawable.ic_forum),
-            SettingsItem(R.string.reddit, R.drawable.ic_reddit),
-            SettingsItem(R.string.discord, R.drawable.ic_discord),
-            SettingsItem(R.string.twitch, R.drawable.ic_twitch),
-            SettingsItem(R.string.youtube, R.drawable.ic_youtube),
-            SettingsItem(R.string.settings, R.drawable.ic_settings),
-            SettingsItem(R.string.about, R.drawable.ic_info)
+            MoreItem(R.string.news, R.drawable.ic_news),
+            MoreItem(R.string.esports, R.drawable.ic_swords),
+            MoreItem(R.string.forums, R.drawable.ic_forum),
+            MoreItem(R.string.reddit, R.drawable.ic_reddit),
+            MoreItem(R.string.discord, R.drawable.ic_discord),
+            MoreItem(R.string.twitch, R.drawable.ic_twitch),
+            MoreItem(R.string.youtube, R.drawable.ic_youtube),
+            MoreItem(R.string.settings, R.drawable.ic_settings),
+            MoreItem(R.string.about, R.drawable.ic_info)
         ))
     }
 
@@ -75,9 +76,12 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
         val layoutManager = LinearLayoutManager(recycler_view.context)
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = adapter
+        recycler_view.addItemDecoration(VerticalSpaceItemDecoration((requireContext().convertDpToPixel(8f).toInt())))
         adapter.setOnItemClickListener { item, _ ->
             when (item) {
-                is SettingsItem -> {
+                is NewsHeroItem -> showChromeCustomTab(item.news.url)
+                is NewsItem -> showChromeCustomTab(item.news.url)
+                is MoreItem -> {
                     when (item.title) {
                         R.string.news -> onNewsClicked()
                         R.string.esports -> onEsportsClicked()

@@ -1,4 +1,4 @@
-package com.jamieadkins.gwent.settings
+package com.jamieadkins.gwent.latest
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -7,7 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_material_settings_one_line.*
 
-data class SettingsItem(@StringRes val title: Int, @DrawableRes private val icon: Int): Item(title.toLong()) {
+data class MoreItem(@StringRes val title: Int, @DrawableRes private val icon: Int): Item(title.toLong()) {
 
     override fun getLayout(): Int = R.layout.view_material_settings_one_line
 
