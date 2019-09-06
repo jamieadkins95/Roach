@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.data.latest
 
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.jamieadkins.gwent.domain.latest.NewsRepository
@@ -51,8 +52,7 @@ class NewsRepositoryImpl @Inject constructor(
                 .document(locale)
                 .collection("articles")
 
-            Timber.e(ref.path)
-            val listenerRegistration = ref.orderBy("timestamp")
+            val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
                         emitter.onError(e)

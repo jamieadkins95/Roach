@@ -30,7 +30,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     @Inject lateinit var presenter: GwentLatestContract.Presenter
 
     private val adapter = GroupAdapter<ViewHolder>()
-
+    private val patchNotesSection = Section()
     private val moreSection = Section().apply {
         update(listOf(
             SettingsItem(R.string.news, R.drawable.ic_news),
@@ -46,6 +46,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     }
 
     init {
+        adapter.add(patchNotesSection)
         adapter.add(moreSection)
     }
 
@@ -64,7 +65,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(toolbar)
-            title = getString(R.string.gwent)
+            title = getString(R.string.app_name)
         }
 
         toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)
@@ -99,7 +100,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     }
 
     override fun showLatestPatchNotes(patchNotes: GwentNewsArticle) {
-        Timber.e("PATCH NOTES: " + patchNotes.title)
+        patchNotesSection.update(listOf(NewsItem(patchNotes)))
     }
 
     override fun showLatestNews(news: List<GwentNewsArticle>) {
