@@ -6,13 +6,13 @@ import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.view_news.*
+import kotlinx.android.synthetic.main.view_news_hero.*
 
-data class NewsItem(
+data class NewsHeroItem(
     val news: GwentNewsArticle
 ): Item(news.id) {
 
-    override fun getLayout(): Int = R.layout.view_news
+    override fun getLayout(): Int = R.layout.view_news_hero
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.title.text = news.title

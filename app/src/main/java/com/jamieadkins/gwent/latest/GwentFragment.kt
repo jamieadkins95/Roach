@@ -22,7 +22,6 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_gwent.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class GwentFragment : DaggerFragment(), GwentLatestContract.View {
@@ -109,7 +108,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     }
 
     override fun showLatestPatchNotes(patchNotes: GwentNewsArticle) {
-        patchNotesSection.update(listOf(NewsItem(patchNotes)))
+        patchNotesSection.update(listOf(NewsHeroItem(patchNotes)))
     }
 
     override fun showLatestNews(news: List<GwentNewsArticle>) {

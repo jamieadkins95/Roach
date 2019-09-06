@@ -7,6 +7,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.jamieadkins.gwent.domain.latest.NewsRepository
 import io.reactivex.Observable
+import timber.log.Timber
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
@@ -24,6 +25,7 @@ class NewsRepositoryImpl @Inject constructor(
                 .limit(1)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
+                        Timber.e(e)
                         emitter.onError(e)
                         return@EventListener
                     }
@@ -54,6 +56,7 @@ class NewsRepositoryImpl @Inject constructor(
             val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING).limit(5)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
+                        Timber.e(e)
                         emitter.onError(e)
                         return@EventListener
                     }
