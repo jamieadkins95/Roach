@@ -50,7 +50,7 @@
     <string name="deck_builder_message">Gwent has changed a lot with the Homecoming update. Roach\'s Deck Builder is currently being rebuilt to support the new update.</string>
 
     <string name="pref_locale">Card Data Language</string>
-    <string name="news_notifications">News Notifications</string>
+    <string name="news_notifications">News Language</string>
     <string name="none">None</string>
     <string name="patch_notifications">Patch Notifications</string>
     <string name="pref_licenses">Open Source Licenses</string>

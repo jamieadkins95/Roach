@@ -97,7 +97,7 @@ class NotificationsRepository @Inject constructor(
     }
 
     private companion object {
-        const val KEY_NEWS_NOTIFCATIONS_SETUP = "com.jamieadkins.gwent.notifications.news.setup"
+        const val KEY_NEWS_NOTIFCATIONS_SETUP = "com.jamieadkins.gwent.news.locale.setup"
         const val DEBUG_NEWS_TOPIC = "news-debug"
     }
 }
