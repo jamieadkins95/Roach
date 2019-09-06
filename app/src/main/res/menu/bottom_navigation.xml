@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_gwent"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/gwent" />
+
     <item
         android:id="@+id/navigation_card_db"
         android:icon="@drawable/ic_cards_filled"
@@ -13,8 +19,4 @@
         android:id="@+id/navigation_deck_tracker"
         android:icon="@drawable/ic_tracker"
         android:title="@string/deck_tracker" />
-    <item
-        android:id="@+id/navigation_gwent"
-        android:icon="@drawable/ic_notification"
-        android:title="@string/gwent" />
 </menu>

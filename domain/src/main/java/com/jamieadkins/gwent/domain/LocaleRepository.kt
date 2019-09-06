@@ -6,5 +6,7 @@ interface LocaleRepository {
 
     fun getLocale(): Observable<String>
 
+    fun getNewsLocale(): Observable<String>
+
     fun getDefaultLocale(): Observable<String>
 }

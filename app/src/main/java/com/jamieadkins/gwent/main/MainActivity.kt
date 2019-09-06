@@ -10,7 +10,7 @@ import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.deck.list.DeckListFragment
 import com.jamieadkins.gwent.di.DaggerAppComponent
-import com.jamieadkins.gwent.settings.GwentFragment
+import com.jamieadkins.gwent.latest.GwentFragment
 import com.jamieadkins.gwent.tracker.DeckTrackerSetupFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,8 +28,8 @@ class MainActivity : DaggerAndroidActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            // Cold start, launch card db fragment.
-            val fragment = CardDatabaseFragment()
+            // Cold start, launch gwent fragment.
+            val fragment = GwentFragment()
             launchFragment(fragment, fragment.javaClass.simpleName)
         }
 

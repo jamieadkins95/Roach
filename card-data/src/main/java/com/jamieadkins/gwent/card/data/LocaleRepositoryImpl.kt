@@ -9,7 +9,8 @@ import javax.inject.Inject
 
 class LocaleRepositoryImpl @Inject constructor(
     private val preferences: RxSharedPreferences,
-    private val resources: Resources) : LocaleRepository {
+    private val resources: Resources
+) : LocaleRepository {
 
     override fun getLocale(): Observable<String> {
         val key = resources.getString(R.string.pref_locale_key)
@@ -19,6 +20,11 @@ class LocaleRepositoryImpl @Inject constructor(
             preferences.getString(key).set(cardLanguage)
         }
         return preferences.getString(key).asObservable()
+    }
+
+    override fun getNewsLocale(): Observable<String> {
+        val key = resources.getString(R.string.pref_news_notifications_key)
+        return preferences.getString(key, "en").asObservable()
     }
 
     override fun getDefaultLocale(): Observable<String> {
