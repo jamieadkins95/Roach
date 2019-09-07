@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
@@ -30,7 +31,6 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
     private val adapter = GroupAdapter<ViewHolder>()
     private val patchNotesSection = Section().apply {
-        setHeader(LatestHeaderItem(R.string.latest_patch_notes))
         setPlaceholder(NewsHeroPlaceholderItem())
         setFooter(LatestDividerItem())
     }
