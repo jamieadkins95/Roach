@@ -7,6 +7,9 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -48,7 +51,6 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
             MoreItem(R.string.discord, R.drawable.ic_discord),
             MoreItem(R.string.twitch, R.drawable.ic_twitch),
             MoreItem(R.string.youtube, R.drawable.ic_youtube),
-            MoreItem(R.string.settings, R.drawable.ic_settings),
             MoreItem(R.string.about, R.drawable.ic_info)
         ))
     }
@@ -63,6 +65,21 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.latest, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_settings -> {
+                onSettingsClicked()
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
