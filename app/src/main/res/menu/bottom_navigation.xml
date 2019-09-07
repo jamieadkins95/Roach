@@ -18,5 +18,5 @@
     <item
         android:id="@+id/navigation_deck_tracker"
         android:icon="@drawable/ic_tracker"
-        android:title="@string/deck_tracker" />
+        android:title="@string/card_predictor" />
 </menu>

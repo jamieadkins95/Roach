@@ -1,5 +1,5 @@
 <resources>
-    <string name="deck_tracker">Deck Tracker</string>
+    <string name="card_predictor">Card Predictor</string>
     <string name="cards_played_title">Opponent Cards Played</string>
     <string name="cards_played_subtitle">(Tap to play card again, long press to see details, swipe to remove)</string>
     <string name="remaining_in_opponents_deck">Remaining in opponent\'s deck</string>
@@ -13,7 +13,7 @@
     <string name="what_card">What card did your opponent play?</string>
     <string name="card_search_example">Card Name</string>
     <string name="search">Search</string>
-    <string name="beta_notice">Deck Tracker is a beta feature. Got some feedback? Let us know!</string>
+    <string name="beta_notice">Card Predictor is a beta feature. Got some feedback? Let us know!</string>
     <string name="not_many_decks_warning">Roach has not seen many decks with this leader. Card predictions may be inaccurate/unavailable. You will see this more often after a new patch as old decks are invalidated.</string>
     <string name="feedback">Feedback</string>
     <string name="gwent_deck_library">Gwent Deck Library</string>

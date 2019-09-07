@@ -58,7 +58,7 @@ class DeckTrackerSetupFragment : DaggerFragment(), DeckTrackerSetupContract.View
 
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(toolbar)
-            title = getString(R.string.deck_tracker)
+            title = getString(R.string.card_predictor)
         }
 
         toolbar.setTitleTextAppearance(requireContext(), R.style.GwentTextAppearance)

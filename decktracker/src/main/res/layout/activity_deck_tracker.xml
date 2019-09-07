@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="@string/deck_tracker"
+            app:title="@string/card_predictor"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/Theme.Gwent.PopupOverlay" />
 
