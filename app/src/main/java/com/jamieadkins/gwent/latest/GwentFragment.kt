@@ -34,6 +34,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
         setPlaceholder(NewsHeroPlaceholderItem())
         setFooter(LatestDividerItem())
     }
+    private val upToDateSection = Section()
     private val latestNewsSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.latest_news))
     }
@@ -54,6 +55,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
     init {
         adapter.add(patchNotesSection)
+        adapter.add(upToDateSection)
         adapter.add(latestNewsSection)
         adapter.add(moreSection)
     }
@@ -112,6 +114,15 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
     override fun showLatestPatchNotes(patchNotes: GwentNewsArticle) {
         patchNotesSection.update(listOf(NewsHeroItem(patchNotes)))
+    }
+
+    override fun showUpToDate(patchName: String, upToDate: Boolean) {
+        val upToDateNoticeItem = if (upToDate) {
+            UpToDateNoticeItem(R.drawable.ic_done, R.color.gwentGreen, R.string.up_to_date, patchName)
+        } else {
+            UpToDateNoticeItem(R.drawable.ic_warning, R.color.gwentAccent, R.string.not_up_to_date, patchName)
+        }
+        upToDateSection.update(listOf(upToDateNoticeItem))
     }
 
     override fun showLatestNews(news: List<GwentNewsArticle>) {

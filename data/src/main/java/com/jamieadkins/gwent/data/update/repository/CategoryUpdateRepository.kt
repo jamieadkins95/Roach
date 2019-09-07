@@ -5,6 +5,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.update.mapper.GwentCategoryMapper
 import com.jamieadkins.gwent.data.update.model.FirebaseCategoryResult
 import com.jamieadkins.gwent.database.GwentDatabase
+import com.jamieadkins.gwent.domain.patch.PatchRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -29,7 +30,7 @@ class CategoryUpdateRepository @Inject constructor(
     override fun isUpdateAvailable(): Observable<Boolean> {
         return updateStateChanges
             .flatMapSingle {
-                patchRepository.getLatestPatchId()
+                patchRepository.getLatestRoachPatch()
                     .flatMap { patch ->
                         Single.zip(
                             getRemoteLastUpdated(patch, FILE_NAME),
@@ -54,7 +55,7 @@ class CategoryUpdateRepository @Inject constructor(
     }
 
     override fun internalPerformUpdate(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseCategoryResult>(it, FirebaseCategoryResult::class.java) }
@@ -73,7 +74,7 @@ class CategoryUpdateRepository @Inject constructor(
     }
 
     private fun updateLastUpdated(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 }

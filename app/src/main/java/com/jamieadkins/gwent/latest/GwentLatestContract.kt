@@ -8,6 +8,8 @@ interface GwentLatestContract {
 
         fun showLatestPatchNotes(patchNotes: GwentNewsArticle)
 
+        fun showUpToDate(patchName: String, upToDate: Boolean)
+
         fun showLatestNews(news: List<GwentNewsArticle>)
 
         fun showLiveOnTwitch(live: Boolean)

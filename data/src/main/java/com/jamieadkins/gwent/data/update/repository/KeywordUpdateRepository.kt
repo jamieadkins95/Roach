@@ -5,6 +5,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.jamieadkins.gwent.data.update.mapper.GwentKeywordMapper
 import com.jamieadkins.gwent.data.update.model.FirebaseKeywordResult
 import com.jamieadkins.gwent.database.GwentDatabase
+import com.jamieadkins.gwent.domain.patch.PatchRepository
 import com.jamieadkins.gwent.domain.update.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -29,7 +30,7 @@ class KeywordUpdateRepository @Inject constructor(
     override fun isUpdateAvailable(): Observable<Boolean> {
         return updateStateChanges
             .flatMapSingle {
-                patchRepository.getLatestPatchId()
+                patchRepository.getLatestRoachPatch()
                     .flatMap { patch ->
                         Single.zip(
                             getRemoteLastUpdated(patch, FILE_NAME),
@@ -53,7 +54,7 @@ class KeywordUpdateRepository @Inject constructor(
     }
 
     override fun internalPerformUpdate(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseKeywordResult>(it, FirebaseKeywordResult::class.java) }
@@ -72,7 +73,7 @@ class KeywordUpdateRepository @Inject constructor(
     }
 
     private fun updateLastUpdated(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 }

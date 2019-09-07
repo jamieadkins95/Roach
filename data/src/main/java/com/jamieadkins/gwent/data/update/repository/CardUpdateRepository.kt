@@ -7,6 +7,7 @@ import com.jamieadkins.gwent.card.data.ArtApiMapper
 import com.jamieadkins.gwent.card.data.model.FirebaseCardResult
 import com.jamieadkins.gwent.database.GwentDatabase
 import com.jamieadkins.gwent.domain.card.repository.CardRepository
+import com.jamieadkins.gwent.domain.patch.PatchRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -37,7 +38,7 @@ class CardUpdateRepository @Inject constructor(
             .map { it < GwentDatabase.DATABASE_VERSION }
             .onErrorReturnItem(false)
 
-        val cardsFileOutOfDate = patchRepository.getLatestPatchId()
+        val cardsFileOutOfDate = patchRepository.getLatestRoachPatch()
             .flatMap { patch ->
                 Single.zip(
                     getRemoteLastUpdated(patch, FILE_NAME),
@@ -70,7 +71,7 @@ class CardUpdateRepository @Inject constructor(
     }
 
     override fun internalPerformUpdate(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMap { getFileFromFirebase(getStorageReference(it, FILE_NAME), FILE_NAME) }
             .observeOn(Schedulers.io())
             .flatMap { parseJsonFile<FirebaseCardResult>(it, FirebaseCardResult::class.java) }
@@ -95,7 +96,7 @@ class CardUpdateRepository @Inject constructor(
     }
 
     private fun updateLastUpdated(): Completable {
-        return patchRepository.getLatestPatchId()
+        return patchRepository.getLatestRoachPatch()
             .flatMapCompletable { updateLocalLastUpdated(it, FILE_NAME) }
     }
 

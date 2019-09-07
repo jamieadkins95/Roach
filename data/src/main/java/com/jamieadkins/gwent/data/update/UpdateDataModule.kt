@@ -12,7 +12,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Reusable
 
-@Module
+@Module(includes = [PatchDataModule::class])
 abstract class UpdateDataModule {
 
     @Binds
