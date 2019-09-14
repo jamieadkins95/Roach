@@ -53,7 +53,7 @@ class NewsRepositoryImpl @Inject constructor(
                 .document(locale)
                 .collection("articles")
 
-            val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING).limit(5)
+            val listenerRegistration = ref.orderBy("timestamp", Query.Direction.DESCENDING).limit(10)
                 .addSnapshotListener(EventListener<QuerySnapshot> { snapshot, e ->
                     if (e != null) {
                         Timber.e(e)
