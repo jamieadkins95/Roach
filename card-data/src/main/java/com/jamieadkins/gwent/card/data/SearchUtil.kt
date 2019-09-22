@@ -13,12 +13,19 @@ object CardSearch {
     private const val MIN_SCORE = 50
 
     fun searchCards(query: String, cardSearchData: CardSearchData, userLocale: String, defaultLocale: String): List<String> {
+        val lowerCaseQuery = query.toLowerCase()
         val searchResults = mutableListOf<CardSearchResult>()
         var maxScore = 0
         val start = System.currentTimeMillis()
+
+        // Find the categoryId for the search term
+        val categoryMatch = cardSearchData.categories.firstOrNull { it.name.toLowerCase() == lowerCaseQuery}?.categoryId
+
+        // Find the keyword for the search term
+        val keywordMatch = cardSearchData.keywords.firstOrNull { it.name.toLowerCase() == lowerCaseQuery}?.keywordId
+
         cardSearchData.cards.forEach { card ->
             val scores = ArrayList<Int>()
-            val lowerCaseQuery = query.toLowerCase()
 
             // Search in user's language
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[userLocale]?.toLowerCase() + 1))
@@ -28,16 +35,9 @@ object CardSearch {
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.name[defaultLocale]?.toLowerCase() + 1))
             scores.add(FuzzySearch.partialRatio(lowerCaseQuery, card.card.tooltip[defaultLocale]?.toLowerCase()))
 
-            card.card.categoryIds.forEach { categoryId ->
-                cardSearchData.categories.filter { categoryId == it.categoryId }.forEach {
-                    scores.add(FuzzySearch.ratio(lowerCaseQuery, it.name.toLowerCase()))
-                }
-            }
-            card.card.keywordIds.forEach { keywordId ->
-                cardSearchData.keywords.filter { keywordId == it.keywordId }.forEach {
-                    scores.add(FuzzySearch.ratio(lowerCaseQuery, it.name.toLowerCase()))
-                }
-            }
+            if (card.card.categoryIds.contains(categoryMatch)) scores.add(100)
+            if (card.card.keywordIds.contains(keywordMatch)) scores.add(100)
+
             val score = Collections.max(scores)
             if (score > maxScore) {
                 maxScore = score
