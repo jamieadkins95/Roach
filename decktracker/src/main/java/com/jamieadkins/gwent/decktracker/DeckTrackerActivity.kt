@@ -207,7 +207,7 @@ class DeckTrackerActivity : DaggerAndroidActivity(), DeckTrackerContract.View {
     override fun openSimilarDeck(deckUrl: String) = openUrl(deckUrl)
 
     override fun openGwentDeckLibrary() {
-        openUrl("https://www.playgwent.com/en/decks")
+        openUrl("https://www.playgwent.com/decks")
     }
 
     override fun openFeedback() {

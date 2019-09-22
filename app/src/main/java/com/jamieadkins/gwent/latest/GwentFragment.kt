@@ -46,6 +46,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
         update(listOf(
             MoreItem(R.string.news, R.drawable.ic_news),
             MoreItem(R.string.esports, R.drawable.ic_swords),
+            MoreItem(R.string.gwent_deck_library, R.drawable.ic_library),
             MoreItem(R.string.forums, R.drawable.ic_forum),
             MoreItem(R.string.reddit, R.drawable.ic_reddit),
             MoreItem(R.string.discord, R.drawable.ic_discord),
@@ -116,6 +117,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
                         R.string.youtube -> onYoutubeClicked()
                         R.string.settings -> onSettingsClicked()
                         R.string.about -> onAboutClicked()
+                        R.string.gwent_deck_library -> onDeckLibraryClicked()
                     }
                 }
             }
@@ -198,6 +200,10 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
             intent.putExtra(EXTRA_PREFERENCE_LAYOUT, R.xml.about)
             startActivity(intent)
         }
+    }
+
+    private fun onDeckLibraryClicked() {
+        showChromeCustomTab("https://www.playgwent.com/decks")
     }
 
     private fun showChromeCustomTab(url: String) {
