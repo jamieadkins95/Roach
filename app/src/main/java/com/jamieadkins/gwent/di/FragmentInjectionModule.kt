@@ -4,6 +4,7 @@ import com.jamieadkins.gwent.card.detail.CardDetailModule
 import com.jamieadkins.gwent.card.detail.CardDetailsFragment
 import com.jamieadkins.gwent.card.list.CardDatabaseFragment
 import com.jamieadkins.gwent.card.list.CardDatabaseModule
+import com.jamieadkins.gwent.data.latest.DeckOfTheDayDataModule
 import com.jamieadkins.gwent.data.latest.NewsDataModule
 import com.jamieadkins.gwent.deck.create.CreateDeckDialog
 import com.jamieadkins.gwent.deck.create.CreateDeckModule
@@ -42,7 +43,7 @@ abstract class FragmentInjectionModule private constructor() {
     internal abstract fun cardDatabase(): CardDatabaseFragment
 
     @FragmentScoped
-    @ContributesAndroidInjector(modules = [GwentLatestModule::class, NewsDataModule::class])
+    @ContributesAndroidInjector(modules = [GwentLatestModule::class, NewsDataModule::class, DeckOfTheDayDataModule::class])
     internal abstract fun gwent(): GwentFragment
 
     @FragmentScoped

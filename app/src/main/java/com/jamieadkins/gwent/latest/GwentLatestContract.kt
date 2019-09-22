@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.latest
 
 import com.jamieadkins.gwent.base.MvpPresenter
+import com.jamieadkins.gwent.domain.latest.DeckOfTheDay
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 
 interface GwentLatestContract {
@@ -13,6 +14,8 @@ interface GwentLatestContract {
         fun showLatestNews(news: List<GwentNewsArticle>)
 
         fun showLiveOnTwitch(live: Boolean)
+
+        fun showDeckOfTheDay(deck: DeckOfTheDay)
     }
 
     interface Presenter : MvpPresenter

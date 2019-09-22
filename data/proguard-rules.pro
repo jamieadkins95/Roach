@@ -1,2 +1,3 @@
 -keep class com.jamieadkins.gwent.data.update.model** { *; }
 -keep class com.jamieadkins.gwent.data.latest.FirebaseNewsArticle { *; }
+-keep class com.jamieadkins.gwent.data.latest.DeckLibraryResponse { *; }

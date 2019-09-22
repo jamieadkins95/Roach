@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jamieadkins.gwent.R
 import com.jamieadkins.gwent.base.VerticalSpaceItemDecoration
 import com.jamieadkins.gwent.base.convertDpToPixel
+import com.jamieadkins.gwent.domain.latest.DeckOfTheDay
 import com.jamieadkins.gwent.domain.latest.GwentNewsArticle
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_LAYOUT
 import com.jamieadkins.gwent.settings.BasePreferenceActivity.Companion.EXTRA_PREFERENCE_TITLE
@@ -26,6 +27,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_gwent.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class GwentFragment : DaggerFragment(), GwentLatestContract.View {
@@ -40,6 +42,10 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
     private val upToDateSection = Section()
     private val latestNewsSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.latest_news))
+    }
+    private val deckOfTheDaySection = Section().apply {
+        setHeader(LatestHeaderItem(R.string.deck_of_the_day))
+        setHideWhenEmpty(true)
     }
     private val moreSection = Section().apply {
         setHeader(LatestHeaderItem(R.string.more))
@@ -60,6 +66,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
         adapter.add(patchNotesSection)
         adapter.add(upToDateSection)
         adapter.add(latestNewsSection)
+        adapter.add(deckOfTheDaySection)
         adapter.add(moreSection)
     }
 
@@ -120,6 +127,7 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
                         R.string.gwent_deck_library -> onDeckLibraryClicked()
                     }
                 }
+                is DeckOfTheDayItem -> showChromeCustomTab(item.deck.url)
             }
         }
 
@@ -150,6 +158,10 @@ class GwentFragment : DaggerFragment(), GwentLatestContract.View {
 
     override fun showLiveOnTwitch(live: Boolean) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showDeckOfTheDay(deck: DeckOfTheDay) {
+        deckOfTheDaySection.update(listOf(DeckOfTheDayItem(deck)))
     }
 
     fun onNewsClicked() {

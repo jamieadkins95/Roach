@@ -2,6 +2,8 @@ package com.jamieadkins.gwent.latest
 
 import com.jamieadkins.gwent.base.BaseDisposableObserver
 import com.jamieadkins.gwent.base.BasePresenter
+import com.jamieadkins.gwent.domain.latest.DeckOfTheDay
+import com.jamieadkins.gwent.domain.latest.GetDeckOfTheDayUseCase
 import com.jamieadkins.gwent.domain.latest.GetLatestNewsUseCase
 import com.jamieadkins.gwent.domain.latest.GetLatestPatchNotesUseCase
 import com.jamieadkins.gwent.domain.latest.GetUpToDateStateUseCase
@@ -13,7 +15,8 @@ class GwentLatestPresenter @Inject constructor(
     private val view: GwentLatestContract.View,
     private val getLatestPatchNotesUseCase: GetLatestPatchNotesUseCase,
     private val getLatestNewsUseCase: GetLatestNewsUseCase,
-    private val getUpToDateStateUseCase: GetUpToDateStateUseCase
+    private val getUpToDateStateUseCase: GetUpToDateStateUseCase,
+    private val getDeckOfTheDayUseCase: GetDeckOfTheDayUseCase
 ) : BasePresenter(), GwentLatestContract.Presenter {
 
     override fun onAttach() {
@@ -40,5 +43,14 @@ class GwentLatestPresenter @Inject constructor(
                 }
             })
             .addToComposite()
+
+        // Not ready yet
+        /*getDeckOfTheDayUseCase.get()
+            .subscribeWith(object : BaseDisposableObserver<DeckOfTheDay>() {
+                override fun onNext(data: DeckOfTheDay) {
+                    view.showDeckOfTheDay(data)
+                }
+            })
+            .addToComposite()*/
     }
 }
