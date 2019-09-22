@@ -30,12 +30,12 @@ object CardSearch {
 
             card.card.categoryIds.forEach { categoryId ->
                 cardSearchData.categories.filter { categoryId == it.categoryId }.forEach {
-                    scores.add(FuzzySearch.partialRatio(lowerCaseQuery, it.name.toLowerCase()))
+                    scores.add(FuzzySearch.ratio(lowerCaseQuery, it.name.toLowerCase()))
                 }
             }
             card.card.keywordIds.forEach { keywordId ->
                 cardSearchData.keywords.filter { keywordId == it.keywordId }.forEach {
-                    scores.add(FuzzySearch.partialRatio(lowerCaseQuery, it.name.toLowerCase()))
+                    scores.add(FuzzySearch.ratio(lowerCaseQuery, it.name.toLowerCase()))
                 }
             }
             val score = Collections.max(scores)
