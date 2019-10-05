@@ -13,4 +13,6 @@ sealed class GwentExpansion {
     object CrimsonCurse : GwentExpansion()
 
     object Novigrad : GwentExpansion()
+
+    object IronJudgement : GwentExpansion()
 }

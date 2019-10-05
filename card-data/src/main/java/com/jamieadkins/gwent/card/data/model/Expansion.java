@@ -11,4 +11,5 @@ public class Expansion {
     public static final String THRONEBREAKER_ID = "Thronebreaker";
     public static final String CRIMSONCURSE_ID = "CrimsonCurse";
     public static final String NOVIGRAD_ID = "Novigrad";
+    public static final String IRON_JUDGEMENT_ID = "IronJudgement";
 }

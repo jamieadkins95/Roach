@@ -40,6 +40,7 @@ interface FilterContract {
         fun setThronebreakerSetFilter(checked: Boolean)
         fun setCrimsonCurseSetFilter(checked: Boolean)
         fun setNovigradSetFilter(checked: Boolean)
+        fun setIronJudgementSetFilter(checked: Boolean)
 
         fun setSortedBy(sortedBy: SortedBy)
 
@@ -86,6 +87,7 @@ interface FilterContract {
         fun onThronebreakerSetChanged(checked: Boolean)
         fun onCrimsonCurseSetChanged(checked: Boolean)
         fun onNovigradSetChanged(checked: Boolean)
+        fun onIronJudgementSetChanged(checked: Boolean)
 
         fun onSortedByChanged(sort: SortedBy)
     }

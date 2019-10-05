@@ -62,6 +62,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_expansion_thronebreaker.setOnCheckedChangeListener { _, checked -> presenter.onThronebreakerSetChanged(checked) }
         filter_expansion_crimson_curse.setOnCheckedChangeListener { _, checked -> presenter.onCrimsonCurseSetChanged(checked) }
         filter_expansion_novigrad.setOnCheckedChangeListener { _, checked -> presenter.onNovigradSetChanged(checked) }
+        filter_expansion_iron_judgement.setOnCheckedChangeListener { _, checked -> presenter.onIronJudgementSetChanged(checked) }
 
         group_sort_by.setOnCheckedChangeListener { _, id ->
             val sortBy = when (id) {
@@ -151,6 +152,8 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setCrimsonCurseSetFilter(checked: Boolean) { filter_expansion_crimson_curse.isChecked = checked }
 
     override fun setNovigradSetFilter(checked: Boolean) { filter_expansion_novigrad.isChecked = checked }
+
+    override fun setIronJudgementSetFilter(checked: Boolean) { filter_expansion_iron_judgement.isChecked = checked }
 
     override fun setSortedBy(sortedBy: SortedBy) {
         when (sortedBy) {

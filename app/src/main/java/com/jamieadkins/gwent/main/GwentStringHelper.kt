@@ -62,6 +62,7 @@ object GwentStringHelper {
             GwentExpansion.Thronebreaker -> resources.getString(R.string.thronebreaker)
             GwentExpansion.CrimsonCurse -> resources.getString(R.string.crimson_curse)
             GwentExpansion.Novigrad -> resources.getString(R.string.novigrad)
+            GwentExpansion.IronJudgement -> resources.getString(R.string.iron_judgement)
         }
     }
 }

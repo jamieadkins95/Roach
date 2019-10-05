@@ -16,6 +16,7 @@ class ExpansionMapper @Inject constructor() {
             Expansion.THRONEBREAKER_ID -> GwentExpansion.Thronebreaker
             Expansion.CRIMSONCURSE_ID -> GwentExpansion.CrimsonCurse
             Expansion.NOVIGRAD_ID -> GwentExpansion.Novigrad
+            Expansion.IRON_JUDGEMENT_ID -> GwentExpansion.IronJudgement
             else -> GwentExpansion.Base
         }
     }

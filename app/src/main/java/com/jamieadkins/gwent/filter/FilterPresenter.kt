@@ -50,6 +50,7 @@ class FilterPresenter @Inject constructor(
     var thronebreaker = false
     var crimsonCurse = false
     var novigrad = false
+    var ironJudgement = false
 
     var minProvisions = 0
     var maxProvisions = 100
@@ -139,6 +140,9 @@ class FilterPresenter @Inject constructor(
                     novigrad = filter.expansionFilter[GwentExpansion.Novigrad] ?: false
                     view.setNovigradSetFilter(novigrad)
 
+                    ironJudgement = filter.expansionFilter[GwentExpansion.IronJudgement] ?: false
+                    view.setIronJudgementSetFilter(ironJudgement)
+
                     sortedBy = filter.sortedBy
                     view.setSortedBy(sortedBy)
                 }
@@ -205,7 +209,8 @@ class FilterPresenter @Inject constructor(
                         GwentExpansion.Unmillable to unmillableSet,
                         GwentExpansion.Thronebreaker to thronebreaker,
                         GwentExpansion.CrimsonCurse to crimsonCurse,
-                        GwentExpansion.Novigrad to novigrad
+                        GwentExpansion.Novigrad to novigrad,
+                        GwentExpansion.IronJudgement to ironJudgement
                     )
 
                     val newFilter = CardFilter(
@@ -278,6 +283,8 @@ class FilterPresenter @Inject constructor(
     override fun onCrimsonCurseSetChanged(checked: Boolean) { crimsonCurse = checked }
 
     override fun onNovigradSetChanged(checked: Boolean) { novigrad = checked }
+
+    override fun onIronJudgementSetChanged(checked: Boolean) { ironJudgement = checked }
 
     override fun onSortedByChanged(sort: SortedBy) { sortedBy = sort}
 
