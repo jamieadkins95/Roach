@@ -3,8 +3,8 @@ object Versions {
     const val compile_sdk = 28
     const val min_sdk = 16
     const val target_sdk = 28
-    const val app_version_code = 63
-    const val app_version_name = "3.4.0"
+    const val app_version_code = 64
+    const val app_version_name = "3.4.1"
 
     const val gradle_plugin = "3.5.0"
     const val google_services_plugin = "4.1.0"
