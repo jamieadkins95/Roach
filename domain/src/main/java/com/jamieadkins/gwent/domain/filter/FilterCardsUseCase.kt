@@ -30,15 +30,13 @@ class FilterCardsUseCase @Inject constructor(
 
     private fun doesCardMeetFilter(card: GwentCard, filter: CardFilter): Boolean {
         val include = !filter.isCollectibleOnly || card.collectible
-        val faction = filter.expansionFilter.values.all() || filter.factionFilter[card.faction] ?: false || filter.factionFilter[card.secondaryFaction] ?: false
-        val expansion = filter.expansionFilter.values.all() || filter.expansionFilter[card.expansion] ?: false
-        val rarity = filter.expansionFilter.values.all() || filter.rarityFilter[card.rarity] ?: false
-        val colour = filter.expansionFilter.values.all() || filter.colourFilter[card.colour] ?: false
-        val type = filter.expansionFilter.values.all() || filter.typeFilter[card.type] ?: false
+        val faction = filter.factionFilter[card.faction] ?: false || filter.factionFilter[card.secondaryFaction] ?: false
+        val expansion = filter.expansionFilter[card.expansion] ?: false
+        val rarity = filter.rarityFilter[card.rarity] ?: false
+        val colour = filter.colourFilter[card.colour] ?: false
+        val type = filter.typeFilter[card.type] ?: false
         val provisions = card.provisions >= filter.minProvisions && card.provisions <= filter.maxProvisions
         return (faction && expansion && rarity && colour && include && provisions && type)
     }
-
-    private fun Collection<Boolean>.all() = all { it }
 
 }
