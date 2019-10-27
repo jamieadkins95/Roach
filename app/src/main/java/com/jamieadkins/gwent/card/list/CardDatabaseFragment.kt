@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +32,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import kotlinx.android.synthetic.main.fragment_card_list.*
 import javax.inject.Inject
+import android.net.Uri
 
 class CardDatabaseFragment :
     DaggerFragment(),
@@ -185,6 +185,10 @@ class CardDatabaseFragment :
     }
 
     private fun onInstallClicked() {
-        Toast.makeText(requireContext(), "Install", Toast.LENGTH_SHORT).show()
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://play.google.com/store/apps/details?id=com.jamieadkins.gwent")
+        )
+        context?.startActivity(intent)
     }
 }
