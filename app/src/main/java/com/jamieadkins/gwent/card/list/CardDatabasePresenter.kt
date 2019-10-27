@@ -2,6 +2,7 @@ package com.jamieadkins.gwent.card.list
 
 import com.jamieadkins.gwent.bus.RxBus
 import com.jamieadkins.gwent.base.BaseDisposableObserver
+import com.jamieadkins.gwent.base.BaseDisposableSingle
 import com.jamieadkins.gwent.bus.GwentCardClickEvent
 import com.jamieadkins.gwent.bus.ScrollToTopEvent
 import com.jamieadkins.gwent.domain.card.GetCardsUseCase
@@ -13,10 +14,11 @@ import com.jamieadkins.gwent.domain.filter.model.CardFilter
 import com.jamieadkins.gwent.domain.update.model.Notice
 import com.jamieadkins.gwent.domain.update.repository.GetCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.domain.update.repository.GetNoticesUseCase
-import com.jamieadkins.gwent.domain.update.repository.StartCardDatabaseUpdateUseCase
 import com.jamieadkins.gwent.base.BasePresenter
+import com.jamieadkins.gwent.domain.update.repository.IsInstantAppUseCase
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -26,8 +28,8 @@ class CardDatabasePresenter @Inject constructor(
     private val filterCardsUseCase: FilterCardsUseCase,
     private val getFilterUseCase: GetFilterUseCase,
     private val getCardDatabaseUpdateUseCase: GetCardDatabaseUpdateUseCase,
-    private val startCardDatabaseUpdateUseCase: StartCardDatabaseUpdateUseCase,
-    private val getNoticesUseCase: GetNoticesUseCase
+    private val getNoticesUseCase: GetNoticesUseCase,
+    private val isInstantAppUseCase: IsInstantAppUseCase
 ) : BasePresenter(), CardDatabaseContract.Presenter {
 
     private val searches = BehaviorSubject.createDefault("")
@@ -72,8 +74,9 @@ class CardDatabasePresenter @Inject constructor(
 
         Observable.combineLatest(getCards,
                                  getNotices(),
-                                 BiFunction { pair: Pair<List<GwentCard>, String>, notices: List<Notice> ->
-                                     CardDatabaseScreenModel(pair.first, pair.second, notices)
+                                 isInstantAppUseCase.isInstantApp().toObservable(),
+                                 Function3 { pair: Pair<List<GwentCard>, String>, notices: List<Notice>, isInstantApp: Boolean ->
+                                     CardDatabaseScreenModel(pair.first, pair.second, notices, isInstantApp)
                                  })
             .subscribeWith(object : BaseDisposableObserver<CardDatabaseScreenModel>() {
                 override fun onNext(data: CardDatabaseScreenModel) {
@@ -97,7 +100,13 @@ class CardDatabasePresenter @Inject constructor(
     private fun getUpdates(): Observable<Boolean> {
         return refreshRequests
             .switchMap {
-                getCardDatabaseUpdateUseCase.isUpdateAvailable()
+                Observable.combineLatest(
+                    getCardDatabaseUpdateUseCase.isUpdateAvailable(),
+                    isInstantAppUseCase.isInstantApp().toObservable(),
+                    BiFunction { update: Boolean, isInstantApp: Boolean ->
+                        update && !isInstantApp
+                    }
+                )
             }
             .startWith(false)
     }

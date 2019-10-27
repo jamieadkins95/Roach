@@ -79,10 +79,7 @@ dependencies {
     implementation Libs.groupie
     implementation Libs.groupie_extensions
 
-    // RxJava.
     implementation Libs.rxjava
-
-    // Firebase
     implementation Libs.timber
 
     implementation 'androidx.multidex:multidex:2.0.1'

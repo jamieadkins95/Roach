@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -154,7 +155,10 @@ class CardDatabaseFragment :
             emptyList()
         }
 
+        val instantAppNotice = if (data.showInstantAppNotice) listOf(InstantAppNoticeItem(::onInstallClicked)) else emptyList()
+
         adapter.update(
+            instantAppNotice +
             data.notices.map { NoticeItem(it.title) } +
             searchResults +
             data.cards.map { GwentCardItem(it) }
@@ -178,5 +182,9 @@ class CardDatabaseFragment :
 
     override fun showCardDetails(cardId: String) {
         activity?.let { FeatureNavigator(it).openCardDetails(cardId) }
+    }
+
+    private fun onInstallClicked() {
+        Toast.makeText(requireContext(), "Install", Toast.LENGTH_SHORT).show()
     }
 }

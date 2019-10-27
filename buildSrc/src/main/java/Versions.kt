@@ -20,7 +20,6 @@ object Versions {
     const val gson = "2.8.2"
     const val glide = "3.7.0"
     const val nytimes_store = "3.0.1"
-    const val play_services = "15.0.1"
     const val timber = "4.7.0"
     const val junit = "4.12"
     const val mockito = "2.18.3"

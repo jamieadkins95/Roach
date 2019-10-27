@@ -3,7 +3,6 @@ object Libs {
     const val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val google_services_plugin = "com.google.gms:google-services:${Versions.google_services_plugin}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
-    const val play_services_base = "com.google.android.gms:play-services-base:${Versions.play_services}"
     const val firebase = "com.google.firebase:firebase-core:${Versions.firebase_core}"
     const val firebase_storage = "com.google.firebase:firebase-storage:${Versions.firebase_storage}"
     const val firebase_messaging = "com.google.firebase:firebase-messaging:${Versions.firebase_messaging}"

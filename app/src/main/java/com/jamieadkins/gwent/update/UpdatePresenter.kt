@@ -9,8 +9,8 @@ import javax.inject.Inject
 class UpdatePresenter @Inject constructor(
     private val view: UpdateContract.View,
     private val schedulerProvider: SchedulerProvider,
-    private val updateRepository: UpdateRepository)
-    : BasePresenter(), UpdateContract.Presenter {
+    private val updateRepository: UpdateRepository
+) : BasePresenter(), UpdateContract.Presenter {
 
     override fun onAttach() {
         updateRepository.performUpdate()

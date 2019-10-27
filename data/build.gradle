@@ -46,6 +46,7 @@ dependencies {
     api Libs.firebase_storage
     api Libs.firebase_messaging
     api Libs.firebase_firestore
+    implementation 'com.google.android.instantapps:instantapps:1.1.0'
 
     implementation Libs.dagger
     kapt Libs.dagger_compiler

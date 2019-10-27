@@ -98,4 +98,8 @@
     <string name="units_in_deck">%1$d units (minimum %2$d)</string>
     <string name="maximum_card_count_reached">Deck already contains maximum number of that card!</string>
 
+
+    <string name="instant_app_notice">Install the app to get the latest Gwent patch and access to all languages!</string>
+    <string name="install">Install</string>
+
 </resources>
