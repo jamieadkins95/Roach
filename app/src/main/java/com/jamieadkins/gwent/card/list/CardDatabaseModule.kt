@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.card.list
 import com.jamieadkins.gwent.di.FragmentScoped
 import dagger.Binds
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class CardDatabaseModule {

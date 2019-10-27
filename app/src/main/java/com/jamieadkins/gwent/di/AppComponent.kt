@@ -1,6 +1,7 @@
 package com.jamieadkins.gwent.di
 
 import com.jamieadkins.gwent.base.CoreComponent
+import com.jamieadkins.gwent.di.ActivityScoped
 import com.jamieadkins.gwent.card.data.CardDataModule
 import com.jamieadkins.gwent.card.detail.CardDetailsActivity
 import com.jamieadkins.gwent.data.DataModule

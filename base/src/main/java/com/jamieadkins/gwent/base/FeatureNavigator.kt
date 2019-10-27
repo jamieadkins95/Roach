@@ -21,7 +21,7 @@ class FeatureNavigator(private val activity: Activity) {
 
     companion object {
         private const val CARD_DETAIL_ACTIVITY = "com.jamieadkins.gwent.card.detail.CardDetailsActivity"
-        private const val DECK_DETAIL_ACTIVITY = "com.jamieadkins.gwent.deckbuilder.DeckDetailsActivity"
+        private const val DECK_DETAIL_ACTIVITY = "com.jamieadkins.gwent.deck.builder.DeckDetailsActivity"
 
         private const val CARD_DETAILS = "roach://card?cardId=%s"
         private const val DECK_DETAILS = "roach://deck?deckId=%s"

@@ -3,7 +3,6 @@ package com.jamieadkins.gwent.launch
 import com.jamieadkins.gwent.di.ActivityScoped
 import dagger.Binds
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class LaunchModule {

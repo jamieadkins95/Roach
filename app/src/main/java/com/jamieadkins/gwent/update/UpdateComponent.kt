@@ -8,8 +8,6 @@ import com.jamieadkins.gwent.di.ActivityScoped
 import com.jamieadkins.gwent.di.AppModule
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.support.AndroidSupportInjectionModule
-import javax.inject.Singleton
 
 @Component(
     modules = [

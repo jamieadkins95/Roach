@@ -40,6 +40,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter
+                android:autoVerify="true"
+                tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="gwent-9e62a.firebaseapp.com" android:path="/gwent"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="default-url"
+                android:value="https://gwent-9e62a.firebaseapp.com/gwent?trynow=true" />
+
         </activity>
 
         <activity
@@ -49,6 +66,11 @@
 
         <activity
             android:name=".card.detail.CardDetailsActivity"
+            android:theme="@style/Theme.Gwent.NoActionBar" />
+
+        <activity
+            android:name=".deck.builder.DeckDetailsActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/Theme.Gwent.NoActionBar" />
 
         <activity
