@@ -7,14 +7,14 @@
   },
   "armor": {
     "en-US": {
-      "raw": "<#600101>Armor:</color> Absorbs a given amount of damage, then is removed.",
-      "text": "Armor: Absorbs a given amount of damage, then is removed."
+      "raw": "<#600101>Armor:</color> Protects the unit from damage. This value doesn't count towards your score and/or the unit's power.",
+      "text": "Armor: Protects the unit from damage. This value doesn't count towards your score and/or the unit's power."
     }
   },
   "assimilate": {
     "en-US": {
-      "raw": "<#600101>Assimilate:</color> Boost self by 1 whenever you play a card that is not from your starting deck.",
-      "text": "Assimilate: Boost self by 1 whenever you play a card that is not from your starting deck."
+      "raw": "<#600101>Assimilate:</color> Boost self by 1 or the specified amount whenever you play a card that is not from your starting deck.",
+      "text": "Assimilate: Boost self by 1 or the specified amount whenever you play a card that is not from your starting deck."
     }
   },
   "aura": {
@@ -35,6 +35,12 @@
       "text": "Doomed: Units: Remove from the game when moved from the Board to the Graveyard.\\nSpecial Cards: Remove from the game after triggering the card's ability."
     }
   },
+  "barricade": {
+    "en-US": {
+      "raw": "<#600101>Barricade:</color> Trigger this ability if the unit has armor.",
+      "text": "Barricade: Trigger this ability if the unit has armor."
+    }
+  },
   "berserk": {
     "en-US": {
       "raw": "<#600101>Berserk:</color> Trigger this ability whenever base power is equal to or lower than the specified amount.",
@@ -43,8 +49,8 @@
   },
   "bleeding": {
     "en-US": {
-      "raw": "<#600101>Bleeding:</color> Status that damages this unit by 1 on its turn end. Note: Bleeding turns can accumulate; 1 turn of Bleeding cancels out 1 turn of Vitality.",
-      "text": "Bleeding: Status that damages this unit by 1 on its turn end. Note: Bleeding turns can accumulate; 1 turn of Bleeding cancels out 1 turn of Vitality."
+      "raw": "<#600101>Bleeding:</color> Status that damages the unit by 1 at the end of its turn. Note: Bleeding turns can accumulate, 1 turn of Bleeding cancels out 1 turn of Vitality. Bleeding ignores armor.",
+      "text": "Bleeding: Status that damages the unit by 1 at the end of its turn. Note: Bleeding turns can accumulate, 1 turn of Bleeding cancels out 1 turn of Vitality. Bleeding ignores armor."
     }
   },
   "bloodthirst": {
@@ -215,6 +221,12 @@
       "text": "Deathwish: Trigger this ability when destroyed and moved from the battlefield to the graveyard. Note: Banished units are not sent to the graveyard."
     }
   },
+  "defender": {
+    "en-US": {
+      "raw": "<#600101>Defender:</color> This card needs to be targeted first by an opponent.",
+      "text": "Defender: This card needs to be targeted first by an opponent."
+    }
+  },
   "demote": {
     "en-US": {
       "raw": "<#600101>Demote:</color> Convert a Gold card to Silver (or Bronze, if Bronze was the card's original color).",
@@ -275,6 +287,12 @@
       "text": "Enemy: A Unit on your opponent's side of the Board."
     }
   },
+  "exposed": {
+    "en-US": {
+      "raw": "<#600101>Exposed:</color> Trigger this ability whenever the unit loses its Armor.",
+      "text": "Exposed: Trigger this ability whenever the unit loses its Armor."
+    }
+  },
   "fatigue": {
     "en-US": {
       "raw": "<#600101>Single-Use:</color> This card's ability can be used only once per game.",
@@ -313,8 +331,8 @@
   },
   "harmony": {
     "en-US": {
-      "raw": "<#600101>Harmony:</color> Boost self by 1 whenever you play a Scoia'tael unit on your side whose primary category is unique among other allied Scoia'tael units.",
-      "text": "Harmony: Boost self by 1 whenever you play a Scoia'tael unit on your side whose primary category is unique among other allied Scoia'tael units."
+      "raw": "<#600101>Harmony:</color> Boost self by 1 or the specified amount whenever you play a Scoia'tael unit on your side whose primary category is unique among all of your Scoia'tael units.",
+      "text": "Harmony: Boost self by 1 or the specified amount whenever you play a Scoia'tael unit on your side whose primary category is unique among all of your Scoia'tael units."
     }
   },
   "hazard": {
