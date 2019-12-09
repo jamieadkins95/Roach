@@ -55,6 +55,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_type_artifact.setOnCheckedChangeListener { _, checked -> presenter.onTypeArtifactChanged(checked) }
         filter_type_spell.setOnCheckedChangeListener { _, checked -> presenter.onTypeSpellChanged(checked) }
         filter_type_leader.setOnCheckedChangeListener { _, checked -> presenter.onTypeLeaderChanged(checked) }
+        filter_type_strategem.setOnCheckedChangeListener { _, checked -> presenter.onTypeStrategemChanged(checked) }
 
         filter_expansion_base.setOnCheckedChangeListener { _, checked -> presenter.onBaseSetChanged(checked) }
         filter_expansion_unmillable.setOnCheckedChangeListener { _, checked -> presenter.onUnmillableSetChanged(checked) }
@@ -63,6 +64,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
         filter_expansion_crimson_curse.setOnCheckedChangeListener { _, checked -> presenter.onCrimsonCurseSetChanged(checked) }
         filter_expansion_novigrad.setOnCheckedChangeListener { _, checked -> presenter.onNovigradSetChanged(checked) }
         filter_expansion_iron_judgement.setOnCheckedChangeListener { _, checked -> presenter.onIronJudgementSetChanged(checked) }
+        filter_expansion_merchants_of_ofir.setOnCheckedChangeListener { _, checked -> presenter.onMerchantsOfOfirSetChanged(checked) }
 
         group_sort_by.setOnCheckedChangeListener { _, id ->
             val sortBy = when (id) {
@@ -139,6 +141,8 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
 
     override fun setUnitFilter(checked: Boolean) { filter_type_unit.isChecked = checked }
 
+    override fun setStrategemFilter(checked: Boolean) { filter_type_strategem.isChecked = checked }
+
     override fun setTypeLeaderFilter(checked: Boolean) { filter_type_leader.isChecked = checked }
 
     override fun setBaseSetFilter(checked: Boolean) { filter_expansion_base.isChecked = checked }
@@ -154,6 +158,8 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
     override fun setNovigradSetFilter(checked: Boolean) { filter_expansion_novigrad.isChecked = checked }
 
     override fun setIronJudgementSetFilter(checked: Boolean) { filter_expansion_iron_judgement.isChecked = checked }
+
+    override fun setMerchantsOfOfirSetFilter(checked: Boolean) { filter_expansion_merchants_of_ofir.isChecked = checked }
 
     override fun setSortedBy(sortedBy: SortedBy) {
         when (sortedBy) {
@@ -186,6 +192,7 @@ class FilterBottomSheetDialogFragment : DaggerSupportDialogFragment(), FilterCon
 
         filter_type_leader.visibility = View.GONE
         filter_color_leader.visibility = View.GONE
+        filter_type_strategem.visibility = View.GONE
     }
 
     override fun hideTokenFilterForDeckBuilder() {

@@ -232,6 +232,13 @@
                 android:text="@string/artifact" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/filter_type_strategem"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strategem" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/filter_type_leader"
                 style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
                 android:layout_width="wrap_content"
@@ -311,6 +318,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/iron_judgement" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_expansion_merchants_of_ofir"
+                style="@style/Widget.MaterialComponents.Chip.Filter.Dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/merchants_of_ofir" />
 
         </com.google.android.material.chip.ChipGroup>
 

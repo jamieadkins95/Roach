@@ -12,4 +12,5 @@ public class Expansion {
     public static final String CRIMSONCURSE_ID = "CrimsonCurse";
     public static final String NOVIGRAD_ID = "Novigrad";
     public static final String IRON_JUDGEMENT_ID = "IronJudgement";
+    public static final String MERCHANTS_OF_OFIR_ID = "MerchantsOfOfir";
 }

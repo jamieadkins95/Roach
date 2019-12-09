@@ -43,6 +43,7 @@ class FilterPresenter @Inject constructor(
     var unit = false
     var spell = false
     var artifact = false
+    var strategem = false
 
     var baseSet = false
     var tokenSet = false
@@ -51,6 +52,7 @@ class FilterPresenter @Inject constructor(
     var crimsonCurse = false
     var novigrad = false
     var ironJudgement = false
+    var merchantsOfOfir = false
 
     var minProvisions = 0
     var maxProvisions = 100
@@ -122,6 +124,9 @@ class FilterPresenter @Inject constructor(
                     artifact = filter.typeFilter[GwentCardType.Artifact] ?: false
                     view.setArtifactFilter(artifact)
 
+                    strategem = filter.typeFilter[GwentCardType.Strategem] ?: false
+                    view.setStrategemFilter(strategem)
+
                     baseSet = filter.expansionFilter[GwentExpansion.Base] ?: false
                     view.setBaseSetFilter(baseSet)
 
@@ -142,6 +147,9 @@ class FilterPresenter @Inject constructor(
 
                     ironJudgement = filter.expansionFilter[GwentExpansion.IronJudgement] ?: false
                     view.setIronJudgementSetFilter(ironJudgement)
+
+                    merchantsOfOfir = filter.expansionFilter[GwentExpansion.MerchantsOfOfir] ?: false
+                    view.setMerchantsOfOfirSetFilter(merchantsOfOfir)
 
                     sortedBy = filter.sortedBy
                     view.setSortedBy(sortedBy)
@@ -200,7 +208,8 @@ class FilterPresenter @Inject constructor(
                         GwentCardType.Unit to unit,
                         GwentCardType.Spell to spell,
                         GwentCardType.Artifact to artifact,
-                        GwentCardType.Leader to leader
+                        GwentCardType.Leader to leader,
+                        GwentCardType.Strategem to strategem
                     )
 
                     val expansions = mapOf(
@@ -210,7 +219,8 @@ class FilterPresenter @Inject constructor(
                         GwentExpansion.Thronebreaker to thronebreaker,
                         GwentExpansion.CrimsonCurse to crimsonCurse,
                         GwentExpansion.Novigrad to novigrad,
-                        GwentExpansion.IronJudgement to ironJudgement
+                        GwentExpansion.IronJudgement to ironJudgement,
+                        GwentExpansion.MerchantsOfOfir to merchantsOfOfir
                     )
 
                     val newFilter = CardFilter(
@@ -272,6 +282,8 @@ class FilterPresenter @Inject constructor(
 
     override fun onTypeSpellChanged(checked: Boolean) { spell = checked }
 
+    override fun onTypeStrategemChanged(checked: Boolean) { strategem = checked }
+
     override fun onBaseSetChanged(checked: Boolean) { baseSet = checked }
 
     override fun onTokenSetChanged(checked: Boolean) { tokenSet = checked }
@@ -285,6 +297,8 @@ class FilterPresenter @Inject constructor(
     override fun onNovigradSetChanged(checked: Boolean) { novigrad = checked }
 
     override fun onIronJudgementSetChanged(checked: Boolean) { ironJudgement = checked }
+
+    override fun onMerchantsOfOfirSetChanged(checked: Boolean) { merchantsOfOfir = checked }
 
     override fun onSortedByChanged(sort: SortedBy) { sortedBy = sort}
 

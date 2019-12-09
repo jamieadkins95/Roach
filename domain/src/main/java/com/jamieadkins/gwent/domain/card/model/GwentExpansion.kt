@@ -15,4 +15,6 @@ sealed class GwentExpansion {
     object Novigrad : GwentExpansion()
 
     object IronJudgement : GwentExpansion()
+
+    object MerchantsOfOfir : GwentExpansion()
 }

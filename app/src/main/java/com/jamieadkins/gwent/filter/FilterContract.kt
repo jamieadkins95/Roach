@@ -33,6 +33,7 @@ interface FilterContract {
         fun setArtifactFilter(checked: Boolean)
         fun setSpellFilter(checked: Boolean)
         fun setTypeLeaderFilter(checked: Boolean)
+        fun setStrategemFilter(checked: Boolean)
 
         fun setBaseSetFilter(checked: Boolean)
         fun setTokenSetFilter(checked: Boolean)
@@ -41,6 +42,7 @@ interface FilterContract {
         fun setCrimsonCurseSetFilter(checked: Boolean)
         fun setNovigradSetFilter(checked: Boolean)
         fun setIronJudgementSetFilter(checked: Boolean)
+        fun setMerchantsOfOfirSetFilter(checked: Boolean)
 
         fun setSortedBy(sortedBy: SortedBy)
 
@@ -80,6 +82,7 @@ interface FilterContract {
         fun onTypeSpellChanged(checked: Boolean)
         fun onTypeArtifactChanged(checked: Boolean)
         fun onTypeLeaderChanged(checked: Boolean)
+        fun onTypeStrategemChanged(checked: Boolean)
 
         fun onBaseSetChanged(checked: Boolean)
         fun onTokenSetChanged(checked: Boolean)
@@ -88,6 +91,7 @@ interface FilterContract {
         fun onCrimsonCurseSetChanged(checked: Boolean)
         fun onNovigradSetChanged(checked: Boolean)
         fun onIronJudgementSetChanged(checked: Boolean)
+        fun onMerchantsOfOfirSetChanged(checked: Boolean)
 
         fun onSortedByChanged(sort: SortedBy)
     }

@@ -87,7 +87,8 @@ class FilterRepositoryImpl @Inject constructor(
                 GwentExpansion.Thronebreaker to true,
                 GwentExpansion.CrimsonCurse to true,
                 GwentExpansion.Novigrad to true,
-                GwentExpansion.IronJudgement to true
+                GwentExpansion.IronJudgement to true,
+                GwentExpansion.MerchantsOfOfir to true
             ),
             0,
             20,
@@ -111,7 +112,8 @@ class FilterRepositoryImpl @Inject constructor(
             GwentExpansion.Thronebreaker to true,
             GwentExpansion.CrimsonCurse to true,
             GwentExpansion.Novigrad to true,
-            GwentExpansion.IronJudgement to true
+            GwentExpansion.IronJudgement to true,
+            GwentExpansion.MerchantsOfOfir to true
         )
     }
 
